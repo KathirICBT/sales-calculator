@@ -35,8 +35,11 @@ Route::put('/departments/{department}', [DepartmentController::class, 'update'])
 
 
 // Delete (Delete and Destroy)
-Route::get('/departments/{department}/delete', [DepartmentController::class, 'delete']);
+Route::get('/departments/{department}/delete', [DepartmentController::class, 'deleteConfirmation'])->name('departments.delete');
+
 Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+
+
 
 // Search
 Route::get('/departments/search', [DepartmentController::class, 'search'])->name('departments.search');

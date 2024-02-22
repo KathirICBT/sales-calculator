@@ -32,7 +32,10 @@
 
             <button type="submit" class="btn">Add Department</button>
 <div>
-            <a href="{{ route('departments.index') }}" class="modify-button">     Modify</a></div>
+           
+            <button type="submit" class="btn modify-button" href="{{ route('departments.index') }}">Modify</button>
+        
+        </div>
         </form>
     </div>
 

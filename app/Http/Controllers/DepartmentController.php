@@ -60,18 +60,21 @@ class DepartmentController extends Controller
     }
 
     // Delete
-    public function delete(Department $department)
+    public function deleteConfirmation(Department $department)
     {
         return view('departments.delete', compact('department'));
     }
 
-    public function destroy(Department $department)
+    // Method for deleting the department
+    public function destroy($id)
     {
-        $department->delete();
-
-        return redirect('/departments')->with('success', 'Department deleted successfully!');
+        // Find the department by ID and delete it
+        Department::destroy($id);
+    
+        // Redirect the user back with a success message
+        return redirect()->route('departments.index')->with('success', 'Department deleted successfully');
     }
-
+    
     // Search
     public function search(Request $request)
     {

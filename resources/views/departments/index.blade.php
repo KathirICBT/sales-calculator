@@ -31,13 +31,14 @@
                         <td>{{ $department->dept_name }}</td>
                         <td>{{ $department->other_taking ? 'Yes' : 'No' }}</td>
                         <td>
-                            <a href="{{ route('departments.edit', $department->id) }}">Edit</a>
-                            <form method="post" action="{{ route('departments.destroy', $department->id) }}" style="display: inline;">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" style="color: red; border: none; background: none; cursor: pointer;">Delete</button>
-                            </form>
-                        </td>
+    <a href="{{ route('departments.edit', $department->id) }}">Edit</a>
+    <form method="post" action="{{ route('departments.destroy', $department->id) }}" style="display: inline;">
+        @csrf
+        @method('delete')
+        <button type="submit" style="color: white; border: none; background: red; cursor: pointer;">Delete</button>
+    </form>
+</td>
+
                     </tr>
                 @endforeach
             </tbody>
