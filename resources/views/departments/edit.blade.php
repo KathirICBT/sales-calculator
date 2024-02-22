@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
+    
+@include('includes.header')
     <div class="container">
         <h2>Edit Department</h2>
 

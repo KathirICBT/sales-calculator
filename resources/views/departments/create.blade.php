@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
-
+@include('includes.header')
     <div class="container">
         <h2>Add Department</h2>
 
@@ -30,10 +30,11 @@
                 <input type="checkbox" name="other_taking" value="1">
             </div>
 
-            <button type="submit" class="btn">Add Department</button>
+            
 <div>
-           
-            <button type="submit" class="btn modify-button" href="{{ route('departments.index') }}">Modify</button>
+<button type="submit" class="btn">Add Department</button>
+<button type="button" class="btn modify-button" onclick="window.location.href='{{ route('departments.index') }}'">Modify</button>
+
         
         </div>
         </form>

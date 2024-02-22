@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +19,6 @@ Route::get('/departments/create', [DepartmentController::class, 'create'])->name
 
 // Handle form submission
 Route::post('/departments/store', [DepartmentController::class, 'store'])->name('departments.store');
-
-
-
-// ... other routes ...
-
 
 
 // Read (Index)
@@ -43,6 +39,28 @@ Route::delete('/departments/{department}', [DepartmentController::class, 'destro
 
 // Search
 Route::get('/departments/search', [DepartmentController::class, 'search'])->name('departments.search');
+
+//staff
+//register 
+Route::get('/staff/addstaff', [StaffController::class, 'showRegistrationForm'])->name('staff.addstaff');
+Route::post('/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff.submit');
+
+// Read (Index)
+
+Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
+
+// Update (Edit and Update)
+Route::get('/staff/{staff}/edit', [StaffController::class, 'edit'])->name('staff.edit');
+Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
+
+//delate staff
+
+Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
+
+//search staff
+
+Route::get('/staff/search', [StaffController::class,  'search'])->name('staff.search');
+
 
 
 Route::get('/', function () {

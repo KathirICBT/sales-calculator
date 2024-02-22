@@ -1,42 +1,42 @@
-<!-- resources/views/departments/search.blade.php -->
+<!-- resources/views/staff/search.blade.php -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Departments</title>
+    <title>Search Staff</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
 
 @include('includes.header')
     <div class="container">
-        <h2>Search Departments</h2>
+        <h2>Search Staff</h2>
 
-        <form method="get" action="{{ route('departments.search') }}" class="department-form">
+        <form method="get" action="{{ route('staff.search') }}" class="staff-form">
             <div class="form-group">
-                <label for="search">Search by Department Name:</label>
+                <label for="search">Search by Staff Name or Phone Number:</label>
                 <input type="text" id="search" name="search" value="{{ request('search') }}" required>
             </div>
             <button type="submit" class="btn">Search</button>
         </form>
 
-        @if(isset($departments))
+        @if(isset($staff))
             <h3>Results:</h3>
-            @if(count($departments) > 0)
+            @if(count($staff) > 0)
                 <table>
                     <thead>
                         <tr>
-                            <th>Department Name</th>
-                            <th>Other Taking</th>
+                            <th>Staff Name</th>
+                            <th>Phone Number</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($departments as $result)
+                        @foreach($staff as $result)
                             <tr>
-                                <td>{{ $result->dept_name }}</td>
-                                <td>{{ $result->other_taking ? 'Yes' : 'No' }}</td>
+                                <td>{{ $result->staff_name }}</td>
+                                <td>{{ $result->phonenumber }}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -6,12 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Department</title>
-    <style>
-        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
 
+@include('includes.header')
     <h2>Delete Department</h2>
 
     <p>Are you sure you want to delete the department '{{ $department->dept_name }}'?</p>
