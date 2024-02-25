@@ -10,6 +10,7 @@
     </head>
 
     <body>
+        @include('includes.header')
         <div class="container">
             <h2>Update Shop</h2>
             @if(session('success'))

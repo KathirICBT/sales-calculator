@@ -9,7 +9,7 @@
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 </head>
 <body>
-
+@include('includes.header')
 <div class="container">
     <h2>Shop Registration</h2>
     @if(session('success'))

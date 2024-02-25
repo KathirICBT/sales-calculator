@@ -56,8 +56,8 @@
             </tbody>
         </table>
 
-        <a href="{{ route('shop.add') }}" class="common-link">Add New Staff Member</a>
-        <a href="{{ route('shop.search') }}" class="common-link">Search</a>
+        <a href="{{ route('shop.add') }}" class="common-link" class="kathir_button">Add Shop</a>
+        <a href="{{ route('shop.search') }}" class="common-link" class="kathir_button">Search</a>
     </div>
 
 </body>
