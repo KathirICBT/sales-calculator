@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,28 @@ Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staf
 Route::get('/staff/search', [StaffController::class,  'search'])->name('staff.search');
 
 Route::get('/shops/add_shop', [ShopController::class, 'view_shop'])->name('shop.add');
+//sales
+//register 
+Route::get('/sales/addsales', [SaleController::class, 'create'])->name('sales.create');
+
+Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+
+// Read (Index)
+
+Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+
+// Update sales (Edit and Update)
+Route::get('/sales/{sale}/edit', [SaleController::class, 'edit'])->name('sales.edit');
+Route::put('/sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
+
+// Delete (Delete and Destroy)
+Route::get('/sales/{sale}/delete', [SaleController::class, 'deleteConfirmation'])->name('sales.delete_confirmation');
+Route::delete('/sales/{sale}', [SaleController::class, 'destroy'])->name('sales.destroy');
+
+//search
+Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.search');
+
+
 
 Route::post('/shops/add_shop', [ShopController::class, 'store'])->name('shop.store');
 
