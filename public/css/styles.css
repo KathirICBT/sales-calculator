@@ -33,6 +33,7 @@ label {
     color: #555;
 }
 
+textarea,
 input[type="text"],
 input[type="checkbox"] {
     width: 100%;
@@ -202,3 +203,78 @@ th {
 .common-link:hover {
     background-color: #0056b3;
 }
+
+.error-alert {
+    padding: 10px;
+    /* background-color: white; */
+    color: #cc0000;
+    /* border: 1px solid #cc0000; */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.getnew {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+.getfont{
+    font-family: Arial;
+}
+
+/* Styles for the button */
+.kathir_button {
+    display: inline-block;
+    padding: 6px 20px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    border: 2px solid #007bff; /* Green border */
+    color: #ffffff; /* Text color */
+    background-color: #007bff; /* Green background */
+    border-radius: 25px; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition */
+  }
+  
+  /* Hover effect */
+  .kathir_button:hover {
+    background-color: #529dff; /* Darker green */
+    border-color: #529dff; /* Darker green */
+  }
+  
+  /* Active (clicked) state */
+  .kathir_button:active {
+    background-color: #00127a; /* Even darker green */
+    border-color: #00127a; /* Even darker green */
+  }
+
+  .delete_button {
+    display: inline-block !important;
+    padding: 6px 20px !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    border: 2px solid #cc0000 !important; /* Green border */
+    color: #ffffff !important; /* Text color */
+    background-color: #cc0000 !important; /* Green background */
+    border-radius: 25px !important; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s !important; /* Smooth transition */
+  }
+  
+  /* Hover effect */
+  .delete_button:hover {
+    background-color: #ff5e5e !important; /* Darker green */
+    border-color: #ff5e5e !important; /* Darker green */
+  }
+  
+  /* Active (clicked) state */
+  .delete_button:active {
+    background-color: #7c0000 !important; /* Even darker green */
+    border-color: #7c0000 !important; /* Even darker green */
+  }

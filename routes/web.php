@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\ShopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +62,21 @@ Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staf
 
 Route::get('/staff/search', [StaffController::class,  'search'])->name('staff.search');
 
+Route::get('/shops/add_shop', [ShopController::class, 'view_shop'])->name('shop.add');
 
+Route::post('/shops/add_shop', [ShopController::class, 'store'])->name('shop.store');
+
+Route::get('/shops/view_all', [ShopController::class, 'view_all'])->name('shop.view');
+
+//Route::delete('/shops/{shop}', [ShopController::class, 'destroy'])->name('shop.destroy');
+
+Route::delete('/shops/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
+
+Route::get('/shops/search', [ShopController::class, 'search'])->name('shop.search');
+
+Route::get('/shops/{shop}/update_view', [ShopController::class, 'update_view'])->name('shop.update_view');
+
+Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shop.update');
 
 Route::get('/', function () {
     return view('departments.create');
