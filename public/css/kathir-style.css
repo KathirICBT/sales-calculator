@@ -1,0 +1,315 @@
+/* public/css/styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    max-width: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 10px;
+    display: block;
+    margin-right: 20px;
+    vertical-align: top;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+textarea,
+input[type="text"],
+input[type="checkbox"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn {
+    background-color: #3498db;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.alert.success {
+    background-color: #2ecc71;
+    color: #fff;
+}
+/*me*/
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.modify-button {
+    display: block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+    
+
+}
+
+.modify-button:hover {
+    background-color: #0056b3;
+}
+
+a{
+    padding-right: 10px;
+}
+/*header*/
+.header {
+    background-color: #03045e;
+    color: #fff;
+    padding: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* .logo img {
+    height: 40px; /* Adjust the height of your logo as needed 
+   vertical-align: middle;
+} */
+
+.logo h1 {
+    display: inline-block;
+    margin-left: 10px; /* Adjust the spacing between logo and company name */
+}
+
+.auth-links {
+    float: right;
+    margin: 0;
+    margin-right: 70px;
+}
+
+.auth-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 10px; /* Adjust the spacing between links */
+    
+}
+.auth-links a:hover {
+    color: #00b4d8; 
+}
+
+.company-name{
+    margin-left: 14px;
+}
+/*index*/
+/* public/css/styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #007bff;
+    margin-top: 0;
+}
+
+.success-message {
+    color: green;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+.common-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.common-link:hover {
+    background-color: #0056b3;
+}
+
+.error-alert {
+    padding: 10px;
+    /* background-color: white; */
+    color: #cc0000;
+    /* border: 1px solid #cc0000; */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.getnew {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+.getfont{
+    font-family: Arial;
+}
+
+/* Styles for the button */
+.kathir_button {
+    display: inline-block;
+    padding: 6px 20px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    border: 2px solid #007bff; /* Green border */
+    color: #ffffff; /* Text color */
+    background-color: #007bff; /* Green background */
+    border-radius: 25px; /* Rounded corners */    
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition */
+  }
+  
+  /* Hover effect */
+  .kathir_button:hover {
+    background-color: #529dff; /* Darker green */
+    border-color: #529dff; /* Darker green */
+  }
+  
+  /* Active (clicked) state */
+  .kathir_button:active {
+    background-color: #00127a; /* Even darker green */
+    border-color: #00127a; /* Even darker green */
+  }
+
+  .delete_button {
+    display: inline-block !important;
+    padding: 6px 20px !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    border: 2px solid #cc0000 !important;
+    color: #ffffff !important; 
+    background-color: #cc0000 !important;
+    border-radius: 25px !important;    
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s !important;
+  }
+  
+  /* Hover effect */
+  .delete_button:hover {
+    background-color: #ff5e5e !important;
+    border-color: #ff5e5e !important;
+  }
+  
+  /* Active (clicked) state */
+  .delete_button:active {
+    background-color: #7c0000 !important;
+    border-color: #7c0000 !important;
+  }
+
+.delete-button {
+    color: white;
+    background-color: red;
+    border: none;
+    border-radius: 4px;
+    
+    cursor: pointer;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin-left: 10px; 
+
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}
+
+
+.back {
+    display: flexbox;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-right: 10px;
+    text-align: center;
+    border: none;
+}
+
