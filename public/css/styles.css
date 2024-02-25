@@ -240,7 +240,7 @@ th {
     border: 2px solid #007bff; /* Green border */
     color: #ffffff; /* Text color */
     background-color: #007bff; /* Green background */
-    border-radius: 25px; /* Rounded corners */
+    border-radius: 25px; /* Rounded corners */    
     transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition */
   }
   
@@ -263,23 +263,23 @@ th {
     cursor: pointer !important;
     text-align: center !important;
     text-decoration: none !important;
-    border: 2px solid #cc0000 !important; /* Green border */
-    color: #ffffff !important; /* Text color */
-    background-color: #cc0000 !important; /* Green background */
-    border-radius: 25px !important; /* Rounded corners */
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s !important; /* Smooth transition */
+    border: 2px solid #cc0000 !important;
+    color: #ffffff !important; 
+    background-color: #cc0000 !important;
+    border-radius: 25px !important;    
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s !important;
   }
   
   /* Hover effect */
   .delete_button:hover {
-    background-color: #ff5e5e !important; /* Darker green */
-    border-color: #ff5e5e !important; /* Darker green */
+    background-color: #ff5e5e !important;
+    border-color: #ff5e5e !important;
   }
   
   /* Active (clicked) state */
   .delete_button:active {
-    background-color: #7c0000 !important; /* Even darker green */
-    border-color: #7c0000 !important; /* Even darker green */
+    background-color: #7c0000 !important;
+    border-color: #7c0000 !important;
   }
 
 .delete-button {

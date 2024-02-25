@@ -4,5 +4,6 @@
         <a href="{{ route('departments.index') }}">Department</a>
         <a  href="{{ route('staff.index') }}">Staff</a>
         <a  href="{{ route('sales.create') }}">Sales</a>
+        <a  href="{{ route('shop.view') }}">Shop</a>
     </div>
 </header>
