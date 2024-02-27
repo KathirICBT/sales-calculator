@@ -5,6 +5,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ShiftController;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,6 +123,27 @@ Route::get('/shops/search', [ShopController::class, 'search'])->name('shop.searc
 Route::get('/shops/{shop}/update_view', [ShopController::class, 'update_view'])->name('shop.update_view');
 
 Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shop.update');
+
+//Shifts
+
+//Add
+Route::get('/shifts', [ShiftController::class, 'index'])->name('shifts.index');
+
+Route::get('/shifts/create', [ShiftController::class, 'create'])->name('shifts.create');
+Route::post('/shifts', [ShiftController::class, 'store'])->name('shifts.store');
+
+//Update
+Route::get('/shifts/{id}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
+Route::put('/shifts/{id}', [ShiftController::class, 'update'])->name('shifts.update');
+
+//delete
+Route::delete('/shifts/{id}', [ShiftController::class, 'destroy'])->name('shifts.destroy');
+
+//search
+// web.php
+Route::get('/shifts/search', 'App\Http\Controllers\ShiftController@search')->name('shifts.search');
+
+
 
 Route::get('/', function () {
     return view('departments.create');
