@@ -3,6 +3,6 @@
     <div class="auth-links">
         <a href="{{ route('departments.index') }}">Department</a>
         <a  href="{{ route('staff.index') }}">Staff</a>
-        <a  href="{{ route('sales.create') }}">Sales</a>
+        <a  href="{{ route('sales.index') }}">Sales</a>
     </div>
 </header>
