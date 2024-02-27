@@ -23,6 +23,8 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Username</th>
+                    <th>Password</th>
                     <th>phonenumber</th>
                     <th>Actions</th>
                 </tr>
@@ -31,6 +33,8 @@
                 @foreach($staffs as $staff)
                     <tr>
                         <td>{{ $staff->staff_name }}</td>
+                        <td>{{ $staff->username }}</td>
+                        <td>Encrypted</td>
                         <td>{{ $staff->phonenumber }}</td>
                         <td>
                             <a href="{{ route('staff.edit', $staff->id) }}">Edit</a>

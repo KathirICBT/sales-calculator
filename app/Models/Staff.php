@@ -12,5 +12,7 @@ class Staff extends Model
     protected $fillable = [
         'staff_name',
         'phonenumber',
+        'username',
+        'password',
     ];
 }

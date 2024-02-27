@@ -16,7 +16,7 @@
 
         <form method="get" action="{{ route('staff.search') }}" class="staff-form">
             <div class="form-group">
-                <label for="search">Search by Staff Name or Phone Number:</label>
+                <label for="search">Search by Staff Name or Phone Number or Username:</label>
                 <input type="text" id="search" name="search" value="{{ request('search') }}" required>
             </div>
             <button type="submit" class="btn">Search</button>
@@ -29,6 +29,8 @@
                     <thead>
                         <tr>
                             <th>Staff Name</th>
+                            <th>Username</th>
+                            <th>Password</th>
                             <th>Phone Number</th>
                         </tr>
                     </thead>
@@ -36,6 +38,8 @@
                         @foreach($staff as $result)
                             <tr>
                                 <td>{{ $result->staff_name }}</td>
+                                <td>{{ $result->username }}</td>
+                                <td>Encrypted</td>
                                 <td>{{ $result->phonenumber }}</td>
                             </tr>
                         @endforeach

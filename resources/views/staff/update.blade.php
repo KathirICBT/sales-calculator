@@ -26,7 +26,12 @@
             <label for="phone">Phone</label>
             <input type="text" id="phone" name="phonenumber" value="{{ $staff->phonenumber }}" required>
         </div>
+        <div class="form-group">
+            <label for="password">New Password</label>
+            <input type="password" id="password" name="password" placeholder="Leave blank to keep current password">
+        </div>
         <button type="submit" class="btn">Update</button>
+        <a href="{{ route('staff.index') }}" class="modify-button">Back</a>
     </form>
 </div>
 

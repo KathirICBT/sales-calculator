@@ -22,6 +22,14 @@
             <label for="phone">Phone</label>
             <input type="text" id="phone" name="phonenumber" required>
         </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
         <button type="submit" class="btn">Register</button>
         <button type="button" class="btn modify-button" onclick="window.location.href='{{ route('staff.index') }}'">Modify</button>
 
