@@ -12,25 +12,49 @@
 
 @include('includes.header')
     <div class="container">
-        <h2>Search Staff</h2>
+        <h2>Search Shop</h2>
 
-        <form method="get" action="{{ route('staff.search') }}" class="staff-form">
+        <form method="get" action="{{ route('shop.search') }}" class="staff-form">
             <div class="form-group">
-                <label for="search">Search by Staff Name or Phone Number or Username:</label>
-                <input type="text" id="search" name="search" value="{{ request('search') }}" required>
+                <label for="search">Search:</label>
+                <input type="text" id="search" name="search" value="{{ request('search') }}">
             </div>
             <button type="submit" class="btn">Search</button>
         </form>
 
-        @if(isset($staff))
+        @if ($shops->isNotEmpty())
+            <h3>Results:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Shop Name</th>
+                        <th>Shop Phone</th>
+                        <th>Shop Address</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($shops as $shop)
+                    <tr>
+                        <td>{{ $shop->name }}</td>
+                        <td>{{ $shop->phone }}</td>
+                        <td>{{ $shop->address }}</td>
+                        <td>Edit</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <p>No results found.</p>
+        @endif
+
+        {{-- @if(isset($staff))
             <h3>Results:</h3>
             @if(count($staff) > 0)
                 <table>
                     <thead>
                         <tr>
                             <th>Staff Name</th>
-                            <th>Username</th>
-                            <th>Password</th>
                             <th>Phone Number</th>
                         </tr>
                     </thead>
@@ -38,8 +62,6 @@
                         @foreach($staff as $result)
                             <tr>
                                 <td>{{ $result->staff_name }}</td>
-                                <td>{{ $result->username }}</td>
-                                <td>Encrypted</td>
                                 <td>{{ $result->phonenumber }}</td>
                             </tr>
                         @endforeach
@@ -48,7 +70,8 @@
             @else
                 <p>No results found.</p>
             @endif
-        @endif
+        @endif --}}
+
     </div>
 
 </body>

@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('staffs', function (Blueprint $table) {
+        Schema::create('shifts', function (Blueprint $table) {
             $table->id();
-            $table->string('staff_name');
-            $table->string('username')->unique();
-            $table->string('password'); 
-            $table->string('phonenumber');
+            $table->unsignedBigInteger('shop_id');
+            $table->unsignedBigInteger('staff_id');
             $table->timestamps();
-        });
 
+            $table->foreign('shop_id')->references('id')->on('shops');
+            $table->foreign('staff_id')->references('id')->on('staffs');
+
+        });
     }
 
     /**
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('staffs');
+        Schema::dropIfExists('shifts');
     }
 };

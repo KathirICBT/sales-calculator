@@ -1,18 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Staff; 
 
+use App\Models\Staff;
 use Illuminate\Http\Request;
 
 class StaffController extends Controller
 {
     public function index()
     {
-        // Fetch staff from the database
         $staffs = Staff::all();
-
-        // Pass the staff variable to the view
         return view('staff.index', compact('staffs'));
     }
 
@@ -22,57 +19,61 @@ class StaffController extends Controller
     }
 
     public function addstaff(Request $request)
+{
+    $validatedData = $request->validate([
+        'staff_name' => 'required|string|max:255',
+        'username' => 'required|string|unique:staffs',
+        'password' => 'required|string',
+        'phonenumber' => 'required|string|max:20|min:8',
+    ]);
+
+    Staff::create([
+        'staff_name' => $validatedData['staff_name'],
+        'username' => $validatedData['username'],
+        'password' => bcrypt($validatedData['password']),
+        'phonenumber' => $validatedData['phonenumber'],
+    ]);
+
+    return redirect()->route('staff.index')->with('success', 'Staff registered successfully!');
+}
+    public function edit(Staff $staff)
+    {
+        return view('staff.update', compact('staff'));
+    }
+
+    public function update(Request $request, Staff $staff)
     {
         $validatedData = $request->validate([
             'staff_name' => 'required|string|max:255',
             'phonenumber' => 'required|string|max:20',
+            'username' => 'required|string|unique:staffs,username,' . $staff->id,
+            'password' => 'nullable|string|min:6',
         ]);
 
-        Staff::create([
-            'staff_name' => $validatedData['staff_name'],
-            'phonenumber' => $validatedData['phonenumber'],
-        ]);
+        if ($request->has('password')) {
+            $validatedData['password'] = bcrypt($validatedData['password']); // Hash the password
+        }
 
-        return redirect()->route('staff.index')->with('success', 'Staff registered successfully!');
+        $staff->update($validatedData);
+
+        return redirect('/staff')->with('success', 'Staff member updated successfully!');
     }
 
-    public function edit(Staff $staff)
-{
-    return view('staff.update', compact('staff'));
-}
+    public function destroy(Staff $staff)
+    {
+        $staff->delete();
+        return redirect()->route('staff.index')->with('success', 'Staff member deleted successfully!');
+    }
 
-public function update(Request $request, Staff $staff)
-{
-    $request->validate([
-        'staff_name' => 'required|string|max:255',
-        'phonenumber' => 'required|string|max:20',
-    ]);
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
 
-    $staff->update([
-        'staff_name' => $request->input( 'staff_name'),
-        'phonenumber' => $request->input('phonenumber'),
-        // Add more fields if necessary
-    ]);
+        $staff = Staff::where('staff_name', 'LIKE', "%$search%")
+                      ->orWhere('phonenumber', 'LIKE', "%$search%")
+                      ->orWhere('username', 'LIKE', "%$search%")
+                      ->get();
 
-    return redirect('/staff')->with('success', 'Staff member updated successfully!');
-}
-public function destroy(Staff $staff)
-{
-    $staff->delete();
-    return redirect()->route('staff.index')->with('success', 'Staff member deleted successfully!');
-}
-
-
-public function search(Request $request)
-{
-    $search = $request->input('search');
-
-    // Perform the search query
-    $staff = Staff::where('staff_name', 'LIKE', "%$search%")
-                  ->orWhere('phonenumber', 'LIKE', "%$search%")
-                  ->get();
-
-    return view('staff.search', compact('staff'));
-}
-
+        return view('staff.search', compact('staff'));
+    }
 }

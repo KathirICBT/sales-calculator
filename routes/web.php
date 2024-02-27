@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ShiftController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +64,10 @@ Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staf
 
 Route::get('/staff/search', [StaffController::class,  'search'])->name('staff.search');
 
+Route::get('/shops/add_shop', [ShopController::class, 'view_shop'])->name('shop.add');
+//sales
+//register 
+Route::get('/sales/addsales', [SaleController::class, 'create'])->name('sales.create');
 //sales
 //register 
 Route::get('/sales/addsales', [SaleController::class, 'create'])->name('sales.create');
@@ -83,6 +89,59 @@ Route::delete('/sales/{sale}', [SaleController::class, 'destroy'])->name('sales.
 //search
 Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.search');
 
+
+
+Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+
+// Read (Index)
+
+Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+
+// Update sales (Edit and Update)
+Route::get('/sales/{sale}/edit', [SaleController::class, 'edit'])->name('sales.edit');
+Route::put('/sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
+
+// Delete (Delete and Destroy)
+Route::get('/sales/{sale}/delete', [SaleController::class, 'deleteConfirmation'])->name('sales.delete_confirmation');
+Route::delete('/sales/{sale}', [SaleController::class, 'destroy'])->name('sales.destroy');
+
+//search
+Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.search');
+
+
+
+Route::post('/shops/add_shop', [ShopController::class, 'store'])->name('shop.store');
+
+Route::get('/shops/view_all', [ShopController::class, 'view_all'])->name('shop.view');
+
+//Route::delete('/shops/{shop}', [ShopController::class, 'destroy'])->name('shop.destroy');
+
+Route::delete('/shops/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
+
+Route::get('/shops/search', [ShopController::class, 'search'])->name('shop.search');
+
+Route::get('/shops/{shop}/update_view', [ShopController::class, 'update_view'])->name('shop.update_view');
+
+Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shop.update');
+
+//Shifts
+
+//Add
+Route::get('/shifts', [ShiftController::class, 'index'])->name('shifts.index');
+
+Route::get('/shifts/create', [ShiftController::class, 'create'])->name('shifts.create');
+Route::post('/shifts', [ShiftController::class, 'store'])->name('shifts.store');
+
+//Update
+Route::get('/shifts/{id}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
+Route::put('/shifts/{id}', [ShiftController::class, 'update'])->name('shifts.update');
+
+//delete
+Route::delete('/shifts/{id}', [ShiftController::class, 'destroy'])->name('shifts.destroy');
+
+//search
+// web.php
+Route::get('/shifts/search', 'App\Http\Controllers\ShiftController@search')->name('shifts.search');
 
 
 

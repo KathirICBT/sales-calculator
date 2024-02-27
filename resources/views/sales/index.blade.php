@@ -34,7 +34,7 @@
                         <form method="post" action="{{ route('sales.destroy', $sale->id) }}" id="deleteForm_{{ $sale->id }}" style="display: inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="button" class="delete-button" style="color: white; border: none; background: red; cursor: pointer;" onclick="window.location.href='{{ route('sales.delete_confirmation', $sale->id) }}'">Delete</button>
+                            <button type="button" class="delete-button" style="color: white; border: none; background: red; cursor: pointer;" onclick="return confirm('Are you sure you want to delete this staff member?')" >Delete</button>
                         </form>
                     </td>
                 </tr>
