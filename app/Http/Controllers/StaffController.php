@@ -19,23 +19,25 @@ class StaffController extends Controller
     }
 
     public function addstaff(Request $request)
-{
-    $validatedData = $request->validate([
-        'staff_name' => 'required|string|max:255',
-        'username' => 'required|string|unique:staffs',
-        'password' => 'required|string',
-        'phonenumber' => 'required|string|max:20|min:8',
-    ]);
+    {
+        $validatedData = $request->validate([
+            'staff_name' => 'required|string|max:255',
+            'username' => 'required|string|unique:staffs',
+            'password' => 'required|string',
+            'phonenumber' => 'required|string|max:20',
+        ]);
+    
+        Staff::create([
+            'staff_name' => $validatedData['staff_name'],
+            'username' => $validatedData['username'],
+            'password' => bcrypt($validatedData['password']),
+            'phonenumber' => $validatedData['phonenumber'],
+        ]);
+    
+        return redirect()->route('staff.index')->with('success', 'Staff registered successfully!');
+    }
+    
 
-    Staff::create([
-        'staff_name' => $validatedData['staff_name'],
-        'username' => $validatedData['username'],
-        'password' => bcrypt($validatedData['password']),
-        'phonenumber' => $validatedData['phonenumber'],
-    ]);
-
-    return redirect()->route('staff.index')->with('success', 'Staff registered successfully!');
-}
     public function edit(Staff $staff)
     {
         return view('staff.update', compact('staff'));
