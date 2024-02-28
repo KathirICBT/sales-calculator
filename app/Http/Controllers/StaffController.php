@@ -49,7 +49,7 @@ class StaffController extends Controller
             'staff_name' => 'required|string|max:255',
             'phonenumber' => 'required|string|max:20',
             'username' => 'required|string|unique:staffs,username,' . $staff->id,
-            'password' => 'nullable|string|min:6',
+            'password' => 'nullable|string',
         ]);
 
         if ($request->has('password')) {
@@ -60,6 +60,7 @@ class StaffController extends Controller
 
         return redirect('/staff')->with('success', 'Staff member updated successfully!');
     }
+
 
     public function destroy(Staff $staff)
     {
