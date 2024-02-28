@@ -27,6 +27,10 @@
             <input type="text" id="phone" name="phonenumber" value="{{ $staff->phonenumber }}" required>
         </div>
         <div class="form-group">
+            <label for="username">username</label>
+            <input type="text" id="username" name="username" value="{{ $staff->username }}" required>
+        </div>
+        <div class="form-group">
             <label for="password">New Password</label>
             <input type="password" id="password" name="password" placeholder="Leave blank to keep current password">
         </div>
