@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Staff;
 use App\Models\Shop;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
@@ -109,7 +110,32 @@ class SaleController extends Controller
         return view('sales.search', ['sales' => $sales]);
     }
 
+    
 
+    public function searchShopForm()
+{
+    $shops = Shop::all();
+    return view('shopsale.search', compact('shops'));
+}
 
+public function searchShopDetails(Request $request)
+{
+    // Retrieve search parameters from the request
+    $shopId = $request->input('shop_id');
+    $date = $request->input('date');
+
+    // Parse the date using Carbon for proper handling
+    $parsedDate = Carbon::parse($date)->startOfDay();
+
+    // Query sales records based on the shop ID and date
+    $sales = Sale::where('shop_id', $shopId)
+                ->whereDate('created_at', $parsedDate)
+                ->get();
+
+    // Return the view with the search results
+    return view('shopsale.searchresults', compact('sales'));
+}
+    
+    
 
 }

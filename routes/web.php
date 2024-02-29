@@ -145,6 +145,21 @@ Route::get('/shifts/search', 'App\Http\Controllers\ShiftController@search')->nam
 
 
 
+// staff shift search
+Route::get('/shiftstaff/search', [ShiftController::class, 'directToSearch'])->name('shiftstaff.search');
+
+Route::get('/shiftstaff/result', [ShiftController::class, 'searchStaffByDate'])->name('shiftstaff.results');
+
+//shopsale seatch
+//Route::get('/shopsale/search', [SaleController::class, 'searchShopdetails'])->name('shopsale.search');
+
+//Route::get('/shopsale/search', [SaleController::class, 'searchshopForm'])->name('shopsale.searchForm');
+
+Route::get('/shopsale/search', [SaleController::class, 'searchShopForm'])->name('shopsale.searchForm');
+Route::post('/shopsale/searchresults', [SaleController::class, 'searchShopDetails'])->name('shopsale.searchResult');
+
+
+
 Route::get('/', function () {
     return view('departments.create');
 });
