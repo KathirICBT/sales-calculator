@@ -151,13 +151,13 @@ Route::get('/shiftstaff/search', [ShiftController::class, 'directToSearch'])->na
 Route::get('/shiftstaff/result', [ShiftController::class, 'searchStaffByDate'])->name('shiftstaff.results');
 
 //shopsale seatch
-//Route::get('/shopsale/search', [SaleController::class, 'searchShopdetails'])->name('shopsale.search');
-
-//Route::get('/shopsale/search', [SaleController::class, 'searchshopForm'])->name('shopsale.searchForm');
 
 Route::get('/shopsale/search', [SaleController::class, 'searchShopForm'])->name('shopsale.searchForm');
 Route::post('/shopsale/searchresults', [SaleController::class, 'searchShopDetails'])->name('shopsale.searchResult');
 
+//staff sale search
+Route::get('/staffsale/search', [SaleController::class, 'searchStaffForm'])->name('staffsale.searchForm');
+Route::post('/staffsale/result', [SaleController::class, 'searchStaffSales'])->name('staffsale.searchResult');
 
 
 Route::get('/', function () {

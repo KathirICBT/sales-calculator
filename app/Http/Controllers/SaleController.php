@@ -136,6 +136,24 @@ public function searchShopDetails(Request $request)
     return view('shopsale.searchresults', compact('sales'));
 }
     
-    
+public function searchStaffForm()
+{
+    $staffs = Staff::all();
+    return view('staffsale.search', compact('staffs'));
+}
+
+public function searchStaffSales(Request $request)
+{
+    $staffId = $request->input('staff_id');
+    $date = $request->input('date');
+
+    $parsedDate = Carbon::parse($date)->startOfDay();
+
+    $sales = Sale::where('staff_id', $staffId)
+                ->whereDate('created_at', $parsedDate)
+                ->get();
+
+    return view('staffsale.result', compact('sales'));
+}
 
 }
