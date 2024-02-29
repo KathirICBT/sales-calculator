@@ -6,5 +6,10 @@
         <a  href="{{ route('sales.index') }}">Sales</a>
         <a  href="{{ route('shop.view') }}">Shop</a>
         <a  href="{{ route('shifts.index') }}">Shift</a>
+        <a  href="{{ route('shiftstaff.search') }}">shiftstaff</a>
+        <a  href="{{ route('shopsale.searchForm') }}">shopsale</a>
+        <a  href="{{ route('staffsale.searchForm') }}">Staff sale</a>
+        
+    
     </div>
 </header>

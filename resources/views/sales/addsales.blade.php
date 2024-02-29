@@ -22,7 +22,8 @@
 
     <div class="form-group">
         <label for="dept_id" style="display: inline;margin-right:20px;">Department:</label>
-        <select name="dept_id" id="dept_id">
+        <select name="dept_id" id="dept_id" required>
+            <option value="" >Select a Department</option>
             @foreach($departments as $department)
                 <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
             @endforeach
@@ -31,7 +32,8 @@
 
     <div class="form-group">
         <label for="staff_id" style="display: inline;margin-right:20px;"">Staff:</label>
-        <select name="staff_id" id="staff_id">
+        <select name="staff_id" id="staff_id" required>
+        <option value="" >Select a Staff</option>
             @foreach($staffs as $staff)
                 <option value="{{ $staff->id }}">{{ $staff->staff_name }}</option>
             @endforeach
@@ -40,7 +42,8 @@
 
     <div class="form-group">
         <label for="shop_id" style="display: inline; margin-right:20px;">Shop:</label>
-        <select name="shop_id" id="shop_id" >
+        <select name="shop_id" id="shop_id" required >
+            <option value="" >Select a Shop</option>
             @foreach($shops as $shop)
                 <option value="{{ $shop->id }}" >{{ $shop->name }}</option>
             @endforeach
@@ -48,7 +51,7 @@
     </div>
 
     <div class="form-group">
-        <label for="amount" style="display: inline;">Amount:</label>
+        <label for="amount" style="display: inline;" >Amount:</label>
         <input type="text" id="amount" name="amount" required>
     </div>
 
