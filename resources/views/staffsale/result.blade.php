@@ -48,6 +48,27 @@
                         @endphp
                     @endif
                 @endforeach
+                <tr>
+                    <th colspan="3">Other Taking</th>
+                </tr>
+                <tr>
+                    @foreach ($sales as $sale)
+                        @if($sale->department->other_taking)
+                            <tr>
+                                <td>{{ $sale->department->dept_name }}</td>
+                                <td>{{ $sale->payment_method }}</td>
+                                <td>{{ $sale->amount }}</td>
+                            </tr>
+                            @php
+                                if ($sale->payment_method === 'cash') {
+                                    $totalCashAmount += $sale->amount;
+                                } else {
+                                    $totalOtherAmount += $sale->amount;
+                                }
+                            @endphp                           
+                        @endif
+                    @endforeach
+                </tr>
 
                 <tr>
                     <th colspan="2">Total amount:</th>

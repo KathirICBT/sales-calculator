@@ -35,6 +35,7 @@ class SaleController extends Controller
     public function store(Request $request)
     {
 
+        // Validate the request data
         $validatedData = $request->validate([
             'dept_id' => 'required|numeric',
             'staff_id' => 'required|numeric',
@@ -42,6 +43,7 @@ class SaleController extends Controller
             'amount' => 'required|numeric',
             'payment_method' => 'required',
         ]);
+<<<<<<< HEAD
 
         // Check if a record with the same department, date, shop and staff exists
         $existingSale = Sale::where('dept_id', $validatedData['dept_id'])
@@ -59,6 +61,11 @@ class SaleController extends Controller
             // Create a new record
             Sale::create($validatedData);
         }
+=======
+    
+        Sale::create($validatedData);
+    
+>>>>>>> parent of 36d40ab (sale updated)
         
         return redirect()->route('sales.create')->with('success', 'Sale added successfully!');
 
