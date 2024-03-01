@@ -50,17 +50,19 @@
                 @endforeach
 
                 <tr>
-                    <th colspan="2">Total Cash amount:</th>
-                    <th>{{ $totalCashAmount }}</th>
+                    <th colspan="2">Total amount:</th>
+                    <th>{{ $totalCashAmount +$totalOtherAmount }}</th>
                 </tr>
                 <tr>
                     <th colspan="2">Total Other amount:</th>
                     <th>{{ $totalOtherAmount }}</th>
                 </tr>
                 <tr>
-                    <th colspan="2">Total amount:</th>
-                    <th>{{ $totalCashAmount +$totalOtherAmount }}</th>
+                    <th colspan="2">Total Cash amount:</th>
+                    <th>{{ $totalCashAmount }}</th>
                 </tr>
+                
+                
             </tbody>
 
                 </table>
