@@ -43,29 +43,9 @@ class SaleController extends Controller
             'amount' => 'required|numeric',
             'payment_method' => 'required',
         ]);
-<<<<<<< HEAD
-
-        // Check if a record with the same department, date, shop and staff exists
-        $existingSale = Sale::where('dept_id', $validatedData['dept_id'])
-                            ->where('staff_id', $validatedData['staff_id'])
-                            ->where('shop_id', $validatedData['shop_id'])
-                            ->where('payment_method', $validatedData['payment_method'])
-                            ->whereDate('created_at', now()->toDateString())
-                            ->first();
-
-        if ($existingSale) {
-            // Update the existing record
-            $existingSale->amount += $validatedData['amount'];
-            $existingSale->save();
-        } else {
-            // Create a new record
-            Sale::create($validatedData);
-        }
-=======
     
         Sale::create($validatedData);
     
->>>>>>> parent of 36d40ab (sale updated)
         
         return redirect()->route('sales.create')->with('success', 'Sale added successfully!');
 
