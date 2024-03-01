@@ -19,50 +19,50 @@
                         </tr>
                         <tr>
                             <th>Departrment</th>
+                            <th>Payment method</th>
                             <th>Amount</th>
                         </tr>
                         <tr>
-                            <th colspan="2">Normal</th>
+                            <th colspan="3">Normal</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
+                @php
+                    $totalCashAmount = 0; 
+                    $totalOtherAmount = 0;
+                @endphp
+
+                @foreach ($sales as $sale)
+                    @if(!($sale->department->other_taking))
+                        <tr>
+                            <td>{{ $sale->department->dept_name }}</td>
+                            <td>{{ $sale->payment_method }}</td>
+                            <td>{{ $sale->amount }}</td>
+                        </tr>
                         @php
-                            $totalAmount = 0; 
+                            if ($sale->payment_method === 'cash') {
+                                $totalCashAmount += $sale->amount;
+                            } else {
+                                $totalOtherAmount += $sale->amount;
+                            }
                         @endphp
-                        @foreach ($sales as $sale)
-                            @if(!($sale->department->other_taking))
-                                <tr>
-                                    <td>{{ $sale->department->dept_name }}</td>
-                                    <td>{{ $sale->amount }}</td>
-                                </tr>
-                                @php
-                                    $totalAmount += $sale->amount;
-                                @endphp
-                            @endif
-                        @endforeach
-                        <tr>
-                            <th colspan="2">Other Taking</th>
-                        </tr>
-                        <tr>
-                            @foreach ($sales as $sale)
-                                @if($sale->department->other_taking)
-                                    <tr>
-                                        <td>{{ $sale->department->dept_name }}</td>
-                                        <td>{{ $sale->amount }}</td>
-                                    </tr>
-                                    @php
-                                        $totalAmount += $sale->amount;
-                                    @endphp
-                                @endif
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <th>Total amount:</th>
-                            <th>{{ $totalAmount }}</th>
-                        </tr>
-                        
-                    </tbody>
+                    @endif
+                @endforeach
+
+                <tr>
+                    <th colspan="2">Total Cash amount:</th>
+                    <th>{{ $totalCashAmount }}</th>
+                </tr>
+                <tr>
+                    <th colspan="2">Total Other amount:</th>
+                    <th>{{ $totalOtherAmount }}</th>
+                </tr>
+                <tr>
+                    <th colspan="2">Total amount:</th>
+                    <th>{{ $totalCashAmount +$totalOtherAmount }}</th>
+                </tr>
+            </tbody>
+
                 </table>
             @else
                 <p>No sales found for the specified staff and date.</p>

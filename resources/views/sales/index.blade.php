@@ -19,6 +19,7 @@
                     <th>Staff</th>
                     <th>Shop</th>
                     <th>Amount</th>
+                    <th>Payment Method</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -29,6 +30,7 @@
                     <td>{{ $sale->staff->staff_name }}</td>
                     <td>{{ $sale->shop->name }}</td>
                     <td>{{ $sale->amount }}</td>
+                    <td>{{ $sale->payment_method }}</td>
                     <td>
                         <a href="{{ route('sales.edit', $sale->id) }}">Edit</a>
                         <form method="post" action="{{ route('sales.destroy', $sale->id) }}" id="deleteForm_{{ $sale->id }}" style="display: inline;">

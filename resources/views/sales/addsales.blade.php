@@ -49,6 +49,15 @@
             @endforeach
         </select>
     </div>
+    <div class="form-group">
+        <label for="payment_method" style="display: inline; margin-right:20px;">Payment Method:</label>
+        <select name="payment_method" required>
+            <option value="" >Select a Payment Method:</option>
+            <option value="cash">Cash</option>
+            <option value="voucher">Voucher</option>
+            <option value="card">Card</option>
+        </select>
+    </div>
 
     <div class="form-group">
         <label for="amount" style="display: inline;" >Amount:</label>
