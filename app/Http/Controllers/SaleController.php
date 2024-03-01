@@ -35,16 +35,30 @@ class SaleController extends Controller
     public function store(Request $request)
     {
 
-        // Validate the request data
         $validatedData = $request->validate([
             'dept_id' => 'required|numeric',
             'staff_id' => 'required|numeric',
             'shop_id' => 'required|numeric',
             'amount' => 'required|numeric',
+            'payment_method' => 'required',
         ]);
-    
-        Sale::create($validatedData);
-    
+
+        // Check if a record with the same department, date, shop and staff exists
+        $existingSale = Sale::where('dept_id', $validatedData['dept_id'])
+                            ->where('staff_id', $validatedData['staff_id'])
+                            ->where('shop_id', $validatedData['shop_id'])
+                            ->where('payment_method', $validatedData['payment_method'])
+                            ->whereDate('created_at', now()->toDateString())
+                            ->first();
+
+        if ($existingSale) {
+            // Update the existing record
+            $existingSale->amount += $validatedData['amount'];
+            $existingSale->save();
+        } else {
+            // Create a new record
+            Sale::create($validatedData);
+        }
         
         return redirect()->route('sales.create')->with('success', 'Sale added successfully!');
 
@@ -71,6 +85,7 @@ class SaleController extends Controller
             'staff_id' => 'required|numeric',
             'shop_id' => 'required|numeric',
             'amount' => 'required|numeric',
+            'payment_method' => 'required',
         ]);
 
         $sale->update($validatedData);
@@ -104,6 +119,7 @@ class SaleController extends Controller
                     ->where('departments.dept_name', 'like', "%$keyword%")
                     ->orWhere('staffs.staff_name', 'like', "%$keyword%")
                     ->orWhere('shops.name', 'like', "%$keyword%")
+                    ->orWhere('sales.payment_method', 'like', "%$keyword%")
                     ->get();
 
         // Pass the search results to the view
