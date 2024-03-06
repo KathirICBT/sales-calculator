@@ -6,7 +6,8 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ShiftController;
-
+use App\Http\Controllers\PaymentmethodController;
+use App\Http\Controllers\PaymentsaleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -159,6 +160,32 @@ Route::post('/shopsale/searchresults', [SaleController::class, 'searchShopDetail
 Route::get('/staffsale/search', [SaleController::class, 'searchStaffForm'])->name('staffsale.searchForm');
 Route::post('/staffsale/result', [SaleController::class, 'searchStaffSales'])->name('staffsale.searchResult');
 
+//Payment method
+//creaete
+Route::get('/paymentmethods/create', [PaymentmethodController::class, 'create'])->name('paymentmethod.create');
+Route::post('/paymentmethods/store', [PaymentmethodController::class, 'store'])->name('paymentmethod.store');
+
+//view
+Route::get('/paymentmethods', [PaymentmethodController::class, 'index'])->name('paymentmethod.index');
+
+//update
+Route::get('/paymentmethods/{id}/edit', [PaymentmethodController::class, 'edit'])->name('paymentmethod.edit');
+Route::put('/paymentmethods/{id}', [PaymentmethodController::class, 'update'])->name('paymentmethod.update');
+//delete
+Route::delete('/paymentmethods/{id}', [PaymentmethodController::class, 'destroy'])->name('paymentmethod.destroy');
+
+//PaymentSale
+//create
+Route::get('/paymentsale/create', [PaymentsaleController::class, 'create'])->name('paymentsale.create');
+Route::post('/paymentsale/store', [PaymentsaleController::class, 'store'])->name('paymentsale.store');
+
+//view 
+Route::get('/paymentsales', [PaymentSaleController::class, 'index'])->name('paymentsales.index');
+
+//edit
+Route::get('/paymentsales/{id}/edit', [PaymentSaleController::class, 'edit'])->name('paymentsales.edit');
+Route::put('/paymentsales/{id}', [PaymentSaleController::class, 'update'])->name('paymentsales.update');
+Route::delete('/paymentsales/{id}', [PaymentSaleController::class, 'destroy'])->name('paymentsales.destroy');
 
 Route::get('/', function () {
     return view('departments.create');
