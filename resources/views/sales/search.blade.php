@@ -33,7 +33,6 @@
                     <th>Staff Name</th>
                     <th>Shop ID</th>
                     <th>Shop Name</th>
-                    <th>Payment Method</th>
                     <th>Amount</th>
 
                     </tr>
@@ -47,7 +46,6 @@
                     <td>{{ $sale->staff_name }}</td>
                     <td>{{ $sale->shop_id }}</td>
                     <td>{{ $sale->shop_name }}</td>
-                    <td>{{ $sale->payment_method }}</td>
                     <td>{{ $sale->amount }}</td>
                 </tr>
                 @endforeach

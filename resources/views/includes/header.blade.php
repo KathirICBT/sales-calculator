@@ -9,7 +9,8 @@
         <a  href="{{ route('shiftstaff.search') }}">shiftstaff</a>
         <a  href="{{ route('shopsale.searchForm') }}">shopsale</a>
         <a  href="{{ route('staffsale.searchForm') }}">Staff sale</a>
-        
+        <a  href="{{ route('paymentmethod.index') }}">Payment</a>
+        <a  href="{{ route('paymentsales.index') }}">Payment Sale</a>
     
     </div>
 </header>

@@ -18,7 +18,6 @@
                             <th>Date</th>
                             <th>Staff</th>
                             <th>Department</th>
-                            <th>Payment method</th>
                             <th>Amount</th>
                         </tr>
                     </thead>
@@ -26,40 +25,20 @@
                         @php
                             $totalAmount = 0; 
                         @endphp
-                        <tr ><th colspan="5">Normal</th></tr>
                         @foreach ($sales as $sale)
-                            @if(!($sale->department->other_taking))
                                 <tr>
                                     <td>{{ $sale->created_at->format('Y-m-d') }}</td>
                                     <td>{{ $sale->staff->staff_name }}</td>
                                     <td>{{ $sale->department->dept_name }}</td>
-                                    <td>{{ $sale->payment_method }}</td>
                                     <td>{{ $sale->amount }}</td>
                                     
                                 </tr>
                                 @php
                                     $totalAmount += $sale->amount; 
                                 @endphp
-                            @endif
-                        @endforeach
-                        <tr><th colspan="5">Other Taking</th></tr>
-                        @foreach ($sales as $sale)
-                            @if($sale->department->other_taking)
-                                <tr>
-                                    <td>{{ $sale->created_at->format('Y-m-d') }}</td>
-                                    <td>{{ $sale->staff->staff_name }}</td>
-                                    <td>{{ $sale->department->dept_name }}</td>
-                                    <td>{{ $sale->payment_method }}</td>
-                                    <td>{{ $sale->amount }}</td>
-                                    
-                                </tr>
-                                @php
-                                    $totalAmount += $sale->amount; 
-                                @endphp
-                            @endif
                         @endforeach
                         <tr>
-                            <th colspan="4">Total</th>
+                            <th colspan="3">Total</th>
                             <th>{{ $totalAmount }}</th>
                         </tr>
                     </tbody>
