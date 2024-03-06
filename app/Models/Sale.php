@@ -13,7 +13,6 @@ class Sale extends Model
         'staff_id',
         'shop_id',
         'amount',
-        'payment_method',
     ];
 
     public function department()

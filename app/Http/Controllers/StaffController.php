@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Staff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
@@ -30,7 +31,7 @@ class StaffController extends Controller
         Staff::create([
             'staff_name' => $validatedData['staff_name'],
             'username' => $validatedData['username'],
-            'password' => bcrypt($validatedData['password']),
+            'password' => Hash::make($validatedData['password']),
             'phonenumber' => $validatedData['phonenumber'],
         ]);
     
