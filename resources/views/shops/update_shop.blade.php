@@ -20,9 +20,9 @@
                 @csrf
                 @method('PUT')
                 <div class="form-group">
-                    <label for="shop_name">Shop Name</label>
-                    <input type="text" id="shop_name" name="shop_name" value="{{ $shop->name }}">
-                    @error('shop_name')
+                    <label for="name">Shop Name</label>
+                    <input type="text" id="name" name="name" value="{{ $shop->name }}">
+                    @error('name')
                         <span class="error-alert">{{ $message }}</span>
                     @enderror
                 </div>

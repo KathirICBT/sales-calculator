@@ -19,9 +19,9 @@
     <form method="post" action="{{ route('shop.store') }}">
         @csrf
         <div class="form-group">
-            <label for="shop_name">Shop Name: </label>
-            <input type="text" id="shop_name" name="shop_name" class="getnew">
-            @error('shop_name')
+            <label for="name">Shop Name: </label>
+            <input type="text" id="name" name="name" class="getnew">
+            @error('name')
                 <span class="error-alert">{{ $message }}</span>
             @enderror
         </div>

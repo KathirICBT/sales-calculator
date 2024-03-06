@@ -1,0 +1,227 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f0f1;
+}
+
+a {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
+}
+
+.wrapper {
+    position: relative;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+    background: #fff;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+        0 10px 10px rgba(0, 0, 0, 0.22);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.form-wrapper {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.signin-wrapper {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+form {
+    height: 100%;
+    background: #fff;
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.socials {
+    margin: 20px 0;
+}
+
+.socials a {
+    height: 40px;
+    width: 40px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    margin: 0 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form input {
+    width: 100%;
+    background: #eee;
+    margin: 8px 0;
+    padding: 12px 15px;
+    outline: none;
+    border: 2px solid transparent;
+}
+
+form input:focus {
+    border-color: #4070f4;
+}
+
+form select {
+    width: 100%;
+    background: #eee;
+    margin: 8px 0;
+    padding: 12px 15px;
+    outline: none;
+    border: 2px solid transparent;
+}
+
+form select:focus {
+    border-color: #4070f4;
+}
+
+/* #dropdown option:first-child:placeholder-shown {
+    color: rgb(185, 185, 185);
+} */
+
+button {
+    background: #4070f4;
+    color: #fff;
+    padding: 12px 45px;
+    border: 1px solid #4070f4;
+    border-radius: 50px;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.8s ease-in;
+}
+
+button:hover {
+    transform: scale(0.9);
+}
+
+.overlay-wrapper {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.wrapper.active .overlay-wrapper {
+    transform: translateX(-100%);
+}
+
+.overlay {
+    position: relative;
+    width: 200%;
+    height: 100%;
+    background: #4070f4;
+    color: #fff;
+    left: -100%;
+    transform: translateX(0);
+    transition: 0.6s ease-in-out;
+}
+
+.wrapper.active .overlay {
+    transform: translateX(50%);
+}
+
+.overlay-panel {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    transform: translateX(0);
+    transition: 0.6s ease-in-out;
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.wrapper.active .overlay-right {
+    transform: translateX(20%);
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.wrapper.active .overlay-left {
+    transform: translateX(0);
+}
+
+p {
+    padding: 20px;
+}
+
+button.border {
+    background: transparent;
+    border-color: #fff;
+}
+
+.wrapper.active .signin-wrapper {
+    transform: translateX(100%);
+}
+
+.signup-wrapper {
+    width: 50%;
+    left: 0;
+    z-index: 1;
+    opacity: 0;
+}
+
+.wrapper.active .signup-wrapper {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+
+    0%,
+    49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}

@@ -161,5 +161,5 @@ Route::post('/staffsale/result', [SaleController::class, 'searchStaffSales'])->n
 
 
 Route::get('/', function () {
-    return view('departments.create');
+    return view('auth.login');
 });

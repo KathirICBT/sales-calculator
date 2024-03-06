@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Shop;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
 {
@@ -22,15 +23,21 @@ class ShopController extends Controller
 
     public function store(Request $request){
         
-        $validatedData = $request->validate([
-            'shop_name'=> 'required|max:255|min:5'            
+        // $validatedData = $request->validate([
+        //     'name'=> 'required|max:255|min:5'            
+        // ]);
+
+        // Shop::create([
+        //     'name'=> $validatedData['name'],
+        //     'phone'=> $request->input('phone'),
+        //     'address'=> $request->input('address')
+        //     ]);
+
+        $request->validate([
+            'name'=> 'required|max:255|min:5'            
         ]);
 
-        Shop::create([
-            'name'=> $validatedData['shop_name'],
-            'phone'=> $request->input('phone'),
-            'address'=> $request->input('address')
-            ]);
+        Shop::create(request()->all());
 
         return redirect()->route('shop.add')->with('success','Shop Created!');
     }
@@ -42,15 +49,21 @@ class ShopController extends Controller
 
     public function update(Request $request, Shop $shop){
         
-        $validatedData = $request->validate([
-            'shop_name'=> 'required|max:255|min:5'            
+        // $validatedData = $request->validate([
+        //     'name'=> 'required|max:255|min:5'            
+        // ]);
+
+        // $shop->update([
+        //     'name'=> $validatedData['name'],
+        //     'phone'=> $request->input('phone'),
+        //     'address'=> $request->input('address')
+        // ]);
+
+        $request->validate([
+            'name'=> 'required|max:255|min:5'            
         ]);
 
-        $shop->update([
-            'name'=> $validatedData['shop_name'],
-            'phone'=> $request->input('phone'),
-            'address'=> $request->input('address')
-        ]);
+        $shop->update(request()->all());
 
         return redirect()->route('shop.view')->with('success','Updeted Shop Record!');
     }
