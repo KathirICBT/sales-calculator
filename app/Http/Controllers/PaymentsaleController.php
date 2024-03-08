@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Paymentsale;
 use App\Models\Paymentmethod;
 use Illuminate\Http\Request;
+use App\Models\Staff;
+
 
 class PaymentsaleController extends Controller
 {
@@ -16,8 +18,10 @@ class PaymentsaleController extends Controller
     public function create()
     {
         $paymentmethods=Paymentmethod::all();
+        $staffs = Staff::all();
+
     
-        return view('paymentsale.create', compact('paymentmethods'));
+        return view('paymentsale.create', compact('paymentmethods','staffs'));
     }
 
 
@@ -27,6 +31,7 @@ class PaymentsaleController extends Controller
         $validatedData = $request->validate([
             'paymentmethod_id' => 'required|exists:paymentmethods,id',
             'amount' => 'required|numeric',
+            'staff_id' => 'required|numeric',
         ]);
 
 
@@ -41,14 +46,16 @@ class PaymentsaleController extends Controller
     {
         $paymentSale = PaymentSale::findOrFail($id);
         $paymentMethods = PaymentMethod::all();
-        return view('paymentsale.edit', compact('paymentSale', 'paymentMethods'));
+        $staffs = Staff::all();
+        return view('paymentsale.edit', compact('paymentSale', 'paymentMethods', 'staffs'));
     }
 
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'payment_method_id' => 'required|exists:payment_methods,id',
+            'paymentmethod_id' => 'required|exists:paymentmethods,id',
             'amount' => 'required|numeric',
+            'staff_id' => 'required|exists:staffs,id',
         ]);
 
         $paymentSale = PaymentSale::findOrFail($id);
@@ -64,5 +71,8 @@ class PaymentsaleController extends Controller
 
         return redirect()->route('paymentsales.index')->with('success', 'Payment Sale deleted successfully!');
     }
+
+    
+    
 
 }

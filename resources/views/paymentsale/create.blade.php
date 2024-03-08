@@ -19,6 +19,17 @@
             @csrf
 
             <div class="form-group">
+                <label for="staff_id" style="display: inline; margin-right:20px;"> Staff:</label>
+                <select name="staff_id" id="staff_id" required >
+                    <option value="" >Select Staff</option>
+                    @foreach($staffs as $staff)
+                        <option value="{{ $staff->id }}" >{{ $staff->staff_name}}</option>
+                    @endforeach
+                </select>
+            </div>
+
+
+            <div class="form-group">
                 <label for="paymentmethod_id" style="display: inline; margin-right:20px;">Payment Method:</label>
                 <select name="paymentmethod_id" id="paymentmethod_id" required >
                     <option value="" >Select a Payment Method</option>
@@ -34,6 +45,7 @@
             </div>
 
             <button type="submit" class="back">Submit</button>
+            <button type="button" class="back" onclick="window.location.href='{{ route('paymentsales.index') }}'">Modify</button>
             
         </form>
 

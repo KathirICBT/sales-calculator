@@ -24,7 +24,10 @@
                     </thead>
                     <tbody>
                         @php
-                            $totalCashAmount = 0; 
+                            $totalAmount = 0;
+                            $totalCashAmount = 0;
+                            $totalotherPaymentAmount = 0; 
+
                         @endphp
 
                         @foreach ($sales as $sale)
@@ -33,14 +36,40 @@
                                     <td>{{ $sale->amount }}</td>
                                 </tr>
                                 @php
-                                    $totalCashAmount += $sale->amount;
+                                    $totalAmount += $sale->amount;
                                 @endphp
                         @endforeach
 
                         <tr>
                             <th>Total amount:</th>
+                            <th>{{ $totalAmount }}</th>
+                        </tr>
+
+                        @if($paymentSales->count() > 0)
+                        
+                            @foreach($paymentSales as $paymentSale)
+                                <tr>
+                                    <td>{{$paymentSale->paymentmethod->payment_method}}</td>
+                                    <td>{{ $paymentSale->amount }}</td>
+                                </tr> 
+                                @php
+                                        $totalotherPaymentAmount += $paymentSale->amount;
+                                @endphp
+                            
+                            @endforeach
+                        
+                        @endif    
+                        <tr>
+                            <th>total other Payments:</th>
+                            <th>{{ $totalotherPaymentAmount }}</th>
+                        </tr>
+                        @php
+                            $totalCashAmount=$totalAmount-$totalotherPaymentAmount ;
+                        @endphp
+                        <tr>
+                            <th>total Cash Payments:</th>
                             <th>{{ $totalCashAmount }}</th>
-                        </tr>     
+                        </tr>
                     </tbody>
 
                 </table>

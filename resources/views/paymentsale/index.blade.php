@@ -13,6 +13,7 @@
         <table>
             <thead>
                 <tr>
+                    <th> Staff</th>
                     <th>Payment Method</th>
                     <th>Amount</th>
                     <th>Actions</th>
@@ -21,6 +22,7 @@
             <tbody>
                 @foreach($paymentSales as $paymentSale)
                 <tr>
+                    <td>{{ $paymentSale->staff->staff_name }}</td>
                     <td>{{ $paymentSale->paymentmethod->payment_method }}</td>
                     <td>{{ $paymentSale->amount }}</td>
                     <td>
@@ -37,7 +39,8 @@
         </table>
         <div >
             <button type="button" class="back" onclick="window.location.href='{{ route('paymentsale.create') }}'">Add Payment Sale</button>
-            <button type="button" class="back" onclick="window.location.href='{{ route('paymentsales.index') }}'">Modify</button>
+            
+            
         </div>
     </div>
 </body>
