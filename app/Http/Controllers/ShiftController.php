@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Shift;
 use App\Models\Shop;
 use App\Models\Staff;
+use Carbon\Carbon;
 
 class ShiftController extends Controller
 {
@@ -78,6 +79,46 @@ class ShiftController extends Controller
         })->get();
 
         return view('shifts.search', compact('shifts'));
+    }
+
+
+    public function searchStaffByDate(Request $request)
+    {
+        // Retrieve the date or date range from the request
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Parse dates using Carbon for proper handling
+        $parsedStartDate = Carbon::parse($startDate)->startOfDay();
+        $parsedEndDate = Carbon::parse($endDate)->endOfDay();
+
+        // Query shifts based on the date range
+        $shifts = Shift::whereBetween('created_at', [$parsedStartDate, $parsedEndDate])->get();
+
+        // Initialize an empty array to store staff details
+        $staffDetails = [];
+
+        // Iterate through each shift and retrieve staff details
+        foreach ($shifts as $shift) {
+            // Retrieve the staff details based on the staff_id in the Shift table
+            $staff = Staff::find($shift->staff_id);
+
+            // If staff details are found, add them to the staffDetails array
+            if ($staff) {
+                $staffDetails[] = [
+                    'staff_name' => $staff->staff_name,
+                    'shift_date' => $shift->created_at->toDateString(), // Assuming 'created_at' represents the shift date
+                ];
+            }
+        }
+
+        return view('shiftstaff.result', compact('staffDetails'));
+    }
+
+    public function directToSearch()
+    {
+        
+        return view('shiftstaff.search');
     }
 
 }

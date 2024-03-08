@@ -11,11 +11,14 @@ body {
 }
 
 .container {
-    max-width: 400px;
+    max-width: 300px;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    
 }
 
 h2 {
@@ -55,6 +58,7 @@ input[type="checkbox"] {
     cursor: pointer;
     width: 100%;
     display: block;
+    margin-top: 20px;
 }
 
 .btn:hover {
@@ -70,6 +74,17 @@ input[type="checkbox"] {
 .alert.success {
     background-color: #2ecc71;
     color: #fff;
+}
+
+select{
+    background-color: #ecf8f8;
+}
+
+option{
+    color: #012a4a;
+}
+option:hover{
+    background-color: #468faf;
 }
 /*me*/
 button[type="submit"] {

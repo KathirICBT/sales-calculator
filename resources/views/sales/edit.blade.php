@@ -45,6 +45,8 @@
                 </select>
             </div>
 
+
+
             <div class="form-group">
                 <label for="amount" style="display: inline;">Amount:</label>
                 <input type="text" id="amount" name="amount" value="{{ $sale->amount }}" required>

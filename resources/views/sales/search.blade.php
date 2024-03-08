@@ -34,6 +34,7 @@
                     <th>Shop ID</th>
                     <th>Shop Name</th>
                     <th>Amount</th>
+
                     </tr>
                 </thead>
                 <tbody>

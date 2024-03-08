@@ -1,11 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Controllers\PaymentsaleController;
+use App\Models\Paymentsale;
+
 use App\Models\Sale;  
 use App\Models\Department;
 use App\Models\Staff;
 use App\Models\Shop;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
@@ -34,16 +39,28 @@ class SaleController extends Controller
     public function store(Request $request)
     {
 
-        // Validate the request data
         $validatedData = $request->validate([
             'dept_id' => 'required|numeric',
             'staff_id' => 'required|numeric',
             'shop_id' => 'required|numeric',
             'amount' => 'required|numeric',
         ]);
-    
-        Sale::create($validatedData);
-    
+
+        // Check if a record with the same department, date, shop and staff exists
+        $existingSale = Sale::where('dept_id', $validatedData['dept_id'])
+                            ->where('staff_id', $validatedData['staff_id'])
+                            ->where('shop_id', $validatedData['shop_id'])
+                            ->whereDate('created_at', now()->toDateString())
+                            ->first();
+
+        if ($existingSale) {
+            // Update the existing record
+            $existingSale->amount += $validatedData['amount'];
+            $existingSale->save();
+        } else {
+            // Create a new record
+            Sale::create($validatedData);
+        }
         
         return redirect()->route('sales.create')->with('success', 'Sale added successfully!');
 
@@ -109,7 +126,54 @@ class SaleController extends Controller
         return view('sales.search', ['sales' => $sales]);
     }
 
+    
 
+    public function searchShopForm()
+{
+    $shops = Shop::all();
+    return view('shopsale.search', compact('shops'));
+}
 
+public function searchShopDetails(Request $request)
+{
+    // Retrieve search parameters from the request
+    $shopId = $request->input('shop_id');
+    $date = $request->input('date');
+
+    // Parse the date using Carbon for proper handling
+    $parsedDate = Carbon::parse($date)->startOfDay();
+
+    // Query sales records based on the shop ID and date
+    $sales = Sale::where('shop_id', $shopId)
+                ->whereDate('created_at', $parsedDate)
+                ->get();
+
+    // Return the view with the search results
+    return view('shopsale.searchresults', compact('sales'));
+}
+    
+public function searchStaffForm()
+{
+    $staffs = Staff::all();
+    return view('staffsale.search', compact('staffs'));
+}
+
+public function searchStaffSales(Request $request)
+{
+    $staffId = $request->input('staff_id');
+    $date = $request->input('date');
+
+    $parsedDate = Carbon::parse($date)->startOfDay();
+
+    $sales = Sale::where('staff_id', $staffId)
+                ->whereDate('created_at', $parsedDate)
+                ->get();
+
+    $paymentSales = PaymentSale::where('staff_id', $staffId)
+                ->whereDate('created_at', $parsedDate)
+                ->get();
+
+    return view('staffsale.result', compact('sales','paymentSales'));
+}
 
 }
