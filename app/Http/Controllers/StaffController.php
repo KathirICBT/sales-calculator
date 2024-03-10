@@ -77,7 +77,8 @@ class StaffController extends Controller
 
     public function edit(Staff $staff)
     {
-        return view('staff.update', compact('staff'));
+        //return view('pages.staff.addstaff', compact('staff'));
+        return response()->json($staff);
     }
 
     public function update(Request $request, Staff $staff)
@@ -102,7 +103,7 @@ class StaffController extends Controller
     public function destroy(Staff $staff)
     {
         $staff->delete();
-        return redirect()->route('staff.index')->with('success', 'Staff member deleted successfully!');
+        return redirect()->route('staff.addstaff')->with('success', 'Staff member deleted successfully!');
     }
 
     public function search(Request $request)

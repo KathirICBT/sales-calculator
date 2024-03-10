@@ -125,9 +125,9 @@
             </nav>
             <main class="content px-3 py-2">
 
-            {{-- Page contents goes here --}}
+                {{-- Page contents goes here --}}
 
-            @yield('content')
+                @yield('content')
 
             </main>
             <a href="#" class="theme-toggle">
@@ -167,6 +167,9 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/dashboard-script.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>
