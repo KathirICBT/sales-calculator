@@ -81,23 +81,45 @@ class StaffController extends Controller
         return response()->json($staff);
     }
 
+    // public function update(Request $request, Staff $staff)
+    // {
+    //     $validatedData = $request->validate([
+    //         'staff_name' => 'required|string|max:255',
+    //         'phonenumber' => 'required|string|max:20',
+    //         'username' => 'required|string|unique:staffs,username,' . $staff->id,            
+    //     ]);        
+
+    //     $staff->update($validatedData);
+
+    //     return redirect()->route('staff.addstaff')->with('success', 'Staff member updated successfully!');
+    // }
+
     public function update(Request $request, Staff $staff)
     {
+        // Validate the incoming request data
         $validatedData = $request->validate([
             'staff_name' => 'required|string|max:255',
             'phonenumber' => 'required|string|max:20',
-            'username' => 'required|string|unique:staffs,username,' . $staff->id,
-            'password' => 'nullable|string',
-        ]);
+            // 'username' => 'required|string|unique:staffs,username,' . $staff->id,                      
+        ]);  
 
-        if ($request->has('password')) {
-            $validatedData['password'] = bcrypt($validatedData['password']); // Hash the password
+        // Dump the request data and validated data for debugging
+        //dd($request->all(), $validatedData);
+        //dd($staff->id);
+
+        // Update the staff member's information
+        $updated = $staff->update($validatedData);
+
+        // Check if the update operation was successful
+        if ($updated) {
+            // Redirect back with success message
+            return redirect()->route('staff.addstaff')->with('success', 'Staff member updated successfully!');
+        } else {
+            // Redirect back with error message
+            return redirect()->route('staff.addstaff')->with('error', 'Failed to update staff member!');
         }
-
-        $staff->update($validatedData);
-
-        return redirect('/staff')->with('success', 'Staff member updated successfully!');
     }
+    
 
 
     public function destroy(Staff $staff)

@@ -192,8 +192,7 @@
 @endsection
 
 <!-- Edit Staff Modal -->
-<div class="modal fade" id="editStaffModal" tabindex="-1" role="dialog" aria-labelledby="editStaffModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="editStaffModal" tabindex="-1" role="dialog" aria-labelledby="editStaffModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -202,18 +201,21 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editStaffForm" method="POST" action="{{ route('staff.update', ['staff' => ':staff_id']) }}">
+            <form id="editStaffForm" method="POST" action="">
                 @csrf
                 @method('PUT')
+                <input type="hidden" id="staffId" name="staff_id">
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" readonly>
+                    </div>
+
                     <div class="form-group">
                         <label for="staff_name">Staff Name</label>
                         <input type="text" class="form-control" id="staff_name" name="staff_name" required>
                     </div>
-                    {{-- <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div> --}}
+                    
                     <div class="form-group">
                         <label for="phonenumber">Phone Number</label>
                         <input type="text" class="form-control" id="phonenumber" name="phonenumber" required>
@@ -228,7 +230,7 @@
     </div>
 </div>
 
-<!-- JavaScript to handle edit button click and populate modal -->
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const editButtons = document.querySelectorAll('.edit-btn');
@@ -237,20 +239,18 @@
             button.addEventListener('click', function() {
                 const staffId = this.getAttribute('data-id');
                 const modal = document.getElementById('editStaffModal');
-
-                // AJAX request to fetch staff member details
+                const editForm = document.getElementById('editStaffForm');
+                
+                editForm.querySelector('#staffId').value = staffId;
+                
+                editForm.setAttribute('action', `/staff/${staffId}`); 
+                                
                 fetch(`/staff/${staffId}/edit`)
                     .then(response => response.json())
                     .then(data => {                        
-                        const editForm = document.getElementById('editStaffForm');
-                        editForm.setAttribute('action', `/staff/${staffId}/edit`);
-
-                        // Populate form fields with staff member details
                         editForm.querySelector('#staff_name').value = data.staff_name;
-                        // editForm.querySelector('#username').value = data.username;
-                        editForm.querySelector('#phonenumber').value = data.phonenumber;
-
-                        // Show the edit modal
+                        editForm.querySelector('#username').value = data.username;
+                        editForm.querySelector('#phonenumber').value = data.phonenumber;                        
                         $('#editStaffModal').modal('show');
                     })
                     .catch(error => {

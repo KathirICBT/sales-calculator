@@ -47,8 +47,8 @@ Route::get('/departments/search', [DepartmentController::class, 'search'])->name
 
 //staff
 //register 
-Route::get('/staff/addstaff', [StaffController::class, 'showRegistrationForm'])->name('staff.addstaff');
-Route::post('/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff.submit');
+//Route::get('/staff/addstaff', [StaffController::class, 'showRegistrationForm'])->name('staff.addstaff');
+//Route::post('/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff.submit');
 
 // Read (Index)
 
@@ -56,7 +56,7 @@ Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
 
 // Update (Edit and Update)
 // Route::get('/staff/{staff}/edit', [StaffController::class, 'edit'])->name('staff.edit');
-Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
+// Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
 
 //delate staff
 
@@ -214,6 +214,7 @@ Route::post('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name
 //STAFF UPDATE =======================================================================
 Route::get('/staff/{staff}/edit', [StaffController::class, 'edit'])->name('staff.edit');
 Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
+
 
 //STAFF DELETE =======================================================================
 Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
