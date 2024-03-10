@@ -225,3 +225,14 @@ button.border {
         z-index: 5;
     }
 }
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    
+    /* font-weight: bold;    
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #ffe6e6;
+    border-radius: 5px; */
+}

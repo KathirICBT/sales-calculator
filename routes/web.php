@@ -8,6 +8,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\PaymentmethodController;
 use App\Http\Controllers\PaymentsaleController;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -187,6 +188,22 @@ Route::get('/paymentsales/{id}/edit', [PaymentSaleController::class, 'edit'])->n
 Route::put('/paymentsales/{id}', [PaymentSaleController::class, 'update'])->name('paymentsales.update');
 Route::delete('/paymentsales/{id}', [PaymentSaleController::class, 'destroy'])->name('paymentsales.destroy');
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+
+//FINAL ==============================================================================
+
+ Route::get('/', [AuthController::class, 'login'])->name('auth.login');
+ Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
+// Route::post('/login', 'AuthController@authenticate')->name('login');
+
+// Route::get('/', function () {
+//     return view('auth.login');
+// });
+
+Route::get('/dashboard', function () {
+    return view('welcome');
+})->name('dashboard');
+
+
+//STAFF REGISTRATION =================================================================
+Route::get('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff');
+Route::post('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff.submit');

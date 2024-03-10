@@ -16,7 +16,8 @@
 <body>
     <div class="wrapper">
         <div class="form-wrapper signin-wrapper">
-            <form action="#">
+            <form action="{{ route('login') }}" method="post">
+                @csrf
                 <h1>Staff Login</h1>
                 <div class="socials">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -24,10 +25,16 @@
                     <a href="#"><i class="fab fa-instagram"></i></a>
                 </div>
 
-                <input type="email" placeholder="Email" required />
-                <input type="password" placeholder="Password" required />                
+                <input type="text" name="username" id="username" placeholder="Username" />                
+                @error('username')
+                    <span class="error-message">{{ $message }}</span>
+                @enderror
+                <input type="password" name="password" id="password" placeholder="Password" />
+                @error('password')
+                    <span class="error-message">{{ $message }}</span>
+                @enderror                
                 <a href="#">Forgot password?</a>
-                <button>Log In</button>
+                <button type="submit" name="submit">Log In</button>
             </form>
         </div>
 
@@ -56,7 +63,6 @@
                     <a href="#"><i class="fab fa-google"></i></a>
                     <a href="#"><i class="fab fa-instagram"></i></a>
                 </div>
-
 
                 <input type="text" placeholder="Name" required />
                 <input type="email" placeholder="Email" required />
