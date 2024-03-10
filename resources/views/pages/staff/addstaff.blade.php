@@ -103,8 +103,14 @@
                         <div class="col-12">
                             <div class="p-3 m-1">
                                 <h4 class="n_h2_style rounded">Staffs</h4>
+                                {{-- SEARCH --}}
+                                <div class="input-group mt-3">
+                                    <input type="text" class="form-control" placeholder="Search staff..." id="searchInput">
+                                    <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                </div>
+                                {{-- SEARCH --}}
                                 <div style="height: 300px; overflow-y: auto;">
-                                    <table class="table">
+                                    <table class="table" id="staffTable">
                                         <thead>
                                             <tr>
                                                 <th scope="col">Name</th>
@@ -244,7 +250,7 @@
                 editForm.querySelector('#staffId').value = staffId;
                 
                 editForm.setAttribute('action', `/staff/${staffId}`); 
-                                
+
                 fetch(`/staff/${staffId}/edit`)
                     .then(response => response.json())
                     .then(data => {                        
@@ -262,6 +268,34 @@
         $('#editStaffModal').on('hidden.bs.modal', function () {
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
+        });
+    });
+
+
+    // SEARCH
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchButton = document.getElementById('searchButton');
+        const searchInput = document.getElementById('searchInput');
+        const staffTable = document.getElementById('staffTable');
+        const tableRows = staffTable.getElementsByTagName('tr');
+
+        searchButton.addEventListener('click', function () {
+            const query = searchInput.value.trim().toLowerCase();
+            for (let i = 1; i < tableRows.length; i++) {
+                const row = tableRows[i];
+                const nameColumn = row.cells[0];
+                const phoneNumberColumn = row.cells[1];
+                if (nameColumn && phoneNumberColumn) {
+                    const nameText = nameColumn.textContent.toLowerCase();
+                    const phoneNumberText = phoneNumberColumn.textContent.toLowerCase();
+                    if (nameText.includes(query) || phoneNumberText.includes(query)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            }
         });
     });
 </script>
