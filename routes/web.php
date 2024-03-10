@@ -210,6 +210,3 @@ Route::get('/dashboard', function () {
 //STAFF REGISTRATION =================================================================
 Route::get('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff');
 Route::post('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff.submit');
-Route::get('/', function () {
-    return view('departments.create');
-});
