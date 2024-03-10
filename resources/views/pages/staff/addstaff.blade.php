@@ -103,7 +103,7 @@
                         <div class="col-12">
                             <div class="p-3 m-1">
                                 <h4 class="n_h2_style rounded">Staffs</h4>
-                                {{-- SEARCH --}}
+                                {{-- SEARCH --}}                                
                                 <div class="input-group mt-3">
                                     <input type="text" class="form-control" placeholder="Search staff..." id="searchInput">
                                     <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
@@ -272,15 +272,14 @@
     });
 
 
-    // SEARCH
+    // SEARCH   
 
     document.addEventListener('DOMContentLoaded', function () {
-        const searchButton = document.getElementById('searchButton');
         const searchInput = document.getElementById('searchInput');
         const staffTable = document.getElementById('staffTable');
         const tableRows = staffTable.getElementsByTagName('tr');
 
-        searchButton.addEventListener('click', function () {
+        searchInput.addEventListener('input', function () {
             const query = searchInput.value.trim().toLowerCase();
             for (let i = 1; i < tableRows.length; i++) {
                 const row = tableRows[i];
