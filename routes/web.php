@@ -186,6 +186,9 @@ Route::get('/paymentsales', [PaymentSaleController::class, 'index'])->name('paym
 //edit
 Route::get('/paymentsales/{id}/edit', [PaymentSaleController::class, 'edit'])->name('paymentsales.edit');
 Route::put('/paymentsales/{id}', [PaymentSaleController::class, 'update'])->name('paymentsales.update');
+
+
+
 Route::delete('/paymentsales/{id}', [PaymentSaleController::class, 'destroy'])->name('paymentsales.destroy');
 
 
@@ -207,3 +210,6 @@ Route::get('/dashboard', function () {
 //STAFF REGISTRATION =================================================================
 Route::get('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff');
 Route::post('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff.submit');
+Route::get('/', function () {
+    return view('departments.create');
+});

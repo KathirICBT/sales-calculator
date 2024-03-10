@@ -11,10 +11,16 @@ class Paymentsale extends Model
     protected $fillable = [
         'paymentmethod_id',
         'amount',
+        'staff_id',
     ];
 
     public function paymentMethod()
     {
         return $this->belongsTo(Paymentmethod::class,'paymentmethod_id');
     }
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class, 'staff_id');
+    }
+
 }

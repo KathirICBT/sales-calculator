@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Controllers\PaymentsaleController;
+use App\Models\Paymentsale;
+
 use App\Models\Sale;  
 use App\Models\Department;
 use App\Models\Staff;
@@ -165,7 +169,11 @@ public function searchStaffSales(Request $request)
                 ->whereDate('created_at', $parsedDate)
                 ->get();
 
-    return view('staffsale.result', compact('sales'));
+    $paymentSales = PaymentSale::where('staff_id', $staffId)
+                ->whereDate('created_at', $parsedDate)
+                ->get();
+
+    return view('staffsale.result', compact('sales','paymentSales'));
 }
 
 }
