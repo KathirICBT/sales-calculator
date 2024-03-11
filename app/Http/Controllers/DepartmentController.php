@@ -23,26 +23,68 @@ class DepartmentController extends Controller
         return view('departments.create');
     }
 
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'dept_name' => 'required|string|max:255',
+    //         'other_taking' => 'boolean',
+    //     ]);
+
+    //     Department::create([
+    //         'dept_name' => $request->input('dept_name'),
+    //         'other_taking' => $request->input('other_taking', false),
+    //     ]);
+
+    //     return redirect('/departments')->with('success', 'Department created successfully!');
+    // }
+
     public function store(Request $request)
     {
-        $request->validate([
-            'dept_name' => 'required|string|max:255',
-            'other_taking' => 'boolean',
-        ]);
+        if ($request->isMethod('post')) {
+            $request->validate([
+                'dept_name' => 'required|string|max:255',
+                'other_taking' => 'boolean',
+            ]);
 
-        Department::create([
-            'dept_name' => $request->input('dept_name'),
-            'other_taking' => $request->input('other_taking', false),
-        ]);
+            Department::create([
+                'dept_name' => $request->input('dept_name'),
+                'other_taking' => $request->input('other_taking', false),
+            ]);
 
-        return redirect('/departments')->with('success', 'Department created successfully!');
+            return redirect()->route('departments.store')->with('success', 'departments registered successfully!');
+        }
+        $departments = Department::all();        
+        return view('pages.department.create', compact('departments'));
+
     }
 
-    // Update
-    public function edit(Department $department)
-    {
-        return view('departments.edit', compact('department'));
-    }
+    // // Update
+    // public function edit(Department $department)
+    // {
+        
+    //     return view('departments.edit', compact('department'));
+    // }
+
+     // Update
+     public function edit(Department $department)
+     {
+        return response()->json($department);
+     }
+
+    // public function update(Request $request, Department $department)
+    // {
+    //     $request->validate([
+    //         'dept_name' => 'required|string|max:255',
+    //         'other_taking' => 'boolean',
+    //     ]);
+
+    //     $department->update([
+    //         'dept_name' => $request->input('dept_name'),
+    //         'other_taking' => $request->input('other_taking', false),
+    //     ]);
+
+    //     return redirect('/departments')->with('success', 'Department updated successfully!');
+    // }
 
     public function update(Request $request, Department $department)
     {
@@ -51,12 +93,18 @@ class DepartmentController extends Controller
             'other_taking' => 'boolean',
         ]);
 
-        $department->update([
+        $updated= $department->update([
             'dept_name' => $request->input('dept_name'),
             'other_taking' => $request->input('other_taking', false),
         ]);
 
-        return redirect('/departments')->with('success', 'Department updated successfully!');
+        if ($updated) {
+            // Redirect back with success message
+            return redirect()->route('departments.store')->with('success', 'department updated successfully!');
+        } else {
+            // Redirect back with error message
+            return redirect()->route('departments.store')->with('error', 'Failed to update department !');
+        }
     }
 
     // Delete
@@ -66,13 +114,10 @@ class DepartmentController extends Controller
     }
 
     // Method for deleting the department
-    public function destroy($id)
+    public function destroy(Department $department)
     {
-        // Find the department by ID and delete it
-        Department::destroy($id);
-    
-        // Redirect the user back with a success message
-        return redirect()->route('departments.index')->with('success', 'Department deleted successfully');
+        $department->delete();
+        return redirect()->route('departments.store')->with('success', 'Staff member deleted successfully!');
     }
     
     // Search

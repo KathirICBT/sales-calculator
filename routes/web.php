@@ -20,25 +20,26 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
+//depart add
+// Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
 
-// Handle form submission
-Route::post('/departments/store', [DepartmentController::class, 'store'])->name('departments.store');
+// // Handle form submission
+// Route::post('/departments/store', [DepartmentController::class, 'store'])->name('departments.store');
 
 
 // Read (Index)
 
 Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
 
-// Update (Edit and Update)
-Route::get('/departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
-Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
+// // Update (Edit and Update)
+// Route::get('/departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
+// Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
 
 
-// Delete (Delete and Destroy)
-Route::get('/departments/{department}/delete', [DepartmentController::class, 'deleteConfirmation'])->name('departments.delete');
+// // Delete (Delete and Destroy)
+// Route::get('/departments/{department}/delete', [DepartmentController::class, 'deleteConfirmation'])->name('departments.delete');
 
-Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+// Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
 
 
 
@@ -96,7 +97,6 @@ Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.sear
 Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
 
 // Read (Index)
-
 Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
 
 // Update sales (Edit and Update)
@@ -112,19 +112,19 @@ Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.sear
 
 
 
-Route::post('/shops/add_shop', [ShopController::class, 'store'])->name('shop.store');
+// Route::post('/shops/add_shop', [ShopController::class, 'store'])->name('shop.store');
 
-Route::get('/shops/view_all', [ShopController::class, 'view_all'])->name('shop.view');
+// Route::get('/shops/view_all', [ShopController::class, 'view_all'])->name('shop.view');
 
-//Route::delete('/shops/{shop}', [ShopController::class, 'destroy'])->name('shop.destroy');
+////Route::delete('/shops/{shop}', [ShopController::class, 'destroy'])->name('shop.destroy');
 
-Route::delete('/shops/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
+// Route::delete('/shops/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
 
 Route::get('/shops/search', [ShopController::class, 'search'])->name('shop.search');
 
-Route::get('/shops/{shop}/update_view', [ShopController::class, 'update_view'])->name('shop.update_view');
+// Route::get('/shops/{shop}/update_view', [ShopController::class, 'update_view'])->name('shop.update_view');
 
-Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shop.update');
+// Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shop.update');
 
 //Shifts
 
@@ -211,13 +211,37 @@ Route::get('/dashboard', function () {
 Route::get('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff');
 Route::post('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff.submit');
 
+
 //STAFF UPDATE =======================================================================
 Route::get('/staff/{staff}/edit', [StaffController::class, 'edit'])->name('staff.edit');
 Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
-
 
 //STAFF DELETE =======================================================================
 Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
 
 
+//DEPARTMENT REGISTRATION =================================================================
+Route::get('/pages/departments/store', [DepartmentController::class, 'store'])->name('departments.store');
+Route::post('/pages/departments/store', [DepartmentController::class, 'store'])->name('departments.store.submit');
 
+//DEPARTMENT UPDATE =======================================================================
+Route::get('/departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
+Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
+
+//DEPARTMENT DELETE =======================================================================
+Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+
+
+//SHOP REGISTRATION =================================================================
+Route::get('/pages/shops/store', [ShopController::class, 'store'])->name('shop.store');
+Route::post('/pages/shops/store', [ShopController::class, 'store'])->name('shop.store.submit');
+
+
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+
+//shops UPDATE =======================================================================
+Route::get('/shops/{shop}/update_view', [ShopController::class, 'update_view'])->name('shop.update_view');
+Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shop.update');
+
+//shops DELETE =======================================================================
+Route::delete('/shops/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
