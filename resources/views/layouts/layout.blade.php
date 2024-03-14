@@ -77,6 +77,23 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="sidebar-item">
+                        <a href="#userList" class="sidebar-link collapsed" data-bs-toggle="collapse" aria-expanded="false"><i
+                                class="fa-regular fa-user pe-2"></i>
+                            User
+                        </a>
+                        <ul id="userList" class="sidebar-dropdown list-unstyled collapse">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Login</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="{{route('user.create')}}" class="sidebar-link">Register</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Forgot Password</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="sidebar-header">
                         Calculations
                     </li>

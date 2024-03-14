@@ -245,3 +245,20 @@ Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shop.updat
 
 //shops DELETE =======================================================================
 Route::delete('/shops/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
+
+//user registration
+//Route::get('/register', 'App\Http\Controllers\Auth\RegisterController@showRegistrationForm')->name('register');
+//Route::post('/register', 'App\Http\Controllers\Auth\RegisterController@register');
+
+// // User Registration Routes
+// Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+// Route::post('/register', [AuthController::class, 'register']);
+
+Route::get('/user', [AuthController::class, 'showRegistrationForm'])->name('user.create');
+Route::post('/user/register', [AuthController::class, 'register'])->name('register');
+
+//Route::get('/', [AuthController::class, 'showuserLoginForm'])->name('ulogin');
+Route::post('/userlogin', [AuthController::class, 'userlogin'])->name('user.login');
+
+
+
