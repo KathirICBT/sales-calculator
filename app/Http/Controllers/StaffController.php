@@ -118,8 +118,7 @@ class StaffController extends Controller
             // Redirect back with error message
             return redirect()->route('staff.addstaff')->with('error', 'Failed to update staff member!');
         }
-    }
-    
+    }    
 
 
     public function destroy(Staff $staff)

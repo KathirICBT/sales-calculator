@@ -85,9 +85,7 @@
                                             required>
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>
-                                        <button type="button" class="btn btn-warning rounded-pill"
-                                            onclick="window.location.href='{{ route('staff.index') }}'">Modify</button>
+                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>                                        
                                     </div>
                                 </form>
                             </div>
@@ -104,7 +102,7 @@
                             <div class="p-3 m-1">
                                 <h4 class="n_h2_style rounded">Staffs</h4>
                                 {{-- SEARCH --}}                                
-                                <div class="input-group mt-3">
+                                <div class="input-group mt-3 mb-3">
                                     <input type="text" class="form-control" placeholder="Search staff..." id="searchInput">
                                     <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
                                 </div>
@@ -151,49 +149,7 @@
         </div>
     </div>
     <!-- Forms end -->
-    <!-- Table Element -->
-    <div class="card border-0">
-        <div class="card-header">
-            <h5 class="card-title">
-                Total Sales
-            </h5>
-            <h6 class="card-subtitle text-muted">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ducimus,
-                necessitatibus reprehenderit itaque!
-            </h6>
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    
 </div>
 @endsection
 
