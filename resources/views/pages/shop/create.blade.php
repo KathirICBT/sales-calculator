@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="mb-3">
-        <h4>Staff Dashboard</h4>
+        <h4>Shop Dashboard</h4>
     </div>
     <div class="row">
         <div class="col-12 col-md-6 d-flex">
@@ -197,12 +197,12 @@
 </div>
 @endsection
 
-<!-- Edit Staff Modal -->
+<!-- Edit Shop Modal -->
 <div class="modal fade" id="editShopModal" tabindex="-1" role="dialog" aria-labelledby="editShopModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editShopModalLabel">Edit  Shop</h5>
+                <h5 class="modal-title" id="editShopModalLabel">Edit Shop</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -211,21 +211,20 @@
                 @csrf
                 @method('PUT')
                 <input type="hidden" id="shopId" name="shop_id">
-                <div class="modal-body">                   
+                <div class="modal-body">
                     <div class="form-group">
-                        <label for="staff_name">Staff Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ $shop->name }}" required>
-                        @error('name')
-                        <span class="error-alert">{{ $message }}</span>
-                        @enderror
-                    </div>                    
+                        <label for="name">Shop Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="text" class="form-control" id="phone" name="phone" value="{{ $shop->phone }}" required>
+                        <input type="text" class="form-control" id="phone" name="phone" required>
                     </div>
+
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <input type="text"  class="form-control" id="address" name="address" value="{{ $shop->address }}" required>
+                        <input type="text" class="form-control" id="address" name="address" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -247,17 +246,17 @@
                 const shopId = this.getAttribute('data-id');
                 const modal = document.getElementById('editShopModal');
                 const editForm = document.getElementById('editShopForm');
-                
-                editForm.querySelector('#shopId').value = shopId;
-                
-                editForm.setAttribute('action', `/shops/${shopId}`); 
 
-                fetch(`/shops/${shopId}/edit`)
+                editForm.querySelector('#shopId').value = shopId;
+
+                editForm.setAttribute('action', `/shops/${shopId}`);
+
+                fetch(`/shops/${shopId}/update_view`)
                     .then(response => response.json())
-                    .then(data => {                        
-                        editForm.querySelector('#name').value = data.shop_name;
-                        editForm.querySelector('#phone').value = data.phone;    
-                        editForm.querySelector('#address').value = data.address;                    
+                    .then(data => {
+                        editForm.querySelector('#name').value = data.name;
+                        editForm.querySelector('#phone').value = data.phone;
+                        editForm.querySelector('#address').value = data.address;
                         $('#editShopModal').modal('show');
                     })
                     .catch(error => {
@@ -265,16 +264,20 @@
                     });
             });
         });
-        
-        $('#editShopModal').on('hidden.bs.modal', function () {
+
+        $('#editShopModal').on('hidden.bs.modal', function() {
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
         });
     });
+    </script>
 
 
-    // SEARCH   
 
+
+
+      
+    <script>
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchInput');
         const shopTable = document.getElementById('shopTable');
