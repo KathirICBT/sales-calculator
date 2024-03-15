@@ -205,12 +205,12 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="dept_name">Department Name:</label>
-                        <input type="text" id="dept_name" name="dept_name" value="{{ $department->dept_name }}" required>
+                        <input type="text" id="dept_name" name="dept_name"  required>
                     </div>
 
                     <div class="form-group">
                         <label for="other_taking">Other Taking:</label>
-                        <input type="checkbox" id="other_taking" name="other_taking" value="1" {{ $department->other_taking ? 'checked' : '' }}>
+                        <input type="checkbox" id="other_taking" name="other_taking" >
                     </div>
                 </div>
                 <div class="modal-footer">
