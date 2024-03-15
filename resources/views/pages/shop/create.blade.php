@@ -252,12 +252,12 @@
                 
                 editForm.setAttribute('action', `/shops/${shopId}`); 
 
-                fetch(`/shops/${shopId}/edit`)
+                fetch(`/shops/${shopId}/update_view`)
                     .then(response => response.json())
                     .then(data => {                        
-                        editForm.querySelector('#name').value = data.shop_name;
-                        editForm.querySelector('#phone').value = data.phone;    
-                        editForm.querySelector('#address').value = data.address;                    
+                        editForm.querySelector('#name').value = data.name;                        
+                        editForm.querySelector('#phone').value = data.phone;  
+                        editForm.querySelector('#address').value = data.address;                      
                         $('#editShopModal').modal('show');
                     })
                     .catch(error => {
