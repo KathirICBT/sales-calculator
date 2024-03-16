@@ -89,9 +89,7 @@
                                         <input type="text" class="form-control" id="address" name="address">
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>
-                                        <button type="button" class="btn btn-warning rounded-pill"
-                                            onclick="window.location.href='{{ route('shop.index') }}'">Modify</button>
+                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>                                        
                                     </div>
                                 </form>
                             </div>
