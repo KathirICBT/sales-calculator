@@ -23,7 +23,7 @@
             </div>
         </div>        
     </div>
-    
+
     <!-- Forms -->
     <div class="row justify-content-center">
         <!-- Added justify-content-center to center content -->
@@ -77,7 +77,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Forms end -->    
     
 </div>

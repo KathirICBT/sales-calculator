@@ -38,7 +38,9 @@ class AuthController extends Controller
 
         if (Auth::guard('staff')->attempt($credentials)) {
             // Authentication passed
+            request()->session()->regenerate();
             $user = Auth::guard('staff')->user();
+            session(['username' => $user->username]);
             return redirect()->route("dashboard")->with('username', $user->username);
         }
 
