@@ -27,18 +27,18 @@
                 <div class="card-body py-4">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
-                            <h4 class="mb-2">
-                                £ 50.00
-                            </h4>
                             <p class="mb-2">
-                                Total Earnings
+                                Total Shops
                             </p>
+                            <h4 class="mb-2">
+                                5
+                            </h4>                            
                             <div class="mb-0">
-                                <span class="badge text-success me-2">
-                                    +9.0%
-                                </span>
                                 <span class="text-muted">
-                                    Since Last Month
+                                    Owner: 
+                                </span>
+                                <span class="mb-2">
+                                    Mr. Tharsan
                                 </span>
                             </div>
                         </div>

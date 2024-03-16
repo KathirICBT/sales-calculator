@@ -27,20 +27,20 @@
                 <div class="card-body py-4">
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
-                            <h4 class="mb-2">
-                                £ 50.00
-                            </h4>
                             <p class="mb-2">
-                                Total Earnings
+                                Total Staff
                             </p>
-                            <div class="mb-0">
-                                <span class="badge text-success me-2">
+                            <h4 class="mb-2">
+                                15
+                            </h4>                            
+                            {{-- <div class="mb-0">
+                                <span class="mb-2">
                                     +9.0%
                                 </span>
                                 <span class="text-muted">
                                     Since Last Month
                                 </span>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

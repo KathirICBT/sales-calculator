@@ -146,7 +146,7 @@
                         <div class="col-6 text-start">
                             <p class="mb-0">
                                 <a href="#" class="text-muted">
-                                    <strong>Sales Calculator</strong>
+                                    <strong>The eXlents Report</strong>
                                 </a>
                             </p>
                         </div>
@@ -160,10 +160,7 @@
                                 </li>
                                 <li class="list-inline-item">
                                     <a href="#" class="text-muted">Terms</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#" class="text-muted">Booking</a>
-                                </li>
+                                </li>                                
                             </ul>
                         </div>
                     </div>
