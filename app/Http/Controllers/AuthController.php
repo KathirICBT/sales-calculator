@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Staff;
 
 
 class AuthController extends Controller
@@ -50,10 +51,10 @@ class AuthController extends Controller
     }
 
 
-    // public function showRegistrationForm()
-    // {
-    //     return view('auth.register');
-    // }
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
 
     public function register(Request $request)
     {
@@ -83,7 +84,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             // Authentication passed
             $user = Auth::user();
-            return redirect()->route("dashboard")->with('username', $user->username);
+            return redirect()->route("dashboard")->with('user', $user->username);
         }
         
 
@@ -94,5 +95,23 @@ class AuthController extends Controller
         ]);
 
     }
+
+
+    // public function showProfile()
+    // {
+    //     return view('auth.register');
+    // }
+    public function showProfile()
+{
+    // Check if the user is logged in
+    if (Auth::guard('staff')->check()) {
+        // Get the authenticated staff user
+        $staff = Auth::guard('staff')->user();
+        
+        // Return the staff details
+        return view('auth.profile.profile')->with('staff', $staff);
+   
+}
+}
 
 }

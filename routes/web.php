@@ -261,4 +261,17 @@ Route::post('/user/register', [AuthController::class, 'register'])->name('regist
 Route::post('/userlogin', [AuthController::class, 'userlogin'])->name('user.login');
 
 
+Route::get('/user/profile', [AuthController::class, 'showProfile'])->name('user.profile');
+
+Route::get('/user/profile', [StaffController::class, 'showProfile'])->name('user.profile');
+
+
+// Route::get('/forgot-password', 'ForgotPasswordController@showForgotPasswordForm')->name('forgot-password');
+// Route::post('/reset-password', 'ForgotPasswordController@resetPassword')->name('password.reset');
+
+
+Route::post('reset-password', [StaffController::class, 'resetPassword'])->name('staff.resetPassword');
+
+
+
 
