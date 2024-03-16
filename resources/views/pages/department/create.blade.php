@@ -67,18 +67,16 @@
                                 @endif
                                 <form class="row g-3" method="POST" action="{{ route('departments.store.submit') }}">
                                     @csrf
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label for="sdept_name" class="form-label">Department Name: </label>
                                         <input type="text" class="form-control" id="dept_name" name="dept_name">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="other_taking" class="form-label">Other Taking:</label>
-                                        <input type="checkbox" class="" id="other_taking" name="other_taking"  value="1" >                                              
+                                    <div class="col-md-12">
+                                        <label for="other_taking" class="form-check-label">Other Taking:</label>
+                                        <input type="checkbox" class="form-check-input" id="other_taking" name="other_taking"  value="1" >                                              
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>
-                                        <button type="button" class="btn btn-warning rounded-pill"
-                                            onclick="window.location.href='{{ route('departments.index') }}'">Modify</button>
+                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>                                        
                                     </div>
                                 </form>
                             </div>
@@ -142,49 +140,6 @@
         </div>
     </div>
     <!-- Forms end -->
-    <!-- Table Element -->
-    <div class="card border-0">
-        <div class="card-header">
-            <h5 class="card-title">
-                Total Sales
-            </h5>
-            <h6 class="card-subtitle text-muted">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ducimus,
-                necessitatibus reprehenderit itaque!
-            </h6>
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 </div>
 @endsection
 
@@ -241,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {     
                     editForm.querySelector('#dept_name').value = data.dept_name;
-                                        
+
                     if (data.other_taking) {
                         editForm.querySelector('#other_taking').checked = true;
                     } else {

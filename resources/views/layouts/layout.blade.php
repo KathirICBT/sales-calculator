@@ -41,6 +41,12 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
+                        <a href="{{route('staff.addstaff')}}" class="sidebar-link collapsed" >
+                            <i class="fa-regular fa-user pe-2"></i>
+                            Staff 
+                        </a>
+                    </li>
+                    {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
                             Staff
@@ -59,7 +65,7 @@
                                 <a href="#" class="sidebar-link">Forgot Password</a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
                     <li class="sidebar-item">
                         <a href="#userList" class="sidebar-link collapsed" data-bs-toggle="collapse" aria-expanded="false"><i
                                 class="fa-regular fa-user pe-2"></i>
