@@ -16,7 +16,8 @@
                             </div>
                         </div>
                         <div class="col-6 align-self-end text-end">
-                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img" alt="">
+                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img"
+                                alt="">
                         </div>
                     </div>
                 </div>
@@ -32,10 +33,10 @@
                             </p>
                             <h4 class="mb-2">
                                 5
-                            </h4>                            
+                            </h4>
                             <div class="mb-0">
                                 <span class="text-muted">
-                                    Owner: 
+                                    Owner:
                                 </span>
                                 <span class="mb-2">
                                     Mr. Tharsan
@@ -66,21 +67,26 @@
                                 </div>
                                 @endif
                                 <form class="row g-3" method="POST" action="{{ route('shop.store.submit') }}">
-                                    @csrf                                             
+                                    @csrf
                                     <div class="col-md-6">
                                         <label for="name" class="form-label">Shop Name: </label>
                                         <input type="text" class="form-control" id="name" name="name">
                                         @error('name')
-                                            <span class="error-alert">{{ $message }}</span>
+                                        <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
+                                            role="alert">
+                                            <span>{{ $message }}</span>
+                                            <button type="button" class="btn-close" data-dismiss="alert"
+                                                aria-label="Close"></button>
+                                        </div>
                                         @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label for="phone" class="form-label">Phone:</label>
-                                        <input type="text" class="form-control" id="phone" name="phone" required>
-                                    </div>        
+                                        <input type="text" class="form-control" id="phone" name="phone">
+                                    </div>
                                     <div class="col-md-6">
                                         <label for="address" class="form-label">Address:</label>
-                                        <input type="text" class="form-control" id="address" name="address" required>
+                                        <input type="text" class="form-control" id="address" name="address">
                                     </div>
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary rounded-pill">Register</button>
@@ -101,10 +107,12 @@
                         <div class="col-12">
                             <div class="p-3 m-1">
                                 <h4 class="n_h2_style rounded">Shops</h4>
-                                {{-- SEARCH --}}                                
+                                {{-- SEARCH --}}
                                 <div class="input-group mt-3">
-                                    <input type="text" class="form-control" placeholder="Search shop..." id="searchInput">
-                                    <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                    <input type="text" class="form-control" placeholder="Search shop..."
+                                        id="searchInput">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        id="searchButton">Search</button>
                                 </div>
                                 {{-- SEARCH --}}
                                 <div style="height: 300px; overflow-y: auto;">
@@ -150,12 +158,13 @@
             </div>
         </div>
     </div>
-    <!-- Forms end --> 
+    <!-- Forms end -->
 </div>
 @endsection
 
 <!-- Edit Shop Modal -->
-<div class="modal fade" id="editShopModal" tabindex="-1" role="dialog" aria-labelledby="editShopModalLabel" aria-hidden="true">
+<div class="modal fade" id="editShopModal" tabindex="-1" role="dialog" aria-labelledby="editShopModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -227,14 +236,14 @@
             $('.modal-backdrop').remove();
         });
     });
-    </script>
+</script>
 
 
 
 
 
-      
-    <script>
+
+<script>
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchInput');
         const shopTable = document.getElementById('shopTable');
@@ -261,5 +270,3 @@
         });
     });
 </script>
-
-
