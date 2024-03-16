@@ -89,6 +89,7 @@ class ShopController extends Controller
         ]);
 
         $updated=$shop->update(request()->all());
+        
         if ($updated) {
             // Redirect back with success message
             return redirect()->route('shop.store')->with('success', 'shop updated successfully!');

@@ -86,26 +86,47 @@ class DepartmentController extends Controller
     //     return redirect('/departments')->with('success', 'Department updated successfully!');
     // }
 
+    // public function update(Request $request, Department $department)
+    // {
+    //     $request->validate([
+    //         'dept_name' => 'required|string|max:255',
+    //         'other_taking' => 'boolean',
+    //     ]);
+
+    //     $updated= $department->update([
+    //         'dept_name' => $request->input('dept_name'),
+    //         'other_taking' => $request->input('other_taking', false),
+    //     ]);
+        
+
+    //     if ($updated) {
+    //         // Redirect back with success message
+    //         return redirect()->route('departments.store')->with('success', 'department updated successfully!');
+    //     } else {
+    //         // Redirect back with error message
+    //         return redirect()->route('departments.store')->with('error', 'Failed to update department !');
+    //     }
+    // }
+
     public function update(Request $request, Department $department)
     {
         $request->validate([
             'dept_name' => 'required|string|max:255',
-            'other_taking' => 'boolean',
         ]);
 
-        $updated= $department->update([
+        $updated = $department->update([
             'dept_name' => $request->input('dept_name'),
-            'other_taking' => $request->input('other_taking', false),
-        ]);
+            'other_taking' => $request->has('other_taking'),
+        ]);        
 
-        if ($updated) {
-            // Redirect back with success message
-            return redirect()->route('departments.store')->with('success', 'department updated successfully!');
-        } else {
-            // Redirect back with error message
-            return redirect()->route('departments.store')->with('error', 'Failed to update department !');
+        if ($updated !== false) {             
+            return redirect()->route('departments.store')->with('success', 'Department updated successfully!');
+        } else {            
+            return redirect()->route('departments.store')->with('error', 'Failed to update department!');
         }
     }
+
+
 
     // Delete
     public function deleteConfirmation(Department $department)

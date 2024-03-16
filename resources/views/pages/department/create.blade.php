@@ -15,8 +15,8 @@
                                 <p class="mb-0">Department Management</p>
                             </div>
                         </div>
-                        <div class="col-6 align-self-end text-end">
-                            <img src="image/customer-support.jpg" class="img-fluid illustration-img" alt="">
+                        <div class="col-6 align-self-end text-end">                            
+                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img" alt="">
                         </div>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <div style="height: 300px; overflow-y: auto;">
-                                    <table class="table" id="staffTable">
+                                    <table class="table" id="departmentTable">
                                         <thead>
                                             <tr>
                                                 <th scope="col">Department Name</th>
@@ -205,12 +205,12 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="dept_name">Department Name:</label>
-                        <input type="text" id="dept_name" name="dept_name"  required>
+                        <input type="text" class="form-control" id="dept_name" name="dept_name"  required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="other_taking">Other Taking:</label>
-                        <input type="checkbox" id="other_taking" name="other_taking" >
+                    <div class="form-group mt-3">
+                        <label for="other_taking" class="form-check-label">Other Taking:</label>
+                        <input type="checkbox" class="form-check-input" id="other_taking" name="other_taking" >
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -224,7 +224,7 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const editButtons = document.querySelectorAll('.edit-btn');
 
     editButtons.forEach(button => {
@@ -239,9 +239,14 @@
 
             fetch(`/departments/${departmentId}/edit`)
                 .then(response => response.json())
-                .then(data => {                        
+                .then(data => {     
                     editForm.querySelector('#dept_name').value = data.dept_name;
-                    editForm.querySelector('#description').value = data.description;                    
+                                        
+                    if (data.other_taking) {
+                        editForm.querySelector('#other_taking').checked = true;
+                    } else {
+                        editForm.querySelector('#other_taking').checked = false;
+                    }
                     $('#editDepartmentModal').modal('show');
                 })
                 .catch(error => {
@@ -255,6 +260,7 @@
         $('.modal-backdrop').remove();
     });
 });
+
 
 
 
