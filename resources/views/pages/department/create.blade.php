@@ -31,7 +31,7 @@
                                 Total Departments
                             </p>
                             <h4 class="mb-2">
-                                150
+                                {{ $departmentCount }}
                             </h4>                            
                             {{-- <div class="mb-0">
                                 <span class="badge text-success me-2">

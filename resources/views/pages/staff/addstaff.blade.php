@@ -31,7 +31,7 @@
                                 Total Staff
                             </p>
                             <h4 class="mb-2">
-                                15
+                                {{ $staffCount }}
                             </h4>                            
                             {{-- <div class="mb-0">
                                 <span class="mb-2">

@@ -51,11 +51,13 @@ class DepartmentController extends Controller
                 'other_taking' => $request->input('other_taking', false),
             ]);
 
-            return redirect()->route('departments.store')->with('success', 'departments registered successfully!');
+            return redirect()->route('departments.store')->with('success', 'Departments registered successfully!');
         }
-        $departments = Department::all();        
-        return view('pages.department.create', compact('departments'));
 
+        $departmentCount = Department::count(); // Count the number of departments
+        $departments = Department::all();        
+
+        return view('pages.department.create', compact('departments', 'departmentCount'));
     }
 
     // // Update

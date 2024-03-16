@@ -32,7 +32,7 @@
                                 Total Shops
                             </p>
                             <h4 class="mb-2">
-                                5
+                                {{ $shopCount }}
                             </h4>
                             <div class="mb-0">
                                 <span class="text-muted">
@@ -72,7 +72,7 @@
                                         <label for="name" class="form-label">Shop Name: </label>
                                         <input type="text" class="form-control" id="name" name="name">
                                         @error('name')
-                                        <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
+                                        <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center mt-3"
                                             role="alert">
                                             <span>{{ $message }}</span>
                                             <button type="button" class="btn-close" data-dismiss="alert"

@@ -43,19 +43,37 @@ class ShopController extends Controller
     //     return redirect()->route('shop.add')->with('success','Shop Created!');
     // }
 
-    public function store(Request $request){
+    // public function store(Request $request){
+    //     if ($request->isMethod('post')) {
+    //         $request->validate([
+    //             'name'=> 'required|max:255|min:5'            
+    //         ]);
+
+    //         Shop::create(request()->all());
+
+    //         return redirect()->route('shop.store')->with('success','Shop Created!');
+    //     }
+    //     $shops = Shop::all();
+    //     return view('pages.shop.create', compact('shops'));
+    // }
+
+    public function store(Request $request) {
         if ($request->isMethod('post')) {
             $request->validate([
-                'name'=> 'required|max:255|min:5'            
+                'name' => 'required|max:255|min:5'            
             ]);
-
-            Shop::create(request()->all());
-
-            return redirect()->route('shop.store')->with('success','Shop Created!');
+    
+            Shop::create($request->all());
+    
+            return redirect()->route('shop.store')->with('success', 'Shop Created!');
         }
+    
         $shops = Shop::all();
-        return view('pages.shop.create', compact('shops'));
+        $shopCount = $shops->count(); // Count the number of shops
+    
+        return view('pages.shop.create', compact('shops', 'shopCount'));
     }
+    
 
 
     public function update_view(Shop $shop){

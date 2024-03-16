@@ -41,36 +41,69 @@ class StaffController extends Controller
 
     //NEW ADD STAFF METHOD =================================================
 
+    // public function addstaff(Request $request)
+    // {
+    //     // Check if the request contains form data for adding a staff member
+    //     if ($request->isMethod('post')) {
+    //         // Validate the request data
+    //         $validatedData = $request->validate([
+    //             'staff_name' => 'required|string|max:255',
+    //             'username' => 'required|string|unique:staffs',
+    //             'password' => 'required|string',
+    //             'phonenumber' => 'required|string|max:20',
+    //         ]);
+
+    //         // Create a new staff member
+    //         Staff::create([
+    //             'staff_name' => $validatedData['staff_name'],
+    //             'username' => $validatedData['username'],
+    //             'password' => Hash::make($validatedData['password']),
+    //             'phonenumber' => $validatedData['phonenumber'],
+    //         ]);
+
+    //         // Redirect back to the index page with a success message
+    //         return redirect()->route('staff.addstaff')->with('success', 'Staff registered successfully!');
+    //     }
+
+    //     // If the request is not a POST request, retrieve all staff members
+    //     $staffs = Staff::all();
+
+    //     // Display the index view with the staff members
+    //     return view('pages.staff.addstaff', compact('staffs'));
+    // }
+
     public function addstaff(Request $request)
-{
-    // Check if the request contains form data for adding a staff member
-    if ($request->isMethod('post')) {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'staff_name' => 'required|string|max:255',
-            'username' => 'required|string|unique:staffs',
-            'password' => 'required|string',
-            'phonenumber' => 'required|string|max:20',
-        ]);
+    {
+        // Check if the request contains form data for adding a staff member
+        if ($request->isMethod('post')) {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'staff_name' => 'required|string|max:255',
+                'username' => 'required|string|unique:staffs',
+                'password' => 'required|string',
+                'phonenumber' => 'required|string|max:20',
+            ]);
 
-        // Create a new staff member
-        Staff::create([
-            'staff_name' => $validatedData['staff_name'],
-            'username' => $validatedData['username'],
-            'password' => Hash::make($validatedData['password']),
-            'phonenumber' => $validatedData['phonenumber'],
-        ]);
+            // Create a new staff member
+            Staff::create([
+                'staff_name' => $validatedData['staff_name'],
+                'username' => $validatedData['username'],
+                'password' => Hash::make($validatedData['password']),
+                'phonenumber' => $validatedData['phonenumber'],
+            ]);
 
-        // Redirect back to the index page with a success message
-        return redirect()->route('staff.addstaff')->with('success', 'Staff registered successfully!');
+            // Redirect back to the index page with a success message
+            return redirect()->route('staff.addstaff')->with('success', 'Staff registered successfully!');
+        }
+
+        // If the request is not a POST request, retrieve all staff members
+        $staffCount = Staff::count(); // Count the number of staff members
+        $staffs = Staff::all();
+
+        // Display the index view with the staff members
+        return view('pages.staff.addstaff', compact('staffs', 'staffCount'));
     }
 
-    // If the request is not a POST request, retrieve all staff members
-    $staffs = Staff::all();
-
-    // Display the index view with the staff members
-    return view('pages.staff.addstaff', compact('staffs'));
-}
 
     //======================================================================
     
