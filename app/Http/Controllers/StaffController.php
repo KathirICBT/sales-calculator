@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class StaffController extends Controller
 {
@@ -172,4 +174,57 @@ class StaffController extends Controller
 
         return view('staff.search', compact('staff'));
     }
+
+
+    public function resetPassword(Request $request)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'username' => 'required',
+            'newPassword' => 'required|string|min:8|confirmed',
+        ]);
+    
+        // Find the staff member by username
+        $staff = Staff::where('username', $validatedData['username'])->first();
+    
+        if (!$staff) {
+            // Handle case where staff member is not found
+            return redirect()->back()->withErrors(['username' => 'Staff member not found']);
+        }
+    
+        // Update the staff member's password
+        $staff->password = Hash::make($validatedData['newPassword']);
+        
+        try {
+            $staff->save();
+            // Redirect back with success message
+            return redirect()->back()->with('success', 'Password reset successfully');
+        } catch (\Exception $e) {
+            // Handle database save error
+            return redirect()->back()->with('error', 'Failed to reset password. Please try again.');
+        }
+    }
+    
+
+// public function showProfile()
+// {
+//     // Retrieve the authenticated user's staff information
+//     $staff = Auth::user();
+//     // Pass the staff information to the view
+//     return view('auth.profile.profile', compact('staff'));
+// }
+
+public function showProfile()
+{
+    // Check if the user is logged in
+    if (Auth::guard('staff')->check()) {
+        // Get the authenticated staff user
+        $staff = Auth::guard('staff')->user();
+        
+        // Return the staff details
+        return view('auth.profile.profile')->with('staff', $staff);
+   
+}
+}
+    
 }
