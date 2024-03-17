@@ -13,6 +13,7 @@
                                             <div class="p-3 m-1">
                                                 <h4>Welcome, {{ session('username') }}</h4>
                                                 <h4>{{ session('username') }}</h4>
+                                                {{-- <h4>{{ $staff->staff_name }}</h4> --}}
                                                 <p class="mb-0">Staff Dashboard, Sales Calculator</p>
                                             </div>
                                         </div>

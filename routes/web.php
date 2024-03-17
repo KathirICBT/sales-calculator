@@ -272,6 +272,10 @@ Route::get('/user/profile', [StaffController::class, 'showProfile'])->name('user
 
 Route::post('reset-password', [StaffController::class, 'resetPassword'])->name('staff.resetPassword');
 
+//LOGOUT ======================================================================
+Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+
 
 
 

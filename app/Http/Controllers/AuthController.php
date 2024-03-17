@@ -33,24 +33,59 @@ class AuthController extends Controller
     // }
 
 
+    // public function authenticate(Request $request)
+    // {
+    //     $credentials = $request->only('username', 'password');
+
+    //     if (Auth::guard('staff')->attempt($credentials)) {
+    //         // Authentication passed
+    //         request()->session()->regenerate();
+    //         $user = Auth::guard('staff')->user();
+    //         session(['username' => $user->username]);
+    //         return redirect()->route("dashboard")->with('username', $user->username);
+    //     }
+
+    //     // Authentication failed
+    //     return redirect()->route("auth.login")->withErrors([
+    //         "email"=> "No matching user found wiht the provided email and password",
+    //         "password"=> "No matching user found wiht the provided email and password"
+    //     ]);
+    // }
+
     public function authenticate(Request $request)
     {
         $credentials = $request->only('username', 'password');
 
         if (Auth::guard('staff')->attempt($credentials)) {
             // Authentication passed
-            request()->session()->regenerate();
+            $request->session()->regenerate();
             $user = Auth::guard('staff')->user();
-            session(['username' => $user->username]);
-            return redirect()->route("dashboard")->with('username', $user->username);
+            $request->session()->put('username', $user->username); // Storing username in session
+            return redirect()->route("dashboard");
         }
 
         // Authentication failed
         return redirect()->route("auth.login")->withErrors([
-            "email"=> "No matching user found wiht the provided email and password",
-            "password"=> "No matching user found wiht the provided email and password"
+            "email"=> "No matching user found with the provided email and password",
+            "password"=> "No matching user found with the provided email and password"
         ]);
     }
+
+//LOGOUT =============================================================
+
+    public function logout(Request $request)
+    {
+        Auth::guard('staff')->logout(); // Log the user out
+        $request->session()->invalidate(); // Invalidate the session
+        $request->session()->regenerateToken(); // Regenerate the CSRF token
+
+        return redirect()->route('auth.login'); // Redirect to the login page
+    }
+
+
+
+//====================================================================
+
 
 
     public function showRegistrationForm()
@@ -104,16 +139,16 @@ class AuthController extends Controller
     //     return view('auth.register');
     // }
     public function showProfile()
-{
-    // Check if the user is logged in
-    if (Auth::guard('staff')->check()) {
-        // Get the authenticated staff user
-        $staff = Auth::guard('staff')->user();
-        
-        // Return the staff details
-        return view('auth.profile.profile')->with('staff', $staff);
-   
-}
-}
+    {
+        // Check if the user is logged in
+        if (Auth::guard('staff')->check()) {
+            // Get the authenticated staff user
+            $staff = Auth::guard('staff')->user();
+            
+            // Return the staff details
+            return view('auth.profile.profile')->with('staff', $staff);
+    
+        }
+    }
 
 }

@@ -8,6 +8,8 @@ use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
+
 
 class StaffController extends Controller
 {
@@ -176,34 +178,77 @@ class StaffController extends Controller
     }
 
 
-    public function resetPassword(Request $request)
-    {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'username' => 'required',
-            'newPassword' => 'required|string|min:8|confirmed',
-        ]);
-    
-        // Find the staff member by username
-        $staff = Staff::where('username', $validatedData['username'])->first();
-    
-        if (!$staff) {
-            // Handle case where staff member is not found
-            return redirect()->back()->withErrors(['username' => 'Staff member not found']);
-        }
-    
-        // Update the staff member's password
-        $staff->password = Hash::make($validatedData['newPassword']);
+    // public function resetPassword(Request $request)
+    // {      
+    //     //dd($request);  
+    //     //dump($request->all());
+    //     // Validate the request data
+    //     $validatedData = $request->validate([
+    //         'username' => 'required',
+    //         'newPassword' => 'required|string|min:8|confirmed',
+    //     ]);
         
-        try {
-            $staff->save();
-            // Redirect back with success message
-            return redirect()->back()->with('success', 'Password reset successfully');
-        } catch (\Exception $e) {
-            // Handle database save error
-            return redirect()->back()->with('error', 'Failed to reset password. Please try again.');
-        }
+    //     // dump($validatedData);
+    //     // dd($validatedData);
+    
+    //     // Find the staff member by username
+    //     $staff = Staff::where('username', $validatedData['username'])->first();
+
+        
+    
+    //     if (!$staff) {
+    //         // Handle case where staff member is not found
+    //         return redirect()->back()->withErrors(['username' => 'Staff member not found']);
+    //     }
+    
+    //     // Update the staff member's password
+    //     $staff->password = Hash::make($validatedData['newPassword']);
+        
+    //     try {
+    //         $staff->save();
+    //         // Redirect back with success message
+    //         return redirect()->back()->with('success', 'Password reset successfully');
+    //     } catch (\Exception $e) {
+    //         // Handle database save error
+    //         return redirect()->back()->with('error', 'Failed to reset password. Please try again.');
+    //     }
+    // }
+
+
+public function resetPassword(Request $request)
+{      
+    // Validate the request data
+    $validator = Validator::make($request->all(), [
+        'username' => 'required',
+        'newPassword' => 'required|string|min:5|confirmed',
+    ]);
+
+    // Check if validation fails
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
     }
+
+    // Find the staff member by username
+    $staff = Staff::where('username', $request->username)->first();
+
+    if (!$staff) {
+        // Handle case where staff member is not found
+        return redirect()->back()->withErrors(['username' => 'Staff member not found']);
+    }
+
+    // Update the staff member's password
+    $staff->password = Hash::make($request->newPassword);
+    
+    try {
+        $staff->save();
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Password reset successfully');
+    } catch (\Exception $e) {
+        // Handle database save error
+        return redirect()->back()->with('error', 'Failed to reset password. Please try again.');
+    }
+}
+
     
 
 // public function showProfile()
