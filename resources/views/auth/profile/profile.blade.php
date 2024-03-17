@@ -79,9 +79,9 @@
                                                 </div>
                                                 <div class="text-center">
                                                     <button type="button" id="forgotPasswordButton"
-                                                        class="btn btn-primary" data-toggle="modal"
+                                                        class="btn btn-primary btn-sm rounded-pill" data-toggle="modal"
                                                         data-target="#forgotPasswordModal">
-                                                        Forget Password
+                                                        Reset Password
                                                     </button>
                                                 </div>
                                             </div>
