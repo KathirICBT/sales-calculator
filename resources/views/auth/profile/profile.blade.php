@@ -76,7 +76,6 @@
                                                         <h5 class="my-3">{{ $staff->staff_name }}</h5>
 
                                                     </div>
-
                                                 </div>
                                                 <div class="text-center">
                                                     <button type="button" id="forgotPasswordButton"
@@ -85,7 +84,6 @@
                                                         Forget Password
                                                     </button>
                                                 </div>
-
                                             </div>
                                             <div class="col-lg-8">
                                                 <div class="card mb-4">
@@ -182,24 +180,19 @@
 
 <script>
     $(document).ready(function() {
-        $('#forgotPasswordButton').on('click', function() {
-            // Set the value of the username input field
+        $('#forgotPasswordButton').on('click', function() {            
             var username = '{{ $staff->username }}';
-            console.log('Username:', username); // Debugging statement
+            console.log('Username:', username); 
             $('#username').val(username);
-
-            // Show the modal
+            
             $('#forgotPasswordModal').modal('show');
         });
 
-        $('#resetPasswordButton').on('click', function() {
-            // Get the form element
+        $('#resetPasswordButton').on('click', function() {            
             var form = $('#forgotPasswordForm');
-
-            // Set the form action dynamically
+           
             form.attr('action', '{{ route('staff.resetPassword') }}');
-
-            // Submit the form
+            
             form.submit();
         });
 
