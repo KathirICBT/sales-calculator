@@ -13,6 +13,7 @@ class Sale extends Model
         'staff_id',
         'shop_id',
         'amount',
+        'shift_id',
     ];
 
     public function department()
@@ -28,5 +29,10 @@ class Sale extends Model
     public function shop()
     {
         return $this->belongsTo(Shop::class, 'shop_id');
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class, 'shift_id');
     }
 }

@@ -27,36 +27,83 @@ class ShiftController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'shop_id' => 'required|numeric',
-            'staff_id' => 'required|numeric',
-        ]);
+       
+        if ($request->isMethod('post')) {
+            
+            $request->validate([
+                'shop_id' => 'required|numeric',
+                'staff_id' => 'required|numeric',
+                'date' => 'required|date',
+                'start_time' => 'required',
+                'end_time' => 'required',
+            ]);
+            $date = Carbon::parse($request->input('date'));
 
-        Shift::create($request->all());
+    // Create the Shift model instance with specific fields
+    $shift = new Shift();
+    $shift->shop_id = $request->input('shop_id');
+    $shift->staff_id = $request->input('staff_id');
+    $shift->date = $date; // Assign the parsed date directly
+    $shift->start_time = $request->input('start_time');
+    $shift->end_time = $request->input('end_time');
+    $shift->save();
 
-        return redirect()->route('shifts.create')->with('success', 'Shift added successfully!');
-    }
-
-    public function edit($id)
-    {
-        $shift = Shift::findOrFail($id);
+            return redirect()->route('shifts.store')->with('success', 'Shift added successfully!');
+        }
         $shops = Shop::all();
         $staffs = Staff::all();
-        return view('shifts.edit', compact('shift', 'shops', 'staffs'));
+        $shifts = Shift::all();
+        return view('pages.shift.create', compact('shops', 'staffs','shifts'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'shop_id' => 'required|numeric',
-            'staff_id' => 'required|numeric',
-        ]);
+    // public function edit($id)
+    // {
+    //     $shift = Shift::findOrFail($id);
+    //     $shops = Shop::all();
+    //     $staffs = Staff::all();
+    //     return view('shifts.edit', compact('shift', 'shops', 'staffs'));
+    // }
+    
+    public function edit(Shift $shift)
+{
+    // Return the shift details as JSON response
+    return response()->json($shift);
+}
 
-        $shift = Shift::findOrFail($id);
-        $shift->update($request->all());
 
-        return redirect()->route('shifts.index')->with('success', 'Shift updated successfully!');
-    }
+
+public function update(Request $request, $id)
+{
+    // Validate the request data
+    $request->validate([
+        'shop_id' => 'required',
+        'date' => 'required|date',
+        'start_time' => 'required',
+        'end_time' => 'required',
+    ]);
+
+    // Find the shift by ID
+    $shift = Shift::findOrFail($id);
+
+    // Update the shift details
+    $shift->shop_id = $request->input('shop_id');
+    $shift->date = $request->input('date');
+    $shift->start_time = $request->input('start_time');
+    $shift->end_time = $request->input('end_time');
+
+    // Save the updated shift
+    $shift->save();
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Shift details updated successfully.');
+}
+
+
+    public function showShift($id)
+{
+    $shift = Shift::find($id); // Assuming you're fetching the shift from the database
+    return view('shifts.show', compact('shift'));
+}
 
     public function destroy($id)
     {

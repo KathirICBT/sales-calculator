@@ -11,6 +11,9 @@ class Shift extends Model
     protected $fillable = [
         'shop_id',
         'staff_id',
+        'date',
+        'start_time',
+        'end_time',
     ];
 
     

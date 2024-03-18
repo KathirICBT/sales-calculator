@@ -131,12 +131,12 @@ Route::get('/shops/search', [ShopController::class, 'search'])->name('shop.searc
 //Add
 Route::get('/shifts', [ShiftController::class, 'index'])->name('shifts.index');
 
-Route::get('/shifts/create', [ShiftController::class, 'create'])->name('shifts.create');
-Route::post('/shifts', [ShiftController::class, 'store'])->name('shifts.store');
+// Route::get('/shifts/create', [ShiftController::class, 'create'])->name('shifts.create');
+// Route::post('/shifts', [ShiftController::class, 'store'])->name('shifts.store');
 
-//Update
-Route::get('/shifts/{id}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
-Route::put('/shifts/{id}', [ShiftController::class, 'update'])->name('shifts.update');
+// //Update
+// Route::get('/shifts/{id}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
+// Route::put('/shifts/{id}', [ShiftController::class, 'update'])->name('shifts.update');
 
 //delete
 Route::delete('/shifts/{id}', [ShiftController::class, 'destroy'])->name('shifts.destroy');
@@ -276,6 +276,16 @@ Route::post('reset-password', [StaffController::class, 'resetPassword'])->name('
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 
+//SHIFT register==============================================================================
+Route::get('/pages/shift/create', [ShiftController::class, 'store'])->name('shifts.store');
+Route::post('/pages/shift/create', [ShiftController::class, 'store'])->name('shifts.store.submit');
+
+//Update
+
+
+Route::get('/shifts/{shift}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
+
+Route::put('/shifts/{shiftId}', [ShiftController::class, 'update'])->name('shifts.update');
 
 
 

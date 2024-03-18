@@ -41,6 +41,12 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
+                        <a href="{{route('shifts.store')}}" class="sidebar-link collapsed" >
+                            <i class="fa-solid fa-sliders pe-2"></i>
+                            Shift 
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="{{route('staff.addstaff')}}" class="sidebar-link collapsed" >
                             <i class="fa-regular fa-user pe-2"></i>
                             Staff 
