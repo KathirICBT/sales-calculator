@@ -153,7 +153,7 @@
                                                                 @csrf
                                                                 @method('delete')
                                                                 <button class="btn btn-danger btn-sm rounded-pill"
-                                                                    style="width: 40%;"
+                                                                    style="width: 50%;"
                                                                     onclick="return confirm('Are you sure you want to delete this Shift?')"
                                                                     type="submit">Delete</button>
                                                             </form>
@@ -169,6 +169,64 @@
                     </div>
                 </div>
             </div>
+    
+        </div>
+    </div>
+<!-- extra -->
+    <div class="card border-0">
+        <div class="card-header">
+            <h5 class="card-title">
+                Add Sales Details
+            </h5>
+            <p>
+                @if(session('success'))
+                    <div class="alert" style="color: green;">{{ session('success') }}</div>
+                 @endif
+            </p>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Shift</th>
+                        <th>Department</th>                                      
+                        <th>Amount</th>
+                        <th></th>
+                        </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <form class="row g-3" method="post" action="{{ route('sales.store') }}">
+                                @csrf
+                                <td>
+                                    <input type="text" name="shift_id" id="shift_id" value="{{ $shift->id }}" readonly>
+                                </td>
+                                <td>
+                                    <div class="col-md-6">
+                                        <!-- <label for="dept_id" style="display: inline;">Department:</label> -->
+                                        <select name="dept_id" id="dept_id" required>
+                                            <option value="" >Select a Department</option>
+                                                @foreach($departments as $department)
+                                                    <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
+                                                @endforeach
+                                        </select>
+                                    </div>  
+                                </td>
+                                <td>
+                                    <div class="col-md-6">
+                                        <!-- <label for="amount" style="display: inline;" >Amount:</label> -->
+                                        <input type="text" id="amount" name="amount" required>
+                                    </div>
+                                </td>                        
+                                <td>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary rounded-pill">Add</button>                                        
+                                    </div>
+                                </td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <!-- Forms end -->        
@@ -229,6 +287,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

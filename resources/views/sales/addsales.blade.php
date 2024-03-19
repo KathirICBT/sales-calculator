@@ -15,11 +15,8 @@
         @if(session('success'))
                 <div class="alert" style="color: green;">{{ session('success') }}</div>
         @endif
-
-
         <form method="post" action="{{ route('sales.store') }}">
-    @csrf
-
+        @csrf
     <div class="form-group">
         <label for="dept_id" style="display: inline;margin-right:20px;">Department:</label>
         <select name="dept_id" id="dept_id" required>

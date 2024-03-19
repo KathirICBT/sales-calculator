@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('dept_id');
-            $table->unsignedBigInteger('staff_id');
-            $table->unsignedBigInteger('shop_id');
+            $table->unsignedBigInteger('staff_id')->nullable();
+            $table->unsignedBigInteger('shop_id')->nullable();
             $table->decimal('amount', 10, 2); 
 
             // Define foreign key constraints

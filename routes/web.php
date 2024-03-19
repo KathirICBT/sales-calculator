@@ -73,9 +73,9 @@ Route::get('/shops/add_shop', [ShopController::class, 'view_shop'])->name('shop.
 Route::get('/sales/addsales', [SaleController::class, 'create'])->name('sales.create');
 //sales
 //register 
-Route::get('/sales/addsales', [SaleController::class, 'create'])->name('sales.create');
+// Route::get('/sales/addsales', [SaleController::class, 'create'])->name('sales.create');
 
-Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+// Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
 
 // Read (Index)
 
@@ -94,7 +94,7 @@ Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.sear
 
 
 
-Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+//Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
 
 // Read (Index)
 Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
@@ -281,11 +281,13 @@ Route::get('/pages/shift/create', [ShiftController::class, 'store'])->name('shif
 Route::post('/pages/shift/create', [ShiftController::class, 'store'])->name('shifts.store.submit');
 
 //Update
-
-
 Route::get('/shifts/{shift}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
-
 Route::put('/shifts/{shiftId}', [ShiftController::class, 'update'])->name('shifts.update');
 
+//Sale register==============================================================================
+//Route::get('/sales/addsales', [SaleController::class, 'create'])->name('sales.create');
+Route::get('/sales', [ShiftController::class, 'storeSales'])->name('sales.store');
+Route::post('/sales', [ShiftController::class, 'storeSales'])->name('sales.store.submit');
+//Route::post('sales', 'ShiftController@storeSales')->name('sales.store');
 
 
