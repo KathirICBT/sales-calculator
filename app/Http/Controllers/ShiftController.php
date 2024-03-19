@@ -39,21 +39,21 @@ class ShiftController extends Controller
             ]);
             $date = Carbon::parse($request->input('date'));
 
-    // Create the Shift model instance with specific fields
-    $shift = new Shift();
-    $shift->shop_id = $request->input('shop_id');
-    $shift->staff_id = $request->input('staff_id');
-    $shift->date = $date; // Assign the parsed date directly
-    $shift->start_time = $request->input('start_time');
-    $shift->end_time = $request->input('end_time');
-    $shift->save();
+            // Create the Shift model instance with specific fields
+            $shift = new Shift();
+            $shift->shop_id = $request->input('shop_id');
+            $shift->staff_id = $request->input('staff_id');
+            $shift->date = $date; // Assign the parsed date directly
+            $shift->start_time = $request->input('start_time');
+            $shift->end_time = $request->input('end_time');
+            $shift->save();
 
             return redirect()->route('shifts.store')->with('success', 'Shift added successfully!');
         }
         $shops = Shop::all();
         $staffs = Staff::all();
         $shifts = Shift::all();
-        return view('pages.shift.create', compact('shops', 'staffs','shifts'));
+        return view('pages.sales.create', compact('shops', 'staffs','shifts'));
     }
 
     // public function edit($id)

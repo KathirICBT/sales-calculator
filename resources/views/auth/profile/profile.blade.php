@@ -143,7 +143,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-
             </div>
             <form id="forgotPasswordForm" method="POST">
                 @csrf
@@ -153,12 +152,11 @@
                         <input type="text" class="form-control" id="username" name="username"
                             value="{{ $staff->username }}" readonly>
                     </div>
-
-                    <div class="form-group" id="newPasswordGroup">
+                    <div class="form-group mt-3" id="newPasswordGroup">
                         <label for="newPassword">New Password</label>
                         <input type="password" class="form-control" id="newPassword" name="newPassword" required>
                     </div>
-                    <div class="form-group" id="confirmPasswordGroup">
+                    <div class="form-group mt-3" id="confirmPasswordGroup">
                         <label for="confirmPassword">Confirm Password</label>
                         <input type="password" class="form-control" id="confirmPassword" name="newPassword_confirmation"
                             required>
@@ -169,7 +167,6 @@
                         data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="resetPasswordButton">Reset Password</button>
                 </div>
-
             </form>
         </div>
     </div>

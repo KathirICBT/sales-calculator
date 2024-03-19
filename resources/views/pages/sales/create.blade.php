@@ -28,7 +28,7 @@
                     <div class="d-flex align-items-start">
                         <div class="flex-grow-1">
                             <p class="mb-2">
-                                Total Staff
+                                Total Sales
                             </p>
                             <h4 class="mb-2">
                                 
@@ -47,6 +47,114 @@
             </div>
         </div>
     </div>
+
+
+    <div class="row">        
+        <div class="col-12 col-md-12 d-flex">
+            <div class="card flex-fill border-0">
+                <div class="card-body p-0 d-flex flex-fill">
+                    <div class="row g-0 w-100">
+                        <div class="col-12">
+                            <div class="p-3 m-1">                                
+                                @if(session('success'))
+                                <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
+                                    role="alert">
+                                    <span>{{ session('success') }}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                                @endif
+                                <form class="row g-3" method="POST" action="{{ route('shifts.store') }}">
+                                    @csrf
+                                    <div class="col-md-12">                                           
+                                        {{-- <label for="staff_name" class="form-label">Staff Name: </label> --}}
+                                        @foreach($staffs as $staff)
+                                        @if(session('username')==$staff->username)
+                                        {{-- <input type="text" class="form-control" id="staff_name_display" value="{{ $staff->staff_name }}" readonly> --}}
+                                        <input type="hidden" id="staff_id" name="staff_id" value="{{ $staff->id }}">
+                                        @endif
+                                        @endforeach
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="shop_id" class="form-label">Shop:</label>
+                                        <select class="form-select" name="shop_id" id="shop_id" required>
+                                            <option value="" >Select a Shop</option>
+                                            @foreach($shops as $shop)
+                                                <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="shift_date" class="form-label">Shift Date:</label>
+                                        <input type="date" class="form-control" id="date" name="date" required >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="start_time" class="form-label">Start Time:</label>
+                                        <input type="time" class="form-control" id="start_time" name="start_time" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="end_time" class="form-label">End Time:</label>
+                                        <input type="time" class="form-control" id="end_time" name="end_time" required>
+                                    </div>
+                                    {{-- <div class="col-12">
+                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>                                        
+                                    </div> --}}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- TABLE START --}}
+
+    <div class="card border-0">
+        <div class="card-header">
+            <h5 class="card-title">
+                Total Sales
+            </h5>
+            <h6 class="card-subtitle text-muted">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ducimus,
+                necessitatibus reprehenderit itaque!
+            </h6>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{-- TABLE END --}}
 
     <!-- Forms -->
     <div class="row">
@@ -220,6 +328,7 @@
                         <input type="time" class="form-control" id="end_time" name="end_time">
                     </div>
                 </div>
+                
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
