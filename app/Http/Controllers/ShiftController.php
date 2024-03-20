@@ -8,6 +8,11 @@ use App\Models\Shop;
 use App\Models\Staff;
 use Carbon\Carbon;
 
+use App\Models\Sale; // Import Sale model
+use App\Models\Department;
+use Illuminate\Support\Facades\DB; 
+
+
 class ShiftController extends Controller
 {
     public function index()
@@ -53,7 +58,8 @@ class ShiftController extends Controller
         $shops = Shop::all();
         $staffs = Staff::all();
         $shifts = Shift::all();
-        return view('pages.sales.create', compact('shops', 'staffs','shifts'));
+        $departments = Department::all();
+        return view('pages.shift.create', compact('shops', 'staffs','shifts','departments'));
     }
 
     // public function edit($id)
@@ -167,5 +173,78 @@ public function update(Request $request, $id)
         
         return view('shiftstaff.search');
     }
+
+
+    // public function storeSales(Request $request){
+    
+    //     if ($request->isMethod('post')) {
+    //         $validatedData = $request->validate([
+    //             'dept_id' => 'required|numeric',
+    //             'shift_id' => 'required|numeric',
+    //             'amount' => 'required|numeric',
+    //         ]);
+
+    //         // Check if a record with the same department, date, shop and staff exists
+    //         $existingSale = Sale::where('dept_id', $validatedData['dept_id'])
+    //                             ->where('shift_id', $validatedData['shift_id'])
+    //                             ->whereDate('created_at', now()->toDateString())
+    //                             ->first();
+
+    //         if ($existingSale) {
+    //             // Update the existing record
+    //             $existingSale->amount += $validatedData['amount'];
+    //             $existingSale->save();
+    //         } else {
+    //             // Create a new record
+    //             Sale::create($validatedData);
+    //         }
+    //         // Redirect back with success message
+    //         return redirect()->back()->with('success', 'Sales added successfully.');
+    //     }
+    //     $departments = Department::all();
+    //     $shifts = Shift::all();
+    //     return view('pages.shift.create', compact('departments', 'shifts'));
+    // }
+
+    public function storeSales(Request $request)
+{
+    // Validate the request data
+    $request->validate([
+        'dept_id' => 'required|numeric',
+        'shift_id' => 'required|numeric',
+        'amount' => 'required|numeric',
+    ]);
+
+    // Check if a record with the same department and shift exists for today
+    $existingSale = Sale::where('dept_id', $request->dept_id)
+                        ->where('shift_id', $request->shift_id)
+                        ->whereDate('created_at', now()->toDateString())
+                        ->first();
+
+    if ($existingSale) {
+        // Update the existing sale record
+        $existingSale->amount += $request->amount;
+        $existingSale->save();
+    } else {
+        // Create a new sale record
+        // Sale::create([
+        //     'dept_id' => $request->dept_id,
+        //     'shift_id' => $request->shift_id,
+        //     'amount' => $request->amount,
+        // ]);
+        DB::table('sales')->insert([
+            'dept_id' => $request->dept_id,
+        'shift_id' => $request->shift_id,
+        'amount' => $request->amount,
+        'created_at' => now(),
+        'updated_at' => now()
+        ]);
+    
+    }
+
+    // Redirect back with success message
+    return redirect()->back()->with('success', 'Sales added successfully.');
+}
+
 
 }

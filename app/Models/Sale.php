@@ -10,8 +10,8 @@ class Sale extends Model
     use HasFactory;
     protected $fillable = [
         'dept_id',
-        'staff_id',
-        'shop_id',
+        // 'staff_id',
+        // 'shop_id',
         'amount',
         'shift_id',
     ];
@@ -21,15 +21,15 @@ class Sale extends Model
         return $this->belongsTo(Department::class, 'dept_id');
     }
 
-    public function staff()
-    {
-        return $this->belongsTo(Staff::class, 'staff_id');
-    }
+    // public function staff()
+    // {
+    //     return $this->belongsTo(Staff::class, 'staff_id');
+    // }
 
-    public function shop()
-    {
-        return $this->belongsTo(Shop::class, 'shop_id');
-    }
+    // public function shop()
+    // {
+    //     return $this->belongsTo(Shop::class, 'shop_id');
+    // }
 
     public function shift()
     {
