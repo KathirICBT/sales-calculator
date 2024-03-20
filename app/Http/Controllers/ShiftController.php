@@ -365,45 +365,86 @@ protected function storeShift(Request $request)
         return $shift->id;
     }
 
+    // protected function storeSales(Request $request, $shiftId)
+    // {
+    //     // Validate the incoming sales data
+    //     $request->validate([
+    //         'dept_id' => 'required|array', // Ensure dept_id is an array
+    //         'dept_id.*' => 'required|numeric', // Validate each department ID
+    //         'amount' => 'required|array', // Ensure amount is an array
+    //         'amount.*' => 'required|numeric', // Validate each amount
+    //     ]);
+
+    //     try {
+    //         // Loop through each department ID and amount to create or update sales records
+    //         foreach ($request->dept_id as $key => $deptId) {
+    //             // Find existing sale record for the department ID and shift ID
+    //             $sale = Sale::where('dept_id', $deptId)
+    //                 ->where('shift_id', $shiftId)
+    //                 ->first();
+
+    //             if ($sale) {
+    //                 // If sale record exists, update the amount
+    //                 $sale->amount += $request->amount[$key];
+    //                 $sale->save();
+    //             } else {
+    //                 // If no sale record exists, create a new one
+    //                 Sale::create([
+    //                     'dept_id' => $deptId,
+    //                     'amount' => $request->amount[$key],
+    //                     'shift_id' => $shiftId,
+    //                 ]);
+    //             }
+    //         }
+
+    //         // Redirect back with success message
+    //         return redirect()->back()->with('success', 'Sales data saved successfully!');
+    //     } catch (\Exception $e) {
+    //         // Handle any errors that occur during the process
+    //         return redirect()->back()->with('error', 'An error occurred while processing the request.');
+    //     }
+    // }
+
     protected function storeSales(Request $request, $shiftId)
-    {
-        // Validate the incoming sales data
-        $request->validate([
-            'dept_id' => 'required|array', // Ensure dept_id is an array
-            'dept_id.*' => 'required|numeric', // Validate each department ID
-            'amount' => 'required|array', // Ensure amount is an array
-            'amount.*' => 'required|numeric', // Validate each amount
-        ]);
+{
+    // Validate the incoming sales data
+    $validatedData = $request->validate([
+        'dept_id' => 'required|array',
+        'dept_id.*' => 'required|numeric',
+        'amount' => 'required|array',
+        'amount.*' => 'required|numeric',
+    ]);
 
-        try {
-            // Loop through each department ID and amount to create or update sales records
-            foreach ($request->dept_id as $key => $deptId) {
-                // Find existing sale record for the department ID and shift ID
-                $sale = Sale::where('dept_id', $deptId)
-                    ->where('shift_id', $shiftId)
-                    ->first();
+    try {
+        // Loop through each department ID and amount to create or update sales records
+        foreach ($validatedData['dept_id'] as $key => $deptId) {
+            // Find existing sale record for the department ID and shift ID
+            $sale = Sale::where('dept_id', $deptId)
+                        ->where('shift_id', $shiftId)
+                        ->first();
 
-                if ($sale) {
-                    // If sale record exists, update the amount
-                    $sale->amount += $request->amount[$key];
-                    $sale->save();
-                } else {
-                    // If no sale record exists, create a new one
-                    Sale::create([
-                        'dept_id' => $deptId,
-                        'amount' => $request->amount[$key],
-                        'shift_id' => $shiftId,
-                    ]);
-                }
+            if ($sale) {
+                // If sale record exists, update the amount
+                $sale->amount += $validatedData['amount'][$key];
+                $sale->save();
+            } else {
+                // If no sale record exists, create a new one
+                Sale::create([
+                    'dept_id' => $deptId,
+                    'amount' => $validatedData['amount'][$key],
+                    'shift_id' => $shiftId,
+                ]);
             }
-
-            // Redirect back with success message
-            return redirect()->back()->with('success', 'Sales data saved successfully!');
-        } catch (\Exception $e) {
-            // Handle any errors that occur during the process
-            return redirect()->back()->with('error', 'An error occurred while processing the request.');
         }
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Sales data saved successfully!');
+    } catch (\Exception $e) {
+        // Handle any errors that occur during the process
+        return redirect()->back()->with('error', 'An error occurred while processing the request.');
     }
+}
+
 
     // public function store(Request $request)
     // {
