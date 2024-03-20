@@ -16,7 +16,8 @@
                             </div>
                         </div>
                         <div class="col-6 align-self-end text-end">
-                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img" alt="">
+                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img"
+                                alt="">
                         </div>
                     </div>
                 </div>
@@ -31,8 +32,8 @@
                                 Total Sales
                             </p>
                             <h4 class="mb-2">
-                                
-                            </h4>                            
+
+                            </h4>
                             {{-- <div class="mb-0">
                                 <span class="mb-2">
                                     +9.0%
@@ -49,13 +50,13 @@
     </div>
 
 
-    <div class="row">        
+    <div class="row">
         <div class="col-12 col-md-12 d-flex">
             <div class="card flex-fill border-0">
                 <div class="card-body p-0 d-flex flex-fill">
                     <div class="row g-0 w-100">
                         <div class="col-12">
-                            <div class="p-3 m-1">                                
+                            <div class="p-3 m-1">
                                 @if(session('success'))
                                 <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
                                     role="alert">
@@ -66,11 +67,12 @@
                                 @endif
                                 <form class="row g-3" method="POST" action="{{ route('shifts.store') }}">
                                     @csrf
-                                    <div class="col-md-12">                                           
+                                    <div class="col-md-12">
                                         {{-- <label for="staff_name" class="form-label">Staff Name: </label> --}}
                                         @foreach($staffs as $staff)
                                         @if(session('username')==$staff->username)
-                                        {{-- <input type="text" class="form-control" id="staff_name_display" value="{{ $staff->staff_name }}" readonly> --}}
+                                        {{-- <input type="text" class="form-control" id="staff_name_display"
+                                            value="{{ $staff->staff_name }}" readonly> --}}
                                         <input type="hidden" id="staff_id" name="staff_id" value="{{ $staff->id }}">
                                         @endif
                                         @endforeach
@@ -79,28 +81,29 @@
                                     <div class="col-md-3">
                                         <label for="shop_id" class="form-label">Shop:</label>
                                         <select class="form-select" name="shop_id" id="shop_id" required>
-                                            <option value="" >Select a Shop</option>
+                                            <option value="">Select a Shop</option>
                                             @foreach($shops as $shop)
-                                                <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                                            <option value="{{ $shop->id }}">{{ $shop->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="shift_date" class="form-label">Shift Date:</label>
-                                        <input type="date" class="form-control" id="date" name="date" required >
+                                        <input type="date" class="form-control" id="date" name="date" required>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="start_time" class="form-label">Start Time:</label>
-                                        <input type="time" class="form-control" id="start_time" name="start_time" required>
+                                        <input type="time" class="form-control" id="start_time" name="start_time"
+                                            required>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="end_time" class="form-label">End Time:</label>
                                         <input type="time" class="form-control" id="end_time" name="end_time" required>
                                     </div>
                                     {{-- <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>                                        
+                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>
                                     </div> --}}
-                                </form>
+                                {{-- </form> --}}
                             </div>
                         </div>
                     </div>
@@ -111,46 +114,63 @@
 
     {{-- TABLE START --}}
 
-    <div class="card border-0">
-        <div class="card-header">
-            <h5 class="card-title">
-                Total Sales
-            </h5>
-            <h6 class="card-subtitle text-muted">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum ducimus,
-                necessitatibus reprehenderit itaque!
-            </h6>
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="row">
+        <div class="col-12 col-md-6 d-flex">
+            <div class="card flex-fill border-0">
+                <div class="card-body p-0 d-flex flex-fill">
+                    <div class="row g-0 w-100">
+                        <div class="col-12">
+                            <div class="p-3 m-1">
+                                <div class="card-header">
+                                    <h5 class="card-title">
+                                        Add Sales Details
+                                    </h5>
+                                    <p>
+                                        @if(session('success'))
+                                        <div class="alert" style="color: green;">{{ session('success') }}</div>
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="card-body">                                    
+                                    {{-- <form class="row g-3" method="post" action="{{ route('sales.store') }}">
+                                        @csrf --}}
+                                        <table class="table" id="repeater-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Department</th>
+                                                    <th>Amount</th>
+                                                    <th><button type="button" id="add-item" class="btn btn-primary rounded">Add Row</button></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="repeater-item">
+                                                    <td>
+                                                        <select name="dept_id[]" class="form-select" required>
+                                                            <option value="">Select a Department</option>
+                                                            @foreach($departments as $department)
+                                                            <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="amount[]" class="form-control" required>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger remove-item">Remove</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="col-12">                                            
+                                            <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -175,11 +195,12 @@
                                 @endif
                                 <form class="row g-3" method="POST" action="{{ route('shifts.store') }}">
                                     @csrf
-                                    <div class="col-md-6">                                           
+                                    <div class="col-md-6">
                                         <label for="staff_name" class="form-label">Staff Name: </label>
                                         @foreach($staffs as $staff)
                                         @if(session('username')==$staff->username)
-                                        <input type="text" class="form-control" id="staff_name_display" value="{{ $staff->staff_name }}" readonly>
+                                        <input type="text" class="form-control" id="staff_name_display"
+                                            value="{{ $staff->staff_name }}" readonly>
                                         <input type="hidden" id="staff_id" name="staff_id" value="{{ $staff->id }}">
                                         @endif
                                         @endforeach
@@ -188,26 +209,27 @@
                                     <div class="col-md-6">
                                         <label for="shop_id" class="form-label">Shop:</label>
                                         <select name="shop_id" id="shop_id" required>
-                                            <option value="" >Select a Shop</option>
+                                            <option value="">Select a Shop</option>
                                             @foreach($shops as $shop)
-                                                <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                                            <option value="{{ $shop->id }}">{{ $shop->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="shift_date" class="form-label">Shift Date:</label>
-                                        <input type="date" class="form-control" id="date" name="date" required >
+                                        <input type="date" class="form-control" id="date" name="date" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="start_time" class="form-label">Start Time:</label>
-                                        <input type="time" class="form-control" id="start_time" name="start_time" required>
+                                        <input type="time" class="form-control" id="start_time" name="start_time"
+                                            required>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="end_time" class="form-label">End Time:</label>
                                         <input type="time" class="form-control" id="end_time" name="end_time" required>
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>                                        
+                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>
                                     </div>
                                 </form>
                             </div>
@@ -216,7 +238,7 @@
                 </div>
             </div>
         </div>
-       
+
         <div class="col-12 col-md-6 d-flex">
             <div class="card flex-fill border-0">
                 <div class="card-body p-0 d-flex flex-fill">
@@ -224,12 +246,14 @@
                         <div class="col-12">
                             <div class="p-3 m-1">
                                 <h4 class="n_h2_style rounded">Shifts</h4>
-                                    {{-- SEARCH --}}
-                                    <div class="input-group mt-3">
-                                        <input type="text" class="form-control" placeholder="Search shifts..." id="searchShiftInput">
-                                        <button class="btn btn-outline-secondary" type="button" id="searchShiftButton">Search</button>
-                                    </div>
-                                    {{-- SEARCH --}}
+                                {{-- SEARCH --}}
+                                <div class="input-group mt-3">
+                                    <input type="text" class="form-control" placeholder="Search shifts..."
+                                        id="searchShiftInput">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        id="searchShiftButton">Search</button>
+                                </div>
+                                {{-- SEARCH --}}
                                 <div style="height: 300px; overflow-y: auto;">
                                     <table class="table" id="staffTable">
                                         <thead>
@@ -238,36 +262,36 @@
                                                 <th>Shop</th>
                                                 <th>Shift Date</th>
                                                 <th>Start time</th>
-                                                <th>End time</th>                    
+                                                <th>End time</th>
                                                 <th scope="col" style="width: 30%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($shifts as $shift)
-                                                @if($shift->staff->staff_name == $staff->staff_name)
-                                                    <tr>
-                                                        <td>{{ $shift->staff->staff_name }}</td>
-                                                        <td>{{ $shift->shop->name }}</td>
-                                                        <td>{{ $shift->date }}</td>
-                                                        <td>{{ $shift->start_time }}</td>
-                                                        <td>{{ $shift->end_time }}</td>                                                        
-                                                        <td>
-                                                            <button class="btn btn-warning btn-sm rounded-pill edit-btn"
-                                                                style="width: 40%;" data-toggle="modal"
-                                                                data-target="#editShiftModal"
-                                                                data-id="{{ $shift->id }}" data-staff-name="{{ $shift->staff->staff_name }}">Edit</button>
-                                                            <form method="post" style="display: inline;"
-                                                                action="{{ route('shifts.destroy', $shift->id) }}">
-                                                                @csrf
-                                                                @method('delete')
-                                                                <button class="btn btn-danger btn-sm rounded-pill"
-                                                                    style="width: 40%;"
-                                                                    onclick="return confirm('Are you sure you want to delete this Shift?')"
-                                                                    type="submit">Delete</button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endif
+                                            @if($shift->staff->staff_name == $staff->staff_name)
+                                            <tr>
+                                                <td>{{ $shift->staff->staff_name }}</td>
+                                                <td>{{ $shift->shop->name }}</td>
+                                                <td>{{ $shift->date }}</td>
+                                                <td>{{ $shift->start_time }}</td>
+                                                <td>{{ $shift->end_time }}</td>
+                                                <td>
+                                                    <button class="btn btn-warning btn-sm rounded-pill edit-btn"
+                                                        style="width: 40%;" data-toggle="modal"
+                                                        data-target="#editShiftModal" data-id="{{ $shift->id }}"
+                                                        data-staff-name="{{ $shift->staff->staff_name }}">Edit</button>
+                                                    <form method="post" style="display: inline;"
+                                                        action="{{ route('shifts.destroy', $shift->id) }}">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button class="btn btn-danger btn-sm rounded-pill"
+                                                            style="width: 40%;"
+                                                            onclick="return confirm('Are you sure you want to delete this Shift?')"
+                                                            type="submit">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            @endif
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -279,11 +303,12 @@
             </div>
         </div>
     </div>
-    <!-- Forms end -->        
+    <!-- Forms end -->
 </div>
 @endsection
 <!-- Edit Staff Modal -->
-<div class="modal fade" id="editShiftModal" tabindex="-1" role="dialog" aria-labelledby="editShiftModalLabel" aria-hidden="true">
+<div class="modal fade" id="editShiftModal" tabindex="-1" role="dialog" aria-labelledby="editShiftModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -296,19 +321,19 @@
                 @csrf
                 @method('PUT')
                 <input type="hidden" id="shiftId" name="shift_id">
-                <input type="hidden" id="staffId" name="staff_id"> 
+                <input type="hidden" id="staffId" name="staff_id">
 
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="staff_name" class="form-label">Staff Name:</label>
                         <input type="text" class="form-control" id="staff_name" name="staff_name" readonly>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="shop_id">Shop:</label>
                         <select class="form-control" id="shop_id" name="shop_id">
                             @foreach($shops as $shop)
-                                <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                            <option value="{{ $shop->id }}">{{ $shop->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -328,7 +353,7 @@
                         <input type="time" class="form-control" id="end_time" name="end_time">
                     </div>
                 </div>
-                
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -405,6 +430,25 @@
                         row.style.display = 'none';
                     }
                 }
+            }
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#add-item").click(function () {
+            var newRow = $(".repeater-item").first().clone();
+            newRow.find('select').val('');
+            newRow.find('input[type="text"]').val('');
+            $("#repeater-table tbody").append(newRow);
+        });
+
+        $("#repeater-table").on('click', '.remove-item', function () {
+            // Check if the row being removed is not the only row
+            if ($("#repeater-table tbody tr").length > 1) {
+                $(this).closest('.repeater-item').remove();
             }
         });
     });

@@ -172,7 +172,7 @@
     
         </div>
     </div>
-<!-- extra -->
+    <!-- Forms Start -->
     <div class="card border-0">
         <div class="card-header">
             <h5 class="card-title">
@@ -181,7 +181,7 @@
             <p>
                 @if(session('success'))
                     <div class="alert" style="color: green;">{{ session('success') }}</div>
-                 @endif
+                @endif
             </p>
         </div>
         <div class="card-body">
@@ -194,38 +194,33 @@
                         <th></th>
                         </tr>
                 </thead>
-                <tbody>
-                    <tr>
+                <tbody>                    
+                    <tr>                         
                         <form class="row g-3" method="post" action="{{ route('sales.store') }}">
-                                @csrf
-                                <td>
-                                    <input type="text" name="shift_id" id="shift_id" value="{{ $shift->id }}" readonly>
-                                </td>
-                                <td>
-                                    <div class="col-md-6">
-                                        <!-- <label for="dept_id" style="display: inline;">Department:</label> -->
-                                        <select name="dept_id" id="dept_id" required>
-                                            <option value="" >Select a Department</option>
-                                                @foreach($departments as $department)
-                                                    <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
-                                                @endforeach
-                                        </select>
-                                    </div>  
-                                </td>
-                                <td>
-                                    <div class="col-md-6">
-                                        <!-- <label for="amount" style="display: inline;" >Amount:</label> -->
-                                        <input type="text" id="amount" name="amount" required>
-                                    </div>
-                                </td>                        
-                                <td>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Add</button>                                        
-                                    </div>
-                                </td>
+                            @csrf                           
+                            <td>
+                                <div class="col-md-6">                                    
+                                    <select name="dept_id" id="dept_id" required>
+                                        <option value="" >Select a Department</option>
+                                        @foreach($departments as $department)
+                                        <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>  
+                            </td>
+                            <td>
+                                <div class="col-md-6">                                    
+                                    <input type="text" id="amount" name="amount" required>
+                                </div>
+                            </td>                        
+                            <td>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary rounded-pill">Add</button>                                        
+                                </div>
+                            </td>
                         </form>
-                    </tr>
-                </tbody>
+                    </tr>                    
+                </tbody>                
             </table>
         </div>
     </div>
