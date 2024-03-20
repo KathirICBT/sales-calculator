@@ -248,6 +248,96 @@ public function update(Request $request, $id)
 
 
 
+// protected function storeShift(Request $request)
+//     {
+//         // Validate the incoming shift data
+//         $request->validate([
+//             'shop_id' => 'required|numeric',
+//             'staff_id' => 'required|numeric',
+//             'date' => 'required|date',
+//             'start_time' => 'required',
+//             'end_time' => 'required',
+//         ]);
+
+//         // Parse the date
+//         $date = Carbon::parse($request->input('date'));
+
+//         // Create the Shift model instance with specific fields
+//         $shift = new Shift();
+//         $shift->shop_id = $request->input('shop_id');
+//         $shift->staff_id = $request->input('staff_id');
+//         $shift->date = $date;
+//         $shift->start_time = $request->input('start_time');
+//         $shift->end_time = $request->input('end_time');
+//         $shift->save();
+
+//         // Return the ID of the newly created shift
+//         return $shift->id;
+//     }
+
+//     protected function storeSales(Request $request, $shiftId)
+//     {
+//         var_dump($request);
+//         dd($request);
+//         // Validate the incoming sales data
+//         $validatedData = $request->validate([
+//             'dept_id.*' => 'required|numeric', // Validate each department ID
+//             'amount.*' => 'required|numeric',  // Validate each amount
+//         ]);
+
+//         try {
+//             // Loop through each department ID and amount to create or update sales records
+//             foreach ($validatedData['dept_id'] as $key => $deptId) {
+//                 // Find existing sale record for the department ID and shift ID
+//                 $sale = Sale::where('dept_id', $deptId)
+//                     ->where('shift_id', $shiftId)
+//                     ->first();
+
+//                 if ($sale) {
+//                     // If sale record exists, update the amount
+//                     $sale->amount += $validatedData['amount'][$key];
+//                     $sale->save();
+//                 } else {
+//                     // If no sale record exists, create a new one
+//                     Sale::create([
+//                         'dept_id' => $deptId,
+//                         'amount' => $validatedData['amount'][$key],
+//                         'shift_id' => $shiftId,
+//                     ]);
+//                 }
+//             }
+
+//             // Redirect back with success message
+//             return redirect()->back()->with('success', 'Sales data saved successfully!');
+//         } catch (\Exception $e) {
+//             // Handle any errors that occur during the process
+//             return redirect()->back()->with('error', 'An error occurred while processing the request.');
+//         }
+//     }
+
+
+//     public function store(Request $request)
+//     {
+//         if ($request->isMethod('post')){
+//         // Check if the request is for storing a shift
+//         if ($request->filled(['shop_id', 'staff_id', 'date', 'start_time', 'end_time'])) {
+//             $shiftId = $this->storeShift($request);
+//             // Call the storeSales method with the retrieved shift ID
+//             return $this->storeSales($request, $shiftId);
+//         }
+
+//         // Handle other cases or invalid requests
+//         return redirect()->back()->with('error', 'Invalid request.');
+//     }
+//         $shops = Shop::all();
+//         $staffs = Staff::all();
+//         $shifts = Shift::all();
+//         $departments = Department::all();
+//         return view('pages.sales.create', compact('shops', 'staffs','shifts','departments'));
+
+//     }
+
+
 protected function storeShift(Request $request)
     {
         // Validate the incoming shift data
@@ -277,17 +367,17 @@ protected function storeShift(Request $request)
 
     protected function storeSales(Request $request, $shiftId)
     {
-        var_dump($request);
-        dd($request);
         // Validate the incoming sales data
-        $validatedData = $request->validate([
+        $request->validate([
+            'dept_id' => 'required|array', // Ensure dept_id is an array
             'dept_id.*' => 'required|numeric', // Validate each department ID
-            'amount.*' => 'required|numeric',  // Validate each amount
+            'amount' => 'required|array', // Ensure amount is an array
+            'amount.*' => 'required|numeric', // Validate each amount
         ]);
 
         try {
             // Loop through each department ID and amount to create or update sales records
-            foreach ($validatedData['dept_id'] as $key => $deptId) {
+            foreach ($request->dept_id as $key => $deptId) {
                 // Find existing sale record for the department ID and shift ID
                 $sale = Sale::where('dept_id', $deptId)
                     ->where('shift_id', $shiftId)
@@ -295,13 +385,13 @@ protected function storeShift(Request $request)
 
                 if ($sale) {
                     // If sale record exists, update the amount
-                    $sale->amount += $validatedData['amount'][$key];
+                    $sale->amount += $request->amount[$key];
                     $sale->save();
                 } else {
                     // If no sale record exists, create a new one
                     Sale::create([
                         'dept_id' => $deptId,
-                        'amount' => $validatedData['amount'][$key],
+                        'amount' => $request->amount[$key],
                         'shift_id' => $shiftId,
                     ]);
                 }
@@ -315,26 +405,40 @@ protected function storeShift(Request $request)
         }
     }
 
+    // public function store(Request $request)
+    // {
+    //     // Check if the request is for storing a shift
+    //     if ($request->filled(['shop_id', 'staff_id', 'date', 'start_time', 'end_time'])) {
+    //         $shiftId = $this->storeShift($request);
+    //         // Call the storeSales method with the retrieved shift ID
+    //         return $this->storeSales($request, $shiftId);
+    //     }
 
+    //     // Handle other cases or invalid requests
+    //     return redirect()->back()->with('error', 'Invalid request.');
+    // }
+
+
+    
     public function store(Request $request)
     {
         if ($request->isMethod('post')){
         // Check if the request is for storing a shift
-        if ($request->filled(['shop_id', 'staff_id', 'date', 'start_time', 'end_time'])) {
-            $shiftId = $this->storeShift($request);
-            // Call the storeSales method with the retrieved shift ID
-            return $this->storeSales($request, $shiftId);
+            if ($request->filled(['shop_id', 'staff_id', 'date', 'start_time', 'end_time'])) {
+                $shiftId = $this->storeShift($request);
+                // Call the storeSales method with the retrieved shift ID
+                return $this->storeSales($request, $shiftId);
+            }
+
+            // Handle other cases or invalid requests
+            return redirect()->back()->with('error', 'Invalid request.');
         }
+            $shops = Shop::all();
+            $staffs = Staff::all();
+            $shifts = Shift::all();
+            $departments = Department::all();
+            return view('pages.sales.create', compact('shops', 'staffs','shifts','departments'));
 
-        // Handle other cases or invalid requests
-        return redirect()->back()->with('error', 'Invalid request.');
-    }
-        $shops = Shop::all();
-        $staffs = Staff::all();
-        $shifts = Shift::all();
-        $departments = Department::all();
-        return view('pages.sales.create', compact('shops', 'staffs','shifts','departments'));
-
-    }
+        }
 
 }
