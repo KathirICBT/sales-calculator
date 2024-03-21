@@ -380,47 +380,102 @@ protected function storeShift(Request $request)
         return $lastShift->id;
     }
 
+    // public function store(Request $request)
+    // {
+    //     //dd($request->all());
+    //     // Validate the incoming sales data
+    //     $request->validate([
+    //         'dept_id' => 'required|array', // Ensure dept_id is an array
+    //         'dept_id.*' => 'required|numeric', // Validate each department ID
+    //         'amount' => 'required|array', // Ensure amount is an array
+    //         'amount.*' => 'required|numeric', // Validate each amount
+    //     ]);
+
+    //     try {
+    //         // Loop through each department ID and amount to create or update sales records
+    //         foreach ($request->dept_id as $key => $deptId) {
+    //             // Find existing sale record for the department ID and shift ID
+    //             $sale = Sale::where('dept_id', $deptId)
+    //                 ->where('shift_id', $this->getLastShiftId())
+    //                 ->first();
+
+    //             if ($sale) {
+    //                 // If sale record exists, update the amount
+    //                 $sale->amount += $request->amount[$key];
+    //                 $sale->save();
+    //             } else {
+    //                 // If no sale record exists, create a new one
+    //                 Sale::create([
+    //                     'dept_id' => $deptId,
+    //                     'amount' => $request->amount[$key],
+    //                     'shift_id' => $this->getLastShiftId(),
+    //                 ]);
+    //             }
+    //         }
+    //         // Redirect back with success message
+    //         return "Sales Registed Successfully!";
+    //         //return redirect()->route('shifts.index')->with('success', 'Shift added successfully!');
+    //     } catch (\Exception $e) {
+    //         // Handle any errors that occur during the process
+    //         return "Sales Registed Error!";
+    //         //return redirect()->route('shifts.index')->with('error', 'An error occurred while processing the request.');
+    //     }
+    // }
+
     public function store(Request $request)
-    {
-        //dd($request->all());
-        // Validate the incoming sales data
-        $request->validate([
-            'dept_id' => 'required|array', // Ensure dept_id is an array
-            'dept_id.*' => 'required|numeric', // Validate each department ID
-            'amount' => 'required|array', // Ensure amount is an array
-            'amount.*' => 'required|numeric', // Validate each amount
-        ]);
+{
+    // Validate the incoming sales data
+    $request->validate([
+        'dept_id' => 'required|array', // Ensure dept_id is an array
+        'dept_id.*' => 'required|numeric', // Validate each department ID
+        'amount' => 'required|array', // Ensure amount is an array
+        'amount.*' => 'required|numeric', // Validate each amount
+    ]);
 
-        try {
-            // Loop through each department ID and amount to create or update sales records
-            foreach ($request->dept_id as $key => $deptId) {
-                // Find existing sale record for the department ID and shift ID
-                $sale = Sale::where('dept_id', $deptId)
-                    ->where('shift_id', $this->getLastShiftId())
-                    ->first();
+    try {
+        // Initialize an associative array to keep track of total amount for each department
+        $departmentTotals = [];
 
-                if ($sale) {
-                    // If sale record exists, update the amount
-                    $sale->amount += $request->amount[$key];
-                    $sale->save();
-                } else {
-                    // If no sale record exists, create a new one
-                    Sale::create([
-                        'dept_id' => $deptId,
-                        'amount' => $request->amount[$key],
-                        'shift_id' => $this->getLastShiftId(),
-                    ]);
-                }
+        // Loop through each department ID and amount to create or update sales records
+        foreach ($request->dept_id as $key => $deptId) {
+            // If department ID already exists in the associative array, add the amount
+            if (isset($departmentTotals[$deptId])) {
+                $departmentTotals[$deptId] += $request->amount[$key];
+            } else {
+                // If department ID is new, set the initial amount
+                $departmentTotals[$deptId] = $request->amount[$key];
             }
-            // Redirect back with success message
-            return "Sales Registed Successfully!";
-            //return redirect()->route('shifts.index')->with('success', 'Shift added successfully!');
-        } catch (\Exception $e) {
-            // Handle any errors that occur during the process
-            return "Sales Registed Error!";
-            //return redirect()->route('shifts.index')->with('error', 'An error occurred while processing the request.');
         }
+
+        // Loop through the associative array to create or update sales records
+        foreach ($departmentTotals as $deptId => $totalAmount) {
+            // Find existing sale record for the department ID and shift ID
+            $sale = Sale::where('dept_id', $deptId)
+                ->where('shift_id', $this->getLastShiftId())
+                ->first();
+
+            if ($sale) {
+                // If sale record exists, update the amount
+                $sale->amount += $totalAmount;
+                $sale->save();
+            } else {
+                // If no sale record exists, create a new one
+                Sale::create([
+                    'dept_id' => $deptId,
+                    'amount' => $totalAmount,
+                    'shift_id' => $this->getLastShiftId(),
+                ]);
+            }
+        }
+
+        // Redirect back with success message
+        return "Sales Registered Successfully!";
+    } catch (\Exception $e) {
+        // Handle any errors that occur during the process
+        return "Sales Registered Error!";
     }
+}
+
 
     
 
