@@ -277,8 +277,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 
 //SHIFT register==============================================================================
-Route::get('/pages/shift/create', [ShiftController::class, 'store'])->name('shifts.store');
-Route::post('/pages/shift/create', [ShiftController::class, 'store'])->name('shifts.store.submit');
+Route::get('/pages/shift/create', [ShiftController::class, 'index'])->name('shifts.index');
+Route::post('/pages/shift/create', [ShiftController::class, 'storeShifts'])->name('shifts.shift.submit');
+
+//SALE ======================================================================================
+Route::post('/pages/sale/create', [ShiftController::class, 'store'])->name('shifts.store.submit');
 
 //Update
 Route::get('/shifts/{shift}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
@@ -289,5 +292,7 @@ Route::put('/shifts/{shiftId}', [ShiftController::class, 'update'])->name('shift
 Route::get('/sales', [ShiftController::class, 'storeSales'])->name('sales.store');
 Route::post('/sales', [ShiftController::class, 'storeSales'])->name('sales.store.submit');
 //Route::post('sales', 'ShiftController@storeSales')->name('sales.store');
+
+Route::post('/pages/shift/newform', [ShiftController::class, 'storetest'])->name('shifts.newform');
 
 

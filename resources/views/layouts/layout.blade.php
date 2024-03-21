@@ -41,7 +41,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{route('shifts.store')}}" class="sidebar-link collapsed" >
+                        <a href="{{route('shifts.index')}}" class="sidebar-link collapsed" >
                             <i class="fa-solid fa-sliders pe-2"></i>
                             Shift 
                         </a>
