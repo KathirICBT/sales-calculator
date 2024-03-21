@@ -14,6 +14,8 @@ class Shift extends Model
         'date',
         'start_time',
         'end_time',
+        'start_date', 
+        'end_date',
     ];
 
     

@@ -34,14 +34,7 @@
                             <h4 class="mb-2">
 
                             </h4>
-                            {{-- <div class="mb-0">
-                                <span class="mb-2">
-                                    +9.0%
-                                </span>
-                                <span class="text-muted">
-                                    Since Last Month
-                                </span>
-                            </div> --}}
+                           
                         </div>
                     </div>
                 </div>
@@ -68,11 +61,10 @@
                                 <form class="row g-3" id="shiftForm" method="POST" action="{{ route('shifts.shift.submit') }}">
                                     @csrf
                                     <div class="col-md-12">
-                                        {{-- <label for="staff_name" class="form-label">Staff Name: </label> --}}
+                                        
                                         @foreach($staffs as $staff)
                                         @if(session('username')==$staff->username)
-                                        {{-- <input type="text" class="form-control" id="staff_name_display"
-                                            value="{{ $staff->staff_name }}" readonly> --}}
+                                        
                                         <input type="hidden" id="staff_id" name="staff_id" value="{{ $staff->id }}">
                                         @endif
                                         @endforeach
@@ -88,21 +80,25 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <label for="shift_date" class="form-label">Shift Date:</label>
-                                        <input type="date" class="form-control" id="date" name="date" required>
+                                        <label for="shift_start_date" class="form-label">Shift Start Date:</label>
+                                        <input type="date" class="form-control" id="start_date" name="start_date" required>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="start_time" class="form-label">Start Time:</label>
                                         <input type="time" class="form-control" id="start_time" name="start_time"
                                             required>
                                     </div>
+
+                                    <div class="col-md-3">
+                                        <label for="shift_end_date" class="form-label">Shift End Date:</label>
+                                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                                    </div>
+                                    
                                     <div class="col-md-3">
                                         <label for="end_time" class="form-label">End Time:</label>
                                         <input type="time" class="form-control" id="end_time" name="end_time" required>
                                     </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>
-                                    </div>
+                                    
                                 </form>
                             </div>
                         </div>
@@ -112,7 +108,7 @@
         </div>
     </div>
 
-    {{-- TABLE START --}}
+
 
     <div class="row">
         <div class="col-12 col-md-6 d-flex">
@@ -161,9 +157,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        {{-- <div class="col-12">                                            
-                                            <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
-                                        </div> --}}
+                                        
                                     </form>
                                     <button id="submit-btn" class="btn btn-primary rounded-pill">NewSubmit</button>
                                 </div>
@@ -175,7 +169,7 @@
         </div>
     </div>
 
-    {{-- TABLE END --}}
+    
 
     <!-- Forms -->
     <div class="row">
@@ -247,22 +241,23 @@
                         <div class="col-12">
                             <div class="p-3 m-1">
                                 <h4 class="n_h2_style rounded">Shifts</h4>
-                                {{-- SEARCH --}}
+                                
                                 <div class="input-group mt-3">
                                     <input type="text" class="form-control" placeholder="Search shifts..."
                                         id="searchShiftInput">
                                     <button class="btn btn-outline-secondary" type="button"
                                         id="searchShiftButton">Search</button>
                                 </div>
-                                {{-- SEARCH --}}
+                                
                                 <div style="height: 300px; overflow-y: auto;">
                                     <table class="table" id="staffTable">
                                         <thead>
                                             <tr>
                                                 <th>Staff</th>
                                                 <th>Shop</th>
-                                                <th>Shift Date</th>
+                                                <th>Shift Start Date</th>
                                                 <th>Start time</th>
+                                                <th>Shift End Date</th>
                                                 <th>End time</th>
                                                 <th scope="col" style="width: 30%">Action</th>
                                             </tr>
@@ -273,8 +268,9 @@
                                             <tr>
                                                 <td>{{ $shift->staff->staff_name }}</td>
                                                 <td>{{ $shift->shop->name }}</td>
-                                                <td>{{ $shift->date }}</td>
+                                                <td>{{ $shift->start_date }}</td>
                                                 <td>{{ $shift->start_time }}</td>
+                                                <td>{{ $shift->end_date }}</td>
                                                 <td>{{ $shift->end_time }}</td>
                                                 <td>
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
@@ -340,15 +336,18 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="date">Shift Date:</label>
-                        <input type="date" class="form-control" id="date" name="date">
+                        <label for="date">Shift Start Date:</label>
+                        <input type="start_date" class="form-control" id="date" name="start_date">
                     </div>
 
                     <div class="form-group">
                         <label for="start_time">Start Time:</label>
                         <input type="time" class="form-control" id="start_time" name="start_time">
                     </div>
-
+                    <div class="form-group">
+                        <label for="date">Shift End Date:</label>
+                        <input type="end_date" class="form-control" id="end_date" name="end_date">
+                    </div>
                     <div class="form-group">
                         <label for="end_time">End Time:</label>
                         <input type="time" class="form-control" id="end_time" name="end_time">
@@ -363,40 +362,6 @@
         </div>
     </div>
 </div>
-{{-- 
-<form method="POST" action="{{ route('shifts.newform') }}">
-    @csrf
-
-    <div id="repeater">
-        <div class="repeater-item">
-            <select name="combo[]" class="combo-box">
-                <option value="Option 1">Option 1</option>
-                <option value="Option 2">Option 2</option>
-                <option value="Option 3">Option 3</option>
-            </select>
-            <input type="text" name="text[]" placeholder="Enter Text">
-            <button type="button" class="remove-item">Remove</button>
-        </div>
-    </div>
-
-    <button type="button" id="add-item">Add Item</button>
-    <button type="submit">Submit</button>
-</form>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#add-item").click(function () {
-            $("#repeater").append('<div class="repeater-item"><select name="combo[]" class="combo-box"><option value="Option 1">Option 1</option><option value="Option 2">Option 2</option><option value="Option 3">Option 3</option></select><input type="text" name="text[]" placeholder="Enter Text"><button type="button" class="remove-item">Remove</button></div>');
-        });
-
-        $("#repeater").on('click', '.remove-item', function () {
-            $(this).parent('.repeater-item').remove();
-        });
-    });
-</script>
- --}}
-
 
 
 <script>
@@ -409,7 +374,7 @@
                 const editForm = document.getElementById('editShiftForm');
                 const staffName = this.getAttribute('data-staff-name');
 
-                // Set the action attribute of the form
+                // Set the action attribute of the form with proper string interpolation
                 editForm.setAttribute('action', `/shifts/${shiftId}`);
 
                 // Set staff name field value
@@ -426,7 +391,8 @@
                     .then(data => {
                         // Populate form fields with shift details
                         editForm.querySelector('#shop_id').value = data.shop_id;
-                        editForm.querySelector('#date').value = data.date;
+                        editForm.querySelector('#start_date').value = data.start_date;
+                        editForm.querySelector('#end_date').value = data.end_date;
                         editForm.querySelector('#start_time').value = data.start_time;
                         editForm.querySelector('#end_time').value = data.end_time;
 
@@ -441,6 +407,7 @@
     });
 </script>
 
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const searchShiftInput = document.getElementById('searchShiftInput');
@@ -451,14 +418,16 @@
             const query = searchShiftInput.value.trim().toLowerCase();
             for (let i = 1; i < tableRows.length; i++) {
                 const row = tableRows[i];
-                const dateColumn = row.cells[0];
-                const startTimeColumn = row.cells[1];
-                const endTimeColumn = row.cells[2];
-                if (dateColumn && startTimeColumn && endTimeColumn) {
-                    const dateText = dateColumn.textContent.toLowerCase();
+                const startDateColumn = row.cells[0];
+                const endDateColumn = row.cells[1];
+                const startTimeColumn = row.cells[2];
+                const endTimeColumn = row.cells[3];
+                if (startDateColumn && endDateColumn && startTimeColumn && endTimeColumn) {
+                    const startDateText = startDateColumn.textContent.toLowerCase();
+                    const endDateText = endDateColumn.textContent.toLowerCase();
                     const startTimeText = startTimeColumn.textContent.toLowerCase();
                     const endTimeText = endTimeColumn.textContent.toLowerCase();
-                    if (dateText.includes(query) || startTimeText.includes(query) || endTimeText.includes(query)) {
+                    if (startDateText.includes(query) || endDateText.includes(query) || startTimeText.includes(query) || endTimeText.includes(query)) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';
@@ -469,40 +438,7 @@
     });
 </script>
 
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#add-item").click(function () {
-            var newRow = $(".repeater-item").first().clone();
-            newRow.find('select').val('');
-            newRow.find('input[type="text"]').val('');
-            $("#repeater-table tbody").append(newRow);
-        });
 
-        $("#repeater-table").on('click', '.remove-item', function () {
-            // Check if the row being removed is not the only row
-            if ($("#repeater-table tbody tr").length > 1) {
-                $(this).closest('.repeater-item').remove();
-            }
-        });
-    });
-</script> --}}
-
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#add-item").click(function () {
-            $("#repeater-table tbody").append('<tr class="repeater-item"><td><select name="dept_id[]" class="form-select" required><option value="">Select a Department</option>@foreach($departments as $department)<option value="{{ $department->id }}">{{ $department->dept_name }}</option>@endforeach</select></td><td><input type="text" name="amount[]" class="form-control" required></td><td><button type="button" class="btn btn-danger remove-item">Remove</button></td></tr>');
-        });
-
-        $("#repeater-table").on('click', '.remove-item', function () {
-            // Check if the row being removed is not the only row
-            if ($("#repeater-table tbody tr").length > 1) {
-                $(this).closest('.repeater-item').remove();
-            }
-        });
-    });
-</script> --}}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -526,293 +462,55 @@
 </script>
 
 
-{{-- <script>
-    // JavaScript function to submit both forms
-    function submitBothForms() {
-        // Submit the first form
-        document.getElementById('shiftForm').submit();
-
-        // Submit the second form
-        document.getElementById('salesForm').submit();
-    }
-
-    // Add an event listener to the button
-    document.getElementById('submitForms').addEventListener('click', function() {
-        // Call the function to submit both forms
-        submitBothForms();
-    });
-</script> --}}
-
-{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-    $('#submit-btn').click(function() {
-        var formData1 = $('#shiftForm').serialize();
-        var formData2 = $('#salesForm').serialize();
-
-        console.log('Form 1 Data:', formData1);
-        console.log('Form 2 Data:', formData2);
-
-        var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
-        var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
-
-        console.log('Shift Submit URL:', shiftSubmitUrl);
-        console.log('Store Submit URL:', storeSubmitUrl);
-
-        $.ajax({
-            type: 'POST',
-            url: shiftSubmitUrl,
-            data: formData1,
-            success: function(response) {
-                console.log('Form 1 Submission Response:', response);
-                $.ajax({
-                    type: 'POST',
-                    url: storeSubmitUrl,
-                    data: formData2,
-                    success: function(response) {
-                        console.log('Form 2 Submission Response:', response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Form 2 Submission Error:', xhr.responseText);
-                    }
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Form 1 Submission Error:', xhr.responseText);
-            }
-        });
-    });
-});
-
-</script> --}}
-
-{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#submit-btn').click(function() {
-            var formData1 = $('#shiftForm').serialize();
-            var formData2 = $('#salesForm').serialize();
-
-            // Define route URLs from server side
-            var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
-            var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
-
-            $.ajax({
-                type: 'POST',
-                url: shiftSubmitUrl,
-                data: formData1,
-                success: function(response) {
-                    console.log('Form 1 Submission Response:', response);
-                    // Now submit the second form
-                    $.ajax({
-                        type: 'POST',
-                        url: storeSubmitUrl,
-                        data: formData2,
-                        success: function(response) {
-                            console.log('Form 2 Submission Response:', response);
-                            // Display success message or perform other actions
-                            alert('Both forms submitted successfully.');
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Form 2 Submission Error:', xhr.responseText);
-                            // Display error message to user
-                            alert('Error submitting second form. Please try again later.');
-                        }
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Form 1 Submission Error:', xhr.responseText);
-                    // Display error message to user
-                    alert('Error submitting first form. Please try again later.');
-                }
-            });
-        });
-    });
-</script> --}}
-
-{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#submit-btn').click(function() {
-            var formData1 = $('#shiftForm').serialize();
-            var formData2 = $('#salesForm').serialize();
-
-            // Define route URLs from server side
-            var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
-            var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
-
-            $.ajax({
-                type: 'POST',
-                url: shiftSubmitUrl,
-                data: formData1,
-                success: function(response) {
-                    console.log('Form 1 Submission Response:', response);
-                    // Now submit the second form
-                    $.ajax({
-                        type: 'POST',
-                        url: storeSubmitUrl,
-                        data: formData2,
-                        success: function(response) {
-                            console.log('Form 2 Submission Response:', response);
-                            // Display success message or perform other actions
-                            alert('Both forms submitted successfully.');
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Form 2 Submission Error:', error);
-                            // Display error message to user
-                            alert('Error submitting second form. Please try again later.');
-                        }
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Form 1 Submission Error:', error);
-                    // Display error message to user
-                    alert('Error submitting first form. Please try again later.');
-                }
-            });
-        });
-    });
-</script> --}}
-
-{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#submit-btn').click(function() {
-            var formData1 = $('#shiftForm').serialize();
-            var formData2 = $('#salesForm').serialize();
-
-            // Define route URLs from server side using inline script variables
-            var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
-            var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
-
-            $.ajax({
-                type: 'POST',
-                url: shiftSubmitUrl,
-                data: formData1,
-                success: function(response) {
-                    console.log('Form 1 Submission Response:', response);
-                    // Now submit the second form
-                    $.ajax({
-                        type: 'POST',
-                        url: storeSubmitUrl,
-                        data: formData2,
-                        success: function(response) {
-                            console.log('Form 2 Submission Response:', response);
-                            // Display success message or perform other actions
-                            alert('Both forms submitted successfully.');
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Form 2 Submission Error:', error);
-                            // Display error message to user
-                            alert('Error submitting second form. Please try again later.');
-                        }
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Form 1 Submission Error:', error);
-                    // Display error message to user
-                    alert('Error submitting first form. Please try again later.');
-                }
-            });
-        });
-    });
-</script> --}}
-
-{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#submit-btn').click(function() {
-            var formData1 = $('#shiftForm').serialize();
-            var formData2 = $('#salesForm').serialize();
-
-            // Define route URLs from server side using inline script variables
-            var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
-            var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
-
-            $.ajax({
-                type: 'POST',
-                url: shiftSubmitUrl,
-                data: formData1,
-                success: function(response) {
-                    console.log('Form 1 Submission Response:', response);
-                    // Now submit the second form
-                    $.ajax({
-                        type: 'POST',
-                        url: storeSubmitUrl,
-                        data: formData2,
-                        success: function(response) {
-                            console.log('Form 2 Submission Response:', response);
-                            // Display success message or perform other actions
-                            alert('Both forms submitted successfully.');
-                            // Refresh the page after successful submission of both forms
-                            //location.reload();
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Form 2 Submission Error:', error);
-                            // Display error message to user
-                            alert('Error submitting second form. Please try again later.');
-                        }
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Form 1 Submission Error:', error);
-                    // Display error message to user
-                    alert('Error submitting first form. Please try again later.');
-                }
-            });
-        });
-    });
-</script> --}}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#submit-btn').click(function() {
-            var formData1 = $('#shiftForm').serialize();
-            var formData2 = $('#salesForm').serialize();
+            // Check if both forms are valid before proceeding
+            if ($('#shiftForm')[0].checkValidity() && $('#salesForm')[0].checkValidity()) {
+                var formData1 = $('#shiftForm').serialize();
+                var formData2 = $('#salesForm').serialize();
 
-            // Define route URLs from server side using inline script variables
-            var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
-            var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
+                // Define route URLs from server side using inline script variables
+                var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
+                var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
 
-            $.ajax({
-                type: 'POST',
-                url: shiftSubmitUrl,
-                data: formData1,
-                success: function(response) {
-                    console.log('Form 1 Submission Response:', response);
-                    // Now submit the second form
-                    $.ajax({
-                        type: 'POST',
-                        url: storeSubmitUrl,
-                        data: formData2,
-                        success: function(response) {
-                            console.log('Form 2 Submission Response:', response);
-                            // Display success message or perform other actions
-                            alert(response);
-                            // Redirect to the desired page
-                            window.location.href = "{{ route('shifts.index') }}";
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Form 2 Submission Error:', error);
-                            // Display error message to user
-                            alert('Error submitting second form. Please try again later.');
-                        }
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Form 1 Submission Error:', error);
-                    // Display error message to user
-                    alert('Error submitting first form. Please try again later.');
-                }
-            });
+                $.ajax({
+                    type: 'POST',
+                    url: shiftSubmitUrl,
+                    data: formData1,
+                    success: function(response) {
+                        console.log('Form 1 Submission Response:', response);
+                        // Now submit the second form
+                        $.ajax({
+                            type: 'POST',
+                            url: storeSubmitUrl,
+                            data: formData2,
+                            success: function(response) {
+                                console.log('Form 2 Submission Response:', response);
+                                // Display success message or perform other actions
+                                alert(response);
+                                // Redirect to the desired page
+                                window.location.href = "{{ route('shifts.index') }}";
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Form 2 Submission Error:', error);
+                                // Display error message to user
+                                alert('Error submitting second form. Please try again later.');
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Form 1 Submission Error:', error);
+                        // Display error message to user
+                        alert('Error submitting first form. Please try again later.');
+                    }
+                });
+            } else {
+                // If any form is invalid, prevent submission and show error message
+                alert('Please fill out both forms correctly before submitting.');
+            }
         });
     });
 </script>
-
-
-
-
-
-
-

@@ -14,14 +14,10 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('dept_id');
-            $table->unsignedBigInteger('staff_id')->nullable();
-            $table->unsignedBigInteger('shop_id')->nullable();
             $table->decimal('amount', 10, 2); 
 
             // Define foreign key constraints
             $table->foreign('dept_id')->references('id')->on('departments');
-            $table->foreign('staff_id')->references('id')->on('staffs');
-            $table->foreign('shop_id')->references('id')->on('shops');
             $table->timestamps();
         });
     }

@@ -33,40 +33,44 @@ class ShiftController extends Controller
     public $lastShiftId;
 
     public function storeShifts(Request $request)
-    {
-        //dd($request->all());
-       
-        if ($request->isMethod('post')) {
-            
-            $request->validate([
-                'shop_id' => 'required|numeric',
-                'staff_id' => 'required|numeric',
-                'date' => 'required|date',
-                'start_time' => 'required',
-                'end_time' => 'required',
-            ]);
-            $date = Carbon::parse($request->input('date'));
+{
+    if ($request->isMethod('post')) {
+        
+        $request->validate([
+            'shop_id' => 'required|numeric',
+            'staff_id' => 'required|numeric',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_time' => 'required',
+            'end_time' => 'required',
+        ]);
 
-            // Create the Shift model instance with specific fields
-            $shift = new Shift();
-            $shift->shop_id = $request->input('shop_id');
-            $shift->staff_id = $request->input('staff_id');
-            $shift->date = $date; // Assign the parsed date directly
-            $shift->start_time = $request->input('start_time');
-            $shift->end_time = $request->input('end_time');
-            $shift->save();
+        // Parse the start and end dates
+        $startDate = Carbon::parse($request->input('start_date'));
+        $endDate = Carbon::parse($request->input('end_date'));
 
-            $this->lastShiftId = $shift->id;
-            //return redirect()->route('shifts.index')->with('success', 'Shift added successfully!');
-            return $shift->id;
+        // Create the Shift model instance with specific fields
+        $shift = new Shift();
+        $shift->shop_id = $request->input('shop_id');
+        $shift->staff_id = $request->input('staff_id');
+        $shift->start_date = $startDate; // Assign the parsed start date directly
+        $shift->end_date = $endDate; // Assign the parsed end date directly
+        $shift->start_time = $request->input('start_time');
+        $shift->end_time = $request->input('end_time');
+        $shift->save();
 
-        }
-        $shops = Shop::all();
-        $staffs = Staff::all();
-        $shifts = Shift::all();
-        $departments = Department::all();
-        return view('pages.sales.create', compact('shops', 'staffs','shifts','departments'));
+        $this->lastShiftId = $shift->id;
+        //return redirect()->route('shifts.index')->with('success', 'Shift added successfully!');
+        return $shift->id;
     }
+
+    $shops = Shop::all();
+    $staffs = Staff::all();
+    $shifts = Shift::all();
+    $departments = Department::all();
+    return view('pages.sales.create', compact('shops', 'staffs','shifts','departments'));
+}
+
 
     // public function edit($id)
     // {
@@ -92,6 +96,8 @@ public function update(Request $request, $id)
         'date' => 'required|date',
         'start_time' => 'required',
         'end_time' => 'required',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date|after_or_equal:start_date',
     ]);
 
     // Find the shift by ID
@@ -102,6 +108,8 @@ public function update(Request $request, $id)
     $shift->date = $request->input('date');
     $shift->start_time = $request->input('start_time');
     $shift->end_time = $request->input('end_time');
+    $shift->start_date = $request->input('start_date');
+    $shift->end_date = $request->input('end_date');
 
     // Save the updated shift
     $shift->save();
@@ -109,6 +117,7 @@ public function update(Request $request, $id)
     // Redirect back with a success message
     return redirect()->back()->with('success', 'Shift details updated successfully.');
 }
+
 
 
     public function showShift($id)
@@ -352,19 +361,22 @@ protected function storeShift(Request $request)
         $request->validate([
             'shop_id' => 'required|numeric',
             'staff_id' => 'required|numeric',
-            'date' => 'required|date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'start_time' => 'required',
             'end_time' => 'required',
         ]);
 
-        // Parse the date
-        $date = Carbon::parse($request->input('date'));
+        // Parse the dates
+        $startDate = Carbon::parse($request->input('start_date'));
+        $endDate = Carbon::parse($request->input('end_date'));
 
         // Create the Shift model instance with specific fields
         $shift = new Shift();
         $shift->shop_id = $request->input('shop_id');
         $shift->staff_id = $request->input('staff_id');
-        $shift->date = $date;
+        $shift->start_date = $startDate; // Adjusted to use start_date
+        $shift->end_date = $endDate; // Adjusted to use end_date
         $shift->start_time = $request->input('start_time');
         $shift->end_time = $request->input('end_time');
         $shift->save();
