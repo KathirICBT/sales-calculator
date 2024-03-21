@@ -100,9 +100,9 @@
                                         <label for="end_time" class="form-label">End Time:</label>
                                         <input type="time" class="form-control" id="end_time" name="end_time" required>
                                     </div>
-                                    <div class="col-12">
+                                    {{-- <div class="col-12">
                                         <button type="submit" class="btn btn-primary rounded-pill">Register</button>
-                                    </div>
+                                    </div> --}}
                                 </form>
                             </div>
                         </div>
@@ -764,7 +764,7 @@
     });
 </script> --}}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#submit-btn').click(function() {
@@ -808,7 +808,60 @@
             });
         });
     });
+</script> --}}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#submit-btn').click(function() {
+            // Check if both forms are valid before proceeding
+            if ($('#shiftForm')[0].checkValidity() && $('#salesForm')[0].checkValidity()) {
+                var formData1 = $('#shiftForm').serialize();
+                var formData2 = $('#salesForm').serialize();
+
+                // Define route URLs from server side using inline script variables
+                var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
+                var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
+
+                $.ajax({
+                    type: 'POST',
+                    url: shiftSubmitUrl,
+                    data: formData1,
+                    success: function(response) {
+                        console.log('Form 1 Submission Response:', response);
+                        // Now submit the second form
+                        $.ajax({
+                            type: 'POST',
+                            url: storeSubmitUrl,
+                            data: formData2,
+                            success: function(response) {
+                                console.log('Form 2 Submission Response:', response);
+                                // Display success message or perform other actions
+                                alert(response);
+                                // Redirect to the desired page
+                                window.location.href = "{{ route('shifts.index') }}";
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Form 2 Submission Error:', error);
+                                // Display error message to user
+                                alert('Error submitting second form. Please try again later.');
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Form 1 Submission Error:', error);
+                        // Display error message to user
+                        alert('Error submitting first form. Please try again later.');
+                    }
+                });
+            } else {
+                // If any form is invalid, prevent submission and show error message
+                alert('Please fill out both forms correctly before submitting.');
+            }
+        });
+    });
 </script>
+
 
 
 
