@@ -11,12 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('paymentsales', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('paymentmethod_id')->constrained();
-            $table->decimal('amount', 10, 2);
-            $table->timestamps();
-        });
+        Schema::dropIfExists('paymentsales');
     }
 
     /**
@@ -24,6 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('paymentsales');
+        //
     }
 };

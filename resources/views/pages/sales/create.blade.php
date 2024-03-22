@@ -197,10 +197,14 @@
                                             <td><span class="form-control text-warning">Total Amount:</span></td>
                                             <td style="float: right;"><span id="total-amount" class="form-control text-warning">0</span></td>
                                         </tr>
+                                        <tr>
+                                            <td><span class="form-control text-warning">Total Cash Amount:</span></td>
+                                            <td style="float: right;"><span id="total-amount-after-subtraction" class="form-control text-warning">0</span></td>
+                                        </tr>
                                     </table>
                                     {{-- <div>Total Amount: <span id="total-amount">0</span></div> --}}
                                     <hr>
-                                    <button id="submit-btn" class="btn btn-primary rounded-pill">Submit</button>
+                                    {{-- <button id="submit-btn" class="btn btn-primary rounded-pill">Submit</button> --}}
                                 </div>
                             </div>
                         </div>
@@ -208,6 +212,107 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 col-md-6 d-flex">
+            <div class="card flex-fill border-0">
+                <div class="card-body p-0 d-flex flex-fill">
+                    <div class="row g-0 w-100">
+                        <div class="col-12">
+                            <div class="p-3 m-1">
+                                <div class="card-header">
+                                    <h5 class="card-title">Add Payment Sale Details</h5>
+                                    <p>
+                                        @if(session('success'))
+                                        <div class="alert" style="color: green;">{{ session('success') }}</div>
+                                        @endif
+                                    </p>
+                                </div>
+                                {{-- <div class="card-body">
+                                    <form class="row g-3" id="paymentSaleForm" method="post" action="{{ route('payment.sale.submit') }}">
+                                        @csrf
+                                        <table class="table" id="paymentSaleTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Payment Method</th>
+                                                    <th>Amount</th>
+                                                    <th><button type="button" id="addRow" class="btn btn-success">Add Row</button></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select name="paymentmethod_id[]" class="form-select" required>
+                                                            <option value="">Select a Payment Method</option>
+                                                            @foreach($paymentmethods as $paymentmethod)
+                                                            <option value="{{ $paymentmethod->id }}">{{ $paymentmethod->payment_method }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="amount[]" class="form-control" required>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger removeRow">Remove</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="submit-btn" class="btn btn-primary rounded-pill">Submit</button>
+                                    </form>
+                                    
+                                </div> --}}
+                                <div class="card-body">
+                                    <form class="row g-3" id="paymentSaleForm" method="post" action="{{ route('payment.sale.submit') }}">
+                                        @csrf
+                                        <table class="table" id="paymentSaleTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Payment Method</th>
+                                                    <th>Amount</th>
+                                                    <th><button type="button" id="addRow" class="btn btn-success">Add Row</button></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select name="paymentmethod_id[]" class="form-select" required>
+                                                            <option value="">Select a Payment Method</option>
+                                                            @foreach($paymentmethods as $paymentmethod)
+                                                            <option value="{{ $paymentmethod->id }}">{{ $paymentmethod->payment_method }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="amount[]" class="form-control amount-input" required>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger removeRow">Remove</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        {{-- <div>Total Amount: <span id="custom-total-amount" class="text-warning">0</span></div> --}}
+                                        
+                                    </form>
+                                    <table class="table">
+                                        <hr>
+                                        <tr>
+                                            <td><span class="form-control text-warning">Total Other Payment:</span></td>
+                                            <td style="float: right;"><span id="custom-total-amount" class="form-control text-warning">0</span></td>
+                                        </tr>
+                                    </table>                                    
+                                    <hr>
+                                    <button id="submit-btn" class="btn btn-primary rounded-pill">Submit</button>
+                                    {{-- <button type="submit-btn" class="btn btn-primary rounded-pill">Submit</button> --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
     </div>
 
     
@@ -480,26 +585,83 @@
 </script>
 
 
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $("#add-item").click(function () {
-            var newRow = $(".repeater-item").first().clone();
-            newRow.find('select[name="dept_id[]"]').attr('name', 'dept_id[]');
-            newRow.find('input[name="amount[]"]').attr('name', 'amount[]');
-            newRow.find('select').val('');
-            newRow.find('input[type="text"]').val('');
-            $("#repeater-table tbody").append(newRow);
-        });
+    $(document).ready(function() {
+        $('#submit-btn').click(function() {
+            // Check if both form 1 and form 2 are valid before proceeding
+            if ($('#shiftForm')[0].checkValidity() && $('#salesForm')[0].checkValidity()) {
+                var formData1 = $('#shiftForm').serialize();
+                var formData2 = $('#salesForm').serialize();
+                var formData3 = $('#paymentSaleForm').serialize();
 
-        $("#repeater-table").on('click', '.remove-item', function () {
-            // Check if the row being removed is not the only row
-            if ($("#repeater-table tbody tr").length > 1) {
-                $(this).closest('.repeater-item').remove();
+                // Define route URLs from server side using inline script variables
+                var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
+                var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
+                var paymentSubmitUrl = "{{ route('payment.sale.submit') }}";
+
+                $.ajax({
+                    type: 'POST',
+                    url: shiftSubmitUrl,
+                    data: formData1,
+                    success: function(response) {
+                        console.log('Form 1 Submission Response:', response);
+                        // Now submit the second form
+                        $.ajax({
+                            type: 'POST',
+                            url: storeSubmitUrl,
+                            data: formData2,
+                            success: function(response) {
+                                console.log('Form 2 Submission Response:', response);
+                                // Now check if form 3 is filled
+                                if ($('#paymentSaleForm')[0].checkValidity()) {
+                                    // If form 3 is filled, submit it
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: paymentSubmitUrl,
+                                        data: formData3,
+                                        success: function(response) {
+                                            console.log('Form 3 Submission Response:', response);
+                                            // Display success message or perform other actions
+                                            alert(response);
+                                            // Redirect to the desired page
+                                            window.location.href = "{{ route('shifts.index') }}";
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error('Form 3 Submission Error:', error);
+                                            // Display error message to user
+                                            alert('Error submitting third form. Please try again later.');
+                                        }
+                                    });
+                                } else {
+                                    // If form 3 is not filled, log the message and proceed
+                                    console.log('Form 3 not filled. Proceeding without saving.');
+                                    // Display success message or perform other actions
+                                    alert('Forms 1 and 2 submitted successfully. Form 3 not filled.');
+                                    // Redirect to the desired page
+                                    window.location.href = "{{ route('shifts.index') }}";
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Form 2 Submission Error:', error);
+                                // Display error message to user
+                                alert('Error submitting second form. Please try again later.');
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Form 1 Submission Error:', error);
+                        // Display error message to user
+                        alert('Error submitting first form. Please try again later.');
+                    }
+                });
+            } else {
+                // If either form 1 or form 2 is invalid, prevent submission and show error message
+                alert('Please fill out both form 1 and form 2 correctly before submitting.');
             }
         });
     });
-</script> --}}
+</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -512,6 +674,7 @@
                 totalAmount += amount;
             });
             $('#total-amount').text(totalAmount.toFixed(2));
+            calculateTotalAmountAfterSubtraction();
         }
 
         // Calculate and display total amount initially
@@ -538,59 +701,56 @@
                 calculateTotalAmount(); // Recalculate total amount after removing a row
             }
         });
-    });
-</script>
 
+        // Function to calculate and display the total amount after subtraction
+        function calculateTotalAmountAfterSubtraction() {
+            var totalAmount = parseFloat($('#total-amount').text()) || 0;
+            var customTotalAmount = parseFloat($('#custom-total-amount').text()) || 0;
+            var totalAmountAfterSubtraction = totalAmount - customTotalAmount;
+            $('#total-amount-after-subtraction').text(totalAmountAfterSubtraction.toFixed(2));
+        }
 
+        // Update total amount after subtraction when input fields change
+        $('#paymentSaleForm').on('input', '.amount-input', function () {
+            calculateTotalAmountAfterSubtraction();
+        });
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#submit-btn').click(function() {
-            // Check if both forms are valid before proceeding
-            if ($('#shiftForm')[0].checkValidity() && $('#salesForm')[0].checkValidity()) {
-                var formData1 = $('#shiftForm').serialize();
-                var formData2 = $('#salesForm').serialize();
+        // Function to calculate and display the custom total amount
+        function calculateCustomTotalAmount() {
+            var customTotalAmount = 0;
+            $('.amount-input').each(function () {
+                var amount = parseFloat($(this).val()) || 0;
+                customTotalAmount += amount;
+            });
+            $('#custom-total-amount').text(customTotalAmount.toFixed(2));
+        }
 
-                // Define route URLs from server side using inline script variables
-                var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
-                var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
+        // Calculate and display custom total amount initially
+        calculateCustomTotalAmount();
 
-                $.ajax({
-                    type: 'POST',
-                    url: shiftSubmitUrl,
-                    data: formData1,
-                    success: function(response) {
-                        console.log('Form 1 Submission Response:', response);
-                        // Now submit the second form
-                        $.ajax({
-                            type: 'POST',
-                            url: storeSubmitUrl,
-                            data: formData2,
-                            success: function(response) {
-                                console.log('Form 2 Submission Response:', response);
-                                // Display success message or perform other actions
-                                alert(response);
-                                // Redirect to the desired page
-                                window.location.href = "{{ route('shifts.index') }}";
-                            },
-                            error: function(xhr, status, error) {
-                                console.error('Form 2 Submission Error:', error);
-                                // Display error message to user
-                                alert('Error submitting second form. Please try again later.');
-                            }
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Form 1 Submission Error:', error);
-                        // Display error message to user
-                        alert('Error submitting first form. Please try again later.');
-                    }
-                });
-            } else {
-                // If any form is invalid, prevent submission and show error message
-                alert('Please fill out both forms correctly before submitting.');
+        // Update custom total amount when input fields change
+        $('#paymentSaleForm').on('input', '.amount-input', function () {
+            calculateCustomTotalAmount();
+            calculateTotalAmountAfterSubtraction();
+        });
+
+        $("#addRow").click(function () {
+            var newRow = $("#paymentSaleTable tbody tr").first().clone();
+            newRow.find('select[name="paymentmethod_id[]"]').val('');
+            newRow.find('input[name="amount[]"]').val('');
+            $("#paymentSaleTable tbody").append(newRow);
+        });
+
+        $("#paymentSaleTable").on('click', '.removeRow', function () {
+            // Check if the row being removed is not the only row
+            if ($("#paymentSaleTable tbody tr").length > 1) {
+                $(this).closest('tr').remove();
+                calculateCustomTotalAmount(); // Recalculate custom total amount after removing a row
+                calculateTotalAmountAfterSubtraction(); // Recalculate total amount after subtraction
             }
         });
     });
 </script>
+
+
+

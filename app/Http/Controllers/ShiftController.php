@@ -7,8 +7,8 @@ use App\Models\Shift;
 use App\Models\Shop;
 use App\Models\Staff;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-
+use App\Models\Paymentmethod;
+use App\Models\Paymentsale;
 use App\Models\Sale; // Import Sale model
 use App\Models\Department;
 use Illuminate\Support\Facades\DB; 
@@ -28,7 +28,8 @@ class ShiftController extends Controller
         // Fetch shops and staffs to populate dropdown menus
         $shops = Shop::all();
         $staffs = Staff::all();
-        return view('shifts.create', compact('shops', 'staffs'));
+        $paymentMethods = Paymentmethod::all(); 
+        return view('shifts.create', compact('shops', 'staffs','paymentMethods'));
     }
 
     protected $currentShiftId;
@@ -72,7 +73,8 @@ class ShiftController extends Controller
     $staffs = Staff::all();
     $shifts = Shift::all();
     $departments = Department::all();
-    return view('pages.sales.create', compact('shops', 'staffs','shifts','departments'));
+    $paymentMethods = Paymentmethod::all(); 
+    return view('pages.sales.create', compact('shops', 'staffs','shifts','departments','paymentMethods'));
 }
 
 
@@ -522,9 +524,13 @@ protected function storeShift(Request $request)
             $staffs = Staff::all();
             $shifts = Shift::all();
             $departments = Department::all();
-            return view('pages.sales.create', compact('shops', 'staffs','shifts','departments'));
+            $paymentmethods = Paymentmethod::all(); 
+            $paymentSales = PaymentSale::all();
+            return view('pages.sales.create', compact('shops', 'staffs','shifts','departments','paymentmethods','paymentSales'));
         }
 
+        
 
+      
 
 }
