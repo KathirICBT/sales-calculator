@@ -63,16 +63,13 @@
                                     <div class="col-md-12">
                                         
                                         @foreach($staffs as $staff)
-<<<<<<< HEAD
                                         @if(session('username')==$staff->username)
                                         
-=======
-                                        @if(session('username')==$staff->username)                                        
->>>>>>> 21de50b3767b33bb8260d590fadac6d69b660b32
                                         <input type="hidden" id="staff_id" name="staff_id" value="{{ $staff->id }}">
                                         @endif
                                         @endforeach
                                     </div>
+
                                     <div class="col-md-3">
                                         <label for="shop_id" class="form-label">Shop:</label>
                                         <select class="form-select" name="shop_id" id="shop_id" required>
@@ -83,36 +80,25 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-<<<<<<< HEAD
                                         <label for="shift_start_date" class="form-label">Shift Start Date:</label>
                                         <input type="date" class="form-control" id="start_date" name="start_date" required>
-=======
-                                        <label for="shift_date" class="form-label">Start Date:</label>
-                                        <input type="date" class="form-control" id="date" name="date" required>
->>>>>>> 21de50b3767b33bb8260d590fadac6d69b660b32
                                     </div>
                                     <div class="col-md-3">
                                         <label for="start_time" class="form-label">Start Time:</label>
                                         <input type="time" class="form-control" id="start_time" name="start_time"
                                             required>
                                     </div>
-<<<<<<< HEAD
 
                                     <div class="col-md-3">
                                         <label for="shift_end_date" class="form-label">Shift End Date:</label>
                                         <input type="date" class="form-control" id="end_date" name="end_date" required>
                                     </div>
                                     
-=======
-                                    {{-- <div class="col-md-3">
-                                        <label for="shift_date" class="form-label">End Date:</label>
-                                        <input type="date" class="form-control" id="end_date" name="end_date" required>
-                                    </div> --}}
->>>>>>> 21de50b3767b33bb8260d590fadac6d69b660b32
                                     <div class="col-md-3">
                                         <label for="end_time" class="form-label">End Time:</label>
                                         <input type="time" class="form-control" id="end_time" name="end_time" required>
                                     </div>
+                                    
                                     
                                 </form>
                             </div>
@@ -182,6 +168,63 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 col-md-6 d-flex">
+            <div class="card flex-fill border-0">
+                <div class="card-body p-0 d-flex flex-fill">
+                    <div class="row g-0 w-100">
+                        <div class="col-12">
+                            <div class="p-3 m-1">
+                                <div class="card-header">
+                                    <h5 class="card-title">Add Payment Sale Details</h5>
+                                    <p>
+                                        @if(session('success'))
+                                        <div class="alert" style="color: green;">{{ session('success') }}</div>
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="card-body">
+                                    <form class="row g-3" id="paymentSaleForm" method="post" action="{{ route('payment.sale.submit') }}">
+                                        @csrf
+                                        <table class="table" id="paymentSaleTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Payment Method</th>
+                                                    <th>Amount</th>
+                                                    <th><button type="button" id="addRow" class="btn btn-success">Add Row</button></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select name="paymentmethod_id[]" class="form-select" required>
+                                                            <option value="">Select a Payment Method</option>
+                                                            @foreach($paymentmethods as $paymentmethod)
+                                                            <option value="{{ $paymentmethod->id }}">{{ $paymentmethod->payment_method }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="amount[]" class="form-control" required>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger removeRow">Remove</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="submit-btn" class="btn btn-primary rounded-pill">Submit</button>
+                                    </form>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
     </div>
 
     
@@ -279,7 +322,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach($shifts as $shift)
-                                            @if($shift->staff->staff_name == $staff->staff_name)
+                                            @if($shift->staff->username == session('username'))
                                             <tr>
                                                 <td>{{ $shift->staff->staff_name }}</td>
                                                 <td>{{ $shift->shop->name }}</td>
@@ -453,10 +496,7 @@
     });
 </script>
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 21de50b3767b33bb8260d590fadac6d69b660b32
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -531,8 +571,91 @@
             }
         });
     });
-<<<<<<< HEAD
 </script>
-=======
+
+<!-- ===================================================================================== -->
+<script>
+    $(document).ready(function () {
+        $("#addRow").click(function () {
+            var newRow = $("#paymentSaleTable tbody tr").first().clone();
+            newRow.find('select[name="paymentmethod_id[]"]').val('');
+            newRow.find('input[name="amount[]"]').val('');
+            $("#paymentSaleTable tbody").append(newRow);
+        });
+
+        $("#paymentSaleTable").on('click', '.removeRow', function () {
+            // Check if the row being removed is not the only row
+            if ($("#paymentSaleTable tbody tr").length > 1) {
+                $(this).closest('tr').remove();
+            }
+        });
+    });
 </script>
->>>>>>> 21de50b3767b33bb8260d590fadac6d69b660b32
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#add-item").click(function () {
+            var newRow = $(".repeater-item").first().clone();
+            newRow.find('select[name="dept_id[]"]').attr('name', 'dept_id[]');
+            newRow.find('input[name="amount[]"]').attr('name', 'amount[]');
+            newRow.find('select').val('');
+            newRow.find('input[type="text"]').val('');
+            $("#repeater-table tbody").append(newRow);
+        });
+
+        $("#repeater-table").on('click', '.remove-item', function () {
+            // Check if the row being removed is not the only row
+            if ($("#repeater-table tbody tr").length > 1) {
+                $(this).closest('.repeater-item').remove();
+            }
+        });
+
+        $('#submit-btn').click(function() {
+            // Check if both forms are valid before proceeding
+            if ($('#shiftForm')[0].checkValidity() && $('#salesForm')[0].checkValidity()) {
+                var formData1 = $('#shiftForm').serialize();
+                var formData2 = $('#salesForm').serialize();
+
+                // Define route URLs from server side using inline script variables
+                var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
+                var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
+
+                $.ajax({
+                    type: 'POST',
+                    url: shiftSubmitUrl,
+                    data: formData1,
+                    success: function(response) {
+                        console.log('Form 1 Submission Response:', response);
+                        // Now submit the second form
+                        $.ajax({
+                            type: 'POST',
+                            url: storeSubmitUrl,
+                            data: formData2,
+                            success: function(response) {
+                                console.log('Form 2 Submission Response:', response);
+                                // Display success message or perform other actions
+                                alert(response);
+                                // Redirect to the desired page
+                                window.location.href = "{{ route('shifts.index') }}";
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Form 2 Submission Error:', error);
+                                // Display error message to user
+                                alert('Error submitting second form. Please try again later.');
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Form 1 Submission Error:', error);
+                        // Display error message to user
+                        alert('Error submitting first form. Please try again later.');
+                    }
+                });
+            } else {
+                // If any form is invalid, prevent submission and show error message
+                alert('Please fill out both forms correctly before submitting.');
+            }
+        });
+    });
+</script>

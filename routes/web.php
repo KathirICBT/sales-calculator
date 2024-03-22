@@ -163,33 +163,33 @@ Route::post('/staffsale/result', [SaleController::class, 'searchStaffSales'])->n
 
 //Payment method
 //creaete
-Route::get('/paymentmethods/create', [PaymentmethodController::class, 'create'])->name('paymentmethod.create');
-Route::post('/paymentmethods/store', [PaymentmethodController::class, 'store'])->name('paymentmethod.store');
+// Route::get('/paymentmethods/create', [PaymentmethodController::class, 'create'])->name('paymentmethod.create');
+// Route::post('/paymentmethods/store', [PaymentmethodController::class, 'store'])->name('paymentmethod.store');
 
 //view
 Route::get('/paymentmethods', [PaymentmethodController::class, 'index'])->name('paymentmethod.index');
 
 //update
-Route::get('/paymentmethods/{id}/edit', [PaymentmethodController::class, 'edit'])->name('paymentmethod.edit');
-Route::put('/paymentmethods/{id}', [PaymentmethodController::class, 'update'])->name('paymentmethod.update');
+// Route::get('/paymentmethods/{id}/edit', [PaymentmethodController::class, 'edit'])->name('paymentmethod.edit');
+// Route::put('/paymentmethods/{id}', [PaymentmethodController::class, 'update'])->name('paymentmethod.update');
 //delete
 Route::delete('/paymentmethods/{id}', [PaymentmethodController::class, 'destroy'])->name('paymentmethod.destroy');
 
-//PaymentSale
-//create
-Route::get('/paymentsale/create', [PaymentsaleController::class, 'create'])->name('paymentsale.create');
-Route::post('/paymentsale/store', [PaymentsaleController::class, 'store'])->name('paymentsale.store');
+// //PaymentSale
+// //create
+// Route::get('/paymentsale/create', [PaymentsaleController::class, 'create'])->name('paymentsale.create');
+// Route::post('/paymentsale/store', [PaymentsaleController::class, 'store'])->name('paymentsale.store');
 
-//view 
-Route::get('/paymentsales', [PaymentSaleController::class, 'index'])->name('paymentsales.index');
+// //view 
+// Route::get('/paymentsales', [PaymentSaleController::class, 'index'])->name('paymentsales.index');
 
 //edit
-Route::get('/paymentsales/{id}/edit', [PaymentSaleController::class, 'edit'])->name('paymentsales.edit');
-Route::put('/paymentsales/{id}', [PaymentSaleController::class, 'update'])->name('paymentsales.update');
+// Route::get('/paymentsales/{id}/edit', [PaymentSaleController::class, 'edit'])->name('paymentsales.edit');
+// Route::put('/paymentsales/{id}', [PaymentSaleController::class, 'update'])->name('paymentsales.update');
 
 
 
-Route::delete('/paymentsales/{id}', [PaymentSaleController::class, 'destroy'])->name('paymentsales.destroy');
+// Route::delete('/paymentsales/{id}', [PaymentSaleController::class, 'destroy'])->name('paymentsales.destroy');
 
 
 //FINAL ==============================================================================
@@ -228,6 +228,8 @@ Route::post('/pages/departments/store', [DepartmentController::class, 'store'])-
 Route::get('/departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
 Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
 
+
+
 //DEPARTMENT DELETE =======================================================================
 Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
 
@@ -242,6 +244,8 @@ Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 //shops UPDATE =======================================================================
 Route::get('/shops/{shop}/update_view', [ShopController::class, 'update_view'])->name('shop.update_view');
 Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shop.update');
+
+
 
 //shops DELETE =======================================================================
 Route::delete('/shops/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
@@ -294,5 +298,36 @@ Route::post('/sales', [ShiftController::class, 'storeSales'])->name('sales.store
 //Route::post('sales', 'ShiftController@storeSales')->name('sales.store');
 
 Route::post('/pages/shift/newform', [ShiftController::class, 'storetest'])->name('shifts.newform');
+
+// PAYMENT METHOD=================================================
+Route::get('/pages/paymentmethod/store', [PaymentmethodController::class, 'store'])->name('paymentmethod.store');
+Route::post('/pages/paymentmethod/store', [PaymentmethodController::class, 'store'])->name('paymentmethod.store.submit');
+
+Route::get('/paymentmethods/{paymentMethodId}/edit', [PaymentmethodController::class, 'edit'])->name('paymentmethod.edit');
+Route::put('/paymentmethods/{paymentMethodId}', [PaymentmethodController::class, 'update'])->name('paymentmethod.update');
+
+//PaymentSale
+// //create
+// Route::get('/pages/paymentsale/store', [PaymentsaleController::class, 'store'])->name('paymentsale.store');
+// Route::post('/pages/paymentsale/store', [PaymentsaleController::class, 'store'])->name('paymentsale.store.submit');
+
+
+
+// Route::get('/paymentsales', [PaymentsaleController::class, 'index'])->name('paymentsales.index');
+// Route::get('/paymentsales/create', [PaymentsaleController::class, 'create'])->name('paymentsales.create');
+// Route::post('/paymentsales/store', [PaymentsaleController::class, 'store'])->name('paymentsales.store');
+// use App\Http\Controllers\PaymentSaleController;
+
+//Route::post('/payment-sale-submit', [PaymentSaleController::class, 'store'])->name('payment.sale.submit');
+
+
+Route::post('/payment-sale', [PaymentSaleController::class, 'store'])->name('payment.sale.submit');
+
+
+
+
+Route::get('/paymentsales/{id}/edit', [PaymentsaleController::class, 'edit'])->name('paymentsales.edit');
+Route::put('/paymentsales/{id}', [PaymentsaleController::class, 'update'])->name('paymentsales.update');
+Route::delete('/paymentsales/{id}', [PaymentsaleController::class, 'destroy'])->name('paymentsales.destroy');
 
 
