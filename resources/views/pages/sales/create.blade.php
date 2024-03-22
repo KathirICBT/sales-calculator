@@ -63,17 +63,13 @@
                                     <div class="col-md-12">
                                         
                                         @foreach($staffs as $staff)
-<<<<<<< HEAD
                                         @if(session('username')==$staff->username)
                                         
-=======
-                                        @if(session('username')==$staff->username)                                        
->>>>>>> 21de50b3767b33bb8260d590fadac6d69b660b32
                                         <input type="hidden" id="staff_id" name="staff_id" value="{{ $staff->id }}">
                                         @endif
                                         @endforeach
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-12">
                                         <label for="shop_id" class="form-label">Shop:</label>
                                         <select class="form-select" name="shop_id" id="shop_id" required>
                                             <option value="">Select a Shop</option>
@@ -83,37 +79,24 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-<<<<<<< HEAD
                                         <label for="shift_start_date" class="form-label">Shift Start Date:</label>
                                         <input type="date" class="form-control" id="start_date" name="start_date" required>
-=======
-                                        <label for="shift_date" class="form-label">Start Date:</label>
-                                        <input type="date" class="form-control" id="date" name="date" required>
->>>>>>> 21de50b3767b33bb8260d590fadac6d69b660b32
                                     </div>
                                     <div class="col-md-3">
                                         <label for="start_time" class="form-label">Start Time:</label>
                                         <input type="time" class="form-control" id="start_time" name="start_time"
                                             required>
                                     </div>
-<<<<<<< HEAD
 
                                     <div class="col-md-3">
                                         <label for="shift_end_date" class="form-label">Shift End Date:</label>
                                         <input type="date" class="form-control" id="end_date" name="end_date" required>
                                     </div>
                                     
-=======
-                                    {{-- <div class="col-md-3">
-                                        <label for="shift_date" class="form-label">End Date:</label>
-                                        <input type="date" class="form-control" id="end_date" name="end_date" required>
-                                    </div> --}}
->>>>>>> 21de50b3767b33bb8260d590fadac6d69b660b32
                                     <div class="col-md-3">
                                         <label for="end_time" class="form-label">End Time:</label>
                                         <input type="time" class="form-control" id="end_time" name="end_time" required>
-                                    </div>
-                                    
+                                    </div>                                    
                                 </form>
                             </div>
                         </div>
@@ -142,7 +125,7 @@
                                         @endif
                                     </p>
                                 </div>
-                                <div class="card-body">                                    
+                                {{-- <div class="card-body">                                    
                                     <form class="row g-3" id="salesForm" method="post" action="{{ route('shifts.store.submit') }}">
                                         @csrf
                                         <table class="table" id="repeater-table">
@@ -175,6 +158,49 @@
                                         
                                     </form>
                                     <button id="submit-btn" class="btn btn-primary rounded-pill">NewSubmit</button>
+                                </div> --}}
+                                <div class="card-body">                                    
+                                    <form class="row g-3" id="salesForm" method="post" action="{{ route('shifts.store.submit') }}">
+                                        @csrf
+                                        <table class="table" id="repeater-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Department</th>
+                                                    <th>Amount</th>
+                                                    <th><button type="button" id="add-item" class="btn btn-primary rounded">Add Row</button></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="repeater-item">
+                                                    <td>
+                                                        <select name="dept_id[]" class="form-select" required>
+                                                            <option value="">Select a Department</option>
+                                                            @foreach($departments as $department)
+                                                            <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="amount[]" class="form-control amount-field" required>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger remove-item">Remove</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        
+                                    </form>
+                                    <table class="table">
+                                        <hr>
+                                        <tr>
+                                            <td><span class="form-control text-warning">Total Amount:</span></td>
+                                            <td style="float: right;"><span id="total-amount" class="form-control text-warning">0</span></td>
+                                        </tr>
+                                    </table>
+                                    {{-- <div>Total Amount: <span id="total-amount">0</span></div> --}}
+                                    <hr>
+                                    <button id="submit-btn" class="btn btn-primary rounded-pill">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -194,7 +220,7 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">
-                                <h4 class="n_h_style rounded">Add Shifts</h4>
+                                <h4 class="n_h_style rounded">Add Shifts name: {{ $staff->staff_name }}</h4>
                                 @if(session('success'))
                                 <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
                                     role="alert">
@@ -279,7 +305,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach($shifts as $shift)
-                                            @if($shift->staff->staff_name == $staff->staff_name)
+                                            @if($shift->staff->username == session('username'))
                                             <tr>
                                                 <td>{{ $shift->staff->staff_name }}</td>
                                                 <td>{{ $shift->shop->name }}</td>
@@ -453,12 +479,8 @@
     });
 </script>
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 21de50b3767b33bb8260d590fadac6d69b660b32
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         $("#add-item").click(function () {
@@ -474,6 +496,46 @@
             // Check if the row being removed is not the only row
             if ($("#repeater-table tbody tr").length > 1) {
                 $(this).closest('.repeater-item').remove();
+            }
+        });
+    });
+</script> --}}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Function to calculate and display the total amount
+        function calculateTotalAmount() {
+            var totalAmount = 0;
+            $('.amount-field').each(function () {
+                var amount = parseFloat($(this).val()) || 0;
+                totalAmount += amount;
+            });
+            $('#total-amount').text(totalAmount.toFixed(2));
+        }
+
+        // Calculate and display total amount initially
+        calculateTotalAmount();
+
+        // Update total amount when input fields change
+        $('#repeater-table').on('input', '.amount-field', function () {
+            calculateTotalAmount();
+        });
+
+        $("#add-item").click(function () {
+            var newRow = $(".repeater-item").first().clone();
+            newRow.find('select[name="dept_id[]"]').attr('name', 'dept_id[]');
+            newRow.find('input[name="amount[]"]').attr('name', 'amount[]');
+            newRow.find('select').val('');
+            newRow.find('input[type="text"]').val('');
+            $("#repeater-table tbody").append(newRow);
+        });
+
+        $("#repeater-table").on('click', '.remove-item', function () {
+            // Check if the row being removed is not the only row
+            if ($("#repeater-table tbody tr").length > 1) {
+                $(this).closest('.repeater-item').remove();
+                calculateTotalAmount(); // Recalculate total amount after removing a row
             }
         });
     });
@@ -531,8 +593,4 @@
             }
         });
     });
-<<<<<<< HEAD
 </script>
-=======
-</script>
->>>>>>> 21de50b3767b33bb8260d590fadac6d69b660b32

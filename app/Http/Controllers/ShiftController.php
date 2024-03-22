@@ -7,6 +7,7 @@ use App\Models\Shift;
 use App\Models\Shop;
 use App\Models\Staff;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Sale; // Import Sale model
 use App\Models\Department;
@@ -30,10 +31,13 @@ class ShiftController extends Controller
         return view('shifts.create', compact('shops', 'staffs'));
     }
 
-    public $lastShiftId;
+    protected $currentShiftId;
 
     public function storeShifts(Request $request)
 {
+    // Get the currently authenticated user (staff)
+    //$currentStaff = Auth::user();
+
     if ($request->isMethod('post')) {
         
         $request->validate([
@@ -59,9 +63,9 @@ class ShiftController extends Controller
         $shift->end_time = $request->input('end_time');
         $shift->save();
 
-        $this->lastShiftId = $shift->id;
+        $this->currentShiftId = $shift->id;
         //return redirect()->route('shifts.index')->with('success', 'Shift added successfully!');
-        return $shift->id;
+        return "Shift Saved Successfully!";
     }
 
     $shops = Shop::all();
@@ -391,6 +395,26 @@ protected function storeShift(Request $request)
         $lastShift = Shift::latest()->first();
         return $lastShift->id;
     }
+
+//     protected function getLastShiftId()
+// {
+//     // Retrieve the last inserted shift's ID
+//     $currentStaff = Auth::user();
+//     $lastShift = Shift::where('staff_id', $currentStaff->id)->latest()->first();
+//     return $lastShift ? $lastShift->id : null;
+// }
+
+    // public function getCurrentShiftId()
+    // {
+    //     // Access currentShiftId here
+    //     if ($this->currentShiftId) {
+    //         // Do something with $this->currentShiftId
+    //         return $this->currentShiftId;
+    //     } else {
+    //         // Handle case when $this->currentShiftId is not set
+    //         return 'Current shift ID not set.';
+    //     }
+    // }
 
     // public function store(Request $request)
     // {
