@@ -584,6 +584,64 @@
     });
 </script>
 
+{{-- DATE AND TIME VALIDATION --}}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#submit-btn').click(function() {
+            // Check if both form 1 and form 2 are valid before proceeding
+            if ($('#shiftForm')[0].checkValidity() && $('#salesForm')[0].checkValidity()) {
+                // Check if end_date is greater than or equal to start_date
+                var startDate = new Date($('#start_date').val());
+                var endDate = new Date($('#end_date').val());
+
+                if (endDate < startDate) {
+                    alert('End date must be greater than or equal to start date.');
+                    return; // Prevent further execution
+                } else if (endDate.getTime() === startDate.getTime()) {
+                    // If end_date is equal to start_date, check end_time > start_time
+                    var startTime = parseTime($('#start_time').val());
+                    var endTime = parseTime($('#end_time').val());
+
+                    if (endTime <= startTime) {
+                        alert('End time must be greater than start time.');
+                        return; // Prevent further execution
+                    }
+                }
+
+                // Rest of your code for form submission...
+            } else {
+                // If either form 1 or form 2 is invalid, prevent submission and show error message
+                alert('Please fill out both form 1 and form 2 correctly before submitting.');
+            }
+        });
+    });
+
+    function parseTime(timeStr) {
+        // Split time string into hours, minutes, and AM/PM
+        var timeArr = timeStr.split(':');
+        var hours = parseInt(timeArr[0]);
+        var minutes = parseInt(timeArr[1].split(' ')[0]); // Extract minutes from the first part
+        var period = timeArr[1].split(' ')[1];
+
+        // Adjust hours for PM if necessary
+        if (period === 'PM' && hours < 12) {
+            hours += 12;
+        }
+
+        // Convert to 24-hour format
+        if (period === 'AM' && hours === 12) {
+            hours = 0; // 12:00 AM is 00:00 in 24-hour format
+        }
+
+        return hours * 60 + minutes; // Convert time to total minutes
+    }
+</script>
+
+
+{{-- DATE AND TIME VALIDATION --}}
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -751,6 +809,11 @@
         });
     });
 </script>
+
+
+
+
+
 
 
 
