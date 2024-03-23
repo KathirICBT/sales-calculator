@@ -186,14 +186,32 @@ public function update(Request $request, $id)
             }
         }
 
-        return view('shiftstaff.result', compact('staffDetails'));
+        return view('pages.sales.editsale', compact('staffDetails'));
     }
 
-    public function directToSearch()
-    {
-        
-        return view('shiftstaff.search');
-    }
+    public function searchshift(Request $request)
+{
+    $username = $request->input('username');
+
+    // Query shifts based on the staff username
+    $staffDetails = Shift::whereHas('staff', function ($query) use ($username) {
+        $query->where('username', $username);
+    })->with(['staff', 'shop'])->get();
+    $salesDetails= Sale::all();
+
+    return view('pages.sales.editsale', ['staffDetails' => $staffDetails],['salesDetails'=>$salesDetails]);
+}
+
+public function directToSearch()
+{
+    // Retrieve all shifts
+    $staffDetails = Shift::all();
+    $salesDetails= Sale::all();
+    $departments = Department::all();
+    
+    // Return the view with all shifts data
+    return view('pages.sales.editsale', compact('staffDetails','salesDetails','departments'));
+}
 
 
     // public function storeSales(Request $request){

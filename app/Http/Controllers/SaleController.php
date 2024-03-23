@@ -9,6 +9,7 @@ use App\Models\Sale;
 use App\Models\Department;
 use App\Models\Staff;
 use App\Models\Shop;
+use App\Models\Shift;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -175,5 +176,56 @@ public function searchStaffSales(Request $request)
 
     return view('staffsale.result', compact('sales','paymentSales'));
 }
+
+// public function getSalesDetails($shiftId)
+//     {
+//         $departments = Department::all();
+//         try {
+//             // Fetch sales details based on the shift ID
+//             $salesDetails = Sale::where('shift_id', $shiftId)->get();
+
+//             // Check if it's an AJAX request
+//             if (request()->ajax()) {
+//                 // Return sales details as JSON for AJAX requests
+//                 return response()->json(['salesDetails' => $salesDetails]);
+//             }
+
+//             // Return the initial page with sales details
+//             return view('pages.sales.editsale', compact('salesDetails','departments'));
+//         } catch (\Exception $e) {
+//             // Log the error
+//             \Log::error('Error fetching sales details: ' . $e->getMessage());
+
+//             // Return error response
+//             return response()->json(['error' => 'An error occurred while fetching sales details.'], 500);
+//         }
+//     }
+public function getSalesDetails($shiftId)
+{
+    $departments = Department::all();
+    try {
+        // Fetch sales details based on the shift ID
+        $salesDetails = Sale::where('shift_id', $shiftId)->get();
+
+        // Check if it's an AJAX request
+        if (request()->ajax()) {
+            // Return sales details as JSON for AJAX requests
+            return response()->json(['salesDetails' => $salesDetails, 'departments' => $departments]);
+        }
+
+        // Return the initial page with sales details
+        return view('pages.sales.editsale', compact('salesDetails', 'departments'));
+    } catch (\Exception $e) {
+        // Log the error
+        \Log::error('Error fetching sales details: ' . $e->getMessage());
+
+        // Return error response
+        return response()->json(['error' => 'An error occurred while fetching sales details.'], 500);
+    }
+}
+
+
+
+
 
 }
