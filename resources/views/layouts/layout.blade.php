@@ -41,7 +41,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{route('paymentmethod.store')}}" class="sidebar-link collapsed" >
+                        <a href="{{route('departments.store')}}" class="sidebar-link collapsed" >
                             <i class="fa-solid fa-sliders pe-2"></i>
                             Payment method 
                         </a>
@@ -50,6 +50,12 @@
                         <a href="{{route('shifts.index')}}" class="sidebar-link collapsed" >
                             <i class="fa-solid fa-sliders pe-2"></i>
                             Shift 
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{route('shiftstaff.search')}}" class="sidebar-link collapsed" >
+                            <i class="fa-solid fa-sliders pe-2"></i>
+                            ShiftEdit 
                         </a>
                     </li>
                     <li class="sidebar-item">
