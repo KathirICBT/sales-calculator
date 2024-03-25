@@ -710,7 +710,7 @@
                     error: function(xhr, status, error) {
                         console.error('Form 1 Submission Error:', error);
                         // Display error message to user
-                        alert('Error submitting first form. Please try again later.');
+                        alert('Error submitting first form. Check Date and Time.');
                     }
                 });
             } else {

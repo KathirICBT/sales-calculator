@@ -49,13 +49,13 @@ class ShiftController extends Controller
             'start_time' => 'required',
             'end_time' => [
                 'required',
-                function ($attribute, $value, $fail) use ($request) {
-                    // Parse the start and end dates
+                function ($attribute, $value, $fail) use ($request) {                    
                     $startDate = Carbon::parse($request->input('start_date'));
                     $endDate = Carbon::parse($request->input('end_date'));
-
-                    // Check if start_date and end_date are the same
-                    if ($startDate->eq($endDate) && strtotime($value) <= strtotime($request->input('start_time'))) {
+                    $startTime = Carbon::parse($request->input('start_time'));
+                    $endTime = Carbon::parse($value);    
+                    
+                    if ($startDate->eq($endDate) && $endTime->lte($startTime)) {
                         $fail('The end time must be after the start time when the start and end dates are the same.');
                     }
                 },
