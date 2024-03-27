@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\PaymentsaleController;
 use App\Models\Paymentsale;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\Sale;  
 use App\Models\Department;
@@ -217,7 +218,7 @@ public function getSalesDetails($shiftId)
         return view('pages.sales.editsale', compact('salesDetails', 'departments'));
     } catch (\Exception $e) {
         // Log the error
-        \Log::error('Error fetching sales details: ' . $e->getMessage());
+        Log::error('Error fetching sales details: ' . $e->getMessage());
 
         // Return error response
         return response()->json(['error' => 'An error occurred while fetching sales details.'], 500);

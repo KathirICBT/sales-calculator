@@ -38,6 +38,7 @@ class ShiftController extends Controller
 // {
 //     if ($request->isMethod('post')) {
         
+<<<<<<< HEAD
 //         $request->validate([
 //             'shop_id' => 'required|numeric',
 //             'staff_id' => 'required|numeric',
@@ -50,6 +51,28 @@ class ShiftController extends Controller
 //         // Parse the start and end dates
 //         $startDate = Carbon::parse($request->input('start_date'));
 //         $endDate = Carbon::parse($request->input('end_date'));
+=======
+        $request->validate([
+            'shop_id' => 'required|numeric',
+            'staff_id' => 'required|numeric',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_time' => 'required',
+            'end_time' => [
+                'required',
+                function ($attribute, $value, $fail) use ($request) {                    
+                    $startDate = Carbon::parse($request->input('start_date'));
+                    $endDate = Carbon::parse($request->input('end_date'));
+                    $startTime = Carbon::parse($request->input('start_time'));
+                    $endTime = Carbon::parse($value);    
+                    
+                    if ($startDate->eq($endDate) && $endTime->lte($startTime)) {
+                        $fail('The end time must be after the start time when the start and end dates are the same.');
+                    }
+                },
+            ],
+        ]);
+>>>>>>> b5b7bb6a77fdb330f306cc337bda3b0fbb54014b
 
 //         // Create the Shift model instance with specific fields
 //         $shift = new Shift();
