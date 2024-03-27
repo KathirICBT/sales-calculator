@@ -311,6 +311,48 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-12 col-md-6 d-flex">
+                <div class="card flex-fill border-0">
+                    <div class="card-body p-0 d-flex flex-fill">
+                        <div class="row g-0 w-100">
+                            <div class="col-12">
+                                <div class="p-3 m-1">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Add Payment Sale Details</h5>
+                                        <p>
+                                            @if(session('success'))
+                                            <div class="alert" style="color: green;">{{ session('success') }}</div>
+                                            @endif
+                                        </p>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- resources/views/petticash/create.blade.php -->
+
+                                        <form action="{{ route('petticash.store') }}" method="POST">
+                                            @csrf
+                                            
+                                            
+                                            <div class="col-md-6">
+                                                <label for="reason" class="form-label">Reason:</label>
+                                                <textarea name="reason" id="reason" class="form-control"></textarea>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="amount"  class="form-label">Amount:</label>
+                                                <input type="number" name="amount" id="amount" class="form-control">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Add Petticash Entry</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         
     </div>
