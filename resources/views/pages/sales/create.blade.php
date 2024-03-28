@@ -331,17 +331,23 @@
 
                                         <form action="{{ route('petticash.store') }}" method="POST">
                                             @csrf
-                                            
-                                            
-                                            <div class="col-md-6">
-                                                <label for="reason" class="form-label">Reason:</label>
-                                                <textarea name="reason" id="reason" class="form-control"></textarea>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="amount"  class="form-label">Amount:</label>
-                                                <input type="number" name="amount" id="amount" class="form-control">
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Add Petticash Entry</button>
+
+                                            <table id="petticash-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Reason</th>
+                                                        <th>Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><input type="text" name="reason[]" class="form-control reason-input"></td>
+                                                        <td><input type="number" name="amount[]" class="form-control amount-input"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <button type="button" id="add-row-btn" class="btn btn-primary">Add Row</button>
+                                            <button type="submit" class="btn btn-success">Submit</button>
                                         </form>
 
                                     </div>
@@ -852,7 +858,24 @@
     });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add event listener to add row button
+        document.getElementById('add-row-btn').addEventListener('click', function () {
+            addRow();
+        });
+    });
 
+    function addRow() {
+        var tableBody = document.querySelector('#petticash-table tbody');
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td><input type="text" name="reason[]" class="form-control reason-input"></td>
+            <td><input type="number" name="amount[]" class="form-control amount-input"></td>
+        `;
+        tableBody.appendChild(newRow);
+    }
+</script>
 
 
 

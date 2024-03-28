@@ -338,5 +338,5 @@ Route::get('/shifts/{shiftId}/sales', [SaleController::class, 'getSalesDetails']
 Route::get('/shiftstaff/result', [ShiftController::class, 'searchshift'])->name('shiftstaff.results');
 
 // /============================================================================
-Route::get('/petticash/create', [PetticashController::class, 'create'])->name('petticash.create');
+//Route::get('/petticash/create', [PetticashController::class, 'create'])->name('petticash.create');
 Route::post('/petticash/store', [PetticashController::class, 'store'])->name('petticash.store');
