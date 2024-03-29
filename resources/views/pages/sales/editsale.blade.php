@@ -177,8 +177,7 @@
                                                 <tr>
                                                     <th>Sale ID</th>
                                                     <th>Department</th>
-                                                    <th>Amount</th>
-                                                    <!-- Add more columns as needed -->
+                                                    <th>Amount</th>                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>

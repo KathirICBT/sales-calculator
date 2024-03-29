@@ -9,6 +9,7 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\PaymentmethodController;
 use App\Http\Controllers\PaymentsaleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PetticashController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -335,3 +336,7 @@ Route::delete('/paymentsales/{id}', [PaymentsaleController::class, 'destroy'])->
 Route::get('/shifts/{shiftId}/sales', [SaleController::class, 'getSalesDetails'])->name('shifts.sales.details');
 
 Route::get('/shiftstaff/result', [ShiftController::class, 'searchshift'])->name('shiftstaff.results');
+
+// /============================================================================
+//Route::get('/petticash/create', [PetticashController::class, 'create'])->name('petticash.create');
+Route::post('/petticash/store', [PetticashController::class, 'store'])->name('petticash.store');

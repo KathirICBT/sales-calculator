@@ -34,7 +34,68 @@ class ShiftController extends Controller
 
     protected $currentShiftId;
 
-    public function storeShifts(Request $request)
+//    public function storeShifts(Request $request)
+// {
+//     if ($request->isMethod('post')) {
+        
+//         $request->validate([
+//             'shop_id' => 'required|numeric',
+//             'staff_id' => 'required|numeric',
+//             'start_date' => 'required|date',
+//             'end_date' => 'required|date|after_or_equal:start_date',
+//             'start_time' => 'required',
+//             'end_time' => 'required',
+//         ]);
+
+//         // Parse the start and end dates
+//         $startDate = Carbon::parse($request->input('start_date'));
+//         $endDate = Carbon::parse($request->input('end_date'));
+    //     $request->validate([
+    //         'shop_id' => 'required|numeric',
+    //         'staff_id' => 'required|numeric',
+    //         'start_date' => 'required|date',
+    //         'end_date' => 'required|date|after_or_equal:start_date',
+    //         'start_time' => 'required',
+    //         'end_time' => [
+    //             'required',
+    //             function ($attribute, $value, $fail) use ($request) {                    
+    //                 $startDate = Carbon::parse($request->input('start_date'));
+    //                 $endDate = Carbon::parse($request->input('end_date'));
+    //                 $startTime = Carbon::parse($request->input('start_time'));
+    //                 $endTime = Carbon::parse($value);    
+                    
+    //                 if ($startDate->eq($endDate) && $endTime->lte($startTime)) {
+    //                     $fail('The end time must be after the start time when the start and end dates are the same.');
+    //                 }
+    //             },
+    //         ],
+    //     ]);
+    // }
+
+//         // Create the Shift model instance with specific fields
+//         $shift = new Shift();
+//         $shift->shop_id = $request->input('shop_id');
+//         $shift->staff_id = $request->input('staff_id');
+//         $shift->start_date = $startDate; // Assign the parsed start date directly
+//         $shift->end_date = $endDate; // Assign the parsed end date directly
+//         $shift->start_time = $request->input('start_time');
+//         $shift->end_time = $request->input('end_time');
+//         $shift->save();
+
+//         $this->currentShiftId = $shift->id;
+//         //return redirect()->route('shifts.index')->with('success', 'Shift added successfully!');
+//         return "Shift Saved Successfully!";
+//     }
+
+//     $shops = Shop::all();
+//     $staffs = Staff::all();
+//     $shifts = Shift::all();
+//     $departments = Department::all();
+//     $paymentMethods = Paymentmethod::all(); 
+//     return view('pages.sales.create', compact('shops', 'staffs','shifts','departments','paymentMethods'));
+// }
+
+public function storeShifts(Request $request)
     {
         // Get the currently authenticated user (staff)
         //$currentStaff = Auth::user();
@@ -81,13 +142,13 @@ class ShiftController extends Controller
             return "Shift Saved Successfully!";
         }
 
-        $shops = Shop::all();
-        $staffs = Staff::all();
-        $shifts = Shift::all();
-        $departments = Department::all();
-        $paymentMethods = Paymentmethod::all(); 
-        return view('pages.sales.create', compact('shops', 'staffs','shifts','departments','paymentMethods'));
-    }
+    $shops = Shop::all();
+    $staffs = Staff::all();
+    $shifts = Shift::all();
+    $departments = Department::all();
+    $paymentMethods = Paymentmethod::all(); 
+    return view('pages.sales.create', compact('shops', 'staffs','shifts','departments','paymentMethods'));
+}
 
 
     // public function edit($id)
@@ -117,13 +178,13 @@ public function update(Request $request, $id)
         'end_date' => 'required|date|after_or_equal:start_date',
         'end_time' => [
             'required',
-            function ($attribute, $value, $fail) use ($request) {
-                // Parse the start and end dates
+            function ($attribute, $value, $fail) use ($request) {                    
                 $startDate = Carbon::parse($request->input('start_date'));
                 $endDate = Carbon::parse($request->input('end_date'));
-
-                // Check if start_date and end_date are the same
-                if ($startDate->eq($endDate) && strtotime($value) <= strtotime($request->input('start_time'))) {
+                $startTime = Carbon::parse($request->input('start_time'));
+                $endTime = Carbon::parse($value);    
+                
+                if ($startDate->eq($endDate) && $endTime->lte($startTime)) {
                     $fail('The end time must be after the start time when the start and end dates are the same.');
                 }
             },
@@ -405,16 +466,14 @@ public function directToSearch()
 
 protected function storeShift(Request $request)
     {
-        // Validate the incoming shift data
         $request->validate([
             'shop_id' => 'required|numeric',
             'staff_id' => 'required|numeric',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'start_time' => 'required',
-            'end_time' => 'required',
+            'end_time' => 'required' ,
         ]);
-
         // Parse the dates
         $startDate = Carbon::parse($request->input('start_date'));
         $endDate = Carbon::parse($request->input('end_date'));

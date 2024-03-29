@@ -167,7 +167,7 @@
                                                 <tr>
                                                     <th>Department</th>
                                                     <th>Amount</th>
-                                                    <th><button type="button" id="add-item" class="btn btn-primary rounded">Add Row</button></th>
+                                                    <th><button type="button" id="add-item" class="btn btn-success" style="width:100%">Add</button></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -202,9 +202,9 @@
                                             <td style="float: right;"><span id="total-amount-after-subtraction" class="form-control text-warning">0</span></td>
                                         </tr>
                                     </table>
-                                    {{-- <div>Total Amount: <span id="total-amount">0</span></div> --}}
+                                    
                                     <hr>
-                                    {{-- <button id="submit-btn" class="btn btn-primary rounded-pill">Submit</button> --}}
+                                    
                                 </div>
                             </div>
                         </div>
@@ -225,41 +225,7 @@
                                         <div class="alert" style="color: green;">{{ session('success') }}</div>
                                         @endif
                                     </p>
-                                </div>
-                                {{-- <div class="card-body">
-                                    <form class="row g-3" id="paymentSaleForm" method="post" action="{{ route('payment.sale.submit') }}">
-                                        @csrf
-                                        <table class="table" id="paymentSaleTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Payment Method</th>
-                                                    <th>Amount</th>
-                                                    <th><button type="button" id="addRow" class="btn btn-success">Add Row</button></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <select name="paymentmethod_id[]" class="form-select" required>
-                                                            <option value="">Select a Payment Method</option>
-                                                            @foreach($paymentmethods as $paymentmethod)
-                                                            <option value="{{ $paymentmethod->id }}">{{ $paymentmethod->payment_method }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="amount[]" class="form-control" required>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger removeRow">Remove</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <button type="submit-btn" class="btn btn-primary rounded-pill">Submit</button>
-                                    </form>
-                                    
-                                </div> --}}
+                                </div>                                
                                 <div class="card-body">
                                     <form class="row g-3" id="paymentSaleForm" method="post" action="{{ route('payment.sale.submit') }}">
                                         @csrf
@@ -268,7 +234,7 @@
                                                 <tr>
                                                     <th>Payment Method</th>
                                                     <th>Amount</th>
-                                                    <th><button type="button" id="addRow" class="btn btn-success">Add Row</button></th>
+                                                    <th><button type="button" id="addRow" class="btn btn-success" style="width:100%">Add</button></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -301,8 +267,108 @@
                                         </tr>
                                     </table>                                    
                                     <hr>
+
+                                    <!-- Petticash -->
+
+                                    <div class="card-header">
+                                        <h5 class="card-title">Additional Cash Taken</h5>
+                                        <p>
+                                            @if(session('success'))
+                                            <div class="alert" style="color: green;">{{ session('success') }}</div>
+                                            @endif
+                                        </p>
+                                    </div>                                   
+
+                                    <form class="row g-3" id="petticashForm" action="{{ route('petticash.store') }}" method="POST">
+                                        @csrf
+                                    
+                                        <table class="table" id="petticash-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Reason</th>
+                                                    <th>Amount</th>                                                    
+                                                    <th><button type="button" id="add-row-btn" class="btn btn-success" style="width:100%">Add</button></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><input type="text" name="reason[]" class="form-control reason-input" required></td>
+                                                    <td><input type="number" name="petticash_amount[]" class="form-control amount-input" required></td>
+                                                    <td><button type="button" class="btn btn-danger removeRow">Remove</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        {{-- <button type="submit" class="btn btn-success">Submit</button> --}}
+                                    </form>
+                                    <table class="table">
+                                        <hr>
+                                        <tr>
+                                            <td><span class="form-control text-warning">Total Cash Taken:</span></td>
+                                            <td style="float: right;"><span id="petticash-total-amount" class="form-control text-warning">0</span></td>
+                                        </tr>
+                                    </table>
+                                    <hr>
+                                    <!-- Petticash -->
+
                                     <button id="submit-btn" class="btn btn-primary rounded-pill">Submit</button>
                                     {{-- <button type="submit-btn" class="btn btn-primary rounded-pill">Submit</button> --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 d-flex">
+                <div class="card flex-fill border-0">
+                    <div class="card-body p-0 d-flex flex-fill">
+                        <div class="row g-0 w-100">
+                            <div class="col-12">
+                                <div class="p-3 m-1">
+                                    {{-- <div class="card-header">
+                                        <h5 class="card-title">Additional Cash Taken</h5>
+                                        <p>
+                                            @if(session('success'))
+                                            <div class="alert" style="color: green;">{{ session('success') }}</div>
+                                            @endif
+                                        </p>
+                                    </div> --}}
+                                    <div class="card-body">                                        
+
+                                        {{-- <form action="{{ route('petticash.store') }}" method="POST">
+                                            @csrf
+                                        
+                                            <table id="petticash-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Reason</th>
+                                                        <th>Amount</th>
+                                                        <th><button type="button" id="add-row-btn" class="btn btn-primary">Add Row</button></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><input type="text" name="reason[]" class="form-control reason-input" required></td>
+                                                        <td><input type="number" name="amount[]" class="form-control amount-input" required></td>
+                                                        <td><button type="button" class="btn btn-danger removeRow">Remove</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <button type="submit" class="btn btn-success">Submit</button>
+                                        </form>
+                                        <table class="table">
+                                            <hr>
+                                            <tr>
+                                                <td><span class="form-control text-warning">Total Other Payment:</span></td>
+                                                <td style="float: right;"><span id="petticash-total-amount" class="form-control text-warning">0</span></td>
+                                            </tr>
+                                        </table>
+                                        <hr> --}}
+                                        
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -735,6 +801,15 @@
             calculateTotalAmountAfterSubtraction();
         }
 
+        // Function to calculate and display the total amount after subtraction
+        function calculateTotalAmountAfterSubtraction() {
+            var totalAmount = parseFloat($('#total-amount').text()) || 0;
+            var customTotalAmount = parseFloat($('#custom-total-amount').text()) || 0;
+            var petticashTotalAmount = parseFloat($('#petticash-total-amount').text()) || 0;
+            var totalAmountAfterSubtraction = totalAmount - customTotalAmount - petticashTotalAmount;
+            $('#total-amount-after-subtraction').text(totalAmountAfterSubtraction.toFixed(2));
+        }
+
         // Calculate and display total amount initially
         calculateTotalAmount();
 
@@ -745,10 +820,8 @@
 
         $("#add-item").click(function () {
             var newRow = $(".repeater-item").first().clone();
-            newRow.find('select[name="dept_id[]"]').attr('name', 'dept_id[]');
-            newRow.find('input[name="amount[]"]').attr('name', 'amount[]');
-            newRow.find('select').val('');
-            newRow.find('input[type="text"]').val('');
+            newRow.find('select[name="dept_id[]"]').val('');
+            newRow.find('input[name="amount[]"]').val('');
             $("#repeater-table tbody").append(newRow);
         });
 
@@ -759,39 +832,53 @@
                 calculateTotalAmount(); // Recalculate total amount after removing a row
             }
         });
+    });
+</script>
 
+<script>
+    $(document).ready(function () {
         // Function to calculate and display the total amount after subtraction
         function calculateTotalAmountAfterSubtraction() {
             var totalAmount = parseFloat($('#total-amount').text()) || 0;
             var customTotalAmount = parseFloat($('#custom-total-amount').text()) || 0;
-            var totalAmountAfterSubtraction = totalAmount - customTotalAmount;
+            var petticashTotalAmount = parseFloat($('#petticash-total-amount').text()) || 0;
+            var totalAmountAfterSubtraction = totalAmount - customTotalAmount - petticashTotalAmount;
             $('#total-amount-after-subtraction').text(totalAmountAfterSubtraction.toFixed(2));
         }
-
-        // Update total amount after subtraction when input fields change
-        $('#paymentSaleForm').on('input', '.amount-input', function () {
-            calculateTotalAmountAfterSubtraction();
-        });
 
         // Function to calculate and display the custom total amount
         function calculateCustomTotalAmount() {
             var customTotalAmount = 0;
-            $('.amount-input').each(function () {
+            $('#paymentSaleForm .amount-input').each(function () {
                 var amount = parseFloat($(this).val()) || 0;
                 customTotalAmount += amount;
             });
             $('#custom-total-amount').text(customTotalAmount.toFixed(2));
         }
 
-        // Calculate and display custom total amount initially
-        calculateCustomTotalAmount();
+        // Function to calculate and display the petticash total amount
+        function calculatePetticashTotalAmount() {
+            var totalAmount = 0;
+            $('#petticashForm .amount-input').each(function () {
+                var amount = parseFloat($(this).val()) || 0;
+                totalAmount += amount;
+            });
+            $('#petticash-total-amount').text(totalAmount.toFixed(2));
+        }
 
-        // Update custom total amount when input fields change
-        $('#paymentSaleForm').on('input', '.amount-input', function () {
+        // Calculate and display initial values
+        calculateCustomTotalAmount();
+        calculatePetticashTotalAmount();
+        calculateTotalAmountAfterSubtraction();
+
+        // Update total amount after subtraction when input fields change
+        $('#paymentSaleForm, #petticashForm').on('input', '.amount-input', function () {
             calculateCustomTotalAmount();
+            calculatePetticashTotalAmount();
             calculateTotalAmountAfterSubtraction();
         });
 
+        // Add row functionality for payment sale form
         $("#addRow").click(function () {
             var newRow = $("#paymentSaleTable tbody tr").first().clone();
             newRow.find('select[name="paymentmethod_id[]"]').val('');
@@ -799,16 +886,43 @@
             $("#paymentSaleTable tbody").append(newRow);
         });
 
+        // Remove row functionality for payment sale form
         $("#paymentSaleTable").on('click', '.removeRow', function () {
-            // Check if the row being removed is not the only row
             if ($("#paymentSaleTable tbody tr").length > 1) {
                 $(this).closest('tr').remove();
-                calculateCustomTotalAmount(); // Recalculate custom total amount after removing a row
-                calculateTotalAmountAfterSubtraction(); // Recalculate total amount after subtraction
+                calculateCustomTotalAmount();
+                calculateTotalAmountAfterSubtraction();
+            }
+        });
+
+        // Add row functionality for petticash form
+        $("#add-row-btn").click(function () {
+            var newRow = $("#petticash-table tbody tr").first().clone();
+            newRow.find('.reason-input').val('');
+            newRow.find('.amount-input').val('');
+            $("#petticash-table tbody").append(newRow);
+        });
+
+        // Remove row functionality for petticash form
+        $("#petticash-table").on('click', '.removeRow', function () {
+            if ($("#petticash-table tbody tr").length > 1) {
+                $(this).closest('tr').remove();
+                calculatePetticashTotalAmount();
+                calculateTotalAmountAfterSubtraction();
             }
         });
     });
 </script>
+
+
+
+
+
+
+
+
+
+
 
 
 
