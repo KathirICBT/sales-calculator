@@ -17,10 +17,11 @@ class PetticashController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->all());
         $request->validate([
             // 'shift_id' => 'required',
             'reason.*' => 'required|string',
-            'amount.*' => 'required|numeric',
+            'petticash_amount.*' => 'required|numeric',
         ]);
         $lastShiftId = $this->getLastShiftId();
 
@@ -34,10 +35,11 @@ class PetticashController extends Controller
             // Loop through each submitted entry
             foreach ($request->reason as $key => $reason) {
                 // Create Petticash entry for each row
+                //dd($request->petticash_amount[$key]);
                 Petticash::create([
                     'shift_id' => $lastShiftId,
                     'reason' => $reason,
-                    'amount' => $request->amount[$key],
+                    'amount' => $request->petticash_amount[$key],
                 ]);
             }
     

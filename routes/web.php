@@ -10,6 +10,7 @@ use App\Http\Controllers\PaymentmethodController;
 use App\Http\Controllers\PaymentsaleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PetticashController;
+use App\Http\Controllers\CashdifferController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -340,3 +341,7 @@ Route::get('/shiftstaff/result', [ShiftController::class, 'searchshift'])->name(
 // /============================================================================
 //Route::get('/petticash/create', [PetticashController::class, 'create'])->name('petticash.create');
 Route::post('/petticash/store', [PetticashController::class, 'store'])->name('petticash.store');
+
+
+//CASH DIFFER ===================
+Route::post('/cashdiffer', [CashdifferController::class, 'store'])->name('cashdiffer.store');
