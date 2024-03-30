@@ -41,7 +41,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{route('departments.store')}}" class="sidebar-link collapsed" >
+                        <a href="{{route('paymentmethod.store')}}" class="sidebar-link collapsed" >
                             <i class="fa-solid fa-sliders pe-2"></i>
                             Payment method 
                         </a>
