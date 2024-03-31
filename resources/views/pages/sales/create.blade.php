@@ -234,10 +234,7 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
-                                        </table>
-                                        {{-- <div>Total Amount: <span id="custom-total-amount"
-                                                class="text-warning">0</span></div> --}}
-
+                                        </table> 
                                     </form>
                                     <table class="table">
                                         <hr>
@@ -275,16 +272,38 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td><input type="text" name="reason[]"
-                                                            class="form-control reason-input" required></td>
+                                                    <td>
+                                                        {{--  --}}
+
+                                                        {{-- <td>
+                                                            <select name="paymentmethod_id[]" class="form-select" required>
+                                                                <option value="">Select a Payment Method</option>
+                                                                @foreach($paymentmethods as $paymentmethod)
+                                                                <option value="{{ $paymentmethod->id }}">{{
+                                                                    $paymentmethod->payment_method }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td> --}}
+
+                                                        {{--  --}}
+                                                        
+                                                        <select name="reason[]" class="form-select reason-input" required>
+                                                            <option value="">Select Petty Cash Reason</option>
+                                                            @foreach ($pettyCashReasons as $pettyCashReason)
+                                                            <option value="{{ $pettyCashReason->id }}">{{
+                                                                $pettyCashReason->reason }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    
                                                     <td><input type="text" name="petticash_amount[]"
                                                             class="form-control amount-input" required></td>
                                                     <td><button type="button"
                                                             class="btn btn-danger removeRow" style="width:100%">Remove</button></td>
                                                 </tr>
                                             </tbody>
-                                        </table>
-                                        {{-- <button type="submit">Submit</button> --}}
+                                        </table>  
+                                        {{-- <button type="submit">submit</button> --}}
                                     </form>
                                     <table class="table">
                                         <hr>
@@ -626,56 +645,7 @@
         });
     });
     </script>
-
-
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-        $('#submit-btn').click(function (e) {
-            // Loop through each row in the table
-            $('#paymentSaleTable tbody tr').each(function () {
-                var paymentMethod = $(this).find('select[name="paymentmethod_id[]"]').val();
-                var amount = $(this).find('input[name="amount[]"]').val();
-
-                // Check if either field is empty
-                if (paymentMethod === '' && amount !== '') {
-                    alert('Please select a Payment Method for all rows');
-                    e.preventDefault(); // Prevent form submission
-                    return false; // Exit the loop
-                }
-                if (amount === '' && paymentMethod !== '') {
-                    alert('Please enter an Amount for all rows');
-                    e.preventDefault(); // Prevent form submission
-                    return false; // Exit the loop
-                }
-            });
-        });
-    });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-        $('#submit-btn').click(function (e) {
-            // Validate petticashForm
-            $('#petticash-table tbody tr').each(function () {
-                var reason = $(this).find('input[name="reason[]"]').val();
-                var amount = $(this).find('input[name="petticash_amount[]"]').val();
-
-                // Check if either field is empty
-                if (reason === '' && amount !== '') {
-                    alert('Please enter a Reason for all rows');
-                    e.preventDefault(); // Prevent form submission
-                    return false; // Exit the loop
-                }
-                if (amount === '' && reason !== '') {
-                    alert('Please enter an Amount for all rows');
-                    e.preventDefault(); // Prevent form submission
-                    return false; // Exit the loop
-                }
-            });
-        });
-    });
-    </script> --}}
+   
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -693,7 +663,7 @@
                     return false; // Exit the loop
                 }
                 if (amount === '' && paymentMethod !== '') {
-                    alert('Please enter an Amount for all rows');
+                    alert('Please enter an Add Payment Sale Details Amount for all rows');
                     isValid = false;
                     return false; // Exit the loop
                 }
@@ -706,7 +676,8 @@
             var isValid = true;
 
             $('#petticash-table tbody tr').each(function () {
-                var reason = $(this).find('input[name="reason[]"]').val();
+                var reason = $(this).find('select[name="reason[]"]').val();
+                //var reason = $(this).find('input[name="reason[]"]').val();
                 var amount = $(this).find('input[name="petticash_amount[]"]').val();
 
                 if (reason === '' && amount !== '') {
@@ -715,7 +686,7 @@
                     return false; // Exit the loop
                 }
                 if (amount === '' && reason !== '') {
-                    alert('Please enter an Amount for all rows');
+                    alert('Please enter an Additional Cash Taken Amount for all rows');
                     isValid = false;
                     return false; // Exit the loop
                 }
@@ -964,239 +935,6 @@
     });
     </script>
 
-    <!-- SAVE BACKUP =================================================================================================================================================
-
-    {{--
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-        $('#submit-btn').click(function() {
-            // Check if form 1 and form 2 are valid before proceeding
-            if ($('#shiftForm')[0].checkValidity() && $('#salesForm')[0].checkValidity()) {
-                var formData1 = $('#shiftForm').serialize();
-                var formData2 = $('#salesForm').serialize();
-                var formData3 = $('#paymentSaleForm').serialize();
-                var formData4 = $('#petticashForm').serialize();
-                var formData5 = $('#cashdifferenceForm').serialize();
-
-                // Define route URLs from server side using inline script variables
-                var shiftSubmitUrl = "{{ route('shifts.shift.submit') }}";
-                var storeSubmitUrl = "{{ route('shifts.store.submit') }}";
-                var paymentSubmitUrl = "{{ route('payment.sale.submit') }}";
-                var petticashSubmitUrl = "{{ route('petticash.store') }}";
-                var cashDifferenceSubmitUrl = "{{ route('cashdiffer.store') }}";
-
-                //CASH DIFFER FORM FILL CHECK FUNCTION ========================================
-
-                function validateCashDifferForm() {
-                    const cashDifferenceInput = document.getElementById('cashdifference').value;
-                    if (cashDifferenceInput.trim() === '') {
-                       // alert('Please enter the cash difference.');
-                        return false; // Prevent form submission
-                    }
-                    return true; // Allow form submission
-                }
-
-                //=============================================================================
-
-                // Submit form 1
-                $.ajax({
-                    type: 'POST',
-                    url: shiftSubmitUrl,
-                    data: formData1,
-                    success: function(response) {
-                        console.log('Form 1 Submission Response:', response);
-                        // Submit form 2 after form 1 is submitted successfully
-                        $.ajax({
-                            type: 'POST',
-                            url: storeSubmitUrl,
-                            data: formData2,
-                            success: function(response) {
-                                console.log('Form 2 Submission Response:', response);
-                                // Check if form 3 is filled
-                                if ($('#paymentSaleForm')[0].checkValidity()) {
-                                    // Submit form 3 if filled
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: paymentSubmitUrl,
-                                        data: formData3,
-                                        success: function(response) {
-                                            console.log('Form 3 Submission Response:', response);
-                                            // Check if form 4 is filled
-                                            if ($('#petticashForm')[0].checkValidity()) {
-                                                // Submit form 4 if filled
-                                                $.ajax({
-                                                    type: 'POST',
-                                                    url: petticashSubmitUrl,
-                                                    data: formData4,
-                                                    success: function(response) {
-                                                        console.log('Form 4 Submission Response:', response);
-                                                        // Check if form 5 (cash difference form) is filled
-                                                        if (validateCashDifferForm()) {
-                                                            // Submit form 5 if filled
-                                                            $.ajax({
-                                                                type: 'POST',
-                                                                url: cashDifferenceSubmitUrl,
-                                                                data: formData5,
-                                                                success: function(response) {
-                                                                    console.log('Form 5 Submission Response:', response);
-                                                                    // Display success message or perform other actions
-                                                                    alert('All forms submitted successfully.');
-                                                                    // Redirect to the desired page
-                                                                    window.location.href = "{{ route('shifts.index') }}";
-                                                                },
-                                                                error: function(xhr, status, error) {
-                                                                    console.error('Form 5 Submission Error:', error);
-                                                                    // Display error message to user
-                                                                    alert('Error submitting cash difference form CHECK_01. Please try again later.');
-                                                                }
-                                                            });
-                                                        } else {
-                                                            // If form 5 is not filled, proceed with success message
-                                                            alert('Forms 1, 2, 3, and 4 submitted successfully. Cash difference form not filled.');
-                                                            // Redirect to the desired page
-                                                            window.location.href = "{{ route('shifts.index') }}";
-                                                        }
-                                                    },
-                                                    error: function(xhr, status, error) {
-                                                        console.error('Form 4 Submission Error:', error);
-                                                        // Display error message to user
-                                                        alert('Error submitting fourth form. Please try again later.');
-                                                    }
-                                                });
-                                            } else {                                               
-
-                                                // If form 4 is not filled, check if form 5 is filled
-                                                if (validateCashDifferForm()) {
-                                                    $.ajax({
-                                                        type: 'POST',
-                                                        url: cashDifferenceSubmitUrl,
-                                                        data: formData5,
-                                                        success: function(response) {
-                                                            console.log('Form 5 Submission Response:', response);
-                                                            // Display success message or perform other actions
-                                                            alert('Forms 1, 2, 3, and 5 submitted successfully. Form 4 not filled.');
-                                                            // Redirect to the desired page
-                                                            window.location.href = "{{ route('shifts.index') }}";
-                                                        },
-                                                        error: function(xhr, status, error) {
-                                                            console.error('Form 5 Submission Error:', error);
-                                                            // Display error message to user
-                                                            alert('Error submitting cash difference form. Please try again later.');
-                                                        }
-                                                    });
-                                                } else {
-                                                    // If form 4 and form 5 are not filled, display message and redirect
-                                                    alert('Forms 1, 2, and 3 submitted successfully. Form 4 not filled. Cash difference form not filled.');
-                                                    // Redirect to the desired page
-                                                    window.location.href = "{{ route('shifts.index') }}";
-                                                }
-                                                
-                                            }
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error('Form 3 Submission Error:', error);
-                                            // Display error message to user
-                                            alert('Error submitting third form. Please try again later.');
-                                        }
-                                    });
-                                } else {
-                                    // If form 3 is not filled, check if form 4 is filled
-                                    if ($('#petticashForm')[0].checkValidity()) {
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: petticashSubmitUrl,
-                                            data: formData4,
-                                            success: function(response) {
-                                                console.log('Form 4 Submission Response:', response);
-                                                // Check if form 5 (cash difference form) is filled
-                                                if (validateCashDifferForm()) {
-                                                    // Submit form 5 if filled
-                                                    $.ajax({
-                                                        type: 'POST',
-                                                        url: cashDifferenceSubmitUrl,
-                                                        data: formData5,
-                                                        success: function(response) {
-                                                            console.log('Form 5 Submission Response:', response);
-                                                            // Display success message or perform other actions
-                                                            alert('Forms 1, 2, 4, and 5 submitted successfully. Form 3 not filled.');
-                                                            // Redirect to the desired page
-                                                            window.location.href = "{{ route('shifts.index') }}";
-                                                        },
-                                                        error: function(xhr, status, error) {
-                                                            console.error('Form 5 Submission Error:', error);
-                                                            // Display error message to user
-                                                            alert('Error submitting cash difference form. Please try again later.');
-                                                        }
-                                                    });
-                                                } else {
-                                                    // If form 5 is not filled, display message and redirect
-                                                    alert('Forms 1, 2, and 4 submitted successfully. Form 3 not filled. Cash difference form not filled.');
-                                                    // Redirect to the desired page
-                                                    window.location.href = "{{ route('shifts.index') }}";
-                                                }
-                                            },
-                                            error: function(xhr, status, error) {
-                                                console.error('Form 4 Submission Error:', error);
-                                                // Display error message to user
-                                                alert('Error submitting fourth form. Please try again later.');
-                                            }
-                                        });
-                                    } else {
-                                        // If form 4 is not filled, check if form 5 is filled
-                                        if (validateCashDifferForm()) {
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: cashDifferenceSubmitUrl,
-                                                data: formData5,
-                                                success: function(response) {
-                                                    console.log('Form 5 Submission Response:', response);
-                                                    // Display success message or perform other actions
-                                                    alert('Forms 1, 2, and 5 submitted successfully. Form 3 and 4 not filled.');
-                                                    // Redirect to the desired page
-                                                    window.location.href = "{{ route('shifts.index') }}";
-                                                },
-                                                error: function(xhr, status, error) {
-                                                    console.error('Form 5 Submission Error:', error);
-                                                    // Display error message to user
-                                                    alert('Error submitting cash difference form. Please try again later.');
-                                                }
-                                            });
-                                        } else {
-                                            // If form 4 and form 5 are not filled, display message and redirect
-                                            alert('Forms 1 and 2 submitted successfully. Form 3 and 4 not filled. Cash difference form not filled.');
-                                            // Redirect to the desired page
-                                            window.location.href = "{{ route('shifts.index') }}";
-                                        }
-                                    }
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                console.error('Form 2 Submission Error:', error);
-                                // Display error message to user
-                                alert('Error submitting second form. Please try again later.');
-                            }
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Form 1 Submission Error:', error);
-                        // Display error message to user
-                        alert('Error submitting first form. Check Date and Time.');
-                    }
-                });
-            } else {
-                // If either form 1 or form 2 is invalid, prevent submission and show error message
-                alert('Please fill out both form 1 and form 2 correctly before submitting.');
-            }
-        });
-    });
-    </script> --}}
-
-    SAVE BACKUP END =================================================================================================================================================
-    -->
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -1323,15 +1061,27 @@
                 calculateCustomTotalAmount();
                 calculateTotalAmountAfterSubtraction();
             }
-        });
+        }); 
+        
+        // NEW ADD RESON =========================================
 
         // Add row functionality for petticash form
         $("#add-row-btn").click(function () {
             var newRow = $("#petticash-table tbody tr").first().clone();
-            newRow.find('.reason-input').val('');
-            newRow.find('.amount-input').val('');
+            newRow.find('select[name="reason[]"]').val('');
+            newRow.find('input[name="petticash_amount[]"]').val('');
             $("#petticash-table tbody").append(newRow);
         });
+
+        // =======================================================
+
+        // // Add row functionality for petticash form
+        // $("#add-row-btn").click(function () {
+        //     var newRow = $("#petticash-table tbody tr").first().clone();
+        //     newRow.find('.reason-input').val('');
+        //     newRow.find('.amount-input').val('');
+        //     $("#petticash-table tbody").append(newRow);
+        // });
 
         // Remove row functionality for petticash form
         $("#petticash-table").on('click', '.removeRow', function () {

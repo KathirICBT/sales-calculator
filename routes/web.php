@@ -11,6 +11,7 @@ use App\Http\Controllers\PaymentsaleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PetticashController;
 use App\Http\Controllers\CashdifferController;
+use App\Http\Controllers\PettyCashReasonController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -345,3 +346,8 @@ Route::post('/petticash/store', [PetticashController::class, 'store'])->name('pe
 
 //CASH DIFFER ===================
 Route::post('/cashdiffer', [CashdifferController::class, 'store'])->name('cashdiffer.store');
+
+
+//PettyCashReason ==============================================================================
+Route::get('/pages/pettycashreason/store', [PettyCashReasonController::class, 'store'])->name('pettycashreason.store');
+Route::post('/pages/pettycashreason/store', [PettyCashReasonController::class, 'store'])->name('pettycashreason.store.submit');

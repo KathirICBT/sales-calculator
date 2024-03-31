@@ -8,6 +8,7 @@ use App\Models\Shop;
 use App\Models\Staff;
 use Carbon\Carbon;
 use App\Models\Paymentmethod;
+use App\Models\PettyCashReason;
 use App\Models\Paymentsale;
 use App\Models\Sale; // Import Sale model
 use App\Models\Department;
@@ -627,7 +628,8 @@ protected function storeShift(Request $request)
             $departments = Department::all();
             $paymentmethods = Paymentmethod::all(); 
             $paymentSales = PaymentSale::all();
-            return view('pages.sales.create', compact('shops', 'staffs','shifts','departments','paymentmethods','paymentSales'));
+            $pettyCashReasons = PettyCashReason::all();
+            return view('pages.sales.create', compact('shops', 'staffs','shifts','departments','paymentmethods','paymentSales','pettyCashReasons'));
         }
 
         

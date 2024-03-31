@@ -36,9 +36,9 @@ class PetticashController extends Controller
             foreach ($request->reason as $key => $reason) {
                 // Create Petticash entry for each row
                 //dd($request->petticash_amount[$key]);
-                Petticash::create([
+                Petticash::create([                    
                     'shift_id' => $lastShiftId,
-                    'reason' => $reason,
+                    'petty_cash_reason_id' => $reason,
                     'amount' => $request->petticash_amount[$key],
                 ]);
             }

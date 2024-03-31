@@ -47,6 +47,12 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
+                        <a href="{{route('pettycashreason.store')}}" class="sidebar-link collapsed" >
+                            <i class="fa-solid fa-sliders pe-2"></i>
+                            Petty Cash Reason 
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="{{route('shifts.index')}}" class="sidebar-link collapsed" >
                             <i class="fa-solid fa-sliders pe-2"></i>
                             Shift 

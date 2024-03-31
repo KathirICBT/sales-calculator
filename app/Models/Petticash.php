@@ -10,14 +10,21 @@ class Petticash extends Model
     use HasFactory;
     protected $fillable = [
         
-        'reason',
+        'petty_cash_reason_id',
         'shift_id',
         'amount',
        
     ];
 
+    public function pettyCashReasion()
+    {
+        return $this->belongsTo(PettyCashReason::class,'petty_cash_reason_id');
+    }
+
     public function shift()
     {
         return $this->belongsTo(Shift::class,'shift_id');
     }
+
+
 }
