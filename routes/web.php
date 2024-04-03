@@ -351,3 +351,12 @@ Route::post('/cashdiffer', [CashdifferController::class, 'store'])->name('cashdi
 //PettyCashReason ==============================================================================
 Route::get('/pages/pettycashreason/store', [PettyCashReasonController::class, 'store'])->name('pettycashreason.store');
 Route::post('/pages/pettycashreason/store', [PettyCashReasonController::class, 'store'])->name('pettycashreason.store.submit');
+
+Route::get('/sales', [SaleController::class, 'index'])->name('sales');
+Route::get('/search-sales', [SaleController::class, 'searchdate'])->name('search.sales');
+
+Route::get('/getSalesDetails/{shiftId}', [SaleController::class, 'getSalesDetails']);
+Route::get('/getSalesDetails/{shiftId}', [SaleController::class, 'getSalesByShiftId']);
+
+// Route::get('/getSalesDetails/{shiftId}', 'YourController@getSalesDetails');
+// Route::put('/sales/{sale}', [SaleController::class, 'update'])->name('sales.update');

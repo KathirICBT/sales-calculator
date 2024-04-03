@@ -21,9 +21,13 @@ class SaleController extends Controller
     {
         // Fetch staff from the database
         $sales= Sale::all();
+        $departments = Department::all();
+        $shops = Shop::all();
+        $staffs = Staff::all();
+        $shifts = Shift::all();
 
         // Pass the staff variable to the view
-        return view('sales.index', compact('sales'));
+        return view('pages.reports.datesale', compact('sales','departments', 'shops', 'staffs','shifts'));
     }
    
 
@@ -208,6 +212,9 @@ public function getSalesDetails($shiftId)
         // Fetch sales details based on the shift ID
         $salesDetails = Sale::where('shift_id', $shiftId)->get();
 
+        
+    
+
         // Check if it's an AJAX request
         if (request()->ajax()) {
             // Return sales details as JSON for AJAX requests
@@ -227,6 +234,28 @@ public function getSalesDetails($shiftId)
 
 
 
+public function searchdate(Request $request)
+    {
+        $request->validate([
+            'searchDate' => 'required|date',
+        ]);
 
+        $searchDate = $request->input('searchDate');
+
+        // Retrieve sales details from the database based on the search date
+        $sales = Sale::whereDate('created_at', $searchDate)->get();
+
+        $shifts = Shift::whereDate('created_at', $searchDate)->get();
+
+        return view('pages.reports.datesale', compact('sales', 'shifts'));
+    }
+    public function getSalesByShiftId($shiftId)
+{
+    // Retrieve sales details based on the shift ID
+    $salesDetails = Sale::where('shift_id', $shiftId)->get();
+
+    // Return sales details as JSON response
+    return response()->json($salesDetails);
+}
 
 }

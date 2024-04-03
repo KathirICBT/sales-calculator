@@ -117,16 +117,8 @@
                         </a>
                         <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link collapsed" data-bs-target="#level-1"
-                                    data-bs-toggle="collapse" aria-expanded="false">Level 1</a>
-                                <ul id="level-1" class="sidebar-dropdown list-unstyled collapse">
-                                    <li class="sidebar-item">
-                                        <a href="#" class="sidebar-link">Level 1.1</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="#" class="sidebar-link">Level 1.2</a>
-                                    </li>
-                                </ul>
+                                <a href="{{route('sales')}}" class="sidebar-link">Date report</a>
+                                
                             </li>
                         </ul>
                     </li>
