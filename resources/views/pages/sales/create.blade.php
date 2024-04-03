@@ -136,7 +136,8 @@
                                                     <th>Department</th>
                                                     <th>Amount</th>
                                                     <th><button type="button" id="add-item" class="btn btn-success"
-                                                            style="width:100%">Add</button></th>
+                                                            style="width: 100%"><i
+                                                                class="fa-regular fa-square-plus"></i></button></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -155,8 +156,9 @@
                                                             class="form-control amount-field" required>
                                                     </td>
                                                     <td>
-                                                        <button type="button"
-                                                            class="btn btn-danger remove-item" style="width:100%">Remove</button>
+                                                        <button type="button" class="btn btn-danger remove-item"
+                                                            style="width:100%"><i
+                                                                class="fa-regular fa-square-minus"></i></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -196,7 +198,9 @@
                                     <h5 class="card-title mt-3">Add Payment Sale Details</h5>
                                     <p>
                                         @if(session('success'))
-                                    <div class="alert" style="color: green;">{{ session('success') }}</div>
+                                    <div class="alert" style="color: green;">
+                                        {{ session('success') }}
+                                    </div>
                                     @endif
                                     </p>
                                 </div>
@@ -210,7 +214,8 @@
                                                     <th>Payment Method</th>
                                                     <th>Amount</th>
                                                     <th><button type="button" id="addRow" class="btn btn-success"
-                                                            style="width:100%">Add</button></th>
+                                                            style="width:100%"><i
+                                                                class="fa-regular fa-square-plus"></i></button></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -229,12 +234,13 @@
                                                             class="form-control amount-input" required>
                                                     </td>
                                                     <td>
-                                                        <button type="button"
-                                                            class="btn btn-danger removeRow" style="width:100%">Remove</button>
+                                                        <button type="button" class="btn btn-danger removeRow"
+                                                            style="width:100%"><i
+                                                                class="fa-regular fa-square-minus"></i></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
-                                        </table> 
+                                        </table>
                                     </form>
                                     <table class="table">
                                         <hr>
@@ -245,18 +251,21 @@
                                         </tr>
                                     </table>
                                     <hr>
+                                </div>
+                                <!-- Petticash -->
 
-                                    <!-- Petticash -->
-
-                                    <div class="card-header">
-                                        <h5 class="card-title mt-3">Additional Cash Taken</h5>
-                                        <p>
-                                            @if(session('success'))
-                                        <div class="alert" style="color: green;">{{ session('success') }}</div>
-                                        @endif
-                                        </p>
+                                <div class="card-header">
+                                    <h5 class="card-title mt-3">Additional Cash Taken</h5>
+                                    <p>
+                                        @if(session('success'))
+                                    <div class="alert" style="color: green;">
+                                        {{ session('success') }}
                                     </div>
+                                    @endif
+                                    </p>
+                                </div>
 
+                                <div class="card-body">
                                     <form class="row g-3" id="petticashForm" action="{{ route('petticash.store') }}"
                                         method="POST">
                                         @csrf
@@ -267,42 +276,45 @@
                                                     <th>Reason</th>
                                                     <th>Amount</th>
                                                     <th><button type="button" id="add-row-btn" class="btn btn-success"
-                                                            style="width:100%">Add</button></th>
+                                                            style="width:100%"><i
+                                                                class="fa-regular fa-square-plus"></i></button></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>
-                                                        {{--  --}}
+                                                        {{-- --}}
 
-                                                        {{-- <td>
-                                                            <select name="paymentmethod_id[]" class="form-select" required>
-                                                                <option value="">Select a Payment Method</option>
-                                                                @foreach($paymentmethods as $paymentmethod)
-                                                                <option value="{{ $paymentmethod->id }}">{{
-                                                                    $paymentmethod->payment_method }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </td> --}}
-
-                                                        {{--  --}}
-                                                        
-                                                        <select name="reason[]" class="form-select reason-input" required>
-                                                            <option value="">Select Petty Cash Reason</option>
-                                                            @foreach ($pettyCashReasons as $pettyCashReason)
-                                                            <option value="{{ $pettyCashReason->id }}">{{
-                                                                $pettyCashReason->reason }}</option>
+                                                        {{--
+                                                    <td>
+                                                        <select name="paymentmethod_id[]" class="form-select" required>
+                                                            <option value="">Select a Payment Method</option>
+                                                            @foreach($paymentmethods as $paymentmethod)
+                                                            <option value="{{ $paymentmethod->id }}">{{
+                                                                $paymentmethod->payment_method }}</option>
                                                             @endforeach
                                                         </select>
+                                                    </td> --}}
+
+                                                    {{-- --}}
+
+                                                    <select name="reason[]" class="form-select reason-input" required>
+                                                        <option value="">Select Petty Cash Reason</option>
+                                                        @foreach ($pettyCashReasons as $pettyCashReason)
+                                                        <option value="{{ $pettyCashReason->id }}">{{
+                                                            $pettyCashReason->reason }}</option>
+                                                        @endforeach
+                                                    </select>
                                                     </td>
-                                                    
+
                                                     <td><input type="text" name="petticash_amount[]"
                                                             class="form-control amount-input" required></td>
-                                                    <td><button type="button"
-                                                            class="btn btn-danger removeRow" style="width:100%">Remove</button></td>
+                                                    <td><button type="button" class="btn btn-danger removeRow"
+                                                            style="width:100%"><i
+                                                                class="fa-regular fa-square-minus"></i></button></td>
                                                 </tr>
                                             </tbody>
-                                        </table>  
+                                        </table>
                                         {{-- <button type="submit">submit</button> --}}
                                     </form>
                                     <table class="table">
@@ -315,60 +327,61 @@
                                     </table>
                                     <hr>
                                     <!-- Petticash -->
-
-                                    <!-- Cash Difference -->
-
-                                    <div class="card-header">
-                                        <h5 class="card-title mt-3">Cash Difference</h5>
-                                        <p>
-                                            @if(session('success'))
-                                        <div class="alert" style="color: green;">{{ session('success') }}</div>
-                                        @endif
-                                        </p>
-                                    </div>
-                                    <div class="card-body">
-                                        <form action="{{ route('cashdiffer.store') }}" method="POST"
-                                            id="cashdifferenceForm">
-                                            @csrf
-                                            <table class="table" id="cashdifference-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>REASON</th>
-                                                        <th>AMOUNT</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <div class="row">
-
-                                                        <div class="col-md-6">
-                                                            <td>
-                                                                <label for="cashdifference" class="form-label">Cash
-                                                                    Difference:</label>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" name="cashdifference"
-                                                                    id="cashdifference"
-                                                                    class="form-control cashdifference-input"
-                                                                    placeholder="Enter cash difference">
-                                                            </td>
-                                                        </div>
-                                                        {{-- <div class="col-md-6">
-                                                            <button type="submit"
-                                                                class="btn btn-success">Submit</button>
-                                                        </div> --}}
-                                                    </div>
-                                                </tbody>
-                                            </table>
-                                        </form>
-                                        <!-- Cash Difference End -->
-                                        <hr>
-
-                                        <button id="submit-btn" class="btn btn-primary rounded-pill mt-3" style="width: 100%">Submit</button>
-                                        {{-- <button type="submit-btn"
-                                            class="btn btn-primary rounded-pill">Submit</button>
-                                        --}}
-                                    </div>
                                 </div>
+
+                                <!-- Cash Difference -->
+
+                                <div class="card-header">
+                                    <h5 class="card-title mt-3">Cash Difference</h5>
+                                    <p>
+                                        @if(session('success'))
+                                    <div class="alert" style="color: green;">
+                                        {{ session('success') }}
+                                    </div>
+                                    @endif
+                                    </p>
+                                </div>
+                                <div class="card-body">
+                                    <form action="{{ route('cashdiffer.store') }}" method="POST"
+                                        id="cashdifferenceForm">
+                                        @csrf
+                                        <table class="table" id="cashdifference-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>REASON</th>
+                                                    <th>AMOUNT</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <div class="row">
+
+                                                    <div class="col-md-6">
+                                                        <td>
+                                                            <label for="cashdifference" class="form-label">Cash
+                                                                Difference:</label>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" name="cashdifference" id="cashdifference"
+                                                                class="form-control cashdifference-input"
+                                                                placeholder="Enter cash difference">
+                                                        </td>
+                                                    </div>
+                                                    {{-- <div class="col-md-6">
+                                                        <button type="submit" class="btn btn-success">Submit</button>
+                                                    </div> --}}
+                                                </div>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                    <!-- Cash Difference End -->
+                                    <hr>
+
+                                    <button id="submit-btn" class="btn btn-primary rounded-pill mt-3"
+                                        style="width: 100%">Submit</button>
+                                    {{-- <button type="submit-btn" class="btn btn-primary rounded-pill">Submit</button>
+                                    --}}
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -645,7 +658,7 @@
         });
     });
     </script>
-   
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -972,7 +985,7 @@
         $('#repeater-table').on('input', '.amount-field', function () {
             var value = $(this).val();
             // Replace non-numeric characters
-            value = value.replace(/[^\d.]/g, '');
+            value = value.replace(/[^0-9.+-]/g, '');
             $(this).val(value);
             calculateTotalAmount();
         });
@@ -1129,6 +1142,3 @@
             }
         });
     </script>
-
-
-
