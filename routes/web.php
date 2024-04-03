@@ -12,6 +12,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PetticashController;
 use App\Http\Controllers\CashdifferController;
 use App\Http\Controllers\PettyCashReasonController;
+use App\Http\Controllers\OtherIncomeDepartmentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -360,3 +362,23 @@ Route::get('/getSalesDetails/{shiftId}', [SaleController::class, 'getSalesByShif
 
 // Route::get('/getSalesDetails/{shiftId}', 'YourController@getSalesDetails');
 // Route::put('/sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
+
+// OTHER INCOME DEPARTMENT REGISTRATION =============================================
+Route::get('/pages/other-income-departments/store', [OtherIncomeDepartmentController::class, 'store'])->name('other_income_departments.store');
+Route::post('/pages/other-income-departments/store', [OtherIncomeDepartmentController::class, 'store'])->name('other_income_departments.store.submit');
+
+// OTHER INCOME DEPARTMENT UPDATE ===================================================
+// Route::get('/other-income-departments/{otherIncomeDepartment}/edit', [OtherIncomeDepartmentController::class, 'edit'])->name('other_income_departments.edit');
+// Route::put('/other-income-departments/{otherIncomeDepartment}', [OtherIncomeDepartmentController::class, 'update'])->name('other_income_departments.update');
+
+// OTHER INCOME DEPARTMENT DELETE ===================================================
+Route::delete('/other-income-departments/{otherIncomeDepartment}', [OtherIncomeDepartmentController::class, 'destroy'])->name('other_income_departments.destroy');
+// /Route::get('/other-income-departments/{otherIncomeDepartment}/edit', [OtherIncomeDepartmentController::class, 'edit'])->name('other_income_departments.edit');
+ Route::get('/other_income_departments/{otherIncomeDepartment}/edit', [OtherIncomeDepartmentController::class, 'edit']);
+
+// Route::put('/other-income-departments/{otherIncomeDepartment}', [OtherIncomeDepartmentController::class, 'update'])->name('other_income_departments.update');
+
+//Route::get('/other_income_departments/{id}/edit', [OtherIncomeDepartmentController::class, 'edit']);
+// Route::put('/other_income_departments/{id}', [OtherIncomeDepartmentController::class, 'update'])->name('other_income_departments.update');
+// Update Other Income Department
+Route::put('/other_income_departments/{otherIncomeDepartment}', [OtherIncomeDepartmentController::class, 'update'])->name('other_income_departments.update');

@@ -109,7 +109,18 @@
                             <i class="fa-solid fa-clock-rotate-left pe-2"></i>
                             ShiftEdit 
                         </a>
-                    </li>                    
+                    </li> 
+                    <li class="sidebar-item">
+                        
+                        
+                            
+                                <a href="{{route('other_income_departments.store')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Other Income Department
+                                </a>
+                                                      
+                    
+                    </li>                   
                     
                     {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
@@ -135,7 +146,7 @@
                     <li class="sidebar-item">
                         <a href="{{route('staff.addstaff')}}" class="sidebar-link collapsed text" >
                             <i class="fa-solid fa-users pe-2"></i>
-                            Staff 
+                            Staff  
                         </a>
                     </li>
 
