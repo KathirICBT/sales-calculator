@@ -9,7 +9,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('css/dashboard-style.css') }}">
+
+    <style>
+        /* Define the styles for the text */
+        .text {
+          font-size: 24px;
+          color: #333; /* Default color */
+          transition: color 0.3s; /* Smooth transition effect */
+        }
+        
+        /* Define the hover effect */
+        .text:hover {
+          color: #ffd000; /* Color to change to on hover */
+          cursor: pointer; /* Change cursor to pointer on hover */
+        }
+      </style>
+    
 </head>
+
 
 <body>
     <div class="wrapper">
@@ -24,23 +41,51 @@
                         Admin
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <i class="fa-solid fa-list pe-2"></i>
+                        <a href="#" class="sidebar-link text">
+                            <i class="fa-solid fa-chart-line pe-2"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{route('shop.store')}}" class="sidebar-link collapsed"><i class="fa-solid fa-shop pe-2"></i>
+                        <a href="{{route('shop.store')}}" class="sidebar-link collapsed text"><i class="fa-solid fa-shop pe-2"></i>
                             Shop
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{route('departments.store')}}" class="sidebar-link collapsed" >
-                            <i class="fa-solid fa-sliders pe-2"></i>
+                        <a href="{{route('departments.store')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-list pe-2"></i>
                             Department 
                         </a>
                     </li>
+                    {{-- Sales Start --}}
                     <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed text" data-bs-target="#auth" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-cart-shopping pe-2"></i>
+                            Sales
+                        </a>
+                        <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('shifts.index')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Sales
+                                </a>
+                            </li>
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('paymentmethod.store')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Payment method 
+                                </a>
+                            </li>
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('pettycashreason.store')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Petty Cash Reason 
+                                </a>
+                            </li> 
+                        </ul>
+                    </li>
+                    {{-- Sales End --}}
+                    {{-- <li class="sidebar-item">
                         <a href="{{route('paymentmethod.store')}}" class="sidebar-link collapsed" >
                             <i class="fa-solid fa-sliders pe-2"></i>
                             Payment method 
@@ -55,21 +100,17 @@
                     <li class="sidebar-item">
                         <a href="{{route('shifts.index')}}" class="sidebar-link collapsed" >
                             <i class="fa-solid fa-sliders pe-2"></i>
-                            Shift 
+                            Sale 
                         </a>
-                    </li>
+                    </li> --}}
+
                     <li class="sidebar-item">
-                        <a href="{{route('shiftstaff.search')}}" class="sidebar-link collapsed" >
-                            <i class="fa-solid fa-sliders pe-2"></i>
+                        <a href="{{route('shiftstaff.search')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-clock-rotate-left pe-2"></i>
                             ShiftEdit 
                         </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="{{route('staff.addstaff')}}" class="sidebar-link collapsed" >
-                            <i class="fa-regular fa-user pe-2"></i>
-                            Staff 
-                        </a>
-                    </li>
+                    </li>                    
+                    
                     {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
@@ -90,20 +131,28 @@
                             </li>
                         </ul>
                     </li> --}}
+
                     <li class="sidebar-item">
-                        <a href="#userList" class="sidebar-link collapsed" data-bs-toggle="collapse" aria-expanded="false"><i
+                        <a href="{{route('staff.addstaff')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-users pe-2"></i>
+                            Staff 
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="#userList" class="sidebar-link collapsed text" data-bs-toggle="collapse" aria-expanded="false"><i
                                 class="fa-regular fa-user pe-2"></i>
                             User
                         </a>
                         <ul id="userList" class="sidebar-dropdown list-unstyled collapse">
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Login</a>
+                                <a href="#" class="sidebar-link text">Login</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="{{route('user.create')}}" class="sidebar-link">Register</a>
+                                <a href="{{route('user.create')}}" class="sidebar-link text">Register</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Forgot Password</a>
+                                <a href="#" class="sidebar-link text">Forgot Password</a>
                             </li>
                         </ul>
                     </li>
@@ -111,14 +160,22 @@
                         Calculations
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-target="#multi" data-bs-toggle="collapse"
+                        <a href="#" class="sidebar-link collapsed text" data-bs-target="#multi" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fa-solid fa-file pe-2"></i>
                             Reports
                         </a>
                         <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="{{route('sales')}}" class="sidebar-link">Date report</a>
-                                
+                                <a href="#" class="sidebar-link collapsed" data-bs-target="#level-1"
+                                    data-bs-toggle="collapse" aria-expanded="false">Level 1</a>
+                                <ul id="level-1" class="sidebar-dropdown list-unstyled collapse">
+                                    <li class="sidebar-item">
+                                        <a href="#" class="sidebar-link text">Level 1.1</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="#" class="sidebar-link text">Level 1.2</a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </li>
