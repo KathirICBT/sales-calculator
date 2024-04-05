@@ -13,6 +13,9 @@ use App\Http\Controllers\PetticashController;
 use App\Http\Controllers\CashdifferController;
 use App\Http\Controllers\PettyCashReasonController;
 use App\Http\Controllers\OtherIncomeDepartmentController;
+use App\Http\Controllers\PaymentTypeController;
+
+use App\Http\Controllers\OtherIncomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -382,3 +385,23 @@ Route::delete('/other-income-departments/{otherIncomeDepartment}', [OtherIncomeD
 // Route::put('/other_income_departments/{id}', [OtherIncomeDepartmentController::class, 'update'])->name('other_income_departments.update');
 // Update Other Income Department
 Route::put('/other_income_departments/{otherIncomeDepartment}', [OtherIncomeDepartmentController::class, 'update'])->name('other_income_departments.update');
+
+
+// PAYMENT TYPE ROUTES =================================================
+Route::get('/pages/paymenttypes/store', [PaymentTypeController::class, 'store'])->name('paymenttype.store');
+Route::post('/pages/paymenttypes/store', [PaymentTypeController::class, 'store'])->name('paymenttype.store.submit');
+
+Route::get('/paymenttypes/{paymentTypeId}/edit', [PaymentTypeController::class, 'edit'])->name('paymenttype.edit');
+Route::put('/paymenttypes/{paymentTypeId}', [PaymentTypeController::class, 'update'])->name('paymenttype.update');
+//delete
+Route::delete('/paymenttypes/{id}', [PaymentTypeController::class, 'destroy'])->name('paymenttype.destroy');
+
+// OTHER INCOME ROUTES =================================================
+Route::get('/pages/otherincomes/store', [OtherIncomeController::class, 'store'])->name('otherincome.store');
+Route::post('/pages/otherincomes/store', [OtherIncomeController::class, 'store'])->name('otherincome.store.submit');
+
+Route::get('/otherincomes/{otherIncomeId}/edit', [OtherIncomeController::class, 'edit'])->name('otherincome.edit');
+Route::put('/otherincomes/{otherIncomeId}', [OtherIncomeController::class, 'update'])->name('otherincome.update');
+
+// Delete
+Route::delete('/otherincomes/{id}', [OtherIncomeController::class, 'destroy'])->name('otherincome.destroy');

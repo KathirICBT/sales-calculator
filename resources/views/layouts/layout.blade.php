@@ -116,12 +116,23 @@
                             
                                 <a href="{{route('other_income_departments.store')}}" class="sidebar-link collapsed text" >
                                     <i class="fa-solid fa-sliders pe-2"></i>
-                                    Other Income Department
+                                    Other Income Department  
                                 </a>
                                                       
                     
-                    </li>                   
-                    
+                    </li>           
+                    <li class="sidebar-item">     
+                        <a href="{{route('paymenttype.store')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-sliders pe-2"></i>
+                            Payment type
+                        </a>
+                    </li>         
+                    <li class="sidebar-item">     
+                        <a href="{{route('otherincome.store')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-sliders pe-2"></i>
+                            Other Income
+                        </a>
+                    </li>  
                     {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
