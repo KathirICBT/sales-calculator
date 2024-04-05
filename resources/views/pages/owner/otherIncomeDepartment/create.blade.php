@@ -16,8 +16,9 @@
                                 <p class="mb-0">Department Management</p>
                             </div>
                         </div>
-                        <div class="col-6 align-self-end text-end">                            
-                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img" alt="">
+                        <div class="col-6 align-self-end text-end">
+                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img"
+                                alt="">
                         </div>
                     </div>
                 </div>
@@ -32,8 +33,8 @@
                                 Total Other Income Departments
                             </p>
                             <h4 class="mb-2">
-                               
-                            </h4>                            
+
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -58,7 +59,8 @@
                                         aria-label="Close"></button>
                                 </div>
                                 @endif
-                                <form class="row g-3" method="POST" action="{{ route('other_income_departments.store') }}">
+                                <form class="row g-3" method="POST"
+                                    action="{{ route('other_income_departments.store') }}">
                                     @csrf
                                     <div class="col-md-12">
                                         <label for="income_name" class="form-label">Income Name: </label>
@@ -66,25 +68,29 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label for="category" class="form-label">Category: </label>
-                                        <input type="text" class="form-control" id="category" name="category">
+                                        <input type="text" class="form-control" id="category" name="category" value="Other Income">
                                     </div>
                                     <div class="col-md-12">
                                         <label for="subcategory" class="form-label">Subcategory: </label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="subcategory" id="direct_income" value="Direct Income" checked>
-                                            <label class="form-check-label" for="direct_income">
-                                                Direct Income
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="subcategory" id="calculated_income" value="Calculated Income">
-                                            <label class="form-check-label" for="calculated_income">
-                                                Calculated Income
-                                            </label>
+                                        <div class="form-control">
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" name="subcategory"
+                                                    id="direct_income" value="Direct Income" checked>
+                                                <label class="form-check-label" for="direct_income">
+                                                    Direct Income
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" name="subcategory"
+                                                    id="calculated_income" value="Calculated Income">
+                                                <label class="form-check-label" for="calculated_income">
+                                                    Calculated Income
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>                                        
+                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>
                                     </div>
                                 </form>
                             </div>
@@ -100,10 +106,12 @@
                         <div class="col-12">
                             <div class="p-3 m-1">
                                 <h4 class="n_h2_style rounded">Other Income Departments</h4>
-                                {{-- SEARCH --}}                                
+                                {{-- SEARCH --}}
                                 <div class="input-group mt-3">
-                                    <input type="text" class="form-control" placeholder="Search department..." id="searchInput">
-                                    <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                    <input type="text" class="form-control" placeholder="Search department..."
+                                        id="searchInput">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        id="searchButton">Search</button>
                                 </div>
                                 {{-- SEARCH --}}
                                 <div style="height: 300px; overflow-y: auto;">
@@ -154,7 +162,8 @@
 @endsection
 
 <!-- Edit Other Income Department Modal -->
-<div class="modal fade" id="editOtherIncomeDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="editOtherIncomeDepartmentModalLabel" aria-hidden="true">
+<div class="modal fade" id="editOtherIncomeDepartmentModal" tabindex="-1" role="dialog"
+    aria-labelledby="editOtherIncomeDepartmentModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -168,27 +177,31 @@
                 @method('PUT')
                 <input type="hidden" id="editOtherIncomeDepartmentId" name="id">
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <label for="edit_income_name">Income Name:</label>
-                        <input type="text" class="form-control" id="edit_income_name" name="income_name" required>
+                        <input type="text" class="form-control mt-2" id="edit_income_name" name="income_name" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <label for="edit_category">Category:</label>
-                        <input type="text" class="form-control" id="edit_category" name="category" required>
+                        <input type="text" class="form-control mt-2" id="edit_category" name="category" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <label>Subcategory:</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="edit_subcategory" id="edit_direct_income" value="Direct Income" checked>
-                            <label class="form-check-label" for="edit_direct_income">
-                                Direct Income
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="edit_subcategory" id="edit_calculated_income" value="Calculated Income">
-                            <label class="form-check-label" for="edit_calculated_income">
-                                Calculated Income
-                            </label>
+                        <div class="form-control mt-2">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="edit_subcategory"
+                                    id="edit_direct_income" value="Direct Income" checked>
+                                <label class="form-check-label" for="edit_direct_income">
+                                    Direct Income
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="edit_subcategory"
+                                    id="edit_calculated_income" value="Calculated Income">
+                                <label class="form-check-label" for="edit_calculated_income">
+                                    Calculated Income
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -202,14 +215,14 @@
 </div>
 
 
-    <!-- Bootstrap JS (jQuery required) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Bootstrap JS (jQuery required) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Custom JavaScript -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+<!-- Custom JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
     const editButtons = document.querySelectorAll('.edit-btn');
 
     editButtons.forEach(button => {
@@ -246,4 +259,4 @@
     });
 });
 
-    </script>
+</script>
