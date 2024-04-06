@@ -49,9 +49,9 @@
         </div>
     </div>
 
-    <div class="row">       
+    <div class="row">
         <div class="col-12">
-             <!-- success -->
+            <!-- success -->
             @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
                 role="alert">
@@ -82,23 +82,23 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">
-                                <h4 class="n_h_style rounded">Add Shop</h4>                                
+                                <h4 class="n_h_style rounded">Add Shop</h4>
                                 <form class="row g-3" method="POST" action="{{ route('shop.store.submit') }}">
                                     @csrf
                                     <div class="col-md-6">
                                         <label for="name" class="form-label">Shop Name: </label>
-                                        <input type="text" class="form-control" id="name" name="name">                                        
+                                        <input type="text" class="form-control" id="name" name="name">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="phone" class="form-label">Phone:</label>
-                                        <input type="text" class="form-control" id="phone" name="phone">
+                                        <input type="text" class="form-control" id="phone" name="phone" value="Not Available">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="address" class="form-label">Address:</label>
-                                        <input type="text" class="form-control" id="address" name="address">
+                                        <input type="text" class="form-control" id="address" name="address" value="Not Available">
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>                                        
+                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>
                                     </div>
                                 </form>
                             </div>
@@ -141,8 +141,8 @@
                                                 <td>
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
                                                         style="width: 40%;" data-toggle="modal"
-                                                        data-target="#editShopModal"
-                                                        data-id="{{ $shop->id }}"><i class="fa-regular fa-pen-to-square"></i></button>
+                                                        data-target="#editShopModal" data-id="{{ $shop->id }}"><i
+                                                            class="fa-regular fa-pen-to-square"></i></button>
                                                     <form method="post" style="display: inline;"
                                                         action="{{ route('shop.destroy', $shop->id) }}">
                                                         @csrf
@@ -187,17 +187,17 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="name">Shop Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name">
                     </div>
 
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="text" class="form-control" id="phone" name="phone" required>
+                        <input type="text" class="form-control" id="phone" name="phone">
                     </div>
 
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" required>
+                        <input type="text" class="form-control" id="address" name="address">
                     </div>
                 </div>
                 <div class="modal-footer">

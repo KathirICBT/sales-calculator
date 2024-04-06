@@ -60,7 +60,9 @@ class ShopController extends Controller
     public function store(Request $request) {
         if ($request->isMethod('post')) {
             $request->validate([
-                'name' => 'required|max:255|min:5'            
+                'name' => 'required|max:255|min:5',
+                'phone' => 'required',
+                'address' => 'required'            
             ]);
     
             Shop::create($request->all());
@@ -73,6 +75,31 @@ class ShopController extends Controller
     
         return view('pages.shop.create', compact('shops', 'shopCount'));
     }
+
+    // public function store(Request $request)
+    // {
+    //     if ($request->isMethod('post')) {
+    //         $request->validate([
+    //             'name' => 'required|max:255|min:5',
+    //             'phone' => 'required',
+    //             'address' => 'required'
+    //         ]);
+
+    //         Shop::create([
+    //             'name' => $request->name,
+    //             'phone' => $request->phone,
+    //             'address' => $request->address
+    //         ]);
+
+    //         return redirect()->route('shop.create')->with('success', 'Shop Created!');
+    //     }
+
+    //     $shops = Shop::all();
+    //     $shopCount = $shops->count(); // Count the number of shops
+
+    //     return view('pages.shop.create', compact('shops', 'shopCount'));
+    // }
+
     
 
 
@@ -103,7 +130,9 @@ class ShopController extends Controller
     public function update(Request $request, Shop $shop){
 
         $request->validate([
-            'name'=> 'required|max:255|min:5'            
+            'name'=> 'required|max:255|min:5',
+            'phone' => 'required',
+            'address' => 'required'
         ]);
 
         $updated=$shop->update(request()->all());

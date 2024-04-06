@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="mb-3">
-        <h4>Add Expense Categor</h4>
+        <h4>Add Expense Category</h4>
     </div>
     <div class="row">
         <div class="col-12 col-md-6 d-flex">
