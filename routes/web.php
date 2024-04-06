@@ -14,6 +14,7 @@ use App\Http\Controllers\CashdifferController;
 use App\Http\Controllers\PettyCashReasonController;
 use App\Http\Controllers\OtherIncomeDepartmentController;
 use App\Http\Controllers\PaymentTypeController;
+use App\Http\Controllers\ExpenseCategoryController;
 
 use App\Http\Controllers\OtherIncomeController;
 
@@ -405,3 +406,14 @@ Route::put('/otherincomes/{otherIncomeId}', [OtherIncomeController::class, 'upda
 
 // Delete
 Route::delete('/otherincomes/{id}', [OtherIncomeController::class, 'destroy'])->name('otherincome.destroy');
+
+// PAYMENT TYPE ROUTES =================================================
+Route::get('/pages/expense/expense_category/store', [ExpenseCategoryController::class, 'store'])->name('expense_category.store');
+Route::post('/pages/expense/expense_category/store', [ExpenseCategoryController::class, 'store'])->name('expense_category.store.submit');
+
+//Edit
+Route::get('/expense_category/{paymentTypeId}/edit', [ExpenseCategoryController::class, 'edit'])->name('expense_category.edit');
+Route::put('/expense_category/{paymentTypeId}', [ExpenseCategoryController::class, 'update'])->name('expense_category.update');
+
+// Delete
+Route::delete('/expense_category/{id}', [ExpenseCategoryController::class, 'destroy'])->name('expense_category.destroy');

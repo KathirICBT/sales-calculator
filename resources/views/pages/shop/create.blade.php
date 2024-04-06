@@ -49,6 +49,31 @@
         </div>
     </div>
 
+    <div class="row">       
+        <div class="col-12">
+             <!-- success -->
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
+                role="alert">
+                <span>{{ session('success') }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            <!-- -->
+            <!-- ERROR -->
+            @if ($errors->any())
+            @foreach ($errors->all() as $error)
+            <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
+                role="alert">
+                <span>{{ $error }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endforeach
+            @endif
+            <!-- -->
+        </div>
+    </div>
+
     <!-- Forms -->
     <div class="row">
         <div class="col-12 col-md-6 d-flex">
@@ -57,28 +82,12 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">
-                                <h4 class="n_h_style rounded">Add Shop</h4>
-                                @if(session('success'))
-                                <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
-                                    role="alert">
-                                    <span>{{ session('success') }}</span>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                                @endif
+                                <h4 class="n_h_style rounded">Add Shop</h4>                                
                                 <form class="row g-3" method="POST" action="{{ route('shop.store.submit') }}">
                                     @csrf
                                     <div class="col-md-6">
                                         <label for="name" class="form-label">Shop Name: </label>
-                                        <input type="text" class="form-control" id="name" name="name">
-                                        @error('name')
-                                        <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center mt-3"
-                                            role="alert">
-                                            <span>{{ $message }}</span>
-                                            <button type="button" class="btn-close" data-dismiss="alert"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        @enderror
+                                        <input type="text" class="form-control" id="name" name="name">                                        
                                     </div>
                                     <div class="col-md-6">
                                         <label for="phone" class="form-label">Phone:</label>
@@ -133,15 +142,15 @@
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
                                                         style="width: 40%;" data-toggle="modal"
                                                         data-target="#editShopModal"
-                                                        data-id="{{ $shop->id }}">Edit</button>
+                                                        data-id="{{ $shop->id }}"><i class="fa-regular fa-pen-to-square"></i></button>
                                                     <form method="post" style="display: inline;"
                                                         action="{{ route('shop.destroy', $shop->id) }}">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-danger btn-sm rounded-pill"
-                                                            style="width: 50%;"
+                                                            style="width: 40%;"
                                                             onclick="return confirm('Are you sure you want to delete this shop?')"
-                                                            type="submit">Delete</button>
+                                                            type="submit"><i class="fa-solid fa-trash-can"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -267,4 +276,13 @@
             }
         });
     });
+</script>
+
+<script>
+    // Automatically close alerts after 5 seconds
+    window.setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove();
+        });
+    }, 5000);
 </script>

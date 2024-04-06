@@ -75,16 +75,11 @@
                                     <i class="fa-solid fa-sliders pe-2"></i>
                                     Sales Payment method 
                                 </a>
-                            </li>
-                            <li class="sidebar-item ms-3">
-                                <a href="{{route('pettycashreason.store')}}" class="sidebar-link collapsed text" >
-                                    <i class="fa-solid fa-sliders pe-2"></i>
-                                    Expense Reason 
-                                </a>
-                            </li> 
+                            </li>                            
                         </ul>
                     </li>
                     {{-- Sales End --}}
+                    
                     {{-- <li class="sidebar-item">
                         <a href="{{route('paymentmethod.store')}}" class="sidebar-link collapsed" >
                             <i class="fa-solid fa-sliders pe-2"></i>
@@ -103,36 +98,70 @@
                             Sale 
                         </a>
                     </li> --}}
+                    
 
+                    {{-- Income Start --}}
+                    
                     <li class="sidebar-item">
-                        <a href="{{route('shiftstaff.search')}}" class="sidebar-link collapsed text" >
-                            <i class="fa-solid fa-clock-rotate-left pe-2"></i>
-                            ShiftEdit 
+                        <a href="#" class="sidebar-link collapsed text" data-bs-target="#income_details" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-money-bill pe-2"></i>
+                            Income
                         </a>
-                    </li> 
-                    <li class="sidebar-item">
-                        
-                        
-                            
+                        <ul id="income_details" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('otherincome.store')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Income
+                                </a>
+                            </li>
+                            <li class="sidebar-item ms-3">
                                 <a href="{{route('other_income_departments.store')}}" class="sidebar-link collapsed text" >
                                     <i class="fa-solid fa-sliders pe-2"></i>
-                                    Other Income Department  
+                                    Income Department 
                                 </a>
-                                                      
+                            </li>
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('paymenttype.store')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Income Payment type
+                                </a>
+                            </li> 
+                        </ul>
+                    </li> 
+
+                    {{-- Income End --}}
+
+                    {{-- Expense Start --}}
                     
-                    </li>           
-                    <li class="sidebar-item">     
-                        <a href="{{route('paymenttype.store')}}" class="sidebar-link collapsed text" >
-                            <i class="fa-solid fa-sliders pe-2"></i>
-                            Payment type
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed text" data-bs-target="#ex_ca" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-money-bill-transfer pe-2"></i>
+                            Expenses
                         </a>
-                    </li>         
-                    <li class="sidebar-item">     
-                        <a href="{{route('otherincome.store')}}" class="sidebar-link collapsed text" >
-                            <i class="fa-solid fa-sliders pe-2"></i>
-                            Other Income
-                        </a>
-                    </li>  
+                        <ul id="ex_ca" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('expense_category.store')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Expense Category
+                                </a>
+                            </li>
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('pettycashreason.store')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Expense Reason 
+                                </a>
+                            </li>
+                            {{--<li class="sidebar-item ms-3">
+                                <a href="{{route('pettycashreason.store')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Expense Reason 
+                                </a>
+                            </li>  --}}
+                        </ul>
+                    </li> 
+
+                    {{-- Expense End --}}
+
                     {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
@@ -178,6 +207,14 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li class="sidebar-item">
+                        <a href="{{route('shiftstaff.search')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-clock-rotate-left pe-2"></i>
+                            ShiftEdit 
+                        </a>
+                    </li>
+                    
                     <li class="sidebar-header">
                         Calculations
                     </li>
