@@ -46,7 +46,7 @@ class PaymentTypeController extends Controller
             return redirect()->route('paymenttype.store')->with('success', 'Payment type added successfully!');
         }        
         $paymentTypes = PaymentType::all();
-        return view('pages.owner.payment_types.create', compact('paymentTypes'));
+        return view('pages.income.payment_types.create', compact('paymentTypes'));
     }
 
 

@@ -12,7 +12,7 @@ class OtherIncomeDepartmentController extends Controller
     public function index()
     {
         $otherIncomeDepartments = OtherIncomeDepartment::all();
-        return view('pages.owner.otherIncomeDepartment.create', compact('otherIncomeDepartments'));
+        return view('pages.income.otherIncomeDepartment.create', compact('otherIncomeDepartments'));
     }
 
     // Create method to return the create view
@@ -40,7 +40,7 @@ class OtherIncomeDepartmentController extends Controller
             return redirect()->route('other_income_departments.store')->with('success', 'Other Income Department created successfully!');
         }
         $otherIncomeDepartments = OtherIncomeDepartment::all();
-        return view('pages.owner.otherIncomeDepartment.create', compact('otherIncomeDepartments'));
+        return view('pages.income.otherIncomeDepartment.create', compact('otherIncomeDepartments'));
     }
 
     // Edit method to return the edit view
