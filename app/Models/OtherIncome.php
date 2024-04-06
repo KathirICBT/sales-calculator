@@ -16,11 +16,11 @@ class OtherIncome extends Model
 
     public function otherIncomeDepartment()
     {
-        return $this->belongsTo(OtherIncomeDepartment::class);
+        return $this->belongsTo(OtherIncomeDepartment::class, 'other_income_department_id');
     }
 
     public function paymentType()
     {
-        return $this->belongsTo(PaymentType::class);
+        return $this->belongsTo(PaymentType::class, 'paymenttype_id');
     }
 }

@@ -18,21 +18,37 @@ class PaymentTypeController extends Controller
         return view('payment_types.create');
     }
 
+    // public function store(Request $request)
+    // {
+    //     if ($request->isMethod('post')) {
+    //         $validatedData = $request->validate([
+    //             'payment_type' => 'required|string|max:255',
+    //         ]);
+
+    //         PaymentType::create($validatedData);
+
+    //         return redirect()->route('paymenttype.store')->with('success', 'Payment type added successfully!');
+    //     }
+    //     $paymentTypes = PaymentType::all();
+    //     return view('pages.payment_types.create', compact('paymentTypes'));
+    
+    // }
+
     public function store(Request $request)
     {
-        if ($request->isMethod('post')) {
+        if ($request->isMethod('post')) {            
             $validatedData = $request->validate([
-                'payment_type' => 'required|string|max:255',
-            ]);
-
-            PaymentType::create($validatedData);
-
+                'payment_type' => 'required|string|max:255|unique:payment_types',
+            ], [
+                'payment_type.unique' => 'The payment type has already been added.',
+            ]);            
+            PaymentType::create($validatedData);            
             return redirect()->route('paymenttype.store')->with('success', 'Payment type added successfully!');
-        }
+        }        
         $paymentTypes = PaymentType::all();
-        return view('pages.payment_types.create', compact('paymentTypes'));
-    
+        return view('pages.owner.payment_types.create', compact('paymentTypes'));
     }
+
 
     public function edit($id)
     {
@@ -40,10 +56,22 @@ class PaymentTypeController extends Controller
         return response()->json($paymentType);
     }
 
+    // public function update(Request $request, $id)
+    // {
+    //     $validatedData = $request->validate([
+    //         'payment_type' => 'required|string|max:255',
+    //     ]);
+    //     $paymentType = PaymentType::findOrFail($id);
+    //     $paymentType->update($validatedData);
+    //     return redirect()->back()->with('success', 'Payment type updated successfully.');
+    // }
+
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'payment_type' => 'required|string|max:255',
+            'payment_type' => 'required|string|max:255|unique:payment_types,payment_type,' . $id,            
+        ], [
+            'payment_type.unique' => 'The payment type has already been added.',
         ]);
 
         $paymentType = PaymentType::findOrFail($id);
@@ -51,6 +79,7 @@ class PaymentTypeController extends Controller
 
         return redirect()->back()->with('success', 'Payment type updated successfully.');
     }
+
 
     public function destroy($id)
     {

@@ -73,13 +73,13 @@
                             <li class="sidebar-item ms-3">
                                 <a href="{{route('paymentmethod.store')}}" class="sidebar-link collapsed text" >
                                     <i class="fa-solid fa-sliders pe-2"></i>
-                                    Payment method 
+                                    Sales Payment method 
                                 </a>
                             </li>
                             <li class="sidebar-item ms-3">
                                 <a href="{{route('pettycashreason.store')}}" class="sidebar-link collapsed text" >
                                     <i class="fa-solid fa-sliders pe-2"></i>
-                                    Petty Cash Reason 
+                                    Expense Reason 
                                 </a>
                             </li> 
                         </ul>

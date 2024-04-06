@@ -37,7 +37,7 @@ class OtherIncomeController extends Controller
         $paymentTypes = PaymentType::all();
         $otherIncomes = OtherIncome::all();
         
-        return view('pages.otherIncome.create',compact('other_income_departments', 'paymentTypes','otherIncomes')); // You may need to adjust the view path
+        return view('pages.owner.otherIncome.create',compact('other_income_departments', 'paymentTypes','otherIncomes')); // You may need to adjust the view path
     }
 
     public function edit($id)

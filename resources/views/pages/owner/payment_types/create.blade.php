@@ -18,8 +18,9 @@
                                 <p class="mb-0">Department Management</p>
                             </div>
                         </div>
-                        <div class="col-6 align-self-end text-end">                            
-                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img" alt="">
+                        <div class="col-6 align-self-end text-end">
+                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img"
+                                alt="">
                         </div>
                     </div>
                 </div>
@@ -36,6 +37,30 @@
             </div>
         </div>
     </div>
+    <div class="row">       
+        <div class="col-12">
+             <!-- success -->
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
+                role="alert">
+                <span>{{ session('success') }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            <!-- -->
+            <!-- ERROR -->
+            @if ($errors->any())
+            @foreach ($errors->all() as $error)
+            <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
+                role="alert">
+                <span>{{ $error }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endforeach
+            @endif
+            <!-- -->
+        </div>
+    </div>
     <div class="row">
         <!-- Add Payment Type Form -->
         <div class="col-12 col-md-6 d-flex">
@@ -45,22 +70,15 @@
                         <div class="col-12">
                             <div class="p-3 m-1">
                                 <h4 class="n_h_style rounded">Add Payment Type</h4>
-                                @if(session('success'))
-                                <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
-                                    role="alert">
-                                    <span>{{ session('success') }}</span>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                                @endif
                                 <form class="row g-3" method="POST" action="{{ route('paymenttype.store') }}">
                                     @csrf
                                     <div class="col-md-6">
                                         <label for="payment_type" class="form-label">Payment Type:</label>
-                                        <input type="text" class="form-control" id="payment_type" name="payment_type" required>
+                                        <input type="text" class="form-control" id="payment_type" name="payment_type">
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Add Payment Type</button>                                        
+                                        <button type="submit" class="btn btn-primary rounded-pill">Add Payment
+                                            Type</button>
                                     </div>
                                 </form>
                             </div>
@@ -79,8 +97,10 @@
                                 <h4 class="n_h2_style rounded">Payment Types</h4>
                                 {{-- SEARCH --}}
                                 <div class="input-group mt-3">
-                                    <input type="text" class="form-control" placeholder="Search payment type..." id="searchInput">
-                                    <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                    <input type="text" class="form-control" placeholder="Search payment type..."
+                                        id="searchInput">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        id="searchButton">Search</button>
                                 </div>
                                 {{-- SEARCH --}}
                                 <div style="height: 300px; overflow-y: auto;">
@@ -96,11 +116,16 @@
                                             <tr>
                                                 <td>{{ $paymentType->payment_type }}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" data-toggle="modal" data-target="#editPaymentTypeModal" data-id="{{ $paymentType->id }}">Edit</a>
-                                                    <form method="post" style="display: inline;" action="{{ route('paymenttype.destroy', $paymentType->id) }}">
+                                                    <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn"
+                                                        data-toggle="modal" data-target="#editPaymentTypeModal"
+                                                        data-id="{{ $paymentType->id }}" style="width: 30%;"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                    <form method="post" style="display: inline;"
+                                                        action="{{ route('paymenttype.destroy', $paymentType->id) }}">
                                                         @csrf
                                                         @method('delete')
-                                                        <button class="btn btn-danger btn-sm rounded-pill" onclick="return confirm('Are you sure you want to delete this payment type?')" type="submit">Delete</button>
+                                                        <button class="btn btn-danger btn-sm rounded-pill"
+                                                            onclick="return confirm('Are you sure you want to delete this payment type?')"
+                                                            type="submit" style="width: 30%;"><i class="fa-solid fa-trash-can"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -119,8 +144,8 @@
 @endsection
 
 <!-- Edit Payment Type Modal -->
-<div class="modal fade" id="editPaymentTypeModal" tabindex="-1" role="dialog" aria-labelledby="editPaymentTypeModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="editPaymentTypeModal" tabindex="-1" role="dialog"
+    aria-labelledby="editPaymentTypeModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

@@ -35,6 +35,30 @@
             </div>
         </div>
     </div>
+    <div class="row">       
+        <div class="col-12">
+             <!-- success -->
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
+                role="alert">
+                <span>{{ session('success') }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            <!-- -->
+            <!-- ERROR -->
+            @if ($errors->any())
+            @foreach ($errors->all() as $error)
+            <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
+                role="alert">
+                <span>{{ $error }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endforeach
+            @endif
+            <!-- -->
+        </div>
+    </div>
     <div class="row">
         <div class="col-12 col-md-6 d-flex">
             <div class="card flex-fill border-0">
@@ -42,20 +66,12 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">
-                                <h4 class="n_h_style rounded">Add Other Income</h4>
-                                @if(session('success'))
-                                <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
-                                    role="alert">
-                                    <span>{{ session('success') }}</span>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                                @endif
+                                <h4 class="n_h_style rounded">Add Other Income</h4>                                
                                 <form class="row g-3" method="POST" action="{{ route('otherincome.store') }}">
                                     @csrf
                                     <div class="col-md-6">
                                         <label for="other_income_department_id" class="form-label">Department:</label>
-                                        <select class="form-select" id="other_income_department_id" name="other_income_department_id" required>
+                                        <select class="form-select" id="other_income_department_id" name="other_income_department_id">
                                             @foreach($other_income_departments as $other_income_department)
                                             <option value="{{ $other_income_department->id }}">{{ $other_income_department->income_name }}</option>
                                             @endforeach
@@ -63,7 +79,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="paymenttype_id" class="form-label">Payment Type:</label>
-                                        <select class="form-select" id="paymenttype_id" name="paymenttype_id" required>
+                                        <select class="form-select" id="paymenttype_id" name="paymenttype_id">
                                             @foreach($paymentTypes as $paymentType)
                                             <option value="{{ $paymentType->id }}">{{ $paymentType->payment_type }}</option>
                                             @endforeach
@@ -71,7 +87,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="amount" class="form-label">Amount:</label>
-                                        <input type="number" class="form-control" id="amount" name="amount" required>
+                                        <input type="number" class="form-control" id="amount" name="amount">
                                     </div>
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary rounded-pill">Add Other Income</button>                                        
@@ -114,11 +130,11 @@
                                                 <td>{{ $otherIncome->paymentType->payment_type}}</td>
                                                 <td>{{ $otherIncome->amount }}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#editOtherIncomeModal" data-id="{{ $otherIncome->id }}">Edit</a>
+                                                    <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#editOtherIncomeModal" data-id="{{ $otherIncome->id }}"><i class="fa-regular fa-pen-to-square"></i></a>
                                                     <form method="post" style="display: inline;" action="{{ route('otherincome.destroy', $otherIncome->id) }}">
                                                         @csrf
                                                         @method('delete')
-                                                        <button class="btn btn-danger btn-sm rounded-pill" style="width: 50%;" onclick="return confirm('Are you sure you want to delete this other income?')" type="submit">Delete</button>
+                                                        <button class="btn btn-danger btn-sm rounded-pill" style="width: 40%;" onclick="return confirm('Are you sure you want to delete this other income?')" type="submit"><i class="fa-solid fa-trash-can"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -194,6 +210,8 @@
                 // Set the other income ID in the form
                 editForm.querySelector('#otherIncomeId').value = otherIncomeId;
 
+                editForm.setAttribute('action', `/otherincomes/${otherIncomeId}`);
+
                 // Fetch the other income data and populate the form fields
                 fetch(`/otherincomes/${otherIncomeId}/edit`)
                     .then(response => response.json())
@@ -230,12 +248,14 @@
                 const row = tableRows[i];
                 const departmentCell = row.cells[0]; // Assuming department is in the first cell
                 const paymentTypeCell = row.cells[1]; // Assuming payment type is in the second cell
+                const amountCell = row.cells[2];
 
-                if (departmentCell && paymentTypeCell) {
+                if (departmentCell && paymentTypeCell && amountCell) {
                     const departmentText = departmentCell.textContent.trim().toLowerCase();
                     const paymentTypeText = paymentTypeCell.textContent.trim().toLowerCase();
+                    const amountText = amountCell.textContent.trim().toLowerCase();
 
-                    if (departmentText.includes(query) || paymentTypeText.includes(query)) {
+                    if (departmentText.includes(query) || paymentTypeText.includes(query) || amountText.includes(query)) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';

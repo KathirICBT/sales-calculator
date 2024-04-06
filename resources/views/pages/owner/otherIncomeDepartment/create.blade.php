@@ -134,15 +134,15 @@
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
                                                         style="width: 40%;" data-toggle="modal"
                                                         data-target="#editOtherIncomeDepartmentModal"
-                                                        data-id="{{ $otherIncomeDepartment->id }}">Edit</button>
+                                                        data-id="{{ $otherIncomeDepartment->id }}"><i class="fa-regular fa-pen-to-square"></i></button>
                                                     <form method="post" style="display: inline;"
                                                         action="{{ route('other_income_departments.destroy', $otherIncomeDepartment->id) }}">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-danger btn-sm rounded-pill"
-                                                            style="width: 50%;"
+                                                            style="width: 40%;"
                                                             onclick="return confirm('Are you sure you want to delete this department?')"
-                                                            type="submit">Delete</button>
+                                                            type="submit"><i class="fa-solid fa-trash-can"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
