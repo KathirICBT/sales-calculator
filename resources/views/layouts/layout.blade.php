@@ -146,6 +146,12 @@
                                 </a>
                             </li>
                             <li class="sidebar-item ms-3">
+                                <a href="{{route('expense_sub_category.store')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Expense Sub Category
+                                </a>
+                            </li>
+                            <li class="sidebar-item ms-3">
                                 <a href="{{route('pettycashreason.store')}}" class="sidebar-link collapsed text" >
                                     <i class="fa-solid fa-sliders pe-2"></i>
                                     Expense Reason 

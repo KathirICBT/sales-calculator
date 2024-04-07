@@ -15,6 +15,7 @@ use App\Http\Controllers\PettyCashReasonController;
 use App\Http\Controllers\OtherIncomeDepartmentController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\ExpenseSubCategoryController;
 
 use App\Http\Controllers\OtherIncomeController;
 
@@ -407,13 +408,24 @@ Route::put('/otherincomes/{otherIncomeId}', [OtherIncomeController::class, 'upda
 // Delete
 Route::delete('/otherincomes/{id}', [OtherIncomeController::class, 'destroy'])->name('otherincome.destroy');
 
-// PAYMENT TYPE ROUTES =================================================
+// EXPENSE CATEGORY ROUTES =================================================
 Route::get('/pages/expense/expense_category/store', [ExpenseCategoryController::class, 'store'])->name('expense_category.store');
 Route::post('/pages/expense/expense_category/store', [ExpenseCategoryController::class, 'store'])->name('expense_category.store.submit');
 
 //Edit
-Route::get('/expense_category/{paymentTypeId}/edit', [ExpenseCategoryController::class, 'edit'])->name('expense_category.edit');
-Route::put('/expense_category/{paymentTypeId}', [ExpenseCategoryController::class, 'update'])->name('expense_category.update');
+Route::get('/expense_category/{expenseCategoryId}/edit', [ExpenseCategoryController::class, 'edit'])->name('expense_category.edit');
+Route::put('/expense_category/{expenseCategoryId}', [ExpenseCategoryController::class, 'update'])->name('expense_category.update');
 
 // Delete
 Route::delete('/expense_category/{id}', [ExpenseCategoryController::class, 'destroy'])->name('expense_category.destroy');
+
+// EXPENSE SUB CATEGORY ROUTES =================================================
+Route::get('/pages/expense/expense_sub_category/store', [ExpenseSubCategoryController::class, 'store'])->name('expense_sub_category.store');
+Route::post('/pages/expense/expense_sub_category/store', [ExpenseSubCategoryController::class, 'store'])->name('expense_sub_category.store.submit');
+
+//Edit
+Route::get('/expense_sub_category/{expenseSubCategoryId}/edit', [ExpenseSubCategoryController::class, 'edit'])->name('expense_sub_category.edit');
+Route::put('/expense_sub_category/{expenseSubCategoryId}', [ExpenseSubCategoryController::class, 'update'])->name('expense_sub_category.update');
+
+// Delete
+Route::delete('/expense_sub_category/{id}', [ExpenseSubCategoryController::class, 'destroy'])->name('expense_sub_category.destroy');

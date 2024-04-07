@@ -52,12 +52,12 @@
                                 @endif
                                 <form class="row g-3" method="POST" action="{{ route('pettycashreason.store') }}">
                                     @csrf
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label for="petty_cash_reason" class="form-label">Petty Cash Reason:</label>
                                         <input type="text" class="form-control" id="petty_cash_reason" name="petty_cash_reason" required>
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Add Petty Cash Reason</button>                                        
+                                        <button type="submit" class="btn btn-success rounded-pill" style="width: 100%">Add</button>                                        
                                     </div>
                                 </form>
                             </div>
