@@ -10,6 +10,19 @@ class PettyCashReason extends Model
     use HasFactory;
 
     protected $fillable = [
-        'reason',        
+        'reason',
+        'expense_category_id',
+        'expense_sub_category_id',
     ];
+
+    public function expenseCategory()
+    {
+        return $this->belongsTo(ExpenseCategory::class, 'expense_category_id');
+    }
+
+    public function expenseSubCategory()
+    {
+        return $this->belongsTo(ExpenseSubCategory::class, 'expense_sub_category_id');
+    }
+    
 }

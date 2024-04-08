@@ -359,6 +359,9 @@ Route::post('/cashdiffer', [CashdifferController::class, 'store'])->name('cashdi
 Route::get('/pages/pettycashreason/store', [PettyCashReasonController::class, 'store'])->name('pettycashreason.store');
 Route::post('/pages/pettycashreason/store', [PettyCashReasonController::class, 'store'])->name('pettycashreason.store.submit');
 
+// Delete
+Route::delete('/pettycashreason/{id}', [PettyCashReasonController::class, 'destroy'])->name('pettycashreason.destroy');
+
 Route::get('/sales', [SaleController::class, 'index'])->name('sales');
 Route::get('/search-sales', [SaleController::class, 'searchdate'])->name('search.sales');
 
@@ -429,3 +432,16 @@ Route::put('/expense_sub_category/{expenseSubCategoryId}', [ExpenseSubCategoryCo
 
 // Delete
 Route::delete('/expense_sub_category/{id}', [ExpenseSubCategoryController::class, 'destroy'])->name('expense_sub_category.destroy');
+
+// Petty Cash Combo box fitch
+Route::get('/fetch-expense-sub-categories/{categoryId}', [PettyCashReasonController::class, 'fetchExpenseSubCategories'])->name('fetch.expense.subcategories');
+//Route::get('/fetch-expense-sub-categories/{categoryId}', 'PettyCashReasonController@fetchExpenseSubCategories')->name('fetch.expense.subcategories');
+
+//Route::get('/fetch-expense-category/{subCategoryId}', 'PettyCashReasonController@fetchExpenseCategory')->name('fetch.expense.category');
+Route::get('/fetch-expense-category/{subCategoryId}', [PettyCashReasonController::class, 'fetchExpenseCategory'])->name('fetch.expense.category');
+
+
+
+
+
+

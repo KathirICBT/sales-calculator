@@ -34,6 +34,40 @@
             </div>
         </div>
     </div>
+    <div class="row">       
+        <div class="col-12">
+             <!-- success -->
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
+                role="alert">
+                <span>{{ session('success') }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+            <!-- -->
+            <!-- ERROR -->
+            @if ($errors->any())
+            @foreach ($errors->all() as $error)
+            <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
+                role="alert">
+                <span>{{ $error }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endforeach
+            @endif
+            <!-- -->
+            <!-- ERROR 02 -->
+             <!-- success -->
+             @if(session('error'))
+             <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
+                 role="alert">
+                 <span>{{ session('error') }}</span>
+                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>
+             @endif
+            <!-- -->
+        </div>
+    </div>
     <div class="row">
         <div class="col-12 col-md-6 d-flex">
             <div class="card flex-fill border-0">
@@ -41,25 +75,39 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">
-                                <h4 class="n_h_style rounded">Petty Cash Reason</h4>
-                                @if(session('success'))
-                                <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
-                                    role="alert">
-                                    <span>{{ session('success') }}</span>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                                @endif
+                                <h4 class="n_h_style rounded">Expense Reason</h4>                                
+                                
+
                                 <form class="row g-3" method="POST" action="{{ route('pettycashreason.store') }}">
                                     @csrf
                                     <div class="col-md-12">
                                         <label for="petty_cash_reason" class="form-label">Petty Cash Reason:</label>
-                                        <input type="text" class="form-control" id="petty_cash_reason" name="petty_cash_reason" required>
+                                        <input type="text" class="form-control" id="petty_cash_reason" name="petty_cash_reason">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="expense_category_id" class="form-label">Expense Category:</label>
+                                        <select class="form-select" id="expense_category_id" name="expense_category_id">
+                                            <option value="">Select Expense Category</option>
+                                            @foreach($expenseCategories as $expenseCategory)
+                                            <option value="{{ $expenseCategory->id }}">{{ $expenseCategory->category }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="expense_sub_category_id" class="form-label">Expense Sub Category:</label>
+                                        <select class="form-select" id="expense_sub_category_id" name="expense_sub_category_id">
+                                            <option value="">Select Expense Sub Category</option>
+                                            @foreach($expenseSubCategories as $expenseSubCategory)
+                                            <option value="{{ $expenseSubCategory->id }}">{{ $expenseSubCategory->sub_category }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-success rounded-pill" style="width: 100%">Add</button>                                        
                                     </div>
                                 </form>
+
+
                             </div>
                         </div>
                     </div>
@@ -71,8 +119,8 @@
                 <div class="card-body p-0 d-flex flex-fill">
                     <div class="row g-0 w-100">
                         <div class="col-12">
-                            {{-- <div class="p-3 m-1">
-                                <h4 class="n_h2_style rounded">Payment Methods</h4>
+                            <div class="p-3 m-1">
+                                <h4 class="n_h2_style rounded">Expense Reasons</h4>
                                  <!-- SEARCH -->
                                 <div class="input-group mt-3">
                                     <input type="text" class="form-control" placeholder="Search payment method..." id="searchInput">
@@ -83,17 +131,21 @@
                                     <table class="table" id="paymentMethodTable">
                                         <thead>
                                             <tr>
-                                                <th>Payment Method</th>
+                                                <th>Reasons</th>
+                                                <th>Expense Category</th>
+                                                <th>Expense Sub Category</th>
                                                 <th scope="col" style="width: 30%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($paymentMethods as $paymentMethod)
+                                            @foreach($pettyCashReasons as $pettyCashReason)
                                             <tr>
-                                                <td>{{ $paymentMethod->payment_method }}</td>
+                                                <td>{{ $pettyCashReason->reason }}</td>
+                                                <td>{{ $pettyCashReason->expenseCategory->category }}</td>
+                                                <td>{{ $pettyCashReason->expenseSubCategory->sub_category }}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#editPaymentMethodModal" data-id="{{ $paymentMethod->id }}">Edit</a>
-                                                    <form method="post" style="display: inline;" action="{{ route('paymentmethod.destroy', $paymentMethod->id) }}">
+                                                    <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#pettyCashReasonModal" data-id="{{ $pettyCashReason->id }}">Edit</a>
+                                                    <form method="post" style="display: inline;" action="{{ route('pettycashreason.destroy', $pettyCashReason->id) }}">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-danger btn-sm rounded-pill" style="width: 50%;" onclick="return confirm('Are you sure you want to delete this payment method?')" type="submit">Delete</button>
@@ -104,7 +156,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div> --}}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -207,5 +259,78 @@
     });
 </script>
  --}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var expenseCategorySelect = document.getElementById('expense_category_id');
+        var expenseSubCategorySelect = document.getElementById('expense_sub_category_id');
+
+        // Function to fetch and populate Expense Sub Categories based on the selected Expense Category
+        function populateSubCategories(categoryId) {
+            fetch(`/fetch-expense-sub-categories/${categoryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Clear existing options
+                    expenseSubCategorySelect.innerHTML = '';
+
+                    // Add a null option
+                    var nullOption = document.createElement('option');
+                    nullOption.value = '';
+                    nullOption.textContent = 'Select Expense Sub Category';
+                    expenseSubCategorySelect.appendChild(nullOption);
+
+                    // Add new options
+                    data.forEach(subCategory => {
+                        var option = document.createElement('option');
+                        option.value = subCategory.id;
+                        option.textContent = subCategory.sub_category;
+                        expenseSubCategorySelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching expense sub categories:', error));
+        }
+
+        // Event listener for Expense Category selection
+        expenseCategorySelect.addEventListener('change', function() {
+            var selectedCategoryId = this.value;
+
+            // Reset Expense Sub Category to default if "Select Expense Category" is chosen
+            if (selectedCategoryId === '') {
+                expenseSubCategorySelect.value = '';
+            } else {
+                populateSubCategories(selectedCategoryId);
+            }
+        });
+
+        // Event listener for Expense Sub Category selection
+        expenseSubCategorySelect.addEventListener('change', function() {
+            var selectedSubCategoryId = this.value;
+
+            // Reset Expense Category to default if "Select Expense Sub Category" is chosen
+            if (selectedSubCategoryId === '') {
+                expenseCategorySelect.value = '';
+            } else {
+                // Fetch the associated Expense Category based on the selected Expense Sub Category
+                fetch(`/fetch-expense-category/${selectedSubCategoryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update the Expense Category dropdown with the fetched category
+                        expenseCategorySelect.value = data.category_id;
+                    })
+                    .catch(error => console.error('Error fetching expense category:', error));
+            }
+        });
+    });
+</script>
+
+
+ <script>
+    // Automatically close alerts after 5 seconds
+    window.setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove();
+        });
+    }, 5000);
+</script>
 
 
