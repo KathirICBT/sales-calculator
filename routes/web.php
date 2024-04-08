@@ -359,6 +359,10 @@ Route::post('/cashdiffer', [CashdifferController::class, 'store'])->name('cashdi
 Route::get('/pages/pettycashreason/store', [PettyCashReasonController::class, 'store'])->name('pettycashreason.store');
 Route::post('/pages/pettycashreason/store', [PettyCashReasonController::class, 'store'])->name('pettycashreason.store.submit');
 
+//Edit
+Route::get('/pettycashreason/{pettycashreasonId}/edit', [PettyCashReasonController::class, 'edit'])->name('pettycashreason.edit');
+Route::put('/pettycashreason/{pettycashreasonId}', [PettyCashReasonController::class, 'update'])->name('pettycashreason.update');
+
 // Delete
 Route::delete('/pettycashreason/{id}', [PettyCashReasonController::class, 'destroy'])->name('pettycashreason.destroy');
 
@@ -392,7 +396,7 @@ Route::delete('/other-income-departments/{otherIncomeDepartment}', [OtherIncomeD
 Route::put('/other_income_departments/{otherIncomeDepartment}', [OtherIncomeDepartmentController::class, 'update'])->name('other_income_departments.update');
 
 
-// PAYMENT TYPE ROUTES =================================================
+// PAYMENT TYPE ROUTES ========================================================================================================================================
 Route::get('/pages/paymenttypes/store', [PaymentTypeController::class, 'store'])->name('paymenttype.store');
 Route::post('/pages/paymenttypes/store', [PaymentTypeController::class, 'store'])->name('paymenttype.store.submit');
 
@@ -401,7 +405,7 @@ Route::put('/paymenttypes/{paymentTypeId}', [PaymentTypeController::class, 'upda
 //delete
 Route::delete('/paymenttypes/{id}', [PaymentTypeController::class, 'destroy'])->name('paymenttype.destroy');
 
-// OTHER INCOME ROUTES =================================================
+// OTHER INCOME ROUTES ========================================================================================================================================
 Route::get('/pages/otherincomes/store', [OtherIncomeController::class, 'store'])->name('otherincome.store');
 Route::post('/pages/otherincomes/store', [OtherIncomeController::class, 'store'])->name('otherincome.store.submit');
 
@@ -411,7 +415,7 @@ Route::put('/otherincomes/{otherIncomeId}', [OtherIncomeController::class, 'upda
 // Delete
 Route::delete('/otherincomes/{id}', [OtherIncomeController::class, 'destroy'])->name('otherincome.destroy');
 
-// EXPENSE CATEGORY ROUTES =================================================
+// EXPENSE CATEGORY ROUTES ===================================================================================================================================
 Route::get('/pages/expense/expense_category/store', [ExpenseCategoryController::class, 'store'])->name('expense_category.store');
 Route::post('/pages/expense/expense_category/store', [ExpenseCategoryController::class, 'store'])->name('expense_category.store.submit');
 
@@ -422,7 +426,7 @@ Route::put('/expense_category/{expenseCategoryId}', [ExpenseCategoryController::
 // Delete
 Route::delete('/expense_category/{id}', [ExpenseCategoryController::class, 'destroy'])->name('expense_category.destroy');
 
-// EXPENSE SUB CATEGORY ROUTES =================================================
+// EXPENSE SUB CATEGORY ROUTES ===============================================================================================================================
 Route::get('/pages/expense/expense_sub_category/store', [ExpenseSubCategoryController::class, 'store'])->name('expense_sub_category.store');
 Route::post('/pages/expense/expense_sub_category/store', [ExpenseSubCategoryController::class, 'store'])->name('expense_sub_category.store.submit');
 
@@ -435,9 +439,6 @@ Route::delete('/expense_sub_category/{id}', [ExpenseSubCategoryController::class
 
 // Petty Cash Combo box fitch
 Route::get('/fetch-expense-sub-categories/{categoryId}', [PettyCashReasonController::class, 'fetchExpenseSubCategories'])->name('fetch.expense.subcategories');
-//Route::get('/fetch-expense-sub-categories/{categoryId}', 'PettyCashReasonController@fetchExpenseSubCategories')->name('fetch.expense.subcategories');
-
-//Route::get('/fetch-expense-category/{subCategoryId}', 'PettyCashReasonController@fetchExpenseCategory')->name('fetch.expense.category');
 Route::get('/fetch-expense-category/{subCategoryId}', [PettyCashReasonController::class, 'fetchExpenseCategory'])->name('fetch.expense.category');
 
 

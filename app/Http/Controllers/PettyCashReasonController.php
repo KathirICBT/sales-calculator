@@ -6,6 +6,7 @@ use App\Models\ExpenseCategory;
 use App\Models\ExpenseSubCategory;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class PettyCashReasonController extends Controller
@@ -48,6 +49,8 @@ class PettyCashReasonController extends Controller
         return view('pages.pettyCashReason.create', compact('pettyCashReasons', 'expenseSubCategories', 'expenseCategories'));
     }
 
+    // Expense Sub Catergories =======================================
+
     public function fetchExpenseSubCategories($categoryId)
     {
         // Fetch Expense Sub Categories based on the selected Expense Category
@@ -56,6 +59,9 @@ class PettyCashReasonController extends Controller
         return response()->json($expenseSubCategories);
     }
 
+    // Expense Sub Catergories End =======================================
+
+    // Expense Catergories =======================================
     public function fetchExpenseCategory($subCategoryId)
     {
         // Fetch the Expense Sub Category
@@ -64,7 +70,46 @@ class PettyCashReasonController extends Controller
         // Return the associated Expense Category
         return response()->json(['category_id' => $expenseSubCategory->category_id]);
     }
-    
+    // Expense Catergories ==================================================================
+
+    // UPDATE ===============================================================================
+    public function edit($id)
+    {
+        $pettyCashReason = PettyCashReason::findOrFail($id);
+        return response()->json($pettyCashReason);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'model_petty_cash_reason' => [
+                'required',
+                'string',
+                Rule::unique('petty_cash_reasons', 'reason')->ignore($id),
+            ],
+            'model_expense_category_id' => 'required|exists:expense_categories,id',
+            'model_expense_sub_category_id' => 'required|exists:expense_sub_categories,id',
+        ], [
+            'model_petty_cash_reason.unique' => 'The petty cash reason has already been added.',
+        ]);
+
+        // Find the petty cash reason by ID
+        $pettyCashReason = PettyCashReason::findOrFail($id);
+        
+        // Update the petty cash reason attributes
+        $pettyCashReason->reason = $validatedData['model_petty_cash_reason'];
+        $pettyCashReason->expense_category_id = $validatedData['model_expense_category_id'];
+        $pettyCashReason->expense_sub_category_id = $validatedData['model_expense_sub_category_id'];
+
+        // Save the updated petty cash reason
+        $pettyCashReason->save();            
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Expense Reason updated successfully!');
+    }
+
+    //=======================================================================================
 
     public function destroy($id)
     {
