@@ -46,7 +46,7 @@ class PettyCashReasonController extends Controller
         $expenseSubCategories = ExpenseSubCategory::all();
         $expenseCategories = ExpenseCategory::all(); 
 
-        return view('pages.pettyCashReason.create', compact('pettyCashReasons', 'expenseSubCategories', 'expenseCategories'));
+        return view('pages.expense.pettyCashReason.create', compact('pettyCashReasons', 'expenseSubCategories', 'expenseCategories'));
     }
 
     // Expense Sub Catergories =======================================

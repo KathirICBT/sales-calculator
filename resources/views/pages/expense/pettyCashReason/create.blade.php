@@ -128,7 +128,7 @@
                                 </div>
                                 <!-- SEARCH -->
                                 <div style="height: 300px; overflow-y: auto;">
-                                    <table class="table" id="paymentMethodTable">
+                                    <table class="table" id="expenseReasonsTable">
                                         <thead>
                                             <tr>
                                                 <th>Reasons</th>
@@ -144,11 +144,11 @@
                                                 <td>{{ $pettyCashReason->expenseCategory->category }}</td>
                                                 <td>{{ $pettyCashReason->expenseSubCategory->sub_category }}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#pettyCashReasonModal" data-id="{{ $pettyCashReason->id }}">Edit</a>
+                                                    <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#pettyCashReasonModal" data-id="{{ $pettyCashReason->id }}"><i class="fa-regular fa-pen-to-square"></i></a>
                                                     <form method="post" style="display: inline;" action="{{ route('pettycashreason.destroy', $pettyCashReason->id) }}">
                                                         @csrf
                                                         @method('delete')
-                                                        <button class="btn btn-danger btn-sm rounded-pill" style="width: 50%;" onclick="return confirm('Are you sure you want to delete this payment method?')" type="submit">Delete</button>
+                                                        <button class="btn btn-danger btn-sm rounded-pill" style="width: 40%;" onclick="return confirm('Are you sure you want to delete this payment method?')" type="submit"><i class="fa-solid fa-trash-can"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -385,24 +385,30 @@
     });
 </script>
 
-{{--
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('searchInput');
-        const paymentMethodTable = document.getElementById('paymentMethodTable');
-        const tableRows = paymentMethodTable.getElementsByTagName('tr');
+        const expenseReasonsTable = document.getElementById('expenseReasonsTable');
+        const tableRows = expenseReasonsTable.getElementsByTagName('tr');
 
         searchInput.addEventListener('input', function() {
             const query = searchInput.value.trim().toLowerCase();
 
             for (let i = 1; i < tableRows.length; i++) {
                 const row = tableRows[i];
-                const paymentMethodCell = row.cells[0]; // Assuming payment method name is in the first cell
+                const reason = row.cells[0]; // Assuming department is in the first cell
+                const expense_category = row.cells[1]; // Assuming payment type is in the second cell
+                const expense_sub_category = row.cells[2];
 
-                if (paymentMethodCell) {
-                    const paymentMethodText = paymentMethodCell.textContent.trim().toLowerCase();
+                if (reason && expense_category && expense_sub_category) {
+                    const reasonText = reason.textContent.trim().toLowerCase();
+                    const expense_categoryText = expense_category.textContent.trim().toLowerCase();
+                    const expense_sub_categoryText = expense_sub_category.textContent.trim().toLowerCase();
 
-                    if (paymentMethodText.includes(query)) {
+                    if (reasonText.includes(query) || expense_categoryText.includes(query) || expense_sub_categoryText.includes(query)) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';
@@ -412,7 +418,6 @@
         });
     });
 </script>
- --}} 
  
 <script>
     document.addEventListener('DOMContentLoaded', function() {

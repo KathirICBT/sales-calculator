@@ -107,13 +107,7 @@
                             aria-expanded="false"><i class="fa-solid fa-money-bill pe-2"></i>
                             Income
                         </a>
-                        <ul id="income_details" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item ms-3">
-                                <a href="{{route('otherincome.store')}}" class="sidebar-link collapsed text" >
-                                    <i class="fa-solid fa-sliders pe-2"></i>
-                                    Income
-                                </a>
-                            </li>
+                        <ul id="income_details" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">                            
                             <li class="sidebar-item ms-3">
                                 <a href="{{route('other_income_departments.store')}}" class="sidebar-link collapsed text" >
                                     <i class="fa-solid fa-sliders pe-2"></i>
@@ -126,6 +120,12 @@
                                     Income Payment type
                                 </a>
                             </li> 
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('otherincome.store')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Income
+                                </a>
+                            </li>
                         </ul>
                     </li> 
 
