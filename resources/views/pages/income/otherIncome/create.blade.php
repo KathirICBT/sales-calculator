@@ -60,37 +60,64 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-md-6 d-flex">
+        <div class="col-12 col-md-12 d-flex">
             <div class="card flex-fill border-0">
                 <div class="card-body p-0 d-flex flex-fill">
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">
-                                <h4 class="n_h_style rounded">Add Other Income</h4>                                
-                                <form class="row g-3" method="POST" action="{{ route('otherincome.store') }}">
+                                <h4 class="n_h_style rounded">Add Other Income</h4>
+                                <form id="addOtherIncomeForm" class="row g-3" method="POST" action="{{ route('otherincome.store') }}">
                                     @csrf
-                                    <div class="col-md-6">
-                                        <label for="other_income_department_id" class="form-label">Department:</label>
-                                        <select class="form-select" id="other_income_department_id" name="other_income_department_id">
-                                            @foreach($other_income_departments as $other_income_department)
-                                            <option value="{{ $other_income_department->id }}">{{ $other_income_department->income_name }}</option>
+                                    <div class="col-md-12">
+                                        <label for="shop_id" class="form-label">Shop:</label>
+                                        <select name="shop_id" id="shop_id" required>
+                                            <option value="">Select a Shop</option>
+                                            @foreach($shops as $shop)
+                                            <option value="{{ $shop->id }}">{{ $shop->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="paymenttype_id" class="form-label">Payment Type:</label>
-                                        <select class="form-select" id="paymenttype_id" name="paymenttype_id">
-                                            @foreach($paymentTypes as $paymentType)
-                                            <option value="{{ $paymentType->id }}">{{ $paymentType->payment_type }}</option>
-                                            @endforeach
-                                        </select>
+                                    <div class="col-md-12">
+                                        <label for="date" class="form-label">Date:</label>
+                                        <input type="date" class="form-control" id="date" name="date" required>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="amount" class="form-label">Amount:</label>
-                                        <input type="number" class="form-control" id="amount" name="amount">
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Add Other Income</button>                                        
+                                    <div id="dynamicRows" class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Department</th>
+                                                    <th>Payment Type</th>
+                                                    <th>Amount</th>
+                                                    <th><button type="button" class="btn btn-primary rounded-pill mt-3" id="addRowBtn">Add Row</button></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="dynamic-row">
+                                                    <td>
+                                                        <select class="form-select" name="other_income_department_id[]" required>
+                                                            @foreach($other_income_departments as $other_income_department)
+                                                            <option value="{{ $other_income_department->id }}">{{ $other_income_department->income_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-select" name="paymenttype_id[]" required>
+                                                            @foreach($paymentTypes as $paymentType)
+                                                            <option value="{{ $paymentType->id }}">{{ $paymentType->payment_type }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control" name="amount[]" required>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger rounded-pill remove-row-btn">Remove</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="submit" class="btn btn-primary rounded-pill mt-3" form="addOtherIncomeForm">Add Other Income</button>
                                     </div>
                                 </form>
                             </div>
@@ -99,7 +126,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 d-flex">
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex">
             <div class="card flex-fill border-0">
                 <div class="card-body p-0 d-flex flex-fill">
                     <div class="row g-0 w-100">
@@ -112,10 +141,12 @@
                                     <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
                                 </div>
                                 {{-- SEARCH --}}
-                                <div style="height: 300px; overflow-y: auto;">
+                                <div style="overflow-x: auto;">
                                     <table class="table" id="otherIncomeTable">
                                         <thead>
                                             <tr>
+                                                <th>Shop</th>
+                                                <th>Date</th>
                                                 <th>Department</th>
                                                 <th>Payment Type</th>
                                                 <th>Amount</th>
@@ -125,8 +156,9 @@
                                         <tbody>
                                             @foreach($otherIncomes as $otherIncome)
                                             <tr>
-                                                <td>{{ $otherIncome->otherIncomeDepartment->income_name }}</td>
-                                                
+                                                <td>{{ $otherIncome->shop->name }}</td>
+                                                <td>{{ $otherIncome->date }}</td>
+                                                <td>{{ $otherIncome->otherIncomeDepartment->income_name }}</td>                                                
                                                 <td>{{ $otherIncome->paymentType->payment_type}}</td>
                                                 <td>{{ $otherIncome->amount }}</td>
                                                 <td>
@@ -149,9 +181,14 @@
             </div>
         </div>
     </div>
+    
+
+    
+    
 </div>
 @endsection
 
+<!-- Edit Other Income Modal -->
 <!-- Edit Other Income Modal -->
 <div class="modal fade" id="editOtherIncomeModal" tabindex="-1" role="dialog" aria-labelledby="editOtherIncomeModalLabel"
     aria-hidden="true">
@@ -168,6 +205,19 @@
                 @method('PUT')
                 <input type="hidden" id="otherIncomeId" name="otherIncome_id">
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label for="shop_id">Shop:</label>
+                        <select class="form-select" id="shop_id" name="shop_id" required>
+                            <option value="">Select a Shop</option>
+                            @foreach($shops as $shop)
+                            <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
                     <div class="form-group">
                         <label for="other_income_department_id">Department</label>
                         <select class="form-select" id="other_income_department_id" name="other_income_department_id" required>
@@ -197,7 +247,6 @@
         </div>
     </div>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const editButtons = document.querySelectorAll('.edit-btn');
@@ -216,6 +265,8 @@
                 fetch(`/otherincomes/${otherIncomeId}/edit`)
                     .then(response => response.json())
                     .then(data => {
+                        editForm.querySelector('#shop_id').value = data.shop_id;
+                        editForm.querySelector('#date').value = data.date;
                         editForm.querySelector('#other_income_department_id').value = data.other_income_department_id;
                         editForm.querySelector('#paymenttype_id').value = data.paymenttype_id;
                         editForm.querySelector('#amount').value = data.amount;
@@ -233,6 +284,7 @@
         });
     });
 </script>
+
 
 
 <script>
@@ -273,4 +325,46 @@
             $(this).remove();
         });
     }, 5000);
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addRowBtn = document.getElementById('addRowBtn');
+        const dynamicRows = document.getElementById('dynamicRows');
+
+        addRowBtn.addEventListener('click', function() {
+            const rowHtml = `
+                <tr class="dynamic-row">
+                    <td>
+                        <select class="form-select" name="other_income_department_id[]" required>
+                            @foreach($other_income_departments as $other_income_department)
+                            <option value="{{ $other_income_department->id }}">{{ $other_income_department->income_name }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select" name="paymenttype_id[]" required>
+                            @foreach($paymentTypes as $paymentType)
+                            <option value="{{ $paymentType->id }}">{{ $paymentType->payment_type }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" name="amount[]" required>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger rounded-pill remove-row-btn">Remove</button>
+                    </td>
+                </tr>
+            `;
+            dynamicRows.querySelector('tbody').insertAdjacentHTML('beforeend', rowHtml);
+        });
+
+        dynamicRows.addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-row-btn')) {
+                const row = event.target.closest('.dynamic-row');
+                row.remove();
+            }
+        });
+    });
 </script>

@@ -12,6 +12,8 @@ class OtherIncome extends Model
         'other_income_department_id',
         'paymenttype_id',
         'amount',
+        'shop_id', 
+        'date',
     ];
 
     public function otherIncomeDepartment()
@@ -22,5 +24,9 @@ class OtherIncome extends Model
     public function paymentType()
     {
         return $this->belongsTo(PaymentType::class, 'paymenttype_id');
+    }
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class, 'shop_id');
     }
 }
