@@ -110,6 +110,64 @@
     </div>
     @endif
   
+    <div class="row">
+        <div class="col-12 d-flex">
+            <div class="card flex-fill border-0">
+                <div class="card-body p-0 d-flex flex-fill">
+                    <div class="row g-0 w-100">
+                        <div class="col-12">
+                            <div class="p-3 m-1">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Cash Differ Details</h4>
+                                        @if(isset($from_date) && isset($to_date))                                        
+                                            <div class="col-12">
+                                                <h6>Date Period: {{ $from_date }} to {{ $to_date }}</h6>
+                                            </div>                                        
+                                       
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        @foreach($shops as $shop)
+                                                            <th>{{ $shop->name }}</th>
+                                                        @endforeach
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($shopTotalsByDate as $date => $shopTotals)
+                                                        <tr>
+                                                            <td>{{ $date }}</td>
+                                                            @php $total = 0; @endphp
+                                                            @foreach($shops as $shop)
+                                                                <td>
+                                                                    @if(isset($shopTotals[$shop->id]))
+                                                                        {{ $shopTotals[$shop->id] }}
+                                                                        @php $total += $shopTotals[$shop->id]; @endphp
+                                                                    @else
+                                                                        0
+                                                                    @endif
+                                                                </td>
+                                                            @endforeach
+                                                            <td>{{ $total }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>  
+                                            @endif                              
+                                        </div>
+                                    </div>
+                                </div>                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     
     <!-- Forms end -->
 {{-- 

@@ -80,7 +80,7 @@ public function generateReport(Request $request)
     ]);
 
     // Get shifts within the specified duration based on the created_at column
-    $shifts = Shift::whereBetween(DB::raw('DATE(created_at)'), [$request->from_date, $request->to_date])->get();
+    $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
 
     // Get cash differences for the matching shifts
     $cashdiffers = Cashdiffer::whereIn('shift_id', $shifts->pluck('id'))->get();
@@ -98,6 +98,9 @@ public function generateReport(Request $request)
                 : $cashDifference;
         }
     }
+    // Get all shops for displaying shop names
+    $shops = Shop::all();
+
 
     // Pass the data to the view along with the input dates
     return view('pages.reports.cashdifferReport', [
@@ -106,6 +109,7 @@ public function generateReport(Request $request)
         'from_date' => $request->from_date,
         'to_date' => $request->to_date,
         'shifts' => $shifts,
+        'shops' => $shops,
     ]);
 }
 
