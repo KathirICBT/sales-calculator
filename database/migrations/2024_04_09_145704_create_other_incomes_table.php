@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('other_incomes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('other_income_department_id');
+            $table->unsignedBigInteger('other_income_department_id')->nullable();
             $table->foreign('other_income_department_id')->references('id')->on('other_income_departments');
             $table->unsignedBigInteger('paymenttype_id');
             $table->foreign('paymenttype_id')->references('id')->on('payment_types');
-            $table->decimal('amount', 10, 2); 
+            $table->decimal('amount', 10, 2);
             $table->timestamps();
         });
     }

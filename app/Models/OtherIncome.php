@@ -29,4 +29,6 @@ class OtherIncome extends Model
     {
         return $this->belongsTo(Shop::class, 'shop_id');
     }
+
+    public $timestamps = true;
 }

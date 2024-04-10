@@ -69,55 +69,59 @@
                                 <h4 class="n_h_style rounded">Add Other Income</h4>
                                 <form id="addOtherIncomeForm" class="row g-3" method="POST" action="{{ route('otherincome.store') }}">
                                     @csrf
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <label for="shop_id" class="form-label">Shop:</label>
-                                        <select name="shop_id" id="shop_id" required>
+                                        <select name="shop_id" id="shop_id" class="form-select">
                                             <option value="">Select a Shop</option>
                                             @foreach($shops as $shop)
                                             <option value="{{ $shop->id }}">{{ $shop->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <label for="date" class="form-label">Date:</label>
-                                        <input type="date" class="form-control" id="date" name="date" required>
+                                        <input type="date" class="form-control" id="date" name="date">
                                     </div>
                                     <div id="dynamicRows" class="table-responsive">
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Department</th>
-                                                    <th>Payment Type</th>
-                                                    <th>Amount</th>
-                                                    <th><button type="button" class="btn btn-primary rounded-pill mt-3" id="addRowBtn">Add Row</button></th>
+                                                    <th style="width: 25%;">Department</th>
+                                                    <th style="width: 25%;">Payment Type</th>
+                                                    <th style="width: 25%;">Amount</th>
+                                                    <th style="width: 10%;"><button type="button" class="btn btn-primary rounded-pill mt-3" id="addRowBtn" style="width: 100%"><i class="fa-regular fa-square-plus"></i></button></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr class="dynamic-row">
                                                     <td>
-                                                        <select class="form-select" name="other_income_department_id[]" required>
+                                                        <select class="form-select" name="other_income_department_id[]">
+                                                            <option value="">Select Department</option>
                                                             @foreach($other_income_departments as $other_income_department)
                                                             <option value="{{ $other_income_department->id }}">{{ $other_income_department->income_name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select class="form-select" name="paymenttype_id[]" required>
+                                                        <select class="form-select" name="paymenttype_id[]">
+                                                            <option value="">Select Payment Type</option>
                                                             @foreach($paymentTypes as $paymentType)
                                                             <option value="{{ $paymentType->id }}">{{ $paymentType->payment_type }}</option>
                                                             @endforeach
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="number" class="form-control" name="amount[]" required>
+                                                        <input type="text" class="form-control amount-input" name="amount[]" pattern="[-+]?\d*">
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger rounded-pill remove-row-btn">Remove</button>
+                                                        <button type="button" class="btn btn-danger rounded-pill remove-row-btn" style="width: 100%"><i class="fa-regular fa-square-minus"></i></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <button type="submit" class="btn btn-primary rounded-pill mt-3" form="addOtherIncomeForm">Add Other Income</button>
+                                        
+                                        <button type="submit" class="btn btn-success rounded-pill mt-3" form="addOtherIncomeForm" style="width: 11%; margin-right: 5px;"><i class="fa-solid fa-floppy-disk"></i></button>
+                                        
                                     </div>
                                 </form>
                             </div>
@@ -127,6 +131,7 @@
             </div>
         </div>
     </div>
+    <!-- Table Element -->
     <div class="row">
         <div class="col-12 d-flex">
             <div class="card flex-fill border-0">
@@ -142,6 +147,7 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <div style="overflow-x: auto;">
+                                {{-- <div class="table-responsive"> --}}
                                     <table class="table" id="otherIncomeTable">
                                         <thead>
                                             <tr>
@@ -181,6 +187,7 @@
             </div>
         </div>
     </div>
+    <!-- Table Element -->
     
 
     
@@ -207,7 +214,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="shop_id">Shop:</label>
-                        <select class="form-select" id="shop_id" name="shop_id" required>
+                        <select class="form-select" id="shop_id" name="shop_id">
                             <option value="">Select a Shop</option>
                             @foreach($shops as $shop)
                             <option value="{{ $shop->id }}">{{ $shop->name }}</option>
@@ -216,11 +223,11 @@
                     </div>
                     <div class="form-group">
                         <label for="date">Date:</label>
-                        <input type="date" class="form-control" id="date" name="date" required>
+                        <input type="date" class="form-control" id="date" name="date">
                     </div>
                     <div class="form-group">
                         <label for="other_income_department_id">Department</label>
-                        <select class="form-select" id="other_income_department_id" name="other_income_department_id" required>
+                        <select class="form-select" id="other_income_department_id" name="other_income_department_id">
                             @foreach($other_income_departments as $other_income_department)
                             <option value="{{ $other_income_department->id }}">{{ $other_income_department->income_name }}</option>
                             @endforeach
@@ -228,7 +235,7 @@
                     </div>
                     <div class="form-group">
                         <label for="paymenttype_id">Payment Type</label>
-                        <select class="form-select" id="paymenttype_id" name="paymenttype_id" required>
+                        <select class="form-select" id="paymenttype_id" name="paymenttype_id">
                             @foreach($paymentTypes as $paymentType)
                             <option value="{{ $paymentType->id }}">{{ $paymentType->payment_type }}</option>
                             @endforeach
@@ -236,7 +243,7 @@
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
-                        <input type="number" class="form-control" id="amount" name="amount" required>
+                        <input type="number" class="form-control" id="amount" name="amount">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -327,6 +334,56 @@
     }, 5000);
 </script>
 
+{{-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const addRowBtn = document.getElementById('addRowBtn');
+    const dynamicRows = document.getElementById('dynamicRows');
+
+    addRowBtn.addEventListener('click', function() {
+        const rowHtml = `
+            <tr class="dynamic-row">
+                <td>
+                    <select class="form-select" name="other_income_department_id[]">
+                        @foreach($other_income_departments as $other_income_department)
+                        <option value="{{ $other_income_department->id }}">{{ $other_income_department->income_name }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    <select class="form-select" name="paymenttype_id[]">
+                        @foreach($paymentTypes as $paymentType)
+                        <option value="{{ $paymentType->id }}">{{ $paymentType->payment_type }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    <input type="number" class="form-control" name="amount[]">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger rounded-pill remove-row-btn" style="width:100%"><i class="fa-regular fa-square-minus"></i></button>
+                </td>
+            </tr>
+        `;
+        dynamicRows.querySelector('tbody').insertAdjacentHTML('beforeend', rowHtml);
+    });
+
+    dynamicRows.addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-row-btn')) {
+            const rows = dynamicRows.querySelectorAll('.dynamic-row');
+            // Ensure there's at least one row remaining
+            if (rows.length > 1) {
+                const row = event.target.closest('.dynamic-row');
+                row.remove();
+            } else {
+                // Alert or handle the case where there's only one row left and it cannot be removed
+                console.log('At least one row must remain.');
+            }
+        }
+    });
+});
+
+</script> --}}
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const addRowBtn = document.getElementById('addRowBtn');
@@ -336,24 +393,26 @@
             const rowHtml = `
                 <tr class="dynamic-row">
                     <td>
-                        <select class="form-select" name="other_income_department_id[]" required>
+                        <select class="form-select" name="other_income_department_id[]">
+                            <option value="">Select Department</option>
                             @foreach($other_income_departments as $other_income_department)
                             <option value="{{ $other_income_department->id }}">{{ $other_income_department->income_name }}</option>
                             @endforeach
                         </select>
                     </td>
                     <td>
-                        <select class="form-select" name="paymenttype_id[]" required>
+                        <select class="form-select" name="paymenttype_id[]">
+                            <option value="">Select Payment Type</option>
                             @foreach($paymentTypes as $paymentType)
                             <option value="{{ $paymentType->id }}">{{ $paymentType->payment_type }}</option>
                             @endforeach
                         </select>
                     </td>
                     <td>
-                        <input type="number" class="form-control" name="amount[]" required>
+                        <input type="text" class="form-control amount-input" name="amount[]" pattern="[-+]?\d*">
                     </td>
                     <td>
-                        <button type="button" class="btn btn-danger rounded-pill remove-row-btn">Remove</button>
+                        <button type="button" class="btn btn-danger rounded-pill remove-row-btn" style="width:100%"><i class="fa-regular fa-square-minus"></i></button>
                     </td>
                 </tr>
             `;
@@ -362,8 +421,25 @@
 
         dynamicRows.addEventListener('click', function(event) {
             if (event.target.classList.contains('remove-row-btn')) {
-                const row = event.target.closest('.dynamic-row');
-                row.remove();
+                const rows = dynamicRows.querySelectorAll('.dynamic-row');
+                // Ensure there's at least one row remaining
+                if (rows.length > 1) {
+                    const row = event.target.closest('.dynamic-row');
+                    row.remove();
+                } else {
+                    // Alert or handle the case where there's only one row left and it cannot be removed
+                    console.log('At least one row must remain.');
+                }
+            }
+        });
+
+        // Custom validation to allow only plus and minus numbers
+        dynamicRows.addEventListener('input', function(event) {
+            if (event.target.classList.contains('amount-input')) {
+                const inputValue = event.target.value;
+                if (!/^-?\d*\.?\d*$/.test(inputValue)) {
+                    event.target.value = inputValue.slice(0, -1);
+                }
             }
         });
     });

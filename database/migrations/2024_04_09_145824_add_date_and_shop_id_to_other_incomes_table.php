@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('other_incomes', function (Blueprint $table) {
-            $table->unsignedBigInteger('shop_id');
+            // Add 'date' column
             $table->date('date')->nullable();
+
+            // Add 'shop_id' column
+            $table->unsignedBigInteger('shop_id')->nullable();
             $table->foreign('shop_id')->references('id')->on('shops');
         });
     }
@@ -24,7 +27,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('other_incomes', function (Blueprint $table) {
-            $table->dropColumn(['shop_id', 'date']);
+            // Drop 'date' column
+            $table->dropColumn('date');
+
+            // Drop 'shop_id' column
+            $table->dropForeign(['shop_id']);
+            $table->dropColumn('shop_id');
         });
     }
 };
