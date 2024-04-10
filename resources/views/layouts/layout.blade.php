@@ -224,6 +224,9 @@
                     <li class="sidebar-header">
                         Calculations
                     </li>
+                    <li>
+                        <a href="{{route('reports.form')}}" class="sidebar-link text">Cash Differ Report</a>
+                    </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed text" data-bs-target="#multi" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fa-solid fa-file pe-2"></i>
@@ -235,7 +238,7 @@
                                     data-bs-toggle="collapse" aria-expanded="false">Level 1</a>
                                 <ul id="level-1" class="sidebar-dropdown list-unstyled collapse">
                                     <li class="sidebar-item">
-                                        <a href="#" class="sidebar-link text">Level 1.1</a>
+                                        <a href="{{route('reports.form')}}" class="sidebar-link text">Cash Differ Report</a>
                                     </li>
                                     <li class="sidebar-item">
                                         <a href="#" class="sidebar-link text">Level 1.2</a>
