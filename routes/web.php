@@ -448,7 +448,7 @@ Route::get('/fetch-expense-category/{subCategoryId}', [PettyCashReasonController
 
 
 // Show form to input date range
-Route::get('/reports', [ReportController::class, 'showForm'])->name('reports.form');
+Route::get('/reports/generate', [ReportController::class, 'showForm'])->name('reports.form');
 
 // Generate report
 Route::post('/reports/generate', [ReportController::class, 'generateReport'])->name('reports.generate');
