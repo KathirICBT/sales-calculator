@@ -13,7 +13,7 @@
                         <div class="col-6">
                             <div class="p-3 m-1">
                                 <h4>Welcome, {{ session('username') }}</h4>
-                                <p class="mb-0">Department Management</p>
+                                <p class="mb-0">Other Income Management</p>
                             </div>
                         </div>
                         <div class="col-6 align-self-end text-end">                            
@@ -82,7 +82,7 @@
                                         <label for="date" class="form-label">Date:</label>
                                         <input type="date" class="form-control" id="date" name="date">
                                     </div>
-                                    <div id="dynamicRows" class="table-responsive">
+                                    <div class="col-md-12" id="dynamicRows" class="table-responsive">
                                         <table class="table">
                                             <thead>
                                                 <tr>
@@ -130,15 +130,15 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Table Element -->
-    <div class="row">
-        <div class="col-12 d-flex">
+
+        {{-- NEW TABLE --}}
+
+        <div class="col-12 col-md-12 d-flex">
             <div class="card flex-fill border-0">
                 <div class="card-body p-0 d-flex flex-fill">
                     <div class="row g-0 w-100">
                         <div class="col-12">
-                            <div class="p-3 m-1">
+                            <div class="p-3 m-1">                                                
                                 <h4 class="n_h2_style rounded">Other Incomes</h4>
                                 {{-- SEARCH --}}
                                 <div class="input-group mt-3">
@@ -147,7 +147,67 @@
                                 </div>
                                 {{-- SEARCH --}}
                                 <div style="overflow-x: auto;">
-                                {{-- <div class="table-responsive"> --}}
+                                <table class="table" id="otherIncomeTable">
+                                    <thead>
+                                        <tr>                                                            
+                                            <th>Shop</th>
+                                            <th>Date</th>
+                                            <th>Department</th>
+                                            <th>Payment Type</th>
+                                            <th>Amount</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($otherIncomes as $otherIncome)
+                                        <tr>
+                                            <td>{{ $otherIncome->shop->name }}</td>
+                                            <td>{{ $otherIncome->date }}</td>
+                                            <td>{{ $otherIncome->otherIncomeDepartment->income_name }}</td>                                                
+                                            <td>{{ $otherIncome->paymentType->payment_type}}</td>
+                                            <td>{{ $otherIncome->amount }}</td>
+                                            <td>
+                                                <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#editOtherIncomeModal" data-id="{{ $otherIncome->id }}"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                <form method="post" style="display: inline;" action="{{ route('otherincome.destroy', $otherIncome->id) }}">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button class="btn btn-danger btn-sm rounded-pill" style="width: 40%;" onclick="return confirm('Are you sure you want to delete this other income?')" type="submit"><i class="fa-solid fa-trash-can"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        @endforeach                                      
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- NEW TABLE END --}}
+
+
+
+    </div>
+    <!-- Table Element -->
+    {{-- <div class="row">
+        <div class="col-12 d-flex">
+            <div class="card flex-fill border-0">
+                <div class="card-body p-0 d-flex flex-fill">
+                    <div class="row g-0 w-100">
+                        <div class="col-12">
+                            <div class="p-3 m-1">
+                                <h4 class="n_h2_style rounded">Other Incomes</h4>
+                                
+                                <div class="input-group mt-3">
+                                    <input type="text" class="form-control" placeholder="Search other income..." id="searchInput">
+                                    <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                </div>
+                                
+                                <div style="overflow-x: auto;">
+                                
                                     <table class="table" id="otherIncomeTable">
                                         <thead>
                                             <tr>
@@ -186,7 +246,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Table Element -->
     
 
