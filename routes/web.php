@@ -16,6 +16,9 @@ use App\Http\Controllers\OtherIncomeDepartmentController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseSubCategoryController;
+use App\Http\Controllers\ReportController;
+
+
 
 use App\Http\Controllers\OtherIncomeController;
 
@@ -442,6 +445,13 @@ Route::get('/fetch-expense-sub-categories/{categoryId}', [PettyCashReasonControl
 Route::get('/fetch-expense-category/{subCategoryId}', [PettyCashReasonController::class, 'fetchExpenseCategory'])->name('fetch.expense.category');
 
 
+
+
+// Show form to input date range
+Route::get('/reports', [ReportController::class, 'showForm'])->name('reports.form');
+
+// Generate report
+Route::post('/reports/generate', [ReportController::class, 'generateReport'])->name('reports.generate');
 
 
 
