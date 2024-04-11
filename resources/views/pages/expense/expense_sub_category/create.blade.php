@@ -46,7 +46,7 @@
             </div>
             @endif
             <!-- -->
-            <!-- ERROR -->
+            <!-- ERROR 01-->
             @if ($errors->any())
             @foreach ($errors->all() as $error)
             <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
@@ -56,6 +56,16 @@
             </div>
             @endforeach
             @endif
+            <!-- -->
+            <!-- ERROR 02 -->
+             <!-- success -->
+             @if(session('error'))
+             <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
+                 role="alert">
+                 <span>{{ session('error') }}</span>
+                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>
+             @endif
             <!-- -->
         </div>
     </div>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExpenseCategory;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 
@@ -51,10 +53,28 @@ class ExpenseCategoryController extends Controller
 
     public function destroy($id)
     {
-        $expenseCategory = ExpenseCategory::findOrFail($id);
-        $expenseCategory->delete();
+        try {
+            // Attempt to find the ExpenseCategory with the given ID
+            $expenseCategory = ExpenseCategory::findOrFail($id);
+            
+            // If found, delete the ExpenseCategory
+            $expenseCategory->delete();
 
-        return redirect()->route('expense_category.store')->with('success', 'Expense Category deleted successfully!');
+            // Redirect with success message
+            return redirect()->route('expense_category.store')->with('success', 'Expense Category deleted successfully!');
+        } catch (QueryException $e) {
+            // Check if the error is due to a foreign key constraint violation
+            if ($e->errorInfo[1] === 1451) {
+                // Redirect with error message for foreign key constraint violation
+                return redirect()->route('expense_category.store')->with('error', 'Cannot delete Expense Category. It is referenced by other records.');
+            }
+
+            // If it's another type of error, log it for debugging purposes
+            Log::error('Error deleting Expense Category: ' . $e->getMessage());
+
+            // Redirect with generic error message
+            return redirect()->route('expense_category.store')->with('error', 'An error occurred while deleting the Expense Category.');
+        }
     }
 
 }
