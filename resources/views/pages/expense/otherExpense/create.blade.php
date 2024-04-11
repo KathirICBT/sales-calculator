@@ -241,7 +241,7 @@
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
-                        <input type="number" class="form-control" id="amount" name="amount">
+                        <input type="text" class="form-control" id="amount" name="amount">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -253,7 +253,7 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         const editButtons = document.querySelectorAll('.edit-btn');
 
@@ -291,7 +291,55 @@
             $('body').css('overflow', 'auto');
         });
     });
+</script> --}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editButtons = document.querySelectorAll('.edit-btn');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const otherexpenseId = this.getAttribute('data-id');
+                const editForm = document.getElementById('editOtherExpenseForm');
+
+                // Set the other income ID in the form
+                editForm.querySelector('#editOtherExpenseId').value = otherexpenseId;
+
+                editForm.setAttribute('action', `/otherexpense/${otherexpenseId}`);
+
+                // Fetch the other income data and populate the form fields
+                fetch(`/otherexpense/${otherexpenseId}/edit`)
+                    .then(response => response.json())
+                    .then(data => {
+                        editForm.querySelector('#shop_id').value = data.shop_id;
+                        editForm.querySelector('#date').value = data.date;
+                        editForm.querySelector('#pettyCashReason_id').value = data.expense_reason_id;
+                        editForm.querySelector('#paymenttype_id').value = data.paymenttype_id;
+                        editForm.querySelector('#amount').value = data.amount;
+                        $('#editOtherExpenseModal').modal('show');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+
+        // Add event listener to the amount field for input validation
+        const amountField = document.getElementById('amount');
+        amountField.addEventListener('input', function() {
+            // Remove any non-numeric characters except + and -
+            this.value = this.value.replace(/[^0-9.+-]/g, '');
+        });
+
+        $('#editOtherExpenseModal').on('hidden.bs.modal', function() {
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            // Re-enable scrollbar
+            $('body').css('overflow', 'auto');
+        });
+    });
 </script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

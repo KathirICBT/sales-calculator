@@ -241,7 +241,7 @@
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
-                        <input type="number" class="form-control" id="amount" name="amount">
+                        <input type="text" class="form-control" id="amount" name="amount">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -252,6 +252,46 @@
         </div>
     </div>
 </div>
+
+{{-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editButtons = document.querySelectorAll('.edit-btn');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const otherIncomeId = this.getAttribute('data-id');
+                const editForm = document.getElementById('editOtherIncomeForm');
+
+                // Set the other income ID in the form
+                editForm.querySelector('#otherIncomeId').value = otherIncomeId;
+
+                editForm.setAttribute('action', `/otherincomes/${otherIncomeId}`);
+
+                // Fetch the other income data and populate the form fields
+                fetch(`/otherincomes/${otherIncomeId}/edit`)
+                    .then(response => response.json())
+                    .then(data => {
+                        editForm.querySelector('#shop_id').value = data.shop_id;
+                        editForm.querySelector('#date').value = data.date;
+                        editForm.querySelector('#other_income_department_id').value = data.other_income_department_id;
+                        editForm.querySelector('#paymenttype_id').value = data.paymenttype_id;
+                        editForm.querySelector('#amount').value = data.amount;
+                        $('#editOtherIncomeModal').modal('show');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+
+        $('#editOtherIncomeModal').on('hidden.bs.modal', function() {
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            // Re-enable scrollbar
+            $('body').css('overflow', 'auto');
+        });
+    });
+</script> --}}
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -290,8 +330,16 @@
             // Re-enable scrollbar
             $('body').css('overflow', 'auto');
         });
+
+        // Add event listener to the amount field for input validation
+        const amountField = document.getElementById('amount');
+        amountField.addEventListener('input', function() {
+            // Remove any non-numeric characters except + and -
+            this.value = this.value.replace(/[^0-9.+-]/g, '');
+        });
     });
 </script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
