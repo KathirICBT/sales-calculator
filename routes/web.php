@@ -17,6 +17,7 @@ use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseSubCategoryController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\OtherExpenseController;
 
 
 
@@ -452,6 +453,18 @@ Route::get('/reports/generate', [ReportController::class, 'showForm'])->name('re
 
 // Generate report
 Route::post('/reports/generate', [ReportController::class, 'generateReport'])->name('reports.generate');
+
+
+// OTHER INCOME ROUTES ========================================================================================================================================
+Route::get('/pages/otherexpense/store', [OtherExpenseController::class, 'store'])->name('otherexpense.store');
+Route::post('/pages/otherexpense/store', [OtherExpenseController::class, 'store'])->name('otherexpense.store.submit');
+
+//Edit
+Route::get('/otherexpense/{otherexpenseId}/edit', [OtherExpenseController::class, 'edit'])->name('otherexpense.edit');
+Route::put('/otherexpense/{otherexpenseId}', [OtherExpenseController::class, 'update'])->name('otherexpense.update');
+
+// Delete
+Route::delete('/otherexpense/{id}', [OtherExpenseController::class, 'destroy'])->name('otherexpense.destroy');
 
 
 

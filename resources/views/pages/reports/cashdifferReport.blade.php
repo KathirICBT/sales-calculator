@@ -193,8 +193,7 @@
                 </tfoot>
             </table>
         </div>
-    </div>
-    
+    </div>   
 
     @endif
 

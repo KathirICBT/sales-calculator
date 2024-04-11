@@ -222,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
     $('#editDepartmentModal').on('hidden.bs.modal', function () {
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
+        $('body').css('overflow', 'auto');
     });
 });
 

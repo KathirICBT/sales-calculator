@@ -340,6 +340,7 @@
             isModalSubmitted = false;
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
+            $('body').css('overflow', 'auto');
         });
 
         $('#pettyCashReasonModalForm').on('submit', function() {
