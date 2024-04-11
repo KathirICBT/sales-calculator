@@ -468,4 +468,10 @@ Route::delete('/otherexpense/{id}', [OtherExpenseController::class, 'destroy'])-
 
 
 
+// Route::get('/reports/payment-report', [ReportController::class, 'paymentmethodReport'])->name('payment-report');
+// Route::post('/reports/payment-report', [ReportController::class, 'paymentmethodReport'])->name('payment-report.generate');
 
+
+
+Route::get('/reports/payment', [ReportController::class, 'showPaymentReport'])->name('reports.payment');
+Route::post('/reports/payment', [ReportController::class, 'generatePaymentReport'])->name('reports.generatePayment');
