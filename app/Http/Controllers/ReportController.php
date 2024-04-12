@@ -194,26 +194,134 @@ class ReportController extends Controller
 
     // }
     
+    // public function generatePaymentReport(Request $request)
+    // {
+    //     $request->validate([
+    //         'from_date' => 'required|date',
+    //         'to_date' => 'required|date|after_or_equal:from_date',
+    //         'payment_method_id' => 'required|exists:paymentmethods,id'
+    //     ]);
+
+    //     // Get shifts within the specified duration based on the start_date column
+    //     $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
+
+    //     // Get paymentsales for the matching shifts and payment method
+    //     $paymentSales = Paymentsale::whereIn('shift_id', $shifts->pluck('id'))
+    //         ->where('paymentmethod_id', $request->payment_method_id)
+    //         ->get();
+
+    //     // Get all shops for displaying shop names
+    //     $shops = Shop::all();
+
+    //     // Organize data to calculate total amount by date and shop
+    //     $shopTotalsByDate = [];
+
+    //     foreach ($paymentSales as $sale) {
+    //         $date = $sale->shift->start_date;
+    //         $shopId = $sale->shift->shop_id;
+    //         $amount = $sale->amount;
+
+    //         // Initialize date total if not set
+    //         if (!isset($shopTotalsByDate[$date])) {
+    //             $shopTotalsByDate[$date] = [];
+    //         }
+
+    //         // Add amount to shop total for the date
+    //         if (!isset($shopTotalsByDate[$date][$shopId])) {
+    //             $shopTotalsByDate[$date][$shopId] = $amount;
+    //         } else {
+    //             $shopTotalsByDate[$date][$shopId] += $amount;
+    //         }
+    //     }
+
+    //     // Pass the data to the same view along with the input dates and payment method
+    //     return view('pages.reports.paymentMethodReport', [
+    //         'shopTotalsByDate' => $shopTotalsByDate,
+    //         'from_date' => $request->from_date,
+    //         'to_date' => $request->to_date,
+    //         'paymentMethods' => Paymentmethod::all(),
+    //         'shops' => $shops,
+    //         'paymentSales' => $paymentSales, // Pass the payment sales data to the view
+    //     ]);
+    // }
+
+
     public function generatePaymentReport(Request $request)
-    {
-        $request->validate([
-            'from_date' => 'required|date',
-            'to_date' => 'required|date|after_or_equal:from_date',
-            'payment_method_id' => 'required|exists:paymentmethods,id'
-        ]);
+{
+    $request->validate([
+        'from_date' => 'required|date',
+        'to_date' => 'required|date|after_or_equal:from_date',
+        'payment_method_id' => 'required|exists:paymentmethods,id'
+    ]);
 
-        // Get shifts within the specified duration based on the start_date column
-        $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
+    // Get shifts within the specified duration based on the start_date column
+    $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
 
-        // Get paymentsales for the matching shifts and payment method
-        $paymentSales = Paymentsale::whereIn('shift_id', $shifts->pluck('id'))
-            ->where('paymentmethod_id', $request->payment_method_id)
-            ->get();
+    // Get paymentsales for the matching shifts and payment method
+    $paymentSales = Paymentsale::whereIn('shift_id', $shifts->pluck('id'))
+        ->where('paymentmethod_id', $request->payment_method_id)
+        ->get();
 
-        // Get all shops for displaying shop names
-        $shops = Shop::all();
+    // Get all shops for displaying shop names
+    $shops = Shop::all();
 
-        // Organize data to calculate total amount by date and shop
+    // Organize data to calculate total amount by date and shop
+    $shopTotalsByDate = [];
+
+    foreach ($paymentSales as $sale) {
+        $date = $sale->shift->start_date;
+        $shopId = $sale->shift->shop_id;
+        $amount = $sale->amount;
+
+        // Initialize date total if not set
+        if (!isset($shopTotalsByDate[$date])) {
+            $shopTotalsByDate[$date] = [];
+        }
+
+        // Add amount to shop total for the date
+        if (!isset($shopTotalsByDate[$date][$shopId])) {
+            $shopTotalsByDate[$date][$shopId] = $amount;
+        } else {
+            $shopTotalsByDate[$date][$shopId] += $amount;
+        }
+    }
+
+    // Get the selected payment method
+    $selectedPaymentMethod = Paymentmethod::findOrFail($request->payment_method_id);
+   
+
+    // Pass the data to the view along with the input dates, payment method, and payment method name
+    return view('pages.reports.paymentMethodReport', [
+        'shopTotalsByDate' => $shopTotalsByDate,
+        'from_date' => $request->from_date,
+        'to_date' => $request->to_date,
+        'paymentMethods' => Paymentmethod::all(),
+        'shops' => $shops,
+        'paymentSales' => $paymentSales,
+        'selectedPaymentMethod' => $selectedPaymentMethod->payment_method, // Pass the payment method name
+    ]);
+}
+
+
+public function generatePaymentReports(Request $request)
+{
+    $request->validate([
+        'from_date' => 'required|date',
+        'to_date' => 'required|date|after_or_equal:from_date',
+    ]);
+
+    // Get all payment methods
+    $paymentMethods = Paymentmethod::all();
+
+    // Initialize an array to store reports for each payment method
+    $reports = [];
+
+    // Iterate over each payment method and generate reports
+    foreach ($paymentMethods as $method) {
+        $paymentSales = Paymentsale::whereHas('shift', function ($query) use ($request) {
+            $query->whereBetween('start_date', [$request->from_date, $request->to_date]);
+        })->where('paymentmethod_id', $method->id)->get();
+
         $shopTotalsByDate = [];
 
         foreach ($paymentSales as $sale) {
@@ -221,12 +329,10 @@ class ReportController extends Controller
             $shopId = $sale->shift->shop_id;
             $amount = $sale->amount;
 
-            // Initialize date total if not set
             if (!isset($shopTotalsByDate[$date])) {
                 $shopTotalsByDate[$date] = [];
             }
 
-            // Add amount to shop total for the date
             if (!isset($shopTotalsByDate[$date][$shopId])) {
                 $shopTotalsByDate[$date][$shopId] = $amount;
             } else {
@@ -234,16 +340,28 @@ class ReportController extends Controller
             }
         }
 
-        // Pass the data to the same view along with the input dates and payment method
-        return view('pages.reports.paymentMethodReport', [
+        $shops = Shop::all();
+
+        // Add report data to the array
+        $reports[] = [
             'shopTotalsByDate' => $shopTotalsByDate,
             'from_date' => $request->from_date,
             'to_date' => $request->to_date,
-            'paymentMethods' => Paymentmethod::all(),
+            'paymentMethod' => $method->payment_method,
             'shops' => $shops,
-            'paymentSales' => $paymentSales, // Pass the payment sales data to the view
-        ]);
+            'paymentSales' => $paymentSales,
+        ];
     }
+
+    $paymentMethods = Paymentmethod::all();
+
+    // Pass the array of reports to the view
+    return view('pages.reports.paymentMethodReport', compact('reports', 'paymentMethods'));
+}
+
+
+
+
     public function showPaymentReport()
     {
         $paymentMethods = Paymentmethod::all();

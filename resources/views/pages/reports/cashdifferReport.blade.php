@@ -18,7 +18,7 @@
                             </div>
                         </div>
                         <div class="col-6 align-self-end text-end">
-                            <img src="image/customer-support.jpg" class="img-fluid illustration-img"
+                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img"
                                 alt="">
                         </div>
                     </div>
@@ -63,15 +63,15 @@
                                 <h4 class="n_h_style rounded">Cash Differ Details</h4>
                                 <form class="row g-3" method="POST" action="{{ route('reports.generate') }}">
                                     @csrf
-                                    <div class="col-md-5">
+                                    <div class="col-md-5 mt-5">
                                         <label for="from_date" class="form-label">From Date:</label>                                                        
                                         <input type="date" class="form-control" id="from_date" name="from_date" required>                                            
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-5 mt-5">
                                         <label for="to_date" class="form-label">To Date:</label>
                                         <input type="date" class="form-control" id="to_date" name="to_date" required>
                                     </div>                                                    
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 mt-5">
                                         <label for="" class="form-label">Generate Report:</label><br>
                                         <button type="submit" class="btn btn-success rounded-pill" style="width: 100%">Report</button>
                                     </div>

@@ -474,4 +474,6 @@ Route::delete('/otherexpense/{id}', [OtherExpenseController::class, 'destroy'])-
 
 
 Route::get('/reports/payment', [ReportController::class, 'showPaymentReport'])->name('reports.payment');
-Route::post('/reports/payment', [ReportController::class, 'generatePaymentReport'])->name('reports.generatePayment');
+Route::get('/report/payment', [ReportController::class, 'showPaymentReport'])->name('reports.payment');
+Route::post('/reports/payment', [ReportController::class, 'generatePaymentReports'])->name('reports.generatePayment');
+Route::post('/report/payment', [ReportController::class, 'generatePaymentReport'])->name('report.generatePayment');

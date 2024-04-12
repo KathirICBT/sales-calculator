@@ -97,8 +97,9 @@
                                         <label for="address" class="form-label">Address:</label>
                                         <input type="text" class="form-control" id="address" name="address" value="Not Available">
                                     </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>
+                                    <div class="col-6">
+                                        <label for="address" class="form-label">Add Shop:</label>
+                                        <button type="submit" class="btn btn-success rounded-pill" style="width: 100%">Register</button>
                                     </div>
                                 </form>
                             </div>
