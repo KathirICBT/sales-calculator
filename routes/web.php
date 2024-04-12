@@ -477,3 +477,10 @@ Route::get('/reports/payment', [ReportController::class, 'showPaymentReport'])->
 Route::get('/report/payment', [ReportController::class, 'showPaymentReport'])->name('reports.payment');
 Route::post('/reports/payment', [ReportController::class, 'generatePaymentReports'])->name('reports.generatePayment');
 Route::post('/report/payment', [ReportController::class, 'generatePaymentReport'])->name('report.generatePayment');
+
+
+// Route for displaying the report form
+Route::get('/reports/ownerexpense', [ReportController::class, 'showOwnerExpenseReportForm'])->name('reports.ownerexpense');
+
+// Route for processing the report form submission and displaying the report
+Route::post('/reports/ownerexpense', [ReportController::class, 'generateOwnerExpenseReport'])->name('reports.generateownerexpense');

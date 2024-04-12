@@ -231,6 +231,9 @@
                         <a href="{{route('reports.payment')}}" class="sidebar-link text">Payment method Report</a>
                     </li>
                     <li class="sidebar-item">
+                        <a href="{{route('reports.ownerexpense')}}" class="sidebar-link text">ownerexpenseReport</a>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed text" data-bs-target="#multi" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fa-solid fa-file pe-2"></i>
                             Reports
