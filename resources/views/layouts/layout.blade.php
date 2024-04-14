@@ -75,7 +75,31 @@
                                     <i class="fa-solid fa-sliders pe-2"></i>
                                     Sales Payment method 
                                 </a>
-                            </li>                            
+                            </li>
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('sales.index')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                    Sale Edit 
+                                </a>
+                            </li> 
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('cashdiffers.index')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                   Cash differ Edit   
+                                </a>
+                            </li> 
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('paymentsales.index')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                   Payment sale Edit   
+                                </a>
+                            </li>  
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('petticashes.index')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                   Petticash Edit   
+                                </a>
+                            </li>                          
                         </ul>
                     </li>
                     {{-- Sales End --}}

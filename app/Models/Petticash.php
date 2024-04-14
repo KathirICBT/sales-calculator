@@ -16,7 +16,7 @@ class Petticash extends Model
        
     ];
 
-    public function pettyCashReasion()
+    public function pettyCashReason()
     {
         return $this->belongsTo(PettyCashReason::class,'petty_cash_reason_id');
     }

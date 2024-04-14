@@ -374,29 +374,32 @@ public function generatePaymentReports(Request $request)
     }
 
     public function generateOwnerExpenseReport(Request $request)
-    {
-        // Validate the request data
-        $request->validate([
-            'from_date' => 'required|date',
-            'to_date' => 'required|date|after_or_equal:from_date',
-           
-        ]);
+{
+    // Validate the request data
+    $request->validate([
+        'from_date' => 'required|date',
+        'to_date' => 'required|date|after_or_equal:from_date',
+    ]);
 
-        // Get shifts within the specified duration based on the start_date column
-        $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
+    // Get shifts within the specified duration based on the start_date column
+    $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
 
-       
-        // Get other expenses within the specified duration
-        $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])->get();
+    // Get other expenses within the specified duration
+    $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])->get();
 
-         // Get other expenses within the specified duration
-        // $petticashes = Petticash::whereBetween('date', [$request->from_date, $request->to_date])->get();
-        $petticashes = Petticash::all();
-        // Calculate shop totals by date for payment sales
-        $shopTotalsByDate = [];
+    // Get petticashes (assuming this is related to payments) for all dates (optional if needed for calculation)
+    $petticashes = Petticash::all();
+
+    // Calculate shop totals by date for payment sales and other expenses
+    $shopTotalsByDate = [];
+
+    // Process petticashes (payments) for shop totals by date
+    foreach ($shifts as $shift) {
+        $petticashes = Petticash::where('shift_id', $shift->id)->get();
+
         foreach ($petticashes as $petticash) {
-            $date = $petticash->shift->start_date;
-            $shopId = $petticash->shift->shop_id;
+            $date = $shift->start_date;
+            $shopId = $shift->shop_id;
             $amount = $petticash->amount;
 
             if (!isset($shopTotalsByDate[$date][$shopId])) {
@@ -405,31 +408,31 @@ public function generatePaymentReports(Request $request)
 
             $shopTotalsByDate[$date][$shopId] += $amount;
         }
+    }
 
-        // Calculate shop totals by date for other expenses
-        foreach ($otherExpenses as $expense) {
-            $date = $expense->date;
-            $shopId = $expense->shop_id;
-            $amount = $expense->amount;
+    // Process other expenses for shop totals by date
+    foreach ($otherExpenses as $expense) {
+        $date = $expense->date;
+        $shopId = $expense->shop_id;
+        $amount = $expense->amount;
 
-            if (!isset($shopTotalsByDate[$date][$shopId])) {
-                $shopTotalsByDate[$date][$shopId] = 0;
-            }
-
-            $shopTotalsByDate[$date][$shopId] += $amount;
+        if (!isset($shopTotalsByDate[$date][$shopId])) {
+            $shopTotalsByDate[$date][$shopId] = 0;
         }
 
-        // Pass the data to the same view along with the input dates and payment method
-        return view('pages.reports.ownerExpenseReport', [
-            
-            'otherExpenses' => $otherExpenses,
-            'from_date' => $request->from_date,
-            'to_date' => $request->to_date,
-            
-            'shops' => Shop::all(),
-            'shopTotalsByDate' => $shopTotalsByDate
-        ]);
+        $shopTotalsByDate[$date][$shopId] += $amount;
     }
+
+    // Pass the data to the same view along with the input dates and shops
+    return view('pages.reports.ownerExpenseReport', [
+        'otherExpenses' => $otherExpenses,
+        'from_date' => $request->from_date,
+        'to_date' => $request->to_date,
+        'shops' => Shop::all(),
+        'shopTotalsByDate' => $shopTotalsByDate
+    ]);
+}
+
     public function showOwnerExpenseReportForm()
     {
         $paymentMethods = PaymentMethod::all(); // Retrieve all payment methods

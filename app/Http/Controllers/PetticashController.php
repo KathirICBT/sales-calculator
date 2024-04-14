@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Petticash;
 use App\Models\Shift;
 
-
+use App\Models\PettyCashReason;
 use Illuminate\Http\Request;
 
 class PetticashController extends Controller
@@ -58,5 +58,48 @@ class PetticashController extends Controller
         // Retrieve the last submitted shift's ID
         $lastShift = Shift::latest()->first();
         return $lastShift->id ?? null;
+    }
+
+    public function index()
+    {
+        $petticashes = Petticash::all(); // Fetch all Petticash records
+        $pettyCashReasons = PettyCashReason::all(); // Assuming you have a PettyCashReason model
+
+        return view('pages.sales.petticashesEdit', compact('petticashes', 'pettyCashReasons'));
+    }
+
+    public function edit($id)
+    {
+        $petticash = Petticash::findOrFail($id);
+
+        return response()->json([
+            'petty_cash_reason_id' => $petticash->petty_cash_reason_id,
+            'amount' => $petticash->amount
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $petticash = Petticash::findOrFail($id);
+
+        $request->validate([
+            'petty_cash_reason_id' => 'required|exists:petty_cash_reasons,id',
+            'amount' => 'required|numeric|min:0'
+        ]);
+
+        $petticash->update([
+            'petty_cash_reason_id' => $request->petty_cash_reason_id,
+            'amount' => $request->amount
+        ]);
+
+        return redirect()->route('petticashes.index')->with('success', 'Petticash updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        $petticash = Petticash::findOrFail($id);
+        $petticash->delete();
+
+        return redirect()->route('petticashes.index')->with('success', 'Petticash deleted successfully');
     }
 }

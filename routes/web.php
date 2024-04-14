@@ -484,3 +484,37 @@ Route::get('/reports/ownerexpense', [ReportController::class, 'showOwnerExpenseR
 
 // Route for processing the report form submission and displaying the report
 Route::post('/reports/ownerexpense', [ReportController::class, 'generateOwnerExpenseReport'])->name('reports.generateownerexpense');
+
+
+Route::get('/sales', [SaleController::class, 'indexx'])->name('sales.index');
+Route::get('/sales/{sale}/edit', [SaleController::class, 'edit'])->name('sales.edit');
+Route::put('/sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
+Route::delete('/sales/{sale}', [SaleController::class, 'destroy'])->name('sales.destroy');
+
+
+// Route::get('/cashdiffers', [CashdifferController::class, 'index'])->name('cashdiffers.index');
+
+// // Route for fetching cash differ data for editing
+// Route::get('/cashdiffers/{id}/edit', [CashdifferController::class, 'edit'])->name('cashdiffers.edit');
+
+// // Route for updating cash differ data
+
+// Route::put('/cashdiffers/{id}', [CashdifferController::class, 'update'])->name('cashdiffers.update');
+// Route::delete('/cashdiffers/{cashdiffer}', [CashdifferController::class, 'destroy'])->name('cashdiffers.destroy');
+
+Route::get('/cashdiffers', [CashdifferController::class, 'index'])->name('cashdiffers.index');
+Route::put('/cashdiffers/{id}', [CashdifferController::class, 'update'])->name('cashdiffers.update');
+Route::delete('/cashdiffers/{id}', [CashdifferController::class, 'destroy'])->name('cashdiffers.destroy');
+Route::get('/cashdiffers/{id}/edit', [CashdifferController::class, 'edit'])->name('cashdiffers.edit');
+
+Route::get('paymentsales', [PaymentsaleController::class, 'index'])->name('paymentsales.index');
+
+Route::get('paymentsales/{id}/edit', [PaymentsaleController::class, 'edit'])->name('paymentsales.edit');
+Route::put('paymentsales/{id}', [PaymentsaleController::class, 'update'])->name('paymentsales.update');
+Route::delete('paymentsales/{id}', [PaymentsaleController::class, 'destroy'])->name('paymentsales.destroy');
+
+
+Route::get('/petticashes', [PetticashController::class, 'index'])->name('petticashes.index');
+Route::get('/petticashes/{id}/edit', [PetticashController::class, 'edit'])->name('petticashes.edit');
+Route::put('/petticashes/{id}', [PetticashController::class, 'update'])->name('petticashes.update');
+Route::delete('/petticashes/{id}', [PetticashController::class, 'destroy'])->name('petticashes.destroy');

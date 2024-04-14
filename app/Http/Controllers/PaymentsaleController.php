@@ -81,7 +81,8 @@ class PaymentsaleController extends Controller
 public function index()
     {
         $paymentSales = Paymentsale::all();
-        return view('paymentsale.index', compact('paymentSales'));
+        $paymentMethods = PaymentMethod::all();
+        return view('pages.sales.paymentsaleEdit', compact('paymentSales','paymentMethods'));
     }
 
     // public function store(Request $request)
@@ -139,29 +140,45 @@ public function index()
         return "Save Successfully!";
     }
 
-
     public function edit($id)
     {
-        $paymentSale = Paymentsale::findOrFail($id);
-        $paymentMethods = Paymentmethod::all();
-        $staffs = Staff::all();
-        return view('paymentsale.edit', compact('paymentSale', 'paymentMethods', 'staffs'));
+        $paymentSale = PaymentSale::findOrFail($id);
+    
+        return response()->json([
+            'paymentmethod_id' => $paymentSale->paymentmethod_id,
+            'amount' => $paymentSale->amount
+        ]);
     }
 
+    /**
+     * Update the specified payment sale in the database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
+        $paymentSale = Paymentsale::findOrFail($id);
+
+        // Validate incoming request data
+        $request->validate([
             'paymentmethod_id' => 'required|exists:paymentmethods,id',
-            'amount' => 'required|numeric',
-            'staff_id' => 'required|exists:staffs,id',
+            'amount' => 'required|numeric|min:0',
+            
+            // Add more validation rules as needed
         ]);
 
-        $paymentSale = Paymentsale::findOrFail($id);
-        $paymentSale->update($validatedData);
+        // Update payment sale record
+        $paymentSale->update([
+            'paymentmethod_id' => $request->input('paymentmethod_id'),
+            'amount' => $request->input('amount'),
+            
+            // Update other fields here as needed
+        ]);
 
         return redirect()->route('paymentsales.index')->with('success', 'Payment Sale updated successfully!');
     }
-
     public function destroy($id)
     {
         $paymentSale = Paymentsale::findOrFail($id);
@@ -169,5 +186,7 @@ public function index()
 
         return redirect()->route('paymentsales.index')->with('success', 'Payment Sale deleted successfully!');
     }
+    
+   
 
 }

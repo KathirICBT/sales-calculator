@@ -72,47 +72,47 @@ class SaleController extends Controller
 
     }
 
-    public function edit($id)
-    {
-        // Retrieve the sale record you want to edit
-        $sale = Sale::findOrFail($id);
+    // public function edit($id)
+    // {
+    //     // Retrieve the sale record you want to edit
+    //     $sale = Sale::findOrFail($id);
 
-        // Fetch departments, staffs, and shops
-        $departments = Department::all();
-        $staffs = Staff::all();
-        $shops = Shop::all();
+    //     // Fetch departments, staffs, and shops
+    //     $departments = Department::all();
+    //     $staffs = Staff::all();
+    //     $shops = Shop::all();
 
-        // Pass the data to the view
-        return view('sales.edit', compact('sale', 'departments', 'staffs', 'shops'));
-    }
+    //     // Pass the data to the view
+    //     return view('sales.edit', compact('sale', 'departments', 'staffs', 'shops'));
+    // }
 
-    public function update(Request $request, Sale $sale)
-    {
-        $validatedData = $request->validate([
-            'dept_id' => 'required|numeric',
-            'staff_id' => 'required|numeric',
-            'shop_id' => 'required|numeric',
-            'amount' => 'required|numeric',
-        ]);
+    // public function update(Request $request, Sale $sale)
+    // {
+    //     $validatedData = $request->validate([
+    //         'dept_id' => 'required|numeric',
+    //         'staff_id' => 'required|numeric',
+    //         'shop_id' => 'required|numeric',
+    //         'amount' => 'required|numeric',
+    //     ]);
 
-        $sale->update($validatedData);
+    //     $sale->update($validatedData);
 
-        return redirect()->route('sales.index')->with('success', 'Sales details updated successfully!');
-    }
+    //     return redirect()->route('sales.index')->with('success', 'Sales details updated successfully!');
+    // }
 
-    public function deleteConfirmation($id)
-    {
-        $sale = Sale::findOrFail($id);
-        return view('sales.delete', compact('sale'));
-    }
+    // public function deleteConfirmation($id)
+    // {
+    //     $sale = Sale::findOrFail($id);
+    //     return view('sales.delete', compact('sale'));
+    // }
     
 
-    public function destroy(Sale $sale)
-    {
-        $sale->delete();
+    // public function destroy(Sale $sale)
+    // {
+    //     $sale->delete();
 
-        return redirect()->route('sales.index')->with('success', 'Sales details deleted successfully!');
-    }
+    //     return redirect()->route('sales.index')->with('success', 'Sales details deleted successfully!');
+    // }
 
     public function search(Request $request)
     {
@@ -258,4 +258,87 @@ public function searchdate(Request $request)
     return response()->json($salesDetails);
 }
 
+
+public function indexx()
+    {
+        $sales = Sale::all();
+        $departments = Department::all();
+        return view('pages.sales.edit', compact('sales','departments'));
+    }
+
+    
+
+    // // Show the form for editing the specified sale
+    // public function edit(Sale $sale)
+    // {
+    //     return response()->json($sale);
+    // }
+    // public function edit($id)
+    // {
+    //     $sale = Sale::findOrFail($id);
+    //     return response()->json($sale);
+    // }
+
+    public function edit($id)
+{
+    $sale = Sale::findOrFail($id);
+    return response()->json([
+        'dept_id' => $sale->department->id,
+        'amount' => $sale->amount
+    ]);
+}
+    // Update the specified sale in the database
+    // public function update(Request $request, $id)
+    // {
+    //     $sale = Sale::findOrFail($id);
+
+    //     // Validate incoming request data
+    //     $request->validate([
+    //         'dept_id' => 'required|exists:departments,id',
+    //         'amount' => 'required|numeric',
+    //     ]);
+    
+    //     // Update sale record
+    //     $sale->update([
+    //         'dept_id' => $request->input('dept_id'),
+    //         'amount' => $request->input('amount'),
+    //     ]);
+
+    //     return redirect()->route('sales.index')->with('success', 'Sale updated successfully!');
+    // }
+   
+    public function update(Request $request, $id)
+    {
+        $sale = Sale::findOrFail($id);
+    
+        // Validate incoming request data
+        $request->validate([
+            'dept_id' => 'required|exists:departments,id',
+            'amount' => 'required|numeric|min:0',
+        ]);
+    
+        // Update sale record
+        $sale->update([
+            'dept_id' => $request->input('dept_id'),
+            'amount' => $request->input('amount'),
+        ]);
+    
+        return redirect()->route('sales.index')->with('success', 'Sale updated successfully!');
+    }
+    
+
+    // Show the confirmation page for deleting the specified sale
+    public function deleteConfirmation(Sale $sale)
+    {
+        return view('sales.delete', compact('sale'));
+    }
+
+    // Delete the specified sale from the database
+    public function destroy(Sale $sale)
+    {
+        $sale->delete();
+        return redirect()->route('sales.index')->with('success', 'Sale deleted successfully!');
+    }
+
+   
 }
