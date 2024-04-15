@@ -529,3 +529,9 @@ Route::put('/sales/shiftEdit/{shiftId}', [ShiftController::class, 'update'])->na
 Route::get('/sales/shiftEdit/', [ShiftController::class, 'show'])->name('shifts.show');
 
 Route::get('/sales/shifts/search', [ShiftController::class, 'search'])->name('shifts.search');
+
+
+
+
+Route::get('/reports/expense', [ReportController::class, 'showExpenseReport'])->name('reports.expense');
+Route::post('/reports/expense', [ReportController::class, 'generateExpenseReport'])->name('reports.expense');

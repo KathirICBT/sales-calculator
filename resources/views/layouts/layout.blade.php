@@ -261,7 +261,10 @@
                         <a href="{{route('reports.payment')}}" class="sidebar-link text">Payment method Report</a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{route('reports.ownerexpense')}}" class="sidebar-link text">ownerexpenseReport</a>
+                        <a href="{{route('reports.ownerexpense')}}" class="sidebar-link text">Owner ExpenseReport</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{route('reports.expense')}}" class="sidebar-link text">Expense Report</a>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed text" data-bs-target="#multi" data-bs-toggle="collapse"

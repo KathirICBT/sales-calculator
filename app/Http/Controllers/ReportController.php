@@ -6,6 +6,7 @@ use App\Models\Cashdiffer;
 use App\Models\Shop;
 
 use App\Models\Petticash;
+use App\Models\PettyCashReason;
 use App\Models\OtherExpense;
 
 use Illuminate\Http\Request;
@@ -443,4 +444,100 @@ public function generatePaymentReports(Request $request)
             'shops' => $shops,
         ]);
     }
+
+    public function showExpenseReport()
+    {
+        $pettyCashReasons = PettyCashReason::all();
+        $paymentMethods = PaymentMethod::all(); // Retrieve all payment methods
+        $shops = Shop::all(); // Retrieve all shops
+
+        return view('pages.reports.ExpenseReport', [
+            'paymentMethods' => $paymentMethods,
+            'shops' => $shops,
+            'pettyCashReasons'=>$pettyCashReasons,
+        ]);
+    }
+
+    // public function generateExpenseReport(Request $request)
+    // {
+    //     $fromDate = $request->input('from_date');
+    //     $toDate = $request->input('to_date');
+    //     $reasonId = $request->input('petty_cash_reason_id');
+
+    //     $petticashRecords = Petticash::with('shift', 'pettyCashReason')
+    //         ->whereBetween('created_at', [$fromDate, $toDate])
+    //         ->where('petty_cash_reason_id', $reasonId)
+    //         ->get();
+
+    //     return view('pages.reports.ExpenseReport', [
+    //         'petticashRecords' => $petticashRecords,
+    //         'pettyCashReasons' => PettyCashReason::all()  // Include all reasons for re-displaying form
+    //     ]);
+    // }
+
+    public function generateExpenseReport(Request $request)
+{
+    // Validate the request data
+    $request->validate([
+        'from_date' => 'required|date',
+        'to_date' => 'required|date|after_or_equal:from_date',
+        'petty_cash_reason_id' => 'required|exists:petty_cash_reasons,id',
+    ]);
+
+    // Get shifts within the specified duration based on the start_date column
+    $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
+
+    // Get other expenses within the specified duration and for the specified petty cash reason
+    $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+        ->where('expense_reason_id', $request->petty_cash_reason_id)
+        ->get();
+
+    // Get petticashes (assuming this is related to payments) for all dates (optional if needed for calculation)
+    $petticashes = Petticash::all();
+
+    // Calculate shop totals by date for payment sales and other expenses
+    $shopTotalsByDate = [];
+
+    // Process petticashes (payments) for shop totals by date
+    foreach ($shifts as $shift) {
+        $petticashes = Petticash::where('shift_id', $shift->id)
+            ->where('petty_cash_reason_id', $request->petty_cash_reason_id)
+            ->get();
+
+        foreach ($petticashes as $petticash) {
+            $date = $shift->start_date;
+            $shopId = $shift->shop_id;
+            $amount = $petticash->amount;
+
+            if (!isset($shopTotalsByDate[$date][$shopId])) {
+                $shopTotalsByDate[$date][$shopId] = 0;
+            }
+
+            $shopTotalsByDate[$date][$shopId] += $amount;
+        }
+    }
+
+    // Process other expenses for shop totals by date
+    foreach ($otherExpenses as $expense) {
+        $date = $expense->date;
+        $shopId = $expense->shop_id;
+        $amount = $expense->amount;
+
+        if (!isset($shopTotalsByDate[$date][$shopId])) {
+            $shopTotalsByDate[$date][$shopId] = 0;
+        }
+
+        $shopTotalsByDate[$date][$shopId] += $amount;
+    }
+
+    // Pass the data to the same view along with the input dates and shops
+    return view('pages.reports.ExpenseReport', [
+        'otherExpenses' => $otherExpenses,
+        'from_date' => $request->from_date,
+        'to_date' => $request->to_date,
+        'shops' => Shop::all(),
+        'shopTotalsByDate' => $shopTotalsByDate
+    ]);
+}
+
 }
