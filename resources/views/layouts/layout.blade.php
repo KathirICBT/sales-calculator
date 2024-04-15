@@ -99,7 +99,13 @@
                                     <i class="fa-solid fa-sliders pe-2"></i>
                                    Petticash Edit   
                                 </a>
-                            </li>                          
+                            </li>   
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('shifts.show')}}" class="sidebar-link collapsed text" >
+                                    <i class="fa-solid fa-sliders pe-2"></i>
+                                   Shift Edit   
+                                </a>
+                            </li>                         
                         </ul>
                     </li>
                     {{-- Sales End --}}

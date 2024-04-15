@@ -21,7 +21,7 @@ class ShiftController extends Controller
     // {
     //     // Fetch all shifts from the database
     //     $shifts = Shift::all();
-    //     return view('shifts.index', compact('shifts'));
+    //     return view('pages.sales.shiftEdit', compact('shifts'));
     // }
 
     public function create()
@@ -159,54 +159,70 @@ public function storeShifts(Request $request)
     //     $staffs = Staff::all();
     //     return view('shifts.edit', compact('shift', 'shops', 'staffs'));
     // }
+    // public function edit( $id)
+    // {
+    //     $shift = Shift::findOrFail($id);
+    //     // Return the shift details as JSON response
+    //     return response()->json( $shift);
+    // }
     
-    public function edit(Shift $shift)
+    // public function update(Request $request, $id)
+    // {
+    //     // Validate the request data
+    //     $request->validate([
+    //         'shop_id' => 'required|exists:shops,id', // Ensure that the shop_id exists in the shops table
+    //         'start_date' => 'required|date',
+    //         'end_date' => 'required|date|after_or_equal:start_date',
+    //         'start_time' => 'required|date_format:H:i', // Validate the time format
+    //         'end_time' => [
+    //             'required',
+    //             'date_format:H:i',
+    //             function ($attribute, $value, $fail) use ($request) {
+    //                 $startDate = Carbon::parse($request->input('start_date') . ' ' . $request->input('start_time'));
+    //                 $endDate = Carbon::parse($request->input('end_date') . ' ' . $value);
+    
+    //                 if ($endDate->lte($startDate)) {
+    //                     $fail('The end time must be after the start time.');
+    //                 }
+    //             },
+    //         ],
+    //     ]);
+    
+    //     // Find the shift by ID
+    //     $shift = Shift::findOrFail($id);
+    
+    //     // Update the shift details
+    //     $shift->shop_id = $request->input('shop_id');
+    //     $shift->start_date = $request->input('start_date');
+    //     $shift->end_date = $request->input('end_date');
+    //     $shift->start_time = $request->input('start_time');
+    //     $shift->end_time = $request->input('end_time');
+    
+    //     // Save the updated shift
+    //     $shift->save();
+    
+    //     // Redirect back with a success message
+    //     return redirect()->back()->with('success', 'Shift details updated successfully.');
+    // } 
+    public function edit($shiftId)
 {
-    // Return the shift details as JSON response
+    $shift = Shift::findOrFail($shiftId);
     return response()->json($shift);
 }
 
-
-
-public function update(Request $request, $id)
+public function update(Request $request, $shiftId)
 {
-    // Validate the request data
     $request->validate([
-        'shop_id' => 'required',
-        'date' => 'required|date',
-        'start_time' => 'required',
+        'shop_id' => 'required|exists:shops,id',
         'start_date' => 'required|date',
+        'start_time' => 'required',
         'end_date' => 'required|date|after_or_equal:start_date',
-        'end_time' => [
-            'required',
-            function ($attribute, $value, $fail) use ($request) {                    
-                $startDate = Carbon::parse($request->input('start_date'));
-                $endDate = Carbon::parse($request->input('end_date'));
-                $startTime = Carbon::parse($request->input('start_time'));
-                $endTime = Carbon::parse($value);    
-                
-                if ($startDate->eq($endDate) && $endTime->lte($startTime)) {
-                    $fail('The end time must be after the start time when the start and end dates are the same.');
-                }
-            },
-        ],
+        'end_time' => 'required',
     ]);
 
-    // Find the shift by ID
-    $shift = Shift::findOrFail($id);
+    $shift = Shift::findOrFail($shiftId);
+    $shift->update($request->all());
 
-    // Update the shift details
-    $shift->shop_id = $request->input('shop_id');
-    $shift->date = $request->input('date');
-    $shift->start_time = $request->input('start_time');
-    $shift->end_time = $request->input('end_time');
-    $shift->start_date = $request->input('start_date');
-    $shift->end_date = $request->input('end_date');
-
-    // Save the updated shift
-    $shift->save();
-
-    // Redirect back with a success message
     return redirect()->back()->with('success', 'Shift details updated successfully.');
 }
 
@@ -227,19 +243,33 @@ public function update(Request $request, $id)
     }
     
 
+    // public function search(Request $request)
+    // {
+    //     $searchTerm = $request->input('search');
+
+    //     // Perform your search logic here
+    //     $shifts = Shift::whereHas('shop', function ($query) use ($searchTerm) {
+    //         $query->where('name', 'like', '%' . $searchTerm . '%');
+    //     })->orWhereHas('staff', function ($query) use ($searchTerm) {
+    //         $query->where('staff_name', 'like', '%' . $searchTerm . '%');
+    //     })->get();
+
+    //     return view('shifts.search', compact('shifts'));
+    // }
     public function search(Request $request)
     {
-        $searchTerm = $request->input('search');
+        $searchTerm = $request->input('searchTerm');
 
-        // Perform your search logic here
-        $shifts = Shift::whereHas('shop', function ($query) use ($searchTerm) {
-            $query->where('name', 'like', '%' . $searchTerm . '%');
-        })->orWhereHas('staff', function ($query) use ($searchTerm) {
-            $query->where('staff_name', 'like', '%' . $searchTerm . '%');
-        })->get();
+        // Query shifts based on shop name (assuming relationship exists with 'shop' model)
+        $shifts = Shift::with('staff', 'shop') // Assuming relationships are defined in the Shift model
+            ->whereHas('shop', function ($query) use ($searchTerm) {
+                $query->where('name', 'like', '%' . $searchTerm . '%');
+            })
+            ->get();
 
-        return view('shifts.search', compact('shifts'));
+        return response()->json($shifts);
     }
+
 
 
     public function searchStaffByDate(Request $request)
@@ -630,6 +660,18 @@ protected function storeShift(Request $request)
             $paymentSales = PaymentSale::all();
             $pettyCashReasons = PettyCashReason::all();
             return view('pages.sales.create', compact('shops', 'staffs','shifts','departments','paymentmethods','paymentSales','pettyCashReasons'));
+        }
+        public function show()
+        {
+        // Fetch all shifts from the database
+            $shops = Shop::all();
+            $staffs = Staff::all();
+            $shifts = Shift::all();
+            $departments = Department::all();
+            $paymentmethods = Paymentmethod::all(); 
+            $paymentSales = PaymentSale::all();
+            $pettyCashReasons = PettyCashReason::all();
+            return view('pages.sales.shiftEdit', compact('shops', 'staffs','shifts','departments','paymentmethods','paymentSales','pettyCashReasons'));
         }
 
         

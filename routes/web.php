@@ -295,15 +295,15 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 
 //SHIFT register==============================================================================
-Route::get('/pages/shift/create', [ShiftController::class, 'index'])->name('shifts.index');
+//Route::get('/pages/shift/create', [ShiftController::class, 'index'])->name('shifts.index');
 Route::post('/pages/shift/create', [ShiftController::class, 'storeShifts'])->name('shifts.shift.submit');
 
 //SALE ======================================================================================
 Route::post('/pages/sale/create', [ShiftController::class, 'store'])->name('shifts.store.submit');
 
-//Update
-Route::get('/shifts/{shift}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
-Route::put('/shifts/{shiftId}', [ShiftController::class, 'update'])->name('shifts.update');
+// //Update
+// Route::get('/shifts/{shift}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
+// Route::put('/shifts/{shiftId}', [ShiftController::class, 'update'])->name('shifts.update');
 
 //Sale register==============================================================================
 //Route::get('/sales/addsales', [SaleController::class, 'create'])->name('sales.create');
@@ -518,3 +518,14 @@ Route::get('/petticashes', [PetticashController::class, 'index'])->name('pettica
 Route::get('/petticashes/{id}/edit', [PetticashController::class, 'edit'])->name('petticashes.edit');
 Route::put('/petticashes/{id}', [PetticashController::class, 'update'])->name('petticashes.update');
 Route::delete('/petticashes/{id}', [PetticashController::class, 'destroy'])->name('petticashes.destroy');
+
+
+// Route to display the edit form for a specific Shift
+Route::get('/sales/shiftEdit/{shiftId}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
+
+// Route to update a specific Shift
+Route::put('/sales/shiftEdit/{shiftId}', [ShiftController::class, 'update'])->name('shifts.update');
+
+Route::get('/sales/shiftEdit/', [ShiftController::class, 'show'])->name('shifts.show');
+
+Route::get('/sales/shifts/search', [ShiftController::class, 'search'])->name('shifts.search');
