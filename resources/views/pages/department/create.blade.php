@@ -68,6 +68,7 @@
                                             <tr>
                                                 <th scope="col">Department Name</th>
                                                 <th scope="col">Other Taking</th>
+                                                <th scope="col">Fuel</th>
                                                 <th scope="col" style="width: 30%">Action</th>
                                             </tr>
                                         </thead>
@@ -76,6 +77,7 @@
                                             <tr>
                                                 <td>{{ $department->dept_name }}</td>
                                                 <td>{{ $department->other_taking ? 'Yes' : 'No' }}</td>
+                                                <td>{{ $department->fuel ? 'Yes' : 'No' }}</td>
                                                 <td>
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
                                                         style="width: 40%;" data-toggle="modal"
@@ -131,6 +133,12 @@
                         <label for="other_taking" class="form-check-label">Other Taking:</label>
                         <input type="checkbox" class="form-check-input" id="other_taking" name="other_taking" >
                     </div>
+                    
+                    <div class="form-group mt-3">
+                        <label for="fuel" class="form-check-label me-2">Fuel:</label>
+                        <input type="checkbox" class="form-check-input" id="fuel" name="fuel"> 
+                    </div>                                             
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -165,6 +173,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         editForm.querySelector('#other_taking').checked = true;
                     } else {
                         editForm.querySelector('#other_taking').checked = false;
+                    }
+                    if (data.fuel) {
+                        editForm.querySelector('#fuel').checked = true;
+                    } else {
+                        editForm.querySelector('#fuel').checked = false;
                     }
                     $('#editDepartmentModal').modal('show');
                 })

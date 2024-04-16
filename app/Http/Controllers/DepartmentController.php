@@ -44,11 +44,14 @@ class DepartmentController extends Controller
             $request->validate([
                 'dept_name' => 'required|string|max:255',
                 'other_taking' => 'boolean',
+                'fuel' => 'boolean',
             ]);
 
             Department::create([
                 'dept_name' => $request->input('dept_name'),
                 'other_taking' => $request->input('other_taking', false),
+                'fuel' => $request->input('fuel', false),
+                
             ]);
 
             return redirect()->route('departments.store')->with('success', 'Departments registered successfully!');
@@ -114,11 +117,15 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'dept_name' => 'required|string|max:255',
+            
+            
+            
         ]);
 
         $updated = $department->update([
             'dept_name' => $request->input('dept_name'),
             'other_taking' => $request->has('other_taking'),
+            'fuel' => $request->has('fuel'),
         ]);        
 
         if ($updated !== false) {             
