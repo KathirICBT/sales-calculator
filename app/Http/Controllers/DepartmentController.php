@@ -116,10 +116,7 @@ class DepartmentController extends Controller
     public function update(Request $request, Department $department)
     {
         $request->validate([
-            'dept_name' => 'required|string|max:255',
-            
-            
-            
+            'dept_name' => 'required|string|max:255', 
         ]);
 
         $updated = $department->update([

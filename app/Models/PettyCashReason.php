@@ -13,6 +13,7 @@ class PettyCashReason extends Model
         'reason',
         'expense_category_id',
         'expense_sub_category_id',
+        'supplier',
     ];
 
     public function expenseCategory()
