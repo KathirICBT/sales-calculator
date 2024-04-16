@@ -24,6 +24,7 @@ class PettyCashReasonController extends Controller
                 'petty_cash_reason' => 'required|string|unique:petty_cash_reasons,reason',
                 'expense_category_id' => 'required|exists:expense_categories,id',
                 'expense_sub_category_id' => 'required|exists:expense_sub_categories,id',
+                'supplier' => 'required|in:Supplier,Other',
             ], [
                 'petty_cash_reason.unique' => 'The petty cash reason has already been added.',
             ]);
@@ -33,6 +34,7 @@ class PettyCashReasonController extends Controller
             $pettyCashReason->reason = $validatedData['petty_cash_reason'];
             $pettyCashReason->expense_category_id = $validatedData['expense_category_id'];
             $pettyCashReason->expense_sub_category_id = $validatedData['expense_sub_category_id'];
+            $pettyCashReason-> supplier= $validatedData['supplier'];
 
             // Save the new petty cash reason
             $pettyCashReason->save();            
@@ -90,6 +92,10 @@ class PettyCashReasonController extends Controller
             ],
             'model_expense_category_id' => 'required|exists:expense_categories,id',
             'model_expense_sub_category_id' => 'required|exists:expense_sub_categories,id',
+            'model_supplier' => [
+                'required',
+                Rule::in(['Supplier', 'Other']), // Validate against 'Supplier' or 'Other'
+            ],
         ], [
             'model_petty_cash_reason.unique' => 'The petty cash reason has already been added.',
         ]);
@@ -101,6 +107,7 @@ class PettyCashReasonController extends Controller
         $pettyCashReason->reason = $validatedData['model_petty_cash_reason'];
         $pettyCashReason->expense_category_id = $validatedData['model_expense_category_id'];
         $pettyCashReason->expense_sub_category_id = $validatedData['model_expense_sub_category_id'];
+        $pettyCashReason-> supplier= $validatedData['model_supplier'];
 
         // Save the updated petty cash reason
         $pettyCashReason->save();            

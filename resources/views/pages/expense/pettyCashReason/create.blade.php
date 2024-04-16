@@ -12,7 +12,7 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">
-                                <h4 class="n_h_style rounded">Expense Reason</h4>                                
+                                <h4 class="n_h_style rounded">Expense Reason</h4>                              
                                 
 
                                 <form class="row g-3" method="POST" action="{{ route('pettycashreason.store') }}">
@@ -39,7 +39,24 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="col-md-6 mt-3">
+                                        <label class="form-label">Select Reason Type:</label>
+                                        <div class="form-control">
+                                            <div class="d-flex">
+                                                <div class="form-check form-check-inline col-md-6">
+                                                    <input class="form-check-input" type="radio" id="supplier" name="supplier" value="Supplier" checked>
+                                                    <label class="form-check-label" for="supplier">Supplier</label>
+                                                </div>
+                                                <div class="form-check form-check-inline col-md-4">
+                                                    <input class="form-check-input" type="radio" id="other" name="supplier" value="Other">
+                                                    <label class="form-check-label" for="other">Other</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="col-md-6">
+                                        <label class="form-label">Save Reason:</label>
                                         <button type="submit" class="btn btn-success rounded-pill" style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>                                        
                                     </div>
                                 </form>
@@ -71,6 +88,7 @@
                                                 <th>Reasons</th>
                                                 <th>Expense Category</th>
                                                 <th>Expense Sub Category</th>
+                                                <th>Supplier or Other</th>
                                                 <th scope="col" style="width: 30%">Action</th>
                                             </tr>
                                         </thead>
@@ -80,6 +98,7 @@
                                                 <td>{{ $pettyCashReason->reason }}</td>
                                                 <td>{{ $pettyCashReason->expenseCategory->category }}</td>
                                                 <td>{{ $pettyCashReason->expenseSubCategory->sub_category }}</td>
+                                                <td>{{ $pettyCashReason->supplier }}</td>
                                                 <td>
                                                     <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#pettyCashReasonModal" data-id="{{ $pettyCashReason->id }}"><i class="fa-regular fa-pen-to-square"></i></a>
                                                     <form method="post" style="display: inline;" action="{{ route('pettycashreason.destroy', $pettyCashReason->id) }}">
@@ -123,7 +142,7 @@
                         <label for="model_petty_cash_reason" class="form-label">Petty Cash Reason:</label>
                         <input type="text" class="form-control" id="model_petty_cash_reason" name="model_petty_cash_reason">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-2">
                         <label for="model_expense_category_id" class="form-label">Expense Category:</label>
                         <select class="form-select" id="model_expense_category_id" name="model_expense_category_id">
                             <option value="">Select Expense Category</option>
@@ -132,7 +151,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-2">
                         <label for="model_expense_sub_category_id" class="form-label">Expense Sub Category:</label>
                         <select class="form-select" id="model_expense_sub_category_id" name="model_expense_sub_category_id">
                             <option value="">Select Expense Sub Category</option>
@@ -140,6 +159,19 @@
                             <option value="{{ $expenseSubCategory->id }}">{{ $expenseSubCategory->sub_category }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label class="form-label">Select Supplier:</label>
+                        <div class="d-flex form-control">
+                            <div class="form-check me-5">
+                                <input class="form-check-input" type="radio" id="supplier" name="model_supplier" value="Supplier" checked>
+                                <label class="form-check-label" for="supplier">Supplier</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="other" name="model_supplier" value="Other">
+                                <label class="form-check-label" for="other">Other</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -259,6 +291,11 @@
                         editForm.querySelector('#model_petty_cash_reason').value = data.reason;
                         expenseCategorySelect.value = data.expense_category_id;
                         populateSubCategories(data.expense_category_id, data.expense_sub_category_id);
+
+                        // Set supplier radio button based on fetched data
+                        const supplierOption = data.supplier === 'Supplier' ? 'Supplier' : 'Other';
+                        editForm.querySelector(`input[name="model_supplier"][value="${supplierOption}"]`).checked = true;
+
                         $('#pettyCashReasonModal').modal('show');
                     })
                     .catch(error => {
