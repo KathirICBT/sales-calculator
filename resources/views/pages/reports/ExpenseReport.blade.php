@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="mb-3">
-        <h4>Owner Expense Report</h4>
+        <h4> Expense Report</h4>
     </div>
     <div class="row">
         <div class="col-12 col-md-6 d-flex">
@@ -13,7 +13,7 @@
                         <div class="col-6">
                             <div class="p-3 m-1">
                                 <h4>Welcome, {{ session('username') }}</h4>
-                                <p class="mb-0">Owner Expense Report</p>
+                                <p class="mb-0"> Expense Report</p>
                             </div>
                         </div>
                         <div class="col-6 align-self-end text-end">
@@ -49,8 +49,8 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">                                                
-                                <h4 class="n_h_style rounded">Owner Expense Report</h4>
-                                <form method="POST" action="{{ route('reports.ownerexpense') }}">
+                                <h4 class="n_h_style rounded"> Expense Report</h4>
+                                <form method="POST" action="{{ route('reports.expense') }}">
                                     @csrf
                                     <div class="row g-3">
                                         <div class="col-md-4">

@@ -536,6 +536,7 @@ public function generatePaymentReports(Request $request)
         'from_date' => $request->from_date,
         'to_date' => $request->to_date,
         'shops' => Shop::all(),
+        'pettyCashReasons'=> PettyCashReason::all(),
         'shopTotalsByDate' => $shopTotalsByDate
     ]);
 }
