@@ -165,18 +165,11 @@ class DepartmentController extends Controller
     // }
 
     public function update(Request $request, Department $department)
-<<<<<<< HEAD
 {
     $request->validate([
         'dept_name' => 'required|string|max:255|unique:departments,dept_name,'.$department->id,
         // Ensure that the dept_name is unique, excluding the current department's ID
     ]);
-=======
-    {
-        $request->validate([
-            'dept_name' => 'required|string|max:255', 
-        ]);
->>>>>>> c09eedca1879d0207fb673851561b88e4a6091e5
 
     $updated = $department->update([
         'dept_name' => $request->input('dept_name'),
