@@ -17,19 +17,19 @@ class OtherExpense extends Model
         'amount',
     ];
 
-    // Define the relationship with Shop model
+    
     public function shop()
     {
         return $this->belongsTo(Shop::class, 'shop_id');
     }
 
-    // Define the relationship with PettyCashReason model
+    
     public function expenseReason()
     {
         return $this->belongsTo(PettyCashReason::class, 'expense_reason_id');
     }
 
-    // Define the relationship with PaymentType model
+    
     public function paymentType()
     {
         return $this->belongsTo(PaymentType::class, 'paymenttype_id');

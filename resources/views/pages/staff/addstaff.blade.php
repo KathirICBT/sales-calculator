@@ -1,77 +1,9 @@
 @extends('layouts.layout')
 @section('content')
 <div class="container-fluid">
-    <div class="mb-3">
-        <h4>Staff Dashboard</h4>
-    </div>
-    <div class="row">
-        <div class="col-12 col-md-6 d-flex">
-            <div class="card flex-fill border-0 illustration">
-                <div class="card-body p-0 d-flex flex-fill">
-                    <div class="row g-0 w-100">
-                        <div class="col-6">
-                            <div class="p-3 m-1">
-                                <h4>Welcome, {{ session('username') }}</h4>
-                                <p class="mb-0">Staff Management</p>
-                            </div>
-                        </div>
-                        <div class="col-6 align-self-end text-end">
-                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6 d-flex">
-            <div class="card flex-fill border-0">
-                <div class="card-body py-4">
-                    <div class="d-flex align-items-start">
-                        <div class="flex-grow-1">
-                            <p class="mb-2">
-                                Total Staff
-                            </p>
-                            <h4 class="mb-2">
-                                {{ $staffCount }}
-                            </h4>                            
-                            {{-- <div class="mb-0">
-                                <span class="mb-2">
-                                    +9.0%
-                                </span>
-                                <span class="text-muted">
-                                    Since Last Month
-                                </span>
-                            </div> --}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">       
-        <div class="col-12">
-             <!-- success -->
-            @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
-                role="alert">
-                <span>{{ session('success') }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
-            <!-- -->
-            <!-- ERROR -->
-            @if ($errors->any())
-            @foreach ($errors->all() as $error)
-            <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
-                role="alert">
-                <span>{{ $error }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endforeach
-            @endif
-            <!-- -->
-        </div>
-    </div>
+    <x-content-header title="Staff Management" /> 
+    <x-alert-message />      
 
     <!-- Forms -->
     <div class="row">
@@ -101,8 +33,8 @@
                                         <input type="password" class="form-control" id="password" name="password"
                                             >
                                     </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>                                        
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-success rounded-pill" style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>                                        
                                     </div>
                                 </form>
                             </div>
@@ -270,13 +202,4 @@
             }
         });
     });
-</script>
-
-<script>
-    // Automatically close alerts after 5 seconds
-    window.setTimeout(function() {
-        $(".alert").fadeTo(500, 0).slideUp(500, function(){
-            $(this).remove();
-        });
-    }, 5000);
 </script>

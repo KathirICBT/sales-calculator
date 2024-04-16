@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid">
 
-    <x-content-header title="Expense Category Management" />
+    <x-content-header title="Income Category Management" />
     <x-alert-message />
     
     <div class="row">
@@ -12,12 +12,12 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">
-                                <h4 class="n_h_style rounded">Expense Category</h4>                                
-                                <form class="row g-3" method="POST" action="{{ route('expense_category.store') }}">
+                                <h4 class="n_h_style rounded">Income Category</h4>                                
+                                <form class="row g-3" method="POST" action="{{ route('income_category.store') }}">
                                     @csrf
                                     <div class="col-md-12">
-                                        <label for="expense_category" class="form-label">Expense Category:</label>
-                                        <input type="text" class="form-control" id="expense_category" name="expense_category">
+                                        <label for="income_category" class="form-label">Income Category:</label>
+                                        <input type="text" class="form-control" id="income_category" name="income_category">
                                     </div>
                                     <div class="col-6">
                                         <button type="submit" class="btn btn-success rounded-pill" style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>                                        
@@ -38,33 +38,33 @@
                             {{-- table --}}
 
                             <div class="p-3 m-1">
-                                <h4 class="n_h2_style rounded">View All Expense Category</h4>
+                                <h4 class="n_h2_style rounded">View All income Category</h4>
                                 {{-- SEARCH --}}
                                 <div class="input-group mt-3">
-                                    <input type="text" class="form-control" placeholder="Search Expense Category..."
+                                    <input type="text" class="form-control" placeholder="Search Income Category..."
                                         id="searchInput">
                                     <button class="btn btn-outline-secondary" type="button"
                                         id="searchButton">Search</button>
                                 </div>
                                 {{-- SEARCH --}}
                                 <div style="height: 300px; overflow-y: auto;">
-                                    <table class="table" id="expenseCategoryTable">
+                                    <table class="table" id="incomeCategoryTable">
                                         <thead>
                                             <tr>
-                                                <th>Expense Category</th>
+                                                <th>Income Category</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($expenseCategories as $expenseCategory)
+                                            @foreach($incomeCategories as $incomeCategory)
                                             <tr>
-                                                <td>{{ $expenseCategory->category }}</td>
+                                                <td>{{ $incomeCategory->category }}</td>
                                                 <td>
                                                     <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn"
-                                                        data-toggle="modal" data-target="#editexpenseCategoryModal"
-                                                        data-id="{{ $expenseCategory->id }}" style="width: 30%;"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                        data-toggle="modal" data-target="#editincomeCategoryModal"
+                                                        data-id="{{ $incomeCategory->id }}" style="width: 30%;"><i class="fa-regular fa-pen-to-square"></i></a>
                                                     <form method="post" style="display: inline;"
-                                                        action="{{ route('expense_category.destroy', $expenseCategory->id) }}">
+                                                        action="{{ route('income_category.destroy', $incomeCategory->id) }}">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-danger btn-sm rounded-pill"
@@ -91,24 +91,24 @@
 @endsection
 
 <!-- Edit Payment Method Modal -->
-<div class="modal fade" id="editexpenseCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editexpenseCategoryModalLabel"
+<div class="modal fade" id="editincomeCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editincomeCategoryModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editexpenseCategoryModalLabel">Edit Expense Category</h5>
+                <h5 class="modal-title" id="editincomeCategoryModalLabel">Edit Income Category</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editexpenseCategoryForm" method="POST" action="">
+            <form id="editincomeCategoryForm" method="POST" action="">
                 @csrf
                 @method('PUT')
-                <input type="hidden" id="expenseCategoryId" name="expenseCategoryId">
+                <input type="hidden" id="incomeCategoryId" name="incomeCategoryId">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="expenseCategory">Expense Category</label>
-                        <input type="text" class="form-control mt-3" id="expenseCategory" name="expenseCategory" required>
+                        <label for="incomeCategory">Income Category</label>
+                        <input type="text" class="form-control mt-3" id="incomeCategory" name="incomeCategory" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -126,21 +126,21 @@
 
         editButtons.forEach(button => {
             button.addEventListener('click', function() {
-                const expenseCategoryId = this.getAttribute('data-id');
-                const editForm = document.getElementById('editexpenseCategoryForm');
+                const incomeCategoryId = this.getAttribute('data-id');
+                const editForm = document.getElementById('editincomeCategoryForm');
 
                 // Set the payment method ID in the form
-                editForm.querySelector('#expenseCategoryId').value = expenseCategoryId;
+                editForm.querySelector('#incomeCategoryId').value = incomeCategoryId;
 
                 // Set the action URL for the form
-                editForm.setAttribute('action', `/expense_category/${expenseCategoryId}`);
+                editForm.setAttribute('action', `/income_category/${incomeCategoryId}`);
 
                 // Fetch the payment method data and populate the form fields
-                fetch(`/expense_category/${expenseCategoryId}/edit`)
+                fetch(`/income_category/${incomeCategoryId}/edit`)
                     .then(response => response.json())
                     .then(data => {
-                        editForm.querySelector('#expenseCategory').value = data.category;
-                        $('#editexpenseCategoryModal').modal('show');
+                        editForm.querySelector('#incomeCategory').value = data.category;
+                        $('#editincomeCategoryModal').modal('show');
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -148,7 +148,7 @@
             });
         });
 
-        $('#editexpenseCategoryModal').on('hidden.bs.modal', function() {
+        $('#editincomeCategoryModal').on('hidden.bs.modal', function() {
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
             $('body').css('overflow', 'auto');
@@ -160,20 +160,20 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('searchInput');
-        const expenseCategoryTable = document.getElementById('expenseCategoryTable');
-        const tableRows = expenseCategoryTable.getElementsByTagName('tr');
+        const incomeCategoryTable = document.getElementById('incomeCategoryTable');
+        const tableRows = incomeCategoryTable.getElementsByTagName('tr');
 
         searchInput.addEventListener('input', function() {
             const query = searchInput.value.trim().toLowerCase();
 
             for (let i = 1; i < tableRows.length; i++) {
                 const row = tableRows[i];
-                const expenseCategoryCell = row.cells[0]; // Assuming payment method name is in the first cell
+                const incomeCategoryCell = row.cells[0]; // Assuming payment method name is in the first cell
 
-                if (expenseCategoryCell) {
-                    const expenseCategoryText = expenseCategoryCell.textContent.trim().toLowerCase();
+                if (incomeCategoryCell) {
+                    const incomeCategoryText = incomeCategoryCell.textContent.trim().toLowerCase();
 
-                    if (expenseCategoryText.includes(query)) {
+                    if (incomeCategoryText.includes(query)) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';

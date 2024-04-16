@@ -34,7 +34,7 @@ class PaymentmethodController extends Controller
             return redirect()->route('paymentmethod.store')->with('success', 'Payment method added successfully!');
         }
         $paymentMethods = Paymentmethod::all(); 
-        return view('pages.paymentmethod.create', ['paymentMethods' => $paymentMethods]); 
+        return view('pages.sales.paymentmethod.create', ['paymentMethods' => $paymentMethods]); 
 
     }
 

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid">   
 
-    <x-content-header title="Expense Report - Payment Method" />
+    <x-content-header title="Expense Report - Reason" />
     <x-alert-message />
 
     <!-- Report Form Section -->   
@@ -15,8 +15,8 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">                                                
-                                <h4 class="n_h_style rounded">Expense Report - Payment Method</h4>
-                                <form method="POST" action="{{ route('reports.ownerexpense') }}">
+                                <h4 class="n_h_style rounded">Expense Report - Reason</h4>
+                                <form method="POST" action="{{ route('reports.expense') }}">
                                     @csrf
                                     <div class="row g-3">
                                         <div class="col-md-3">
@@ -28,26 +28,21 @@
                                             <input type="date" class="form-control" id="to_date" name="to_date" required>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="payment_method_id" class="form-label">Payment
-                                                Method:</label>
-                                            <select class="form-select" id="payment_method_id"
-                                                name="payment_method_id" required>
-                                                <option value="">Select Payment Method</option>
-                                                @foreach($paymentTypes as $paymentType)
-                                                <option value="{{ $paymentType->id }}">{{
-                                                    $paymentType->payment_type }}</option>
+                                            <label for="petty_cash_reason_id" class="form-label">Petty Cash Reason:</label>
+                                            <select class="form-control" id="petty_cash_reason_id" name="petty_cash_reason_id" required>
+                                                <option value="" selected disabled>Select Reason</option>
+                                                @foreach($pettyCashReasons as $reason)
+                                                    <option value="{{ $reason->id }}">{{ $reason->reason }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        
                                         <div class="col-md-3">
                                             <label for="" class="form-label">Generate
                                                 Report:</label><br>
-                                            <button type="submit" class="btn btn-success rounded-pill" style="width: 100%">Report</button>
+                                            <button type="submit" class="btn btn-success rounded-pill" style="width: 100%">Generate Report</button>
                                         </div>
                                     </div>
                                 </form>
-                                
                             </div>
                         </div>
                     </div>
@@ -61,7 +56,7 @@
             
             <div class="card-body">
                 <div class="mb-3">
-                    <h4>Expense Report - Payment Method: {{ $paymentTypeMethod }}</h4>
+                    <h4>Expense Report - Reason: {{ $expenseReason }}</h4>
                     <p>Date Period: {{ $from_date }} to {{ $to_date }}</p>
                 </div>
             

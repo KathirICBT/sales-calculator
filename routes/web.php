@@ -18,6 +18,7 @@ use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseSubCategoryController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\OtherExpenseController;
+use App\Http\Controllers\IncomeCategoryController;
 
 
 
@@ -447,14 +448,6 @@ Route::get('/fetch-expense-category/{subCategoryId}', [PettyCashReasonController
 
 
 
-
-// Show form to input date range
-Route::get('/reports/generate', [ReportController::class, 'showForm'])->name('reports.form');
-
-// Generate report
-Route::post('/reports/generate', [ReportController::class, 'generateReport'])->name('reports.generate');
-
-
 // OTHER INCOME ROUTES ========================================================================================================================================
 Route::get('/pages/otherexpense/store', [OtherExpenseController::class, 'store'])->name('otherexpense.store');
 Route::post('/pages/otherexpense/store', [OtherExpenseController::class, 'store'])->name('otherexpense.store.submit');
@@ -467,20 +460,51 @@ Route::put('/otherexpense/{otherexpenseId}', [OtherExpenseController::class, 'up
 Route::delete('/otherexpense/{id}', [OtherExpenseController::class, 'destroy'])->name('otherexpense.destroy');
 
 
+// REPORTS ======================================================================================================================================================
 
 // Route::get('/reports/payment-report', [ReportController::class, 'paymentmethodReport'])->name('payment-report');
 // Route::post('/reports/payment-report', [ReportController::class, 'paymentmethodReport'])->name('payment-report.generate');
 
+// Show form to input date range
+Route::get('/reports/generate', [ReportController::class, 'showForm'])->name('reports.form');
 
+// Generate report
+Route::post('/reports/generate', [ReportController::class, 'generateReport'])->name('reports.generate');
 
 Route::get('/reports/payment', [ReportController::class, 'showPaymentReport'])->name('reports.payment');
 Route::get('/report/payment', [ReportController::class, 'showPaymentReport'])->name('reports.payment');
 Route::post('/reports/payment', [ReportController::class, 'generatePaymentReports'])->name('reports.generatePayment');
 Route::post('/report/payment', [ReportController::class, 'generatePaymentReport'])->name('report.generatePayment');
 
-
 // Route for displaying the report form
 Route::get('/reports/ownerexpense', [ReportController::class, 'showOwnerExpenseReportForm'])->name('reports.ownerexpense');
 
 // Route for processing the report form submission and displaying the report
 Route::post('/reports/ownerexpense', [ReportController::class, 'generateOwnerExpenseReport'])->name('reports.generateownerexpense');
+
+Route::get('/reports/expense', [ReportController::class, 'showExpenseReport'])->name('reports.expense');
+Route::post('/reports/expense', [ReportController::class, 'generateExpenseReport'])->name('reports.expense');
+
+
+//================================================================================================================================================================
+
+
+// INCOME CATEGORY ROUTES ===================================================================================================================================
+Route::get('/pages/income/income_category/store', [IncomeCategoryController::class, 'store'])->name('income_category.store');
+Route::post('/pages/income/income_category/store', [IncomeCategoryController::class, 'store'])->name('income_category.store.submit');
+
+//Edit
+Route::get('/income_category/{incomeCategoryId}/edit', [IncomeCategoryController::class, 'edit'])->name('income_category.edit');
+Route::put('/income_category/{incomeCategoryId}', [IncomeCategoryController::class, 'update'])->name('income_category.update');
+
+// Delete
+Route::delete('/income_category/{id}', [IncomeCategoryController::class, 'destroy'])->name('income_category.destroy');
+
+// SALES MANAGE =================================================================================
+Route::get('/sales', [SaleController::class, 'list'])->name('sales.list');
+Route::get('/sales/{saleId}/edit', [SaleController::class, 'edit'])->name('sales.edit');
+Route::put('/sales/{saleId}', [SaleController::class, 'update'])->name('sales.update');
+Route::delete('/sales/{saleId}', [SaleController::class, 'destroy'])->name('sales.destroy');
+//===============================================================================================
+
+

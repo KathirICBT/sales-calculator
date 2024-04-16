@@ -2,63 +2,10 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="mb-3">
-        <h4>Add Other Income</h4>
-    </div>
-    <div class="row">
-        <div class="col-12 col-md-6 d-flex">
-            <div class="card flex-fill border-0 illustration">
-                <div class="card-body p-0 d-flex flex-fill">
-                    <div class="row g-0 w-100">
-                        <div class="col-6">
-                            <div class="p-3 m-1">
-                                <h4>Welcome, {{ session('username') }}</h4>
-                                <p class="mb-0">Other Expense Management</p>
-                            </div>
-                        </div>
-                        <div class="col-6 align-self-end text-end">                            
-                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6 d-flex">
-            <div class="card flex-fill border-0">
-                <div class="card-body py-4">
-                    <div class="d-flex align-items-start">
-                        <div class="flex-grow-1">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">       
-        <div class="col-12">
-             <!-- success -->
-            @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
-                role="alert">
-                <span>{{ session('success') }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
-            <!-- -->
-            <!-- ERROR -->
-            @if ($errors->any())
-            @foreach ($errors->all() as $error)
-            <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
-                role="alert">
-                <span>{{ $error }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endforeach
-            @endif
-            <!-- -->
-        </div>
-    </div>
+
+    <x-content-header title="Other Expense Management" /> 
+    <x-alert-message /> 
+    
     <div class="row">
         <div class="col-12 col-md-12 d-flex">
             <div class="card flex-fill border-0">
@@ -122,7 +69,7 @@
                                         <div style="float: right;">
                                          <div id="totalAmountDisplay" class="form-control text-warning"></div>
                                         </div><br><br><hr class="mt-3">
-                                        <button type="submit" class="btn btn-success rounded-pill mt-3" form="addOtherExpenseForm" style="width: 29%; margin-right: 5px;"><i class="fa-solid fa-floppy-disk"></i></button>
+                                        <button type="submit" class="btn btn-success rounded-pill mt-3" form="addOtherExpenseForm" style="width: 29%; margin-right: 5px;"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>
                                         
                                     </div>
                                 </form>
@@ -374,15 +321,6 @@
             }
         });
     });
-</script>
-
-<script>
-    // Automatically close alerts after 5 seconds
-    window.setTimeout(function() {
-        $(".alert").fadeTo(500, 0).slideUp(500, function(){
-            $(this).remove();
-        });
-    }, 5000);
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

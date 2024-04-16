@@ -72,32 +72,45 @@ class SaleController extends Controller
 
     }
 
+    // public function edit($id)
+    // {
+    //     // Retrieve the sale record you want to edit
+    //     $sale = Sale::findOrFail($id);
+
+    //     // Fetch departments, staffs, and shops
+    //     $departments = Department::all();
+    //     $staffs = Staff::all();
+    //     $shops = Shop::all();
+
+    //     // Pass the data to the view
+    //     return view('sales.edit', compact('sale', 'departments', 'staffs', 'shops'));
+    // }
+
+ 
+
     public function edit($id)
     {
-        // Retrieve the sale record you want to edit
-        $sale = Sale::findOrFail($id);
-
-        // Fetch departments, staffs, and shops
-        $departments = Department::all();
-        $staffs = Staff::all();
-        $shops = Shop::all();
-
-        // Pass the data to the view
-        return view('sales.edit', compact('sale', 'departments', 'staffs', 'shops'));
+        $sales = Sale::findOrFail($id);
+        return response()->json($sales);
     }
 
-    public function update(Request $request, Sale $sale)
+    public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'dept_id' => 'required|numeric',
-            'staff_id' => 'required|numeric',
-            'shop_id' => 'required|numeric',
-            'amount' => 'required|numeric',
+        $sale = Sale::findOrFail($id);
+    
+        // Validate incoming request data
+        $request->validate([
+            'dept_id' => 'required|exists:departments,id',
+            'amount' => 'required|numeric|min:0',
         ]);
-
-        $sale->update($validatedData);
-
-        return redirect()->route('sales.index')->with('success', 'Sales details updated successfully!');
+    
+        // Update sale record
+        $sale->update([
+            'dept_id' => $request->input('dept_id'),
+            'amount' => $request->input('amount'),
+        ]);
+    
+        return redirect()->route('sales.list')->with('success', 'Sale updated successfully!');
     }
 
     public function deleteConfirmation($id)
@@ -105,13 +118,14 @@ class SaleController extends Controller
         $sale = Sale::findOrFail($id);
         return view('sales.delete', compact('sale'));
     }
+
+    
     
 
     public function destroy(Sale $sale)
     {
         $sale->delete();
-
-        return redirect()->route('sales.index')->with('success', 'Sales details deleted successfully!');
+        return redirect()->route('sales.list')->with('success', 'Sale deleted successfully!');
     }
 
     public function search(Request $request)
@@ -250,12 +264,20 @@ public function searchdate(Request $request)
         return view('pages.reports.datesale', compact('sales', 'shifts'));
     }
     public function getSalesByShiftId($shiftId)
-{
-    // Retrieve sales details based on the shift ID
-    $salesDetails = Sale::where('shift_id', $shiftId)->get();
+    {
+        // Retrieve sales details based on the shift ID
+        $salesDetails = Sale::where('shift_id', $shiftId)->get();
 
-    // Return sales details as JSON response
-    return response()->json($salesDetails);
-}
+        // Return sales details as JSON response
+        return response()->json($salesDetails);
+    }
+
+
+    public function list()
+    {
+        $sales = Sale::all();
+        $departments = Department::all();
+        return view('pages.sales.manage_sales.manage', compact('sales','departments'));
+    }
 
 }

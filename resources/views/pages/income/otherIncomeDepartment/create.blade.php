@@ -2,70 +2,9 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="mb-3">
-        <h4>Other Income Department Dashboard</h4>
-    </div>
-    <div class="row">
-        <div class="col-12 col-md-6 d-flex">
-            <div class="card flex-fill border-0 illustration">
-                <div class="card-body p-0 d-flex flex-fill">
-                    <div class="row g-0 w-100">
-                        <div class="col-6">
-                            <div class="p-3 m-1">
-                                <h4>Welcome, {{ session('username') }}</h4>
-                                <p class="mb-0">Department Management</p>
-                            </div>
-                        </div>
-                        <div class="col-6 align-self-end text-end">
-                            <img src="{{ asset('image/customer-support.jpg') }}" class="img-fluid illustration-img"
-                                alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6 d-flex">
-            <div class="card flex-fill border-0">
-                <div class="card-body py-4">
-                    <div class="d-flex align-items-start">
-                        <div class="flex-grow-1">
-                            <p class="mb-2">
-                                Total Other Income Departments
-                            </p>
-                            <h4 class="mb-2">
 
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">       
-        <div class="col-12">
-             <!-- success -->
-            @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
-                role="alert">
-                <span>{{ session('success') }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
-            <!-- -->
-            <!-- ERROR -->
-            @if ($errors->any())
-            @foreach ($errors->all() as $error)
-            <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center"
-                role="alert">
-                <span>{{ $error }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endforeach
-            @endif
-            <!-- -->
-        </div>
-    </div>
+    <x-content-header title="Other Income Department Management" /> 
+    <x-alert-message />    
 
     <!-- Forms -->
     <div class="row">
@@ -79,35 +18,42 @@
                                 <form class="row g-3" method="POST"
                                     action="{{ route('other_income_departments.store') }}">
                                     @csrf
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <label for="income_name" class="form-label">Income Name: </label>
                                         <input type="text" class="form-control" id="income_name" name="income_name">
                                     </div>
-                                    <div class="col-md-12">
-                                        <label for="category" class="form-label">Category: </label>
-                                        <input type="text" class="form-control" id="category" name="category" value="Other Income">
+
+                                    <div class="col-md-6">
+                                        <label for="category_id" class="form-label">Category:</label>
+                                        <select class="form-select" id="category_id" name="category_id">
+                                            <option value="">Select Income Category</option>
+                                            @foreach($incomeCategories as $incomeCategory)
+                                            <option value="{{ $incomeCategory->id }}">{{ $incomeCategory->category }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
+
                                     <div class="col-md-12">
                                         <label for="subcategory" class="form-label">Subcategory: </label>
                                         <div class="form-control">
-                                            <div class="form-check form-check-inline col-md-5">
+                                            <div class="form-check form-check-inline col-md-6">
                                                 <input class="form-check-input" type="radio" name="subcategory"
                                                     id="direct_income" value="Direct Income" checked>
                                                 <label class="form-check-label" for="direct_income">
-                                                    Direct Income
+                                                    Direct
                                                 </label>
                                             </div>
-                                            <div class="form-check form-check-inline col-md-5">
+                                            <div class="form-check form-check-inline col-md-4">
                                                 <input class="form-check-input" type="radio" name="subcategory"
                                                     id="calculated_income" value="Calculated Income">
                                                 <label class="form-check-label" for="calculated_income">
-                                                    Calculated Income
+                                                    Calculated
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary rounded-pill">Register</button>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-success rounded-pill" style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>
                                     </div>
                                 </form>
                             </div>
@@ -145,7 +91,7 @@
                                             @foreach($otherIncomeDepartments as $otherIncomeDepartment)
                                             <tr>
                                                 <td>{{ $otherIncomeDepartment->income_name }}</td>
-                                                <td>{{ $otherIncomeDepartment->category }}</td>
+                                                <td>{{ $otherIncomeDepartment->incomeCategory->category }}</td>
                                                 <td>{{ $otherIncomeDepartment->subcategory }}</td>
                                                 <td>
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
@@ -198,10 +144,16 @@
                         <label for="edit_income_name">Income Name:</label>
                         <input type="text" class="form-control mt-2" id="edit_income_name" name="income_name" required>
                     </div>
+
                     <div class="form-group mt-3">
-                        <label for="edit_category">Category:</label>
-                        <input type="text" class="form-control mt-2" id="edit_category" name="category" required>
+                        <label for="category_id">Income Category</label>
+                        <select class="form-select" id="category_id" name="category_id" required>
+                            @foreach($incomeCategories as $incomeCategory)
+                            <option value="{{ $incomeCategory->id }}">{{ $incomeCategory->category }}</option>
+                            @endforeach
+                        </select>
                     </div>
+                    
                     <div class="form-group mt-3">
                         <label>Subcategory:</label>
                         <div class="form-control mt-2">
@@ -209,14 +161,14 @@
                                 <input class="form-check-input" type="radio" name="edit_subcategory"
                                     id="edit_direct_income" value="Direct Income" checked>
                                 <label class="form-check-label" for="edit_direct_income">
-                                    Direct Income
+                                    Direct
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="edit_subcategory"
                                     id="edit_calculated_income" value="Calculated Income">
                                 <label class="form-check-label" for="edit_calculated_income">
-                                    Calculated Income
+                                    Calculated
                                 </label>
                             </div>
                         </div>
@@ -256,7 +208,7 @@
                 .then(response => response.json())
                 .then(data => {     
                     editForm.querySelector('#edit_income_name').value = data.income_name;
-                    editForm.querySelector('#edit_category').value = data.category;
+                    editForm.querySelector('#category_id').value = data.category_id;
                     if (data.subcategory === 'Calculated Income') {
                         editForm.querySelector('#edit_calculated_income').checked = true;
                     } else {
@@ -279,12 +231,33 @@
 
 </script>
 
-
 <script>
-    // Automatically close alerts after 5 seconds
-    window.setTimeout(function() {
-        $(".alert").fadeTo(500, 0).slideUp(500, function(){
-            $(this).remove();
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const otherIncomeDepartmentTable = document.getElementById('otherIncomeDepartmentTable');
+        const tableRows = otherIncomeDepartmentTable.getElementsByTagName('tr');
+
+        searchInput.addEventListener('input', function() {
+            const query = searchInput.value.trim().toLowerCase();
+
+            for (let i = 1; i < tableRows.length; i++) {
+                const row = tableRows[i];
+                const incomeNameCell = row.cells[0];
+                const categoryCell = row.cells[1];
+                const subCategoryCell = row.cells[2];             
+
+                if (incomeNameCell && categoryCell && subCategoryCell) {
+                    const incomeNameText = incomeNameCell.textContent.trim().toLowerCase();
+                    const categoryText = categoryCell.textContent.trim().toLowerCase();
+                    const subCategoryText = subCategoryCell.textContent.trim().toLowerCase();                    
+
+                    if (incomeNameText.includes(query) || categoryText.includes(query) || subCategoryText.includes(query)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            }
         });
-    }, 5000);
+    });
 </script>

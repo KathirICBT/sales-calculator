@@ -10,7 +10,12 @@ class OtherIncomeDepartment extends Model
     use HasFactory;
     protected $fillable = [
         'income_name',
-        'category',
+        'category_id',
         'subcategory',
     ];
+
+    public function incomeCategory()
+    {
+        return $this->belongsTo(IncomeCategory::class, 'category_id');
+    }
 }
