@@ -66,9 +66,9 @@
                                     <table class="table" id="departmentTable">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Department Name</th>
-                                                <th scope="col">Other Taking</th>
-                                                <th scope="col">Fuel</th>
+                                                <th scope="col" style="width: 30%">Department Name</th>
+                                                <th scope="col" style="width: 20%">Other Taking</th>
+                                                <th scope="col" style="width: 20%">Fuel</th>
                                                 <th scope="col" style="width: 30%">Action</th>
                                             </tr>
                                         </thead>

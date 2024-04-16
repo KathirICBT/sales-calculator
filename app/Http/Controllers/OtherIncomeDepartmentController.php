@@ -32,7 +32,7 @@ class OtherIncomeDepartmentController extends Controller
             $request->validate([
                 'income_name' => 'required|string|max:255',
                 'category_id' => 'required|exists:income_categories,id',
-                'subcategory' => 'required|string|in:Direct Income,Calculated Income',
+                'subcategory' => 'required|string|in:Direct Income,Calculated Income,Other',
             ]);
 
             OtherIncomeDepartment::create([

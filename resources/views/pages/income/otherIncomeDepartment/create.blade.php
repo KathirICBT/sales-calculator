@@ -36,7 +36,7 @@
                                     <div class="col-md-12">
                                         <label for="subcategory" class="form-label">Subcategory: </label>
                                         <div class="form-control">
-                                            <div class="form-check form-check-inline col-md-6">
+                                            <div class="form-check form-check-inline col-md-3">
                                                 <input class="form-check-input" type="radio" name="subcategory"
                                                     id="direct_income" value="Direct Income" checked>
                                                 <label class="form-check-label" for="direct_income">
@@ -48,6 +48,13 @@
                                                     id="calculated_income" value="Calculated Income">
                                                 <label class="form-check-label" for="calculated_income">
                                                     Calculated
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline col-md-3">
+                                                <input class="form-check-input" type="radio" name="subcategory"
+                                                    id="Other" value="Other">
+                                                <label class="form-check-label" for="Other">
+                                                    Other
                                                 </label>
                                             </div>
                                         </div>
@@ -171,6 +178,13 @@
                                     Calculated
                                 </label>
                             </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="edit_subcategory"
+                                    id="edit_other" value="Other">
+                                <label class="form-check-label" for="edit_other">
+                                    Other
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -211,8 +225,10 @@
                     editForm.querySelector('#category_id').value = data.category_id;
                     if (data.subcategory === 'Calculated Income') {
                         editForm.querySelector('#edit_calculated_income').checked = true;
-                    } else {
+                    } else if (data.subcategory === 'Direct Income') {
                         editForm.querySelector('#edit_direct_income').checked = true;
+                    } else {
+                        editForm.querySelector('#edit_other').checked = true;
                     }
                     $('#editOtherIncomeDepartmentModal').modal('show');
                 })

@@ -38,30 +38,59 @@ class DepartmentController extends Controller
     //     return redirect('/departments')->with('success', 'Department created successfully!');
     // }
 
-    public function store(Request $request)
-    {
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'dept_name' => 'required|string|max:255',
-                'other_taking' => 'boolean',
-                'fuel' => 'boolean',
-            ]);
+    // public function store(Request $request)
+    // {
+    //     if ($request->isMethod('post')) {
+    //         $request->validate([
+    //             'dept_name' => 'required|string|max:255',
+    //             'other_taking' => 'boolean',
+    //             'fuel' => 'boolean',
+    //         ]);
 
+    //         Department::create([
+    //             'dept_name' => $request->input('dept_name'),
+    //             'other_taking' => $request->input('other_taking', false),
+    //             'fuel' => $request->input('fuel', false),
+                
+    //         ]);
+
+    //         return redirect()->route('departments.store')->with('success', 'Departments registered successfully!');
+    //     }
+
+    //     $departmentCount = Department::count(); // Count the number of departments
+    //     $departments = Department::all();        
+
+    //     return view('pages.department.create', compact('departments', 'departmentCount'));
+    // }
+
+    public function store(Request $request)
+{
+    if ($request->isMethod('post')) {
+        $request->validate([
+            'dept_name' => 'required|string|max:255|unique:departments', // Add unique validation rule
+            'other_taking' => 'boolean',
+            'fuel' => 'boolean',
+        ]);
+
+        try {
             Department::create([
                 'dept_name' => $request->input('dept_name'),
                 'other_taking' => $request->input('other_taking', false),
                 'fuel' => $request->input('fuel', false),
-                
             ]);
 
             return redirect()->route('departments.store')->with('success', 'Departments registered successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['dept_name' => 'The department name has already been taken.']);
         }
-
-        $departmentCount = Department::count(); // Count the number of departments
-        $departments = Department::all();        
-
-        return view('pages.department.create', compact('departments', 'departmentCount'));
     }
+
+    $departmentCount = Department::count(); // Count the number of departments
+    $departments = Department::all();        
+
+    return view('pages.department.create', compact('departments', 'departmentCount'));
+}
+
 
     // // Update
     // public function edit(Department $department)
@@ -113,27 +142,48 @@ class DepartmentController extends Controller
     //     }
     // }
 
+    // public function update(Request $request, Department $department)
+    // {
+    //     $request->validate([
+    //         'dept_name' => 'required|string|max:255',
+            
+            
+            
+    //     ]);
+
+    //     $updated = $department->update([
+    //         'dept_name' => $request->input('dept_name'),
+    //         'other_taking' => $request->has('other_taking'),
+    //         'fuel' => $request->has('fuel'),
+    //     ]);        
+
+    //     if ($updated !== false) {             
+    //         return redirect()->route('departments.store')->with('success', 'Department updated successfully!');
+    //     } else {            
+    //         return redirect()->route('departments.store')->with('error', 'Failed to update department!');
+    //     }
+    // }
+
     public function update(Request $request, Department $department)
-    {
-        $request->validate([
-            'dept_name' => 'required|string|max:255',
-            
-            
-            
-        ]);
+{
+    $request->validate([
+        'dept_name' => 'required|string|max:255|unique:departments,dept_name,'.$department->id,
+        // Ensure that the dept_name is unique, excluding the current department's ID
+    ]);
 
-        $updated = $department->update([
-            'dept_name' => $request->input('dept_name'),
-            'other_taking' => $request->has('other_taking'),
-            'fuel' => $request->has('fuel'),
-        ]);        
+    $updated = $department->update([
+        'dept_name' => $request->input('dept_name'),
+        'other_taking' => $request->has('other_taking'),
+        'fuel' => $request->has('fuel'),
+    ]);        
 
-        if ($updated !== false) {             
-            return redirect()->route('departments.store')->with('success', 'Department updated successfully!');
-        } else {            
-            return redirect()->route('departments.store')->with('error', 'Failed to update department!');
-        }
+    if ($updated) { // $updated will be true if the update was successful
+        return redirect()->route('departments.store')->with('success', 'Department updated successfully!');
+    } else {
+        return redirect()->route('departments.store')->with('error', 'Failed to update department!');
     }
+}
+
 
 
 
