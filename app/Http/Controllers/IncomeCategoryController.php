@@ -12,7 +12,9 @@ class IncomeCategoryController extends Controller
 {
     public function store(Request $request)
     {
-        if ($request->isMethod('post')) {        
+        if ($request->isMethod('post')) {  
+            
+            
             $validatedData = $request->validate([
                 'income_category' => 'required|string|max:255|unique:income_categories,category',            
             ], [
@@ -22,7 +24,25 @@ class IncomeCategoryController extends Controller
             IncomeCategory::create(['category' => $validatedData['income_category']]); 
             
             return redirect()->route('income_category.store')->with('success', 'Income Category added successfully!');
-        } 
+        }
+
+
+        // ADD FIRST TWO CATERGARIES ===================================================================================
+
+        // Check if "Additional Capital" and "Loan" exist in the database
+        $existingCategories = IncomeCategory::whereIn('category', ['Additional Capital', 'Loan'])->pluck('category')->toArray();
+        
+        // If any of them don't exist, add them
+        if (!in_array('Additional Capital', $existingCategories)) {
+            IncomeCategory::create(['category' => 'Additional Capital']);
+        }
+        if (!in_array('Loan', $existingCategories)) {
+            IncomeCategory::create(['category' => 'Loan']);
+        }
+
+        // =============================================================================================================
+        
+        
         $incomeCategories = IncomeCategory::all();
         return view('pages.income.income_category.create', compact('incomeCategories'));
     }
