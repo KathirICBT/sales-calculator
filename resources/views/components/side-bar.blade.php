@@ -269,7 +269,13 @@
                             <li class="sidebar-item ms-3">
                                 <a href="{{route('reports.expense')}}" class="sidebar-link text">
                                     <i class="fa-regular fa-file pe-2"></i>
-                                    Expense Reason
+                                    Expense Reason 
+                                </a>
+                            </li>
+                            <li class="sidebar-item ms-3">
+                                <a href="{{route('reports.cashMove')}}" class="sidebar-link text">
+                                    <i class="fa-regular fa-file pe-2"></i>
+                                    Cash Movement Report 
                                 </a>
                             </li>
                         </ul>
