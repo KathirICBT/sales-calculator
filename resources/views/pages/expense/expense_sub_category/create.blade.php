@@ -25,11 +25,71 @@
                                             @endforeach
                                         </select>
                                     </div>
+
                                     <div class="col-md-6">
                                         <label for="sub_category" class="form-label">Sub Category:</label>
                                         <input type="text" class="form-control" id="sub_category" name="sub_category">
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <label for="report_order_number" class="form-label">Report Order Number:</label>
+                                        <input type="text" class="form-control" id="report_order_number" name="report_order_number">
+                                    </div>
+
+                                    {{-- sub cat bombo --}}
+
+                                    {{-- <div class="col-md-6">
+                                        <label for="sub_category" class="form-label">Sub Category:</label>
+                                        <select class="form-select" id="sub_category" name="sub_category">
+                                            <option value="">Select Expense Category</option>
+                                            <option value="Purchases">Purchases</option>
+                                            <option value="Wages">Wages</option>
+                                            <option value="Pension Cost">Pension Cost</option>
+                                            <option value="PAYE Tax">PAYE Tax</option>
+                                            <option value="Rent">Rent</option>
+                                            <option value="Rates">Rates</option>
+                                            <option value="Telephone">Telephone</option>
+                                            <option value="Insurance">Insurance</option>
+                                            <option value="Repairs">Repairs</option>
+                                            <option value="Bank charges">Bank charges</option>
+                                            <option value="Bank Interest">Bank Interest</option>
+                                            <option value="Legal Fee">Legal Fee</option>
+                                            <option value="Accountant Fee">Accountant Fee</option>
+                                            <option value="Alarm">Alarm</option>
+                                            <option value="VAT">VAT</option>
+                                            <option value="Income Tax">Income Tax</option>
+                                            <option value="Lottery">Lottery</option>
+                                            <option value="Paypoint">Paypoint</option>
+                                            <option value="Busspass">Busspass</option>
+                                            <option value="Payzone">Payzone</option>
+                                            <option value="Loan Repayment">Loan Repayment</option>
+                                            <option value="Other staff costs">Other staff costs</option>
+                                            <option value="Light and heat">Light and heat</option>
+                                            <option value="Motor Expenses">Motor Expenses</option>
+                                            <option value="Marketing">Marketing</option>
+                                            <option value="Service charge">Service charge</option>
+                                            <option value="Management Charges">Management Charges</option>
+                                            <option value="Post, Print and stationary">Post, Print and stationary</option>                                            
+                                            <option value="Professional Fee">Professional Fee</option>
+                                            <option value="Cleaning">Cleaning</option>
+                                            <option value="Fines and Penalty">Fines and Penalty</option>
+                                            <option value="Donation">Donation</option>
+                                            <option value="Sundry Ecpenses">Sundry Ecpenses</option>
+                                            <option value="Corppration Tax">Corppration Tax</option>
+                                            <option value="Fixed Asset Purchase">Fixed Asset Purchase</option>
+                                            
+                                            @foreach($expenseCategories as $expenseCategory)
+                                            <option value="{{ $expenseCategory->id }}">{{ $expenseCategory->category }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div> --}}
+
+                                    {{-- ============= --}}
+
+
+
                                     <div class="col-6">
+                                        <label for="" class="form-label">Save Sub Category:</label>
                                         <button type="submit" class="btn btn-success rounded-pill" style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>                                        
                                     </div>
                                 </form>
@@ -57,8 +117,9 @@
                                         <thead>
                                             <tr>
                                                 <th>Expense Category</th>
-                                                <th>Expense Sub Category</th>                                                
-                                                <th>Action</th>
+                                                <th>Expense Sub Category</th> 
+                                                <th style="width: 15%">Order</th>                                                
+                                                <th style="width: 25%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -66,6 +127,7 @@
                                             <tr>
                                                 <td>{{ $expenseSubCategory->expenseCategory->category }}</td>
                                                 <td>{{ $expenseSubCategory->sub_category }}</td>
+                                                <td>{{ $expenseSubCategory->report_order_number }}</td>
                                                 <td>
                                                     <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#editExpenseSubCategoryModal" data-id="{{ $expenseSubCategory->id }}"><i class="fa-regular fa-pen-to-square"></i></a>
                                                     <form method="post" style="display: inline;" action="{{ route('expense_sub_category.destroy', $expenseSubCategory->id) }}">
@@ -114,9 +176,16 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="amount">Expense Sub Category</label>
+                        <label for="sub_category">Expense Sub Category</label>
                         <input type="text" class="form-control" id="sub_category" name="sub_category" required>
                     </div>
+
+                    <div class="form-group">
+                        <label for="report_order_number">Report Order Number:</label>
+                        <input type="text" class="form-control" id="report_order_number" name="report_order_number" required>
+                    </div>
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -145,6 +214,7 @@
                     .then(data => {                        
                         editForm.querySelector('#category_id').value = data.category_id;
                         editForm.querySelector('#sub_category').value = data.sub_category;
+                        editForm.querySelector('#report_order_number').value = data.report_order_number;
                         $('#editExpenseSubCategoryModal').modal('show');
                     })
                     .catch(error => {
@@ -174,13 +244,15 @@
             for (let i = 1; i < tableRows.length; i++) {
                 const row = tableRows[i];
                 const categoryCell = row.cells[0];
-                const subCategoryCell = row.cells[1];             
+                const subCategoryCell = row.cells[1];
+                const orderNumberCell = row.cells[2];             
 
-                if (categoryCell && subCategoryCell) {
+                if (categoryCell && subCategoryCell && orderNumberCell) {
                     const categoryText = categoryCell.textContent.trim().toLowerCase();
-                    const subCategoryText = subCategoryCell.textContent.trim().toLowerCase();                    
+                    const subCategoryText = subCategoryCell.textContent.trim().toLowerCase();  
+                    const orderNumberText = orderNumberCell.textContent.trim().toLowerCase();                  
 
-                    if (categoryText.includes(query) || subCategoryText.includes(query)) {
+                    if (categoryText.includes(query) || subCategoryText.includes(query) || orderNumberText.includes(query)) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';

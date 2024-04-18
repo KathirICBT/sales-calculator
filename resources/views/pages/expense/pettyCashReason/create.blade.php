@@ -39,24 +39,31 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-6 mt-3">
+                                    <div class="col-md-12 mt-3">
                                         <label class="form-label">Select Reason Type:</label>
                                         <div class="form-control">
                                             <div class="d-flex">
-                                                <div class="form-check form-check-inline col-md-6">
+                                                <div class="form-check form-check-inline col-md-3">
                                                     <input class="form-check-input" type="radio" id="supplier" name="supplier" value="Supplier" checked>
                                                     <label class="form-check-label" for="supplier">Supplier</label>
                                                 </div>
-                                                <div class="form-check form-check-inline col-md-4">
-                                                    <input class="form-check-input" type="radio" id="other" name="supplier" value="Other">
-                                                    <label class="form-check-label" for="other">Other</label>
+                                                <div class="form-check form-check-inline col-md-3">
+                                                    <input class="form-check-input" type="radio" id="owner" name="supplier" value="Owner">
+                                                    <label class="form-check-label" for="owner">Owner</label>
+                                                </div>
+                                                <div class="form-check form-check-inline col-md-3">
+                                                    <input class="form-check-input" type="radio" id="banking" name="supplier" value="Banking">
+                                                    <label class="form-check-label" for="banking">Banking</label>
+                                                </div>
+                                                <div class="form-check form-check-inline col-md-3">
+                                                    <input class="form-check-input" type="radio" id="income_tax" name="supplier" value="Income Tax">
+                                                    <label class="form-check-label" for="income_tax">Income Tax</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <div class="col-md-6">
-                                        <label class="form-label">Save Reason:</label>
+                                    <div class="col-md-6">                                        
                                         <button type="submit" class="btn btn-success rounded-pill" style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>                                        
                                     </div>
                                 </form>
@@ -163,13 +170,21 @@
                     <div class="form-group mt-2">
                         <label class="form-label">Select Supplier:</label>
                         <div class="d-flex form-control">
-                            <div class="form-check me-5">
+                            <div class="form-check me-3">
                                 <input class="form-check-input" type="radio" id="supplier" name="model_supplier" value="Supplier" checked>
                                 <label class="form-check-label" for="supplier">Supplier</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" id="other" name="model_supplier" value="Other">
-                                <label class="form-check-label" for="other">Other</label>
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" id="owner" name="model_supplier" value="Owner">
+                                <label class="form-check-label" for="owner">Owner</label>
+                            </div>
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" id="banking" name="model_supplier" value="Banking">
+                                <label class="form-check-label" for="banking">Banking</label>
+                            </div>
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" id="income_tax" name="model_supplier" value="Income Tax">
+                                <label class="form-check-label" for="income_tax">Income Tax</label>
                             </div>
                         </div>
                     </div>
@@ -293,7 +308,11 @@
                         populateSubCategories(data.expense_category_id, data.expense_sub_category_id);
 
                         // Set supplier radio button based on fetched data
-                        const supplierOption = data.supplier === 'Supplier' ? 'Supplier' : 'Other';
+                        // const supplierOption = data.supplier === 'Supplier' ? 'Supplier' : 'Other';
+                        // editForm.querySelector(`input[name="model_supplier"][value="${supplierOption}"]`).checked = true;
+
+                        // Set supplier radio button based on fetched data
+                        const supplierOption = data.supplier;
                         editForm.querySelector(`input[name="model_supplier"][value="${supplierOption}"]`).checked = true;
 
                         $('#pettyCashReasonModal').modal('show');
@@ -377,13 +396,15 @@
                 const reason = row.cells[0]; // Assuming department is in the first cell
                 const expense_category = row.cells[1]; // Assuming payment type is in the second cell
                 const expense_sub_category = row.cells[2];
+                const supplier = row.cells[3];
 
-                if (reason && expense_category && expense_sub_category) {
+                if (reason && expense_category && expense_sub_category && supplier) {
                     const reasonText = reason.textContent.trim().toLowerCase();
                     const expense_categoryText = expense_category.textContent.trim().toLowerCase();
                     const expense_sub_categoryText = expense_sub_category.textContent.trim().toLowerCase();
+                    const supplierText = supplier.textContent.trim().toLowerCase();
 
-                    if (reasonText.includes(query) || expense_categoryText.includes(query) || expense_sub_categoryText.includes(query)) {
+                    if (reasonText.includes(query) || expense_categoryText.includes(query) || expense_sub_categoryText.includes(query) || supplierText.includes(query)) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';

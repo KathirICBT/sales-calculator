@@ -24,7 +24,7 @@ class PettyCashReasonController extends Controller
                 'petty_cash_reason' => 'required|string|unique:petty_cash_reasons,reason',
                 'expense_category_id' => 'required|exists:expense_categories,id',
                 'expense_sub_category_id' => 'required|exists:expense_sub_categories,id',
-                'supplier' => 'required|in:Supplier,Other',
+                'supplier' => 'required|in:Supplier,Owner,Banking,Income Tax',
             ], [
                 'petty_cash_reason.unique' => 'The petty cash reason has already been added.',
             ]);
@@ -94,7 +94,7 @@ class PettyCashReasonController extends Controller
             'model_expense_sub_category_id' => 'required|exists:expense_sub_categories,id',
             'model_supplier' => [
                 'required',
-                Rule::in(['Supplier', 'Other']), // Validate against 'Supplier' or 'Other'
+                Rule::in(['Supplier', 'Owner', 'Banking', 'Income Tax']), // Validate against 'Supplier' or 'Other'
             ],
         ], [
             'model_petty_cash_reason.unique' => 'The petty cash reason has already been added.',

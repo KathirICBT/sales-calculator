@@ -12,6 +12,7 @@ class ExpenseSubCategory extends Model
     protected $fillable = [
         'sub_category',
         'category_id',
+        'report_order_number',
     ];
 
     public function expenseCategory()

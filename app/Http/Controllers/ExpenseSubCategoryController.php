@@ -16,6 +16,7 @@ class ExpenseSubCategoryController extends Controller
             $validatedData = $request->validate([
                 'category_id' => 'required|exists:expense_categories,id',
                 'sub_category' => 'required|string|max:255|unique:expense_sub_categories,sub_category',
+                'report_order_number' => 'nullable|integer',
             ], [
                 'sub_category.unique' => 'The sub category has already been added.',
             ]);
@@ -43,6 +44,7 @@ class ExpenseSubCategoryController extends Controller
         $validatedData = $request->validate([
             'category_id' => 'required|exists:expense_categories,id',
             'sub_category' => 'required|string|max:255|unique:expense_sub_categories,sub_category,' . $id,
+            'report_order_number' => 'nullable|integer',
             // Ensuring sub_category is unique except for the current record with id $id
         ], [
             'sub_category.unique' => 'The sub category has already been added.',

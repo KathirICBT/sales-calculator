@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 use App\Models\PaymentType;
 
 use Illuminate\Http\Request;
@@ -44,7 +46,28 @@ class PaymentTypeController extends Controller
             ]);            
             PaymentType::create($validatedData);            
             return redirect()->route('paymenttype.store')->with('success', 'Payment type added successfully!');
-        }        
+        }  
+        
+        
+
+        // ADD FIRST TWO PAYMENT TYPE ===================================================================================
+
+        // Check if "Bank" and "Cash" exist in the database
+        $existingPaymentTypes = PaymentType::whereIn('payment_type', ['Bank', 'Cash'])->pluck('payment_type')->toArray();
+        
+        // If any of them don't exist, add them
+        if (!in_array('Bank', $existingPaymentTypes)) {
+            PaymentType::create(['payment_type' => 'Bank']);
+        }
+        if (!in_array('Cash', $existingPaymentTypes)) {
+            PaymentType::create(['payment_type' => 'Cash']);
+        }
+
+        // =============================================================================================================
+
+
+
+
         $paymentTypes = PaymentType::all();
         return view('pages.income.payment_types.create', compact('paymentTypes'));
     }
@@ -81,11 +104,36 @@ class PaymentTypeController extends Controller
     }
 
 
+    // public function destroy($id)
+    // {
+    //     $paymentType = PaymentType::findOrFail($id);
+    //     $paymentType->delete();
+
+    //     return redirect()->route('paymenttype.store')->with('success', 'Payment type deleted successfully!');
+    // }
+
+
     public function destroy($id)
     {
-        $paymentType = PaymentType::findOrFail($id);
-        $paymentType->delete();
+        try {
+            $paymentType = PaymentType::findOrFail($id);
+            $paymentType->delete();
 
-        return redirect()->route('paymenttype.store')->with('success', 'Payment type deleted successfully!');
+            // Redirect with success message
+            return redirect()->route('paymenttype.store')->with('success', 'Payment type deleted successfully!');
+        } catch (QueryException $e) {
+            // Check if the error is due to a foreign key constraint violation
+            if ($e->errorInfo[1] === 1451) {
+                // Redirect with error message for foreign key constraint violation
+                return redirect()->route('paymenttype.store')->with('error', 'Cannot delete Payment Type. It is referenced by other records.');
+            }
+
+            // If it's another type of error, log it for debugging purposes
+            Log::error('Error deleting Payment Type: ' . $e->getMessage());
+
+            // Redirect with generic error message
+            return redirect()->route('paymenttype.store')->with('error', 'An error occurred while deleting the Payment Type.');
+        }
     }
+
 }
