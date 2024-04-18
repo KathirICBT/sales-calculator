@@ -10,6 +10,7 @@ use App\Models\Petticash;
 use App\Models\OtherExpense;
 use App\Models\Department;
 use App\Models\OtherIncome;
+use App\Models\OtherIncomeDepartment;
 
 use App\Models\Sale; 
 use Illuminate\Http\Request;
@@ -1062,23 +1063,50 @@ public function generateCashMovementReport(Request $request)
         }
     }
 
-    $shopTotalsByDate = [];
-    // $otherIncomes = OtherIncome::all();
-    $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])->get();
+    // Initialize an array to store shop-specific other income totals
+    $shopOtherIncomeTotals = [];
 
-    // Process other Incomes for shop totals by date
+    // Retrieve other incomes within the specified date range and matching subcategory
+    $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+        ->whereHas('otherIncomeDepartment', function ($query) {
+            $query->where('subcategory', 'Direct Income');
+        })
+        ->get();
+
+    // Process other incomes for each shop
     foreach ($otherIncomes as $income) {
-        $date = $income->date;
         $shopId = $income->shop_id;
         $amount = $income->amount;
 
-        if (!isset($shopTotalsByDate[$shopId])) {
-            $shopTotalsByDate[$shopId] = 0;
+        if (!isset($shopOtherIncomeTotals[$shopId])) {
+            $shopOtherIncomeTotals[$shopId] = 0;
         }
 
-        $shopTotalsByDate[$shopId] += $amount;
+        // Add other income amount to the shop's total
+        $shopOtherIncomeTotals[$shopId] += $amount;
     }
 
+    $LoanTotals = [];
+
+    // Retrieve other incomes within the specified date range and matching subcategory
+    $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+    ->whereHas('otherIncomeDepartment.incomeCategory', function ($query) {
+        $query->where('category', 'Loan');
+    })
+    ->get();
+
+    // Process other incomes for each shop
+    foreach ($otherIncomes as $income) {
+        $shopId = $income->shop_id;
+        $amount = $income->amount;
+
+        if (!isset($LoanTotals[$shopId])) {
+            $LoanTotals[$shopId] = 0;
+        }
+
+        // Add other income amount to the shop's total
+        $LoanTotals[$shopId] += $amount;
+    }
 
     // Return the view with required data
     return view('pages.reports.cashmovementReport', [
@@ -1087,9 +1115,11 @@ public function generateCashMovementReport(Request $request)
         'to_date' => $request->to_date,
         'shops' => $shops,
         'shopDepartmentTotals' => $shopDepartmentTotals,
-        'shopTotalsByDate' => $shopTotalsByDate
+        'shopOtherIncomeTotals' => $shopOtherIncomeTotals,
+        'LoanTotals'=>$LoanTotals,
     ]);
 }
+
 
 
 

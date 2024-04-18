@@ -67,17 +67,30 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td>Other Incomes</td>
+                            <td>Loan</td>
                             @foreach ($shops as $shop)
-                                <td>{{ $shopTotalsByDate[$shop->id] ?? 0 }}</td>
+                                <td>{{ $LoanTotals[$shop->id] ?? 0 }}</td>
                             @endforeach
                             <td>
                                 @php
-                                    $otherIncomesTotal = array_sum($shopTotalsByDate);
+                                    $LoanTotalsAll = array_sum($LoanTotals);
+                                @endphp
+                                {{ $LoanTotalsAll }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Other Incomes</td>
+                            @foreach ($shops as $shop)
+                                <td>{{ $shopOtherIncomeTotals[$shop->id] ?? 0 }}</td>
+                            @endforeach
+                            <td>
+                                @php
+                                    $otherIncomesTotal = array_sum($shopOtherIncomeTotals);
                                 @endphp
                                 {{ $otherIncomesTotal }}
                             </td>
                         </tr>
+                       
                     </tbody>
                 </table>
             @endif
