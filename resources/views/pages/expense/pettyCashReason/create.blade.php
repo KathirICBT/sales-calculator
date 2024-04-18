@@ -44,23 +44,24 @@
                                         <div class="form-control">
                                             <div class="d-flex">
                                                 <div class="form-check form-check-inline col-md-3">
-                                                    <input class="form-check-input" type="radio" id="supplier" name="supplier" value="Supplier" checked>
-                                                    <label class="form-check-label" for="supplier">Supplier</label>
+                                                    <input class="form-check-input" type="radio" id="store_supplier" name="supplier" value="Supplier" checked>
+                                                    <label class="form-check-label" for="store_supplier">Supplier</label>
                                                 </div>
                                                 <div class="form-check form-check-inline col-md-3">
-                                                    <input class="form-check-input" type="radio" id="owner" name="supplier" value="Owner">
-                                                    <label class="form-check-label" for="owner">Owner</label>
+                                                    <input class="form-check-input" type="radio" id="store_owner" name="supplier" value="Owner">
+                                                    <label class="form-check-label" for="store_owner">Owner</label>
                                                 </div>
                                                 <div class="form-check form-check-inline col-md-3">
-                                                    <input class="form-check-input" type="radio" id="banking" name="supplier" value="Banking">
-                                                    <label class="form-check-label" for="banking">Banking</label>
+                                                    <input class="form-check-input" type="radio" id="store_banking" name="supplier" value="Banking">
+                                                    <label class="form-check-label" for="store_banking">Banking</label>
                                                 </div>
                                                 <div class="form-check form-check-inline col-md-3">
-                                                    <input class="form-check-input" type="radio" id="income_tax" name="supplier" value="Income Tax">
-                                                    <label class="form-check-label" for="income_tax">Income Tax</label>
+                                                    <input class="form-check-input" type="radio" id="store_income_tax" name="supplier" value="Income Tax">
+                                                    <label class="form-check-label" for="store_income_tax">Income Tax</label>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                     
                                     <div class="col-md-6">                                        

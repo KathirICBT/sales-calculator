@@ -16,9 +16,10 @@ class ExpenseSubCategoryController extends Controller
             $validatedData = $request->validate([
                 'category_id' => 'required|exists:expense_categories,id',
                 'sub_category' => 'required|string|max:255|unique:expense_sub_categories,sub_category',
-                'report_order_number' => 'nullable|integer',
+                'report_order_number' => 'nullable|integer|unique:expense_sub_categories,report_order_number',
             ], [
                 'sub_category.unique' => 'The sub category has already been added.',
+                'report_order_number.unique' => 'The report order number has already been taken.',
             ]);
 
             ExpenseSubCategory::create($validatedData);
@@ -26,7 +27,7 @@ class ExpenseSubCategoryController extends Controller
             return redirect()->route('expense_sub_category.store')->with('success', 'Sub Category added successfully!');
         }
         $expenseSubCategories = ExpenseSubCategory::all();
-        $expenseCategories = ExpenseCategory::all();        
+        $expenseCategories = ExpenseCategory::all();
         
         return view('pages.expense.expense_sub_category.create',compact('expenseSubCategories','expenseCategories'));
     }
@@ -44,10 +45,11 @@ class ExpenseSubCategoryController extends Controller
         $validatedData = $request->validate([
             'category_id' => 'required|exists:expense_categories,id',
             'sub_category' => 'required|string|max:255|unique:expense_sub_categories,sub_category,' . $id,
-            'report_order_number' => 'nullable|integer',
+            'report_order_number' => 'nullable|integer|unique:expense_sub_categories,report_order_number,' . $id,
             // Ensuring sub_category is unique except for the current record with id $id
         ], [
             'sub_category.unique' => 'The sub category has already been added.',
+            'report_order_number.unique' => 'The report order number has already been taken.',
         ]);
 
         $expenseSubCategory = ExpenseSubCategory::findOrFail($id);
