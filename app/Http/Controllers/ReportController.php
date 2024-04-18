@@ -8,7 +8,11 @@ use App\Models\PaymentType;
 use App\Models\PettyCashReason;
 use App\Models\Petticash;
 use App\Models\OtherExpense;
+use App\Models\Department;
+use App\Models\OtherIncome;
+use App\Models\OtherIncomeDepartment;
 
+use App\Models\Sale; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -778,4 +782,369 @@ public function generatePaymentReports(Request $request)
     }
 
     //========================================================================
+
+    // public function generateCashMovementReport(Request $request)
+    // {
+    //     $request->validate([
+    //         'from_date' => 'required|date',
+    //         'to_date' => 'required|date|after_or_equal:from_date',
+    //     ]);
+
+    //     // Get all departments
+    //     $departments = Department::all();
+
+    //     // Initialize an array to store department reports
+    //     $departmentReports = [];
+
+    //     // Iterate over each department and generate reports
+    //     foreach ($departments as $department) {
+    //         // Get shift IDs within the specified date period for the current department
+    //         $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])
+    //             ->pluck('id');
+
+    //         // Get shops associated with the current department
+    //         $shops = Shop::where('department_id', $department->id)->get();
+
+    //         // Initialize array to store shop totals by date
+    //         $shopTotalsByDate = [];
+    //         // $sales= Sale::all();
+    //         foreach ($shifts as $shift) {
+    //                 $sales = Sale::where('shift_id', $shift->id)
+    //                 ->get();
+
+    //                 foreach ($sales as $sale) {
+    //                     $salesId = Shift::findOrFail($sale);
+    //                     $date = $shift->start_date;
+    //                     $shopId = $shift->shop_id;
+        
+    //                     // Calculate shop total based on the shift details
+    //                     // For illustration purpose, assuming a calculation logic based on shift data
+                       
+        
+    //                     if (!isset($shopTotalsByDate[$date])) {
+    //                         $shopTotalsByDate[$date] = [];
+    //                     }
+        
+    //                     if (!isset($shopTotalsByDate[$date][$sale])) {
+    //                         $shopTotalsByDate[$date][$sale] = $amount;
+    //                     } else {
+    //                         $shopTotalsByDate[$date][$sale] += $amount;
+    //                     }
+    //                 }
+    
+                
+    //         }
+
+    //         // Calculate shop totals by date for each shift in the department
+            
+
+    //         // Add department report data to the array
+    //         $departmentReports[] = [
+    //             'department' => $department,
+    //             'shopTotalsByDate' => $shopTotalsByDate,
+    //             'shops' => $shops,
+    //             'from_date' => $request->from_date,
+    //             'to_date' => $request->to_date,
+    //         ];
+    //     }
+
+    //     // Pass the array of department reports to the view
+    //     return view('pages.reports.cashmovementReport', compact('departmentReports'));
+    // }
+
+
+
+    public function showCashMoveReport()
+    {
+        $departments = Department::all();
+        $shops = Shop::all(); // Retrieve all shops
+
+        return view('pages.reports.cashmovementReport', [
+            'departments' => $departments,
+            'shops' => $shops,
+            
+        ]);
+    }
+
+    
+// public function generateCashMovementReport(Request $request)
+// {
+//     $request->validate([
+//         'from_date' => 'required|date',
+//         'to_date' => 'required|date|after_or_equal:from_date',
+//     ]);
+
+//     // Get all departments
+//     $departments = Department::all();
+
+//     // Initialize an array to store department reports
+//     $departmentReports = [];
+
+//     // Iterate over each department and generate reports
+//     foreach ($departments as $department) {
+//         // Step 1: Retrieve Shift IDs within the Date Range
+//         $shiftIds = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])
+//         ->pluck('id');
+
+//         // Step 2: Retrieve Department IDs and Amounts from Sales Table
+//         $sales = Sale::whereIn('shift_id', $shiftIds)
+//         ->select('dept_id', 'amount')
+//         ->get();
+
+//         // Initialize arrays to store department totals
+//         $normalDepartmentTotal = 0;
+//         $otherTakingTotal = 0;
+//         $fuelTotal = 0;
+
+//         // Process each sale to calculate department totals based on conditions
+//         foreach ($sales as $sale) {
+//             $deptId = $sale->dept_id;
+//             $amount = $sale->amount;
+
+//             // Check department conditions
+//             $departmentType = $this->getDepartmentType($deptId);
+
+//             // Aggregate totals based on department type
+//             switch ($departmentType) {
+//                 case 'normal':
+//                     $normalDepartmentTotal += $amount;
+//                     break;
+//                 case 'other_taking':
+//                     $otherTakingTotal += $amount;
+//                     break;
+//                 case 'fuel':
+//                     $fuelTotal += $amount;
+//                     break;
+//                 default:
+//                     // Handle unrecognized department type
+//                     break;
+//             }
+//         }
+//         $shops = Shop::all(); 
+
+//         // Add department report data to the array
+//         $departmentReports[] = [
+//             'department' => $department,
+//             'normalDepartmentTotal' => $normalDepartmentTotal,
+//             'otherTakingTotal' => $otherTakingTotal,
+//             'fuelTotal' => $fuelTotal,
+//             'from_date' => $request->from_date,
+//             'to_date' => $request->to_date,
+//             'shops' => Shop::all(),
+//         ];
+//     }
+
+//     // Pass the array of department reports to the view
+//     return view('pages.reports.cashmovementReport', compact('departmentReports', 'shops'));
+// }
+// public function generateCashMovementReport(Request $request)
+// {
+//     $request->validate([
+//         'from_date' => 'required|date',
+//         'to_date' => 'required|date|after_or_equal:from_date',
+//     ]);
+
+//     // Get all departments
+//     $departments = Department::all();
+
+//     // Initialize an array to store department reports
+//     $departmentReports = [];
+
+//     // Iterate over each department and generate reports
+//     foreach ($departments as $department) {
+//         // Step 1: Retrieve Shift IDs within the Date Range for the current department
+//         // Step 1: Retrieve Shift IDs within the Date Range
+//         $shiftIds = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])
+//         ->pluck('id');
+
+//         // Step 2: Retrieve Department IDs and Amounts from Sales Table
+//         $sales = Sale::whereIn('shift_id', $shiftIds)
+//         ->select('dept_id', 'amount')
+//         ->get();
+
+//         // Initialize totals
+//         $normalDepartmentTotal = 0;
+//         $otherTakingTotal = 0;
+//         $fuelTotal = 0;
+
+//         // Process each sale to calculate department totals based on conditions
+//         foreach ($sales as $sale) {
+//             $deptId = $sale->dept_id;
+//             $amount = $sale->amount;
+
+//             // Determine the department type
+//             $departmentType = $this->getDepartmentType($deptId);
+
+//             // Aggregate totals based on department type
+//             switch ($departmentType) {
+//                 case 'normal':
+//                     $normalDepartmentTotal += $amount;
+//                     break;
+//                 case 'other_taking':
+//                     $otherTakingTotal += $amount;
+//                     break;
+//                 case 'fuel':
+//                     $fuelTotal += $amount;
+//                     break;
+//                 default:
+//                     // Handle unrecognized department type (optional)
+//                     break;
+//             }
+//         }
+
+//         // Add department report data to the array
+//         $departmentReports[] = [
+//             'department' => $department,
+//             'normalDepartmentTotal' => $normalDepartmentTotal,
+//             'otherTakingTotal' => $otherTakingTotal,
+//             'fuelTotal' => $fuelTotal,
+//             'from_date' => $request->from_date,
+//             'to_date' => $request->to_date,
+//         ];
+//     }
+
+//     // Get all shops (assuming this is needed in the view)
+//     $shops = Shop::all();
+
+//     // Pass the array of department reports and shops to the view
+    
+//     return view('pages.reports.cashmovementReport', [
+        
+//         'from_date' => $request->from_date,
+//         'to_date' => $request->to_date,
+//         'shops' => Shop::all(),
+//         'departmentReports' => $departmentReports
+//     ]);
+// }
+
+public function generateCashMovementReport(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'from_date' => 'required|date',
+        'to_date' => 'required|date|after_or_equal:from_date',
+    ]);
+
+    // Retrieve all departments and shops
+    $departments = Department::all();
+    $shops = Shop::all();
+
+    // Initialize an array to store shop-specific department totals
+    $shopDepartmentTotals = [];
+
+    // Iterate over each shop to initialize department totals
+    foreach ($shops as $shop) {
+        $shopDepartmentTotals[$shop->id]['normal'] = 0;
+        $shopDepartmentTotals[$shop->id]['other_taking'] = 0;
+        $shopDepartmentTotals[$shop->id]['fuel'] = 0;
+    }
+
+    // Process each department's sales data within the specified date range
+    foreach ($departments as $department) {
+        $departmentId = $department->id;
+
+        // Retrieve Shift IDs within the Date Range for this department
+        $shiftIds = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])
+            ->pluck('id');
+
+        // Retrieve sales data for this department within the date range
+        $sales = Sale::whereIn('shift_id', $shiftIds)
+            ->where('dept_id', $departmentId)
+            ->get();
+
+        // Update shop-specific department totals based on sales
+        foreach ($sales as $sale) {
+            $amount = $sale->amount;
+            $departmentType = $this->getDepartmentType($departmentId);
+            $shopId = $sale->shift->shop_id;
+
+            // Update the corresponding shop's department total
+            $shopDepartmentTotals[$shopId][$departmentType] += $amount;
+        }
+    }
+
+    // Initialize an array to store shop-specific other income totals
+    $shopOtherIncomeTotals = [];
+
+    // Retrieve other incomes within the specified date range and matching subcategory
+    $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+        ->whereHas('otherIncomeDepartment', function ($query) {
+            $query->where('subcategory', 'Direct Income');
+        })
+        ->get();
+
+    // Process other incomes for each shop
+    foreach ($otherIncomes as $income) {
+        $shopId = $income->shop_id;
+        $amount = $income->amount;
+
+        if (!isset($shopOtherIncomeTotals[$shopId])) {
+            $shopOtherIncomeTotals[$shopId] = 0;
+        }
+
+        // Add other income amount to the shop's total
+        $shopOtherIncomeTotals[$shopId] += $amount;
+    }
+
+    $LoanTotals = [];
+
+    // Retrieve other incomes within the specified date range and matching subcategory
+    $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+    ->whereHas('otherIncomeDepartment.incomeCategory', function ($query) {
+        $query->where('category', 'Loan');
+    })
+    ->get();
+
+    // Process other incomes for each shop
+    foreach ($otherIncomes as $income) {
+        $shopId = $income->shop_id;
+        $amount = $income->amount;
+
+        if (!isset($LoanTotals[$shopId])) {
+            $LoanTotals[$shopId] = 0;
+        }
+
+        // Add other income amount to the shop's total
+        $LoanTotals[$shopId] += $amount;
+    }
+
+    // Return the view with required data
+    return view('pages.reports.cashmovementReport', [
+        'departments' => $departments,
+        'from_date' => $request->from_date,
+        'to_date' => $request->to_date,
+        'shops' => $shops,
+        'shopDepartmentTotals' => $shopDepartmentTotals,
+        'shopOtherIncomeTotals' => $shopOtherIncomeTotals,
+        'LoanTotals'=>$LoanTotals,
+    ]);
+}
+
+
+
+
+
+    /**
+     * Helper method to determine the type of a department based on its ID.
+     *
+     * @param int $deptId
+     * @return string|null
+     */
+    private function getDepartmentType($deptId)
+    {
+        $department = Department::find($deptId);
+
+        if ($department) {
+            // Determine department type based on conditions (e.g., other_taking, fuel)
+            if ($department->other_taking && !$department->fuel) {
+                return 'other_taking';
+            } elseif ($department->fuel && !$department->other_taking) {
+                return 'fuel';
+            } else {
+                return 'normal';
+            }
+        }
+
+        return null; // Handle case where department is not found
+    }
 }
