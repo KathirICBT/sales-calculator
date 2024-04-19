@@ -161,7 +161,7 @@
                         </tr>
                         <tr><td></td></tr>
                         <tr><th>Cash Out Flows</th></tr>
-                        @foreach ($reportData['supplier'] as $item)
+                        {{-- @foreach ($reportData['supplier'] as $item)
                             <tr>
                                 <td>{{ $item['sub_category'] }}</td>
                                 @foreach ($shops as $shop)
@@ -181,7 +181,40 @@
                                 @endforeach
                                 <td>{{ $item['total'] }}</td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
+                        <!-- Display rows for 'Supplier' expenses -->
+                        <!-- Display rows for 'Supplier' expenses -->
+                        <!-- Display rows for 'Supplier' expenses -->
+                            <!-- Display rows for 'Supplier' expenses -->
+<!-- Display rows for 'Supplier' expenses -->
+<!-- Display rows for 'Supplier' expenses -->
+@foreach ($reportData['supplier'] as $categoryId => $item)
+    <tr>
+        <td>{{ $item['name'] }}</td>
+        @foreach ($shops as $shop)
+            <td>{{ $item['shop_totals'][$shop->id] ?? 0 }}</td>
+        @endforeach
+        <td>{{ $item['total'] }}</td>
+    </tr>
+@endforeach
+
+<!-- Display rows for 'Income Tax' expenses -->
+<tr><th colspan="{{ count($shops) + 2 }}">Income Tax</th></tr>
+@foreach ($reportData['income_tax'] as $categoryId => $item)
+    <tr>
+        <td>{{ $item['name'] }}</td>
+        @foreach ($shops as $shop)
+            <td>{{ $item['shop_totals'][$shop->id] ?? 0 }}</td>
+        @endforeach
+        <td>{{ $item['total'] }}</td>
+    </tr>
+@endforeach
+
+
+
+
+
+
                     </tbody>
                 </table>
                 

@@ -1499,6 +1499,298 @@ public function showCashMoveReportother()
 //     ];
 // }
 
+// public function generateCashMovementotherReport(Request $request)
+// {
+//     // Validate the request
+//     $request->validate([
+//         'from_date' => 'required|date',
+//         'to_date' => 'required|date|after_or_equal:from_date',
+//     ]);
+
+//     // Retrieve all shops
+//     $shops = Shop::all();
+
+//     // Initialize arrays to store sub-category totals
+//     $subCategoryTotals = [];
+
+//     // Retrieve other expenses within the specified date range and relevant conditions
+//     $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+//         ->whereHas('expenseReason', function ($query) {
+//             $query->where('supplier', 'Supplier'); // Filter by 'Supplier' in the supplier column
+//         })
+//         ->get();
+
+//     // Process each other expense record
+//     foreach ($otherExpenses as $expense) {
+//         $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+//         $shopId = $expense->shop_id;
+//         $amount = $expense->amount;
+
+//         // Initialize sub-category totals if not set
+//         if (!isset($subCategoryTotals[$subCategoryId])) {
+//             $subCategoryTotals[$subCategoryId] = [
+//                 'supplier' => 'supplier', // Set supplier type for this sub-category
+//                 'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+//                 'shop_totals' => [],
+//                 'total' => 0,
+//             ];
+//         }
+
+//         // Increment shop-specific sub-category total
+//         if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
+//             $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
+//         }
+
+//         $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
+//         $subCategoryTotals[$subCategoryId]['total'] += $amount;
+//     }
+
+//     // Retrieve other expenses for 'Income Tax' within the specified date range
+//     $incomeTaxExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+//         ->whereHas('expenseReason', function ($query) {
+//             $query->where('supplier', 'Income Tax'); // Filter by 'Income Tax' in the supplier column
+//         })
+//         ->get();
+
+//     // Process 'Income Tax' expense records
+//     foreach ($incomeTaxExpenses as $expense) {
+//         $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+//         $shopId = $expense->shop_id;
+//         $amount = $expense->amount;
+
+//         // Initialize sub-category totals if not set
+//         if (!isset($subCategoryTotals[$subCategoryId])) {
+//             $subCategoryTotals[$subCategoryId] = [
+//                 'supplier' => 'income_tax', // Set supplier type for this sub-category
+//                 'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+//                 'shop_totals' => [],
+//                 'total' => 0,
+//             ];
+//         }
+
+//         // Increment shop-specific sub-category total
+//         if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
+//             $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
+//         }
+
+//         $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
+//         $subCategoryTotals[$subCategoryId]['total'] += $amount;
+//     }
+
+//     // Get all expense sub-categories ordered by report_order_number
+//     $expenseSubCategories = ExpenseSubCategory::orderBy('report_order_number')->get();
+
+    
+
+//     foreach ($expenseSubCategories as $subCategory) {
+//         $subCategoryId = $subCategory->id;
+//         if (isset($subCategoryTotals[$subCategoryId])) {
+//             $supplierType = $subCategoryTotals[$subCategoryId]['supplier'];
+
+//             // Add data to the appropriate section based on supplier type
+//             $reportData[$supplierType][] = [
+//                 'sub_category' => $subCategoryTotals[$subCategoryId]['name'],
+//                 'shop_totals' => $subCategoryTotals[$subCategoryId]['shop_totals'],
+//                 'total' => $subCategoryTotals[$subCategoryId]['total'],
+//             ];
+//         }
+//     }
+
+//     $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
+//      // Get petticashes (assuming this is related to payments) for all dates (optional if needed for calculation)
+//      $petticashes = Petticash::all();
+
+//      // Process petticashes (payments) for shop totals by date
+//         foreach ($shifts as $shift) {
+//             $petticashes = Petticash::where('shift_id', $shift->id)
+//             ->whereHas('pettyCashReason', function ($query) {
+//                 $query->where('supplier', 'Supplier'); // Filter by 'Supplier' in the supplier column
+//             })
+//             ->get();
+
+//             // Process each other expense record
+//                 foreach ($petticashes as $petticash) {
+//                     $subCategoryId = $petticash->pettyCashReason->expense_sub_category_id;
+//                     $shopId = $petticash->shop_id;
+//                     $amount = $petticash->amount;
+
+//                     // Initialize sub-category totals if not set
+//                     if (!isset($subCategoryTotals[$subCategoryId])) {
+//                         $subCategoryTotals[$subCategoryId] = [
+//                             'supplier' => 'supplier', // Set supplier type for this sub-category
+//                             'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+//                             'shop_totals' => [],
+//                             'total' => 0,
+//                         ];
+//                     }
+
+//                     // Increment shop-specific sub-category total
+//                     if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
+//                         $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
+//                     }
+
+//                     $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
+//                     $subCategoryTotals[$subCategoryId]['total'] += $amount;
+//                 }   
+
+            
+
+//                 $incomeTaxExpenses = Petticash::where('shift_id', $shift->id)
+//                 ->whereHas('pettyCashReason', function ($query) {
+//                     $query->where('supplier', 'Income Tax'); 
+//                 })
+//                 ->get();
+
+//             // Process 'Income Tax' expense records
+//             foreach ($incomeTaxExpenses as $expense) {
+//                 $subCategoryId = $expense->pettyCashReason->expense_sub_category_id;
+//                 $shopId = $expense->shop_id;
+//                 $amount = $expense->amount;
+
+//                 // Initialize sub-category totals if not set
+//                 if (!isset($subCategoryTotals[$subCategoryId])) {
+//                     $subCategoryTotals[$subCategoryId] = [
+//                         'supplier' => 'income_tax', // Set supplier type for this sub-category
+//                         'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+//                         'shop_totals' => [],
+//                         'total' => 0,
+//                     ];
+//                 }
+
+//                 // Increment shop-specific sub-category total
+//                 if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
+//                     $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
+//                 }
+
+//                 $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
+//                 $subCategoryTotals[$subCategoryId]['total'] += $amount;
+//             }
+                
+//         }
+
+//         // Prepare data for the report based on supplier type
+//     $reportData = [
+//         'supplier' => [],   // Array to hold 'Supplier' expense details
+//         'income_tax' => [], // Array to hold 'Income Tax' expense details
+//     ];
+//     // Pass data to the view
+//     return [
+//                 'reportData' => $reportData,
+//                 'shops' => Shop::all(),
+//             ];
+               
+            
+// }
+// public function generateCashMovementotherReport(Request $request)
+// {
+//     // Validate the request
+//     $request->validate([
+//         'from_date' => 'required|date',
+//         'to_date' => 'required|date|after_or_equal:from_date',
+//     ]);
+
+//     // Retrieve all shops
+//     $shops = Shop::all();
+
+//     // Initialize report data arrays for different supplier types
+//     $reportData = [
+//         'supplier' => [],   // Array to hold 'Supplier' expense details
+//         'income_tax' => [], // Array to hold 'Income Tax' expense details
+//     ];
+
+//     // Process Other Expenses (Supplier type)
+//     $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+//         ->whereHas('expenseReason', function ($query) {
+//             $query->where('supplier', 'Supplier');
+//         })
+//         ->get();
+
+//     foreach ($otherExpenses as $expense) {
+//         $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+//         $shopId = $expense->shop_id;
+//         $amount = $expense->amount;
+
+//         if (!isset($reportData['supplier'][$subCategoryId])) {
+//             $reportData['supplier'][$subCategoryId] = [
+//                 'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+//                 'shop_totals' => [],
+//                 'total' => 0,
+//             ];
+//         }
+
+//         if (!isset($reportData['supplier'][$subCategoryId]['shop_totals'][$shopId])) {
+//             $reportData['supplier'][$subCategoryId]['shop_totals'][$shopId] = 0;
+//         }
+
+//         $reportData['supplier'][$subCategoryId]['shop_totals'][$shopId] += $amount;
+//         $reportData['supplier'][$subCategoryId]['total'] += $amount;
+//     }
+
+//     // Process Petticashes (Supplier type)
+//     $petticashes = Petticash::whereHas('pettyCashReason', function ($query) {
+//         $query->where('supplier', 'Supplier');
+//     })
+//     ->whereHas('shift', function ($query) use ($request) {
+//         $query->whereBetween('start_date', [$request->from_date, $request->to_date]);
+//     })
+//     ->get();
+
+//     foreach ($petticashes as $petticash) {
+//         $subCategoryId = $petticash->pettyCashReason->expense_sub_category_id;
+//         $shopId = $petticash->shop_id;
+//         $amount = $petticash->amount;
+
+//         if (!isset($reportData['supplier'][$subCategoryId])) {
+//             $reportData['supplier'][$subCategoryId] = [
+//                 'name' => $petticash->pettyCashReason->expenseSubCategory->sub_category,
+//                 'shop_totals' => [],
+//                 'total' => 0,
+//             ];
+//         }
+
+//         if (!isset($reportData['supplier'][$subCategoryId]['shop_totals'][$shopId])) {
+//             $reportData['supplier'][$subCategoryId]['shop_totals'][$shopId] = 0;
+//         }
+
+//         $reportData['supplier'][$subCategoryId]['shop_totals'][$shopId] += $amount;
+//         $reportData['supplier'][$subCategoryId]['total'] += $amount;
+//     }
+
+//     // Process Other Expenses (Income Tax type)
+//     $incomeTaxExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+//         ->whereHas('expenseReason', function ($query) {
+//             $query->where('supplier', 'Income Tax');
+//         })
+//         ->get();
+
+//     foreach ($incomeTaxExpenses as $expense) {
+//         $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+//         $shopId = $expense->shop_id;
+//         $amount = $expense->amount;
+
+//         if (!isset($reportData['income_tax'][$subCategoryId])) {
+//             $reportData['income_tax'][$subCategoryId] = [
+//                 'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+//                 'shop_totals' => [],
+//                 'total' => 0,
+//             ];
+//         }
+
+//         if (!isset($reportData['income_tax'][$subCategoryId]['shop_totals'][$shopId])) {
+//             $reportData['income_tax'][$subCategoryId]['shop_totals'][$shopId] = 0;
+//         }
+
+//         $reportData['income_tax'][$subCategoryId]['shop_totals'][$shopId] += $amount;
+//         $reportData['income_tax'][$subCategoryId]['total'] += $amount;
+//     }
+
+//     // Pass data to the view
+//     return  [
+//         'reportData' => $reportData,
+//         'shops' => $shops,
+//     ];
+// }
+
 public function generateCashMovementotherReport(Request $request)
 {
     // Validate the request
@@ -1510,103 +1802,79 @@ public function generateCashMovementotherReport(Request $request)
     // Retrieve all shops
     $shops = Shop::all();
 
-    // Initialize arrays to store sub-category totals
-    $subCategoryTotals = [];
-
-    // Retrieve other expenses within the specified date range and relevant conditions
-    $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
-        ->whereHas('expenseReason', function ($query) {
-            $query->where('supplier', 'Supplier'); // Filter by 'Supplier' in the supplier column
-        })
-        ->get();
-
-    // Process each other expense record
-    foreach ($otherExpenses as $expense) {
-        $subCategoryId = $expense->expenseReason->expense_sub_category_id;
-        $shopId = $expense->shop_id;
-        $amount = $expense->amount;
-
-        // Initialize sub-category totals if not set
-        if (!isset($subCategoryTotals[$subCategoryId])) {
-            $subCategoryTotals[$subCategoryId] = [
-                'supplier' => 'supplier', // Set supplier type for this sub-category
-                'name' => $expense->expenseReason->expenseSubCategory->sub_category,
-                'shop_totals' => [],
-                'total' => 0,
-            ];
-        }
-
-        // Increment shop-specific sub-category total
-        if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
-            $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
-        }
-
-        $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
-        $subCategoryTotals[$subCategoryId]['total'] += $amount;
-    }
-
-    // Retrieve other expenses for 'Income Tax' within the specified date range
-    $incomeTaxExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
-        ->whereHas('expenseReason', function ($query) {
-            $query->where('supplier', 'Income Tax'); // Filter by 'Income Tax' in the supplier column
-        })
-        ->get();
-
-    // Process 'Income Tax' expense records
-    foreach ($incomeTaxExpenses as $expense) {
-        $subCategoryId = $expense->expenseReason->expense_sub_category_id;
-        $shopId = $expense->shop_id;
-        $amount = $expense->amount;
-
-        // Initialize sub-category totals if not set
-        if (!isset($subCategoryTotals[$subCategoryId])) {
-            $subCategoryTotals[$subCategoryId] = [
-                'supplier' => 'income_tax', // Set supplier type for this sub-category
-                'name' => $expense->expenseReason->expenseSubCategory->sub_category,
-                'shop_totals' => [],
-                'total' => 0,
-            ];
-        }
-
-        // Increment shop-specific sub-category total
-        if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
-            $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
-        }
-
-        $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
-        $subCategoryTotals[$subCategoryId]['total'] += $amount;
-    }
-
-    // Get all expense sub-categories ordered by report_order_number
-    $expenseSubCategories = ExpenseSubCategory::orderBy('report_order_number')->get();
-
-    // Prepare data for the report based on supplier type
+    // Initialize report data arrays for different supplier types
     $reportData = [
         'supplier' => [],   // Array to hold 'Supplier' expense details
         'income_tax' => [], // Array to hold 'Income Tax' expense details
     ];
 
-    foreach ($expenseSubCategories as $subCategory) {
-        $subCategoryId = $subCategory->id;
-        if (isset($subCategoryTotals[$subCategoryId])) {
-            $supplierType = $subCategoryTotals[$subCategoryId]['supplier'];
+    // Process Other Expenses (Supplier type)
+    $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+        ->whereHas('expenseReason', function ($query) {
+            $query->where('supplier', 'Supplier');
+        })
+        ->get();
 
-            // Add data to the appropriate section based on supplier type
-            $reportData[$supplierType][] = [
-                'sub_category' => $subCategoryTotals[$subCategoryId]['name'],
-                'shop_totals' => $subCategoryTotals[$subCategoryId]['shop_totals'],
-                'total' => $subCategoryTotals[$subCategoryId]['total'],
+    foreach ($otherExpenses as $expense) {
+        $supplierType = 'supplier'; // Assuming all OtherExpense entries are considered 'Supplier'
+        $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+        $shopId = $expense->shop_id;
+        $amount = $expense->amount;
+
+        if (!isset($reportData[$supplierType][$subCategoryId])) {
+            $reportData[$supplierType][$subCategoryId] = [
+                'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+                'shop_totals' => [],
+                'total' => 0,
             ];
         }
+
+        if (!isset($reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId])) {
+            $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] = 0;
+        }
+
+        $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] += $amount;
+        $reportData[$supplierType][$subCategoryId]['total'] += $amount;
+    }
+
+    // Process Petticashes (Supplier type)
+    $petticashes = Petticash::whereHas('pettyCashReason', function ($query) {
+        $query->where('supplier', 'Supplier');
+    })
+    ->whereHas('shift', function ($query) use ($request) {
+        $query->whereBetween('start_date', [$request->from_date, $request->to_date]);
+    })
+    ->get();
+
+    foreach ($petticashes as $petticash) {
+        $supplierType = 'supplier'; // Assuming all Petticash entries are considered 'Supplier'
+        $subCategoryId = $petticash->pettyCashReason->expense_sub_category_id;
+        $shopId = $petticash->shop_id;
+        $amount = $petticash->amount;
+
+        if (!isset($reportData[$supplierType][$subCategoryId])) {
+            $reportData[$supplierType][$subCategoryId] = [
+                'name' => $petticash->pettyCashReason->expenseSubCategory->sub_category,
+                'shop_totals' => [],
+                'total' => 0,
+            ];
+        }
+
+        if (!isset($reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId])) {
+            $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] = 0;
+        }
+
+        $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] += $amount;
+        $reportData[$supplierType][$subCategoryId]['total'] += $amount;
     }
 
     // Pass data to the view
     return [
-                'reportData' => $reportData,
-                'shops' => Shop::all(),
-            ];
-               
-            
+        'reportData' => $reportData,
+        'shops' => $shops,
+    ];
 }
+
+
 
 }
