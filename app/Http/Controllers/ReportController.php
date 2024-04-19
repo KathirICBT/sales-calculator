@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\PaymentSale;
 use App\Models\Paymentmethod;
 
+use App\Models\ExpenseSubCategory;
+
 class ReportController extends Controller
 {
     public function showForm()
@@ -1017,6 +1019,113 @@ public function generatePaymentReports(Request $request)
 //     ]);
 // }
 
+// public function generateCashMovementReport(Request $request)
+// {
+//     // Validate the request
+//     $request->validate([
+//         'from_date' => 'required|date',
+//         'to_date' => 'required|date|after_or_equal:from_date',
+//     ]);
+
+//     // Retrieve all departments and shops
+//     $departments = Department::all();
+//     $shops = Shop::all();
+
+//     // Initialize an array to store shop-specific department totals
+//     $shopDepartmentTotals = [];
+
+//     // Iterate over each shop to initialize department totals
+//     foreach ($shops as $shop) {
+//         $shopDepartmentTotals[$shop->id]['normal'] = 0;
+//         $shopDepartmentTotals[$shop->id]['other_taking'] = 0;
+//         $shopDepartmentTotals[$shop->id]['fuel'] = 0;
+//     }
+
+//     // Process each department's sales data within the specified date range
+//     foreach ($departments as $department) {
+//         $departmentId = $department->id;
+
+//         // Retrieve Shift IDs within the Date Range for this department
+//         $shiftIds = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])
+//             ->pluck('id');
+
+//         // Retrieve sales data for this department within the date range
+//         $sales = Sale::whereIn('shift_id', $shiftIds)
+//             ->where('dept_id', $departmentId)
+//             ->get();
+
+//         // Update shop-specific department totals based on sales
+//         foreach ($sales as $sale) {
+//             $amount = $sale->amount;
+//             $departmentType = $this->getDepartmentType($departmentId);
+//             $shopId = $sale->shift->shop_id;
+
+//             // Update the corresponding shop's department total
+//             $shopDepartmentTotals[$shopId][$departmentType] += $amount;
+//         }
+//     }
+
+//     // Initialize an array to store shop-specific other income totals
+//     $shopOtherIncomeTotals = [];
+
+//     // Retrieve other incomes within the specified date range and matching subcategory
+//     $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+//         ->whereHas('otherIncomeDepartment', function ($query) {
+//             $query->where('subcategory', 'Direct Income');
+//         })
+//         ->get();
+
+//     // Process other incomes for each shop
+//     foreach ($otherIncomes as $income) {
+//         $shopId = $income->shop_id;
+//         $amount = $income->amount;
+
+//         if (!isset($shopOtherIncomeTotals[$shopId])) {
+//             $shopOtherIncomeTotals[$shopId] = 0;
+//         }
+
+//         // Add other income amount to the shop's total
+//         $shopOtherIncomeTotals[$shopId] += $amount;
+//     }
+
+//     $LoanTotals = [];
+
+//     // Retrieve other incomes within the specified date range and matching subcategory
+//     $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+//     ->whereHas('otherIncomeDepartment.incomeCategory', function ($query) {
+//         $query->where('category', 'Loan');
+//     })
+//     ->get();
+
+//     // Process other incomes for each shop
+//     foreach ($otherIncomes as $income) {
+//         $shopId = $income->shop_id;
+//         $amount = $income->amount;
+
+//         if (!isset($LoanTotals[$shopId])) {
+//             $LoanTotals[$shopId] = 0;
+//         }
+
+//         // Add other income amount to the shop's total
+//         $LoanTotals[$shopId] += $amount;
+//     }
+
+//     $reportData = $this->generateCashMovementotherReport($request);
+   
+//     // Return the view with required data
+//     return view('pages.reports.cashmovementReport', [
+//         'departments' => $departments,
+//         'from_date' => $request->from_date,
+//         'to_date' => $request->to_date,
+//         'shops' => $shops,
+//         'shopDepartmentTotals' => $shopDepartmentTotals,
+//         'shopOtherIncomeTotals' => $shopOtherIncomeTotals,
+//         'LoanTotals'=>$LoanTotals,
+//         'reportData' => $reportData,
+        
+//     ]);
+// }
+
 public function generateCashMovementReport(Request $request)
 {
     // Validate the request
@@ -1108,19 +1217,38 @@ public function generateCashMovementReport(Request $request)
         $LoanTotals[$shopId] += $amount;
     }
 
-    // Return the view with required data
-    return view('pages.reports.cashmovementReport', [
-        'departments' => $departments,
-        'from_date' => $request->from_date,
-        'to_date' => $request->to_date,
-        'shops' => $shops,
-        'shopDepartmentTotals' => $shopDepartmentTotals,
-        'shopOtherIncomeTotals' => $shopOtherIncomeTotals,
-        'LoanTotals'=>$LoanTotals,
-    ]);
-}
+    // Initialize other report data
+    $otherReportData = $this->generateCashMovementotherReport($request);
 
+   // Retrieve report data from other report method
+   $otherReportData = $this->generateCashMovementotherReport($request);
 
+   // Ensure $otherReportData is an array with expected keys
+   if (is_array($otherReportData) && isset($otherReportData['reportData'], $otherReportData['shops'])) {
+       // Extract reportData and shops from $otherReportData
+       $reportData = $otherReportData['reportData'];
+       $otherShops = $otherReportData['shops'];
+   } else {
+       // Handle error or unexpected response from generateCashMovementotherReport
+       $reportData = [];
+       $otherShops = [];
+   }
+   
+   // Merge other report data with main report data
+   $mergedReportData = [
+       'departments' => $departments,
+       'from_date' => $request->from_date,
+       'to_date' => $request->to_date,
+       'shops' => $shops->merge($otherShops), // Merge main shops with otherShops
+       'shopDepartmentTotals' => $shopDepartmentTotals,
+       'shopOtherIncomeTotals' => $shopOtherIncomeTotals,
+       'LoanTotals' => $LoanTotals,
+       'reportData' => $reportData, // Merge the report data into the main data
+   ];
+   
+   // Return the view with required data
+   return view('pages.reports.cashmovementReport', $mergedReportData);
+}   
 
 
 
@@ -1147,4 +1275,338 @@ public function generateCashMovementReport(Request $request)
 
         return null; // Handle case where department is not found
     }
+
+    // =======================
+    
+public function showCashMoveReportother()
+{
+    $departments = Department::all();
+    $shops = Shop::all(); // Retrieve all shops
+
+    return view('pages.reports.cashMoveOtherExpense', [
+        'departments' => $departments,
+        'shops' => $shops,
+        
+    ]);
+}
+
+
+// public function generateCashMovementotherReport(Request $request)
+// {
+//     // Validate the request
+//     $request->validate([
+//         'from_date' => 'required|date',
+//         'to_date' => 'required|date|after_or_equal:from_date',
+//     ]);
+
+//     // Retrieve all shops
+//     $shops = Shop::all();
+
+//     // Initialize arrays to store sub-category totals
+//     $subCategoryTotals = [];
+
+//     // Retrieve other expenses within the specified date range and relevant conditions
+//     $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+//         ->whereHas('expenseReason', function ($query) {
+//             $query->where('supplier', 'Supplier'); 
+//         })
+//         ->get();
+
+//     // Process each other expense record
+//     foreach ($otherExpenses as $expense) {
+//         $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+//         $shopId = $expense->shop_id;
+//         $amount = $expense->amount;
+
+//         // Initialize sub-category totals if not set
+//         if (!isset($subCategoryTotals[$subCategoryId])) {
+//             $subCategoryTotals[$subCategoryId] = [
+//                 'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+//                 'shop_totals' => [],
+//                 'total' => 0,
+//             ];
+//         }
+
+//         // Increment shop-specific sub-category total
+//         if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
+//             $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
+//         }
+
+//         $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
+//         $subCategoryTotals[$subCategoryId]['total'] += $amount;
+//     }
+
+//     // Get all expense sub-categories
+//     $expenseSubCategories = ExpenseSubCategory::all();
+
+//     // Prepare data for the report
+//     $reportData = [];
+//     foreach ($expenseSubCategories as $subCategory) {
+//         $subCategoryId = $subCategory->id;
+//         if (isset($subCategoryTotals[$subCategoryId])) {
+//             $reportData[] = [
+//                 'sub_category' => $subCategoryTotals[$subCategoryId]['name'],
+//                 'shop_totals' => $subCategoryTotals[$subCategoryId]['shop_totals'],
+//                 'total' => $subCategoryTotals[$subCategoryId]['total'],
+//             ];
+//         }
+//     }
+
+//     // Pass data to the view
+//     return view('pages.reports.cashMoveOtherExpense', [
+//         'reportData' => $reportData,
+//         'shops' => $shops,
+//         'from_date' => $request->from_date,
+//         'to_date' => $request->to_date,
+//     ]);
+       
+// }
+
+// public function generateCashMovementotherReport(Request $request)
+// {
+//     // Validate the request
+//     $request->validate([
+//         'from_date' => 'required|date',
+//         'to_date' => 'required|date|after_or_equal:from_date',
+//     ]);
+
+//     // Retrieve all shops
+//     $shops = Shop::all();
+
+//     // Initialize arrays to store sub-category totals
+//     $subCategoryTotals = [];
+
+//     // Retrieve other expenses within the specified date range and relevant conditions
+//     $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+//         ->whereHas('expenseReason', function ($query) {
+//             $query->where('supplier', '!=', null); // Ensure there is a supplier value
+//         })
+//         ->get();
+
+//     // Process each other expense record
+//     foreach ($otherExpenses as $expense) {
+//         $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+//         $shopId = $expense->shop_id;
+//         $amount = $expense->amount;
+
+//         // Initialize sub-category totals if not set
+//         if (!isset($subCategoryTotals[$subCategoryId])) {
+//             $subCategoryTotals[$subCategoryId] = [
+//                 'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+//                 'shop_totals' => [],
+//                 'total' => 0,
+//             ];
+//         }
+
+//         // Increment shop-specific sub-category total
+//         if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
+//             $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
+//         }
+
+//         $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
+//         $subCategoryTotals[$subCategoryId]['total'] += $amount;
+//     }
+
+//     // Get all expense sub-categories ordered by report_order_number
+//     $expenseSubCategories = ExpenseSubCategory::orderBy('report_order_number')->get();
+
+//     // Prepare data for the report
+//     $reportData = [];
+//     foreach ($expenseSubCategories as $subCategory) {
+//         $subCategoryId = $subCategory->id;
+//         if (isset($subCategoryTotals[$subCategoryId])) {
+//             $reportData[] = [
+//                 'sub_category' => $subCategoryTotals[$subCategoryId]['name'],
+//                 'shop_totals' => $subCategoryTotals[$subCategoryId]['shop_totals'],
+//                 'total' => $subCategoryTotals[$subCategoryId]['total'],
+//             ];
+//         }
+//     }
+
+//     // Pass data to the view
+//     return view('pages.reports.cashMoveOtherExpense', [
+//         'reportData' => $reportData,
+//         'shops' => $shops,
+//         'from_date' => $request->from_date,
+//        'to_date' => $request->to_date,
+//     ]);
+// }
+// public function generateCashMovementotherReport(Request $request)
+// {
+//     // Validate the request
+//     $request->validate([
+//         'from_date' => 'required|date',
+//         'to_date' => 'required|date|after_or_equal:from_date',
+//     ]);
+
+//     // Retrieve all shops
+//     $shops = Shop::all();
+
+//     // Initialize arrays to store sub-category totals
+//     $subCategoryTotals = [];
+
+//     // Retrieve other expenses within the specified date range and relevant conditions
+//     $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+//         ->whereHas('expenseReason', function ($query) {
+//             $query->where('supplier', 'Supplier'); 
+//         })
+//         ->get();
+
+//     // Process each other expense record
+//     foreach ($otherExpenses as $expense) {
+//         $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+//         $shopId = $expense->shop_id;
+//         $amount = $expense->amount;
+
+//         // Initialize sub-category totals if not set
+//         if (!isset($subCategoryTotals[$subCategoryId])) {
+//             $subCategoryTotals[$subCategoryId] = [
+//                 'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+//                 'shop_totals' => [],
+//                 'total' => 0,
+//             ];
+//         }
+
+//         // Increment shop-specific sub-category total
+//         if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
+//             $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
+//         }
+
+//         $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
+//         $subCategoryTotals[$subCategoryId]['total'] += $amount;
+//     }
+
+//     // Get all expense sub-categories ordered by report_order_number
+//     $expenseSubCategories = ExpenseSubCategory::orderBy('report_order_number')->get();
+
+//     // Prepare data for the report
+//     $reportData = [];
+//     foreach ($expenseSubCategories as $subCategory) {
+//         $subCategoryId = $subCategory->id;
+//         if (isset($subCategoryTotals[$subCategoryId])) {
+//             $reportData[] = [
+//                 'sub_category' => $subCategoryTotals[$subCategoryId]['name'],
+//                 'shop_totals' => $subCategoryTotals[$subCategoryId]['shop_totals'],
+//                 'total' => $subCategoryTotals[$subCategoryId]['total'],
+//             ];
+//         }
+//     }
+
+//     // Pass data to the view
+//     return [
+//         'reportData' => $reportData,
+//         'shops' => Shop::all(),
+//     ];
+// }
+
+public function generateCashMovementotherReport(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'from_date' => 'required|date',
+        'to_date' => 'required|date|after_or_equal:from_date',
+    ]);
+
+    // Retrieve all shops
+    $shops = Shop::all();
+
+    // Initialize arrays to store sub-category totals
+    $subCategoryTotals = [];
+
+    // Retrieve other expenses within the specified date range and relevant conditions
+    $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+        ->whereHas('expenseReason', function ($query) {
+            $query->where('supplier', 'Supplier'); // Filter by 'Supplier' in the supplier column
+        })
+        ->get();
+
+    // Process each other expense record
+    foreach ($otherExpenses as $expense) {
+        $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+        $shopId = $expense->shop_id;
+        $amount = $expense->amount;
+
+        // Initialize sub-category totals if not set
+        if (!isset($subCategoryTotals[$subCategoryId])) {
+            $subCategoryTotals[$subCategoryId] = [
+                'supplier' => 'supplier', // Set supplier type for this sub-category
+                'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+                'shop_totals' => [],
+                'total' => 0,
+            ];
+        }
+
+        // Increment shop-specific sub-category total
+        if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
+            $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
+        }
+
+        $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
+        $subCategoryTotals[$subCategoryId]['total'] += $amount;
+    }
+
+    // Retrieve other expenses for 'Income Tax' within the specified date range
+    $incomeTaxExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+        ->whereHas('expenseReason', function ($query) {
+            $query->where('supplier', 'Income Tax'); // Filter by 'Income Tax' in the supplier column
+        })
+        ->get();
+
+    // Process 'Income Tax' expense records
+    foreach ($incomeTaxExpenses as $expense) {
+        $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+        $shopId = $expense->shop_id;
+        $amount = $expense->amount;
+
+        // Initialize sub-category totals if not set
+        if (!isset($subCategoryTotals[$subCategoryId])) {
+            $subCategoryTotals[$subCategoryId] = [
+                'supplier' => 'income_tax', // Set supplier type for this sub-category
+                'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+                'shop_totals' => [],
+                'total' => 0,
+            ];
+        }
+
+        // Increment shop-specific sub-category total
+        if (!isset($subCategoryTotals[$subCategoryId]['shop_totals'][$shopId])) {
+            $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] = 0;
+        }
+
+        $subCategoryTotals[$subCategoryId]['shop_totals'][$shopId] += $amount;
+        $subCategoryTotals[$subCategoryId]['total'] += $amount;
+    }
+
+    // Get all expense sub-categories ordered by report_order_number
+    $expenseSubCategories = ExpenseSubCategory::orderBy('report_order_number')->get();
+
+    // Prepare data for the report based on supplier type
+    $reportData = [
+        'supplier' => [],   // Array to hold 'Supplier' expense details
+        'income_tax' => [], // Array to hold 'Income Tax' expense details
+    ];
+
+    foreach ($expenseSubCategories as $subCategory) {
+        $subCategoryId = $subCategory->id;
+        if (isset($subCategoryTotals[$subCategoryId])) {
+            $supplierType = $subCategoryTotals[$subCategoryId]['supplier'];
+
+            // Add data to the appropriate section based on supplier type
+            $reportData[$supplierType][] = [
+                'sub_category' => $subCategoryTotals[$subCategoryId]['name'],
+                'shop_totals' => $subCategoryTotals[$subCategoryId]['shop_totals'],
+                'total' => $subCategoryTotals[$subCategoryId]['total'],
+            ];
+        }
+    }
+
+    // Pass data to the view
+    return [
+                'reportData' => $reportData,
+                'shops' => Shop::all(),
+            ];
+               
+            
+}
+
 }

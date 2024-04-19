@@ -40,7 +40,7 @@
                     No shops found.
                 </div>
             @else
-                <table class="table table-bordered">
+                {{-- <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Department Type</th>
@@ -92,7 +92,102 @@
                         </tr>
                        
                     </tbody>
+                </table> --}}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Cash In Flows</th>
+                            @foreach ($shops as $shop)
+                                <th>{{ $shop->name }}</th>
+                            @endforeach
+                            <th>Total</th> <!-- New Total Column -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (['normal', 'other_taking', 'fuel'] as $departmentType)
+                            <tr>
+                                <td>{{ ucfirst(str_replace('_', ' ', $departmentType)) }} Department Total</td>
+                                @php
+                                    $departmentTypeTotal = 0;
+                                @endphp
+                                @foreach ($shops as $shop)
+                                    <td>{{ $shopDepartmentTotals[$shop->id][$departmentType] ?? 0 }}</td>
+                                    @php
+                                        $departmentTypeTotal += $shopDepartmentTotals[$shop->id][$departmentType] ?? 0;
+                                    @endphp
+                                @endforeach
+                                <td>{{ $departmentTypeTotal }}</td> 
+                            </tr>
+                        @endforeach
+                        <tr>
+                            <td>Loan</td>
+                            @php
+                                $loanTotalAll = 0;
+                            @endphp
+                            @foreach ($shops as $shop)
+                                <td>{{ $LoanTotals[$shop->id] ?? 0 }}</td>
+                                @php
+                                    $loanTotalAll += $LoanTotals[$shop->id] ?? 0;
+                                @endphp
+                            @endforeach
+                            <td>{{ $loanTotalAll }}</td>
+                        </tr>
+                        <tr>
+                            <td>Other Incomes</td>
+                            @php
+                                $otherIncomesTotalAll = 0;
+                            @endphp
+                            @foreach ($shops as $shop)
+                                <td>{{ $shopOtherIncomeTotals[$shop->id] ?? 0 }}</td>
+                                @php
+                                    $otherIncomesTotalAll += $shopOtherIncomeTotals[$shop->id] ?? 0;
+                                @endphp
+                            @endforeach
+                            <td>{{ $otherIncomesTotalAll }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total of All</strong></td>
+                            @foreach ($shops as $shop)
+                                <td>&nbsp;</td> <!-- Leave blank cells for individual shop totals -->
+                            @endforeach
+                            <td>
+                                <strong>
+                                    @php
+                                        $grandTotal = $otherIncomesTotalAll + $loanTotalAll + $departmentTypeTotal;
+                                    @endphp
+                                    {{ $grandTotal }}
+                                </strong>
+                            </td>
+                        </tr>
+                        <tr><td></td></tr>
+                        <tr><th>Cash Out Flows</th></tr>
+                        @foreach ($reportData['supplier'] as $item)
+                            <tr>
+                                <td>{{ $item['sub_category'] }}</td>
+                                @foreach ($shops as $shop)
+                                    <td>{{ $item['shop_totals'][$shop->id] ?? 0 }}</td>
+                                @endforeach
+                                <td>{{ $item['total'] }}</td>
+                            </tr>
+                            @endforeach
+
+                            <!-- Display rows for 'Income Tax' expenses -->
+                            <tr><th>Income Tax</th></tr>
+                            @foreach ($reportData['income_tax'] as $item)
+                            <tr>
+                                <td>{{ $item['sub_category'] }}</td>
+                                @foreach ($shops as $shop)
+                                    <td>{{ $item['shop_totals'][$shop->id] ?? 0 }}</td>
+                                @endforeach
+                                <td>{{ $item['total'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
+                
+                
+         
+                
             @endif
 
         </div>

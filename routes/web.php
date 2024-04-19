@@ -514,3 +514,4 @@ Route::get('/reports/cashMove', [ReportController::class, 'showCashMoveReport'])
 // Route for processing the report form submission and displaying the report
 Route::post('/reports/cashMove', [ReportController::class, 'generateCashMovementReport'])->name('reports.generatecashMove');
 
+
