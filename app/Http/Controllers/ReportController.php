@@ -11,6 +11,8 @@ use App\Models\OtherExpense;
 use App\Models\Department;
 use App\Models\OtherIncome;
 use App\Models\OtherIncomeDepartment;
+use Illuminate\Support\Facades\Validator;
+
 
 use App\Models\Sale; 
 use Illuminate\Http\Request;
@@ -1217,33 +1219,66 @@ public function generateCashMovementReport(Request $request)
         $LoanTotals[$shopId] += $amount;
     }
 
+    //ADITIONAL CAPITAL ======================================================
+
+    $additionalCapitalTotals = [];
+
+    // Initialize $additionalCapitalTotals with shop IDs as keys
+    foreach ($shops as $shop) {
+        $additionalCapitalTotals[$shop->id] = 0;
+    }
+
+    // Retrieve other incomes within the specified date range and matching subcategory
+    $additionalCapitals = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+        ->whereHas('otherIncomeDepartment.incomeCategory', function ($query) {
+            $query->where('category', 'Additional Capital');
+        })
+        ->get();
+
+    // Process other incomes for each shop
+    foreach ($additionalCapitals as $income) {
+        $shopId = $income->shop_id;
+        $amount = $income->amount;
+
+        // Add other income amount to the shop's total
+        $additionalCapitalTotals[$shopId] += $amount;
+    }
+
+//==============================================================================
+
     // Initialize other report data
-    $otherReportData = $this->generateCashMovementotherReport($request);
+    //$otherReportData = $this->generateCashMovementotherReport($request);
 
    // Retrieve report data from other report method
-   $otherReportData = $this->generateCashMovementotherReport($request);
+   $report = $this->generateCashMovementotherReport($request);
+   $ownerCashMovement = $this->ownerCashMovementotherReport($request);
+
+   //dd($report);
 
    // Ensure $otherReportData is an array with expected keys
-   if (is_array($otherReportData) && isset($otherReportData['reportData'], $otherReportData['shops'])) {
-       // Extract reportData and shops from $otherReportData
-       $reportData = $otherReportData['reportData'];
-       $otherShops = $otherReportData['shops'];
-   } else {
-       // Handle error or unexpected response from generateCashMovementotherReport
-       $reportData = [];
-       $otherShops = [];
-   }
+//    if (is_array($otherReportData) && isset($otherReportData['reportData'], $otherReportData['shops'])) {
+//        // Extract reportData and shops from $otherReportData
+//        $reportData = $otherReportData['reportData'];
+//        $otherShops = $otherReportData['shops'];
+//    } else {
+//        // Handle error or unexpected response from generateCashMovementotherReport
+//        $reportData = [];
+//        $otherShops = [];
+//    }
    
    // Merge other report data with main report data
    $mergedReportData = [
        'departments' => $departments,
        'from_date' => $request->from_date,
        'to_date' => $request->to_date,
-       'shops' => $shops->merge($otherShops), // Merge main shops with otherShops
+       //'shops' => $shops->merge($otherShops), // Merge main shops with otherShops
+       'shops' => Shop::all(),
        'shopDepartmentTotals' => $shopDepartmentTotals,
        'shopOtherIncomeTotals' => $shopOtherIncomeTotals,
+       'ownerCashMovement' => $ownerCashMovement,
        'LoanTotals' => $LoanTotals,
-       'reportData' => $reportData, // Merge the report data into the main data
+       'additionalCapitalTotals' => $additionalCapitalTotals,
+       'report' => $report, // Merge the report data into the main data
    ];
    
    // Return the view with required data
@@ -1791,90 +1826,237 @@ public function showCashMoveReportother()
 //     ];
 // }
 
-public function generateCashMovementotherReport(Request $request)
-{
-    // Validate the request
-    $request->validate([
-        'from_date' => 'required|date',
-        'to_date' => 'required|date|after_or_equal:from_date',
-    ]);
 
-    // Retrieve all shops
-    $shops = Shop::all();
+// AK ===============
+// public function generateCashMovementotherReport(Request $request)
+// {
+//     // Validate the request
+//     $request->validate([
+//         'from_date' => 'required|date',
+//         'to_date' => 'required|date|after_or_equal:from_date',
+//     ]);
 
-    // Initialize report data arrays for different supplier types
-    $reportData = [
-        'supplier' => [],   // Array to hold 'Supplier' expense details
-        'income_tax' => [], // Array to hold 'Income Tax' expense details
-    ];
+//     // Retrieve all shops
+//     $shops = Shop::all();
 
-    // Process Other Expenses (Supplier type)
-    $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
-        ->whereHas('expenseReason', function ($query) {
-            $query->where('supplier', 'Supplier');
-        })
-        ->get();
+//     // Initialize report data arrays for different supplier types
+//     $reportData = [
+//         'supplier' => [],   // Array to hold 'Supplier' expense details
+//         'income_tax' => [], // Array to hold 'Income Tax' expense details
+//     ];
 
-    foreach ($otherExpenses as $expense) {
-        $supplierType = 'supplier'; // Assuming all OtherExpense entries are considered 'Supplier'
-        $subCategoryId = $expense->expenseReason->expense_sub_category_id;
-        $shopId = $expense->shop_id;
-        $amount = $expense->amount;
+//     // Process Other Expenses (Supplier type)
+//     $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
+//         ->whereHas('expenseReason', function ($query) {
+//             $query->where('supplier', 'Supplier');
+//         })
+//         ->get();
 
-        if (!isset($reportData[$supplierType][$subCategoryId])) {
-            $reportData[$supplierType][$subCategoryId] = [
-                'name' => $expense->expenseReason->expenseSubCategory->sub_category,
-                'shop_totals' => [],
-                'total' => 0,
-            ];
+//     foreach ($otherExpenses as $expense) {
+//         $supplierType = 'supplier'; // Assuming all OtherExpense entries are considered 'Supplier'
+//         $subCategoryId = $expense->expenseReason->expense_sub_category_id;
+//         $shopId = $expense->shop_id;
+//         $amount = $expense->amount;
+
+//         if (!isset($reportData[$supplierType][$subCategoryId])) {
+//             $reportData[$supplierType][$subCategoryId] = [
+//                 'name' => $expense->expenseReason->expenseSubCategory->sub_category,
+//                 'shop_totals' => [],
+//                 'total' => 0,
+//             ];
+//         }
+
+//         if (!isset($reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId])) {
+//             $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] = 0;
+//         }
+
+//         $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] += $amount;
+//         $reportData[$supplierType][$subCategoryId]['total'] += $amount;
+//     }
+
+//     // Process Petticashes (Supplier type)
+//     $petticashes = Petticash::whereHas('pettyCashReason', function ($query) {
+//         $query->where('supplier', 'Supplier');
+//     })
+//     ->whereHas('shift', function ($query) use ($request) {
+//         $query->whereBetween('start_date', [$request->from_date, $request->to_date]);
+//     })
+//     ->get();
+
+//     foreach ($petticashes as $petticash) {
+//         $supplierType = 'supplier'; // Assuming all Petticash entries are considered 'Supplier'
+//         $subCategoryId = $petticash->pettyCashReason->expense_sub_category_id;
+//         $shopId = $petticash->shop_id;
+//         $amount = $petticash->amount;
+
+//         if (!isset($reportData[$supplierType][$subCategoryId])) {
+//             $reportData[$supplierType][$subCategoryId] = [
+//                 'name' => $petticash->pettyCashReason->expenseSubCategory->sub_category,
+//                 'shop_totals' => [],
+//                 'total' => 0,
+//             ];
+//         }
+
+//         if (!isset($reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId])) {
+//             $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] = 0;
+//         }
+
+//         $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] += $amount;
+//         $reportData[$supplierType][$subCategoryId]['total'] += $amount;
+//     }
+
+//     // Pass data to the view
+//     return [
+//         'reportData' => $reportData,
+//         'shops' => $shops,
+//     ];
+// }
+
+//AK =============
+
+
+    //CASH OUTFLOWS =================================================================
+
+    public function generateCashMovementotherReport(Request $request)
+    {        
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date|after_or_equal:from_date',
+        ]);
+        
+        $fromDate = $request->input('from_date');
+        $toDate = $request->input('to_date');      
+
+        $expenses = OtherExpense::with('expenseReason.expenseSubCategory')
+            ->whereHas('expenseReason.expenseSubCategory')
+            ->where(function ($query) {
+                $query->whereHas('expenseReason', function ($subQuery) {
+                    $subQuery->where('supplier', 'Supplier');
+                })
+                ->orWhereHas('expenseReason', function ($subQuery) {
+                    $subQuery->where('supplier', 'Income Tax');
+                });
+            })
+            ->whereBetween('date', [$fromDate, $toDate])
+            ->get();
+
+        $pettyCash = Petticash::with(['shift', 'pettyCashReason.expenseSubCategory'])
+            ->whereHas('shift', function ($query) use ($fromDate, $toDate) {
+                $query->whereBetween('start_date', [$fromDate, $toDate]);
+            })
+            ->whereHas('pettyCashReason.expenseSubCategory')
+            ->where(function ($query) {
+                $query->whereHas('pettyCashReason', function ($subQuery) {
+                    $subQuery->where('supplier', 'Supplier');
+                })
+                ->orWhereHas('pettyCashReason', function ($subQuery) {
+                    $subQuery->where('supplier', 'Income Tax');
+                });
+            })
+            ->get();
+        
+        $data = $expenses->merge($pettyCash);
+        
+        $report = [];
+        
+        foreach ($data as $item) {
+            if ($item instanceof OtherExpense) {
+                $shopId = $item->shop_id;
+                $subCategory = $item->expenseReason->expenseSubCategory->sub_category;
+                $supplier = $item->expenseReason->supplier;
+            } elseif ($item instanceof Petticash) {
+                $shopId = $item->shift->shop_id;
+                $subCategory = $item->pettyCashReason->expenseSubCategory->sub_category;
+                $supplier = $item->pettyCashReason->supplier;
+            }
+            
+            if (!isset($report[$subCategory])) {
+                $report[$subCategory] = ['supplier' => $supplier, 'data' => []];
+            }
+            
+            if (!isset($report[$subCategory]['data'][$shopId])) {
+                $report[$subCategory]['data'][$shopId] = 0;
+            }
+
+            $report[$subCategory]['data'][$shopId] += $item->amount;
         }
-
-        if (!isset($reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId])) {
-            $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] = 0;
+        
+        $reportKeys = array_keys($report);
+        $sortedReportKeys = ExpenseSubCategory::whereIn('sub_category', $reportKeys)
+            ->orderByRaw('report_order_number IS NULL ASC, report_order_number ASC')
+            ->pluck('sub_category')
+            ->toArray();
+        $sortedReport = [];
+        foreach ($sortedReportKeys as $key) {
+            $sortedReport[$key] = $report[$key];
         }
+        
+        return $sortedReport;
+    }    
+    
+    //OWNER CASH MOVEMENT =================================================================
 
-        $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] += $amount;
-        $reportData[$supplierType][$subCategoryId]['total'] += $amount;
+    public function ownerCashMovementotherReport(Request $request)
+    {        
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date|after_or_equal:from_date',
+        ]);
+        
+        $fromDate = $request->input('from_date');
+        $toDate = $request->input('to_date'); 
+
+        $expenses = OtherExpense::with('expenseReason.expenseSubCategory')
+            ->whereHas('expenseReason.expenseSubCategory')
+            ->where(function ($query) {
+                $query->whereHas('expenseReason', function ($subQuery) {
+                    $subQuery->where('supplier', 'Owner');
+                });
+            })
+            ->whereBetween('date', [$fromDate, $toDate])
+            ->get();
+
+        $pettyCash = Petticash::with(['shift', 'pettyCashReason.expenseSubCategory'])
+            ->whereHas('shift', function ($query) use ($fromDate, $toDate) {
+                $query->whereBetween('start_date', [$fromDate, $toDate]);
+            })
+            ->whereHas('pettyCashReason.expenseSubCategory')
+            ->where(function ($query) {
+                $query->whereHas('pettyCashReason', function ($subQuery) {
+                    $subQuery->where('supplier', 'Owner');
+                });
+            })
+            ->get();
+
+        $data = $expenses->merge($pettyCash);
+        
+        $report = [];
+        
+        foreach ($data as $item) {
+            if ($item instanceof OtherExpense) {
+                $shopId = $item->shop_id;
+                $subCategory = $item->expenseReason->expenseSubCategory->sub_category;
+                $supplier = $item->expenseReason->supplier;
+            } elseif ($item instanceof Petticash) {
+                $shopId = $item->shift->shop_id;
+                $subCategory = $item->pettyCashReason->expenseSubCategory->sub_category;
+                $supplier = $item->pettyCashReason->supplier;
+            }
+            
+            if (!isset($report[$subCategory])) {
+                $report[$subCategory] = ['supplier' => $supplier, 'data' => []];
+            }
+            
+            if (!isset($report[$subCategory]['data'][$shopId])) {
+                $report[$subCategory]['data'][$shopId] = 0;
+            }
+
+            $report[$subCategory]['data'][$shopId] += $item->amount;
+        }
+        //dd($report);
+        return $report;
     }
 
-    // Process Petticashes (Supplier type)
-    $petticashes = Petticash::whereHas('pettyCashReason', function ($query) {
-        $query->where('supplier', 'Supplier');
-    })
-    ->whereHas('shift', function ($query) use ($request) {
-        $query->whereBetween('start_date', [$request->from_date, $request->to_date]);
-    })
-    ->get();
-
-    foreach ($petticashes as $petticash) {
-        $supplierType = 'supplier'; // Assuming all Petticash entries are considered 'Supplier'
-        $subCategoryId = $petticash->pettyCashReason->expense_sub_category_id;
-        $shopId = $petticash->shop_id;
-        $amount = $petticash->amount;
-
-        if (!isset($reportData[$supplierType][$subCategoryId])) {
-            $reportData[$supplierType][$subCategoryId] = [
-                'name' => $petticash->pettyCashReason->expenseSubCategory->sub_category,
-                'shop_totals' => [],
-                'total' => 0,
-            ];
-        }
-
-        if (!isset($reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId])) {
-            $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] = 0;
-        }
-
-        $reportData[$supplierType][$subCategoryId]['shop_totals'][$shopId] += $amount;
-        $reportData[$supplierType][$subCategoryId]['total'] += $amount;
-    }
-
-    // Pass data to the view
-    return [
-        'reportData' => $reportData,
-        'shops' => $shops,
-    ];
-}
-
-
+    //=====================================================================================
 
 }

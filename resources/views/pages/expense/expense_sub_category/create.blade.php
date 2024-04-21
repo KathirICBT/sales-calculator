@@ -182,7 +182,7 @@
 
                     <div class="form-group">
                         <label for="report_order_number">Report Order Number:</label>
-                        <input type="text" class="form-control" id="report_order_number" name="report_order_number" required>
+                        <input type="text" class="form-control" id="report_order_number" name="report_order_number">
                     </div>
 
 
