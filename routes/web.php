@@ -515,3 +515,7 @@ Route::get('/reports/cashMove', [ReportController::class, 'showCashMoveReport'])
 Route::post('/reports/cashMove', [ReportController::class, 'generateCashMovementReport'])->name('reports.generatecashMove');
 
 
+Route::get('/reports/incomExpo', [ReportController::class, 'showIncomeExpoReport'])->name('reports.IncomeExpo');
+Route::post('/reports/incomExpo', [ReportController::class, 'generateIncomeExportReport'])->name('reports.generateIncomeExpo');
+
+

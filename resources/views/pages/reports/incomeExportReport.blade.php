@@ -9,8 +9,8 @@
         <div class="col-12">
             <div class="card border-0">
                 <div class="card-body">
-                    <h4 class="card-title">Cash Movement Details Report</h4>
-                    <form method="POST" action="{{ route('reports.generatecashMove') }}" class="row g-3">
+                    <h4 class="card-title">Income Export Details Report</h4>
+                    <form method="POST" action="{{ route('reports.generateIncomeExpo') }}" class="row g-3">
                         @csrf
                         <div class="col-md-5 mt-3">
                             <label for="from_date" class="form-label">From Date:</label>
@@ -126,13 +126,67 @@
                         <td><strong style="color:coral">{{ $total }}</strong></td>
                         @endforeach
                     </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+
+                   
+                    <tr>
+                        <td>Purchase Total</td>
+                        @php
+                        $purchaseTotalAll = 0;
+                        $purchaseColumnTotals = array_fill(0, count($shops), 0);
+                        @endphp
+                        @foreach ($report as $subCategory => $subCategoryData)
+                        @if ($subCategory === 'Purchase'|| $subCategory === 'Purchases')
+                                @foreach ($shops as $index => $shop)
+                                    @php
+                                    $value = $subCategoryData['data'][$shop->id] ?? 0;
+                                    $purchaseTotalAll += $value;
+                                    $purchaseColumnTotals[$index] += $value;
+                                    @endphp
+                                    <td>{{ $value }}</td>
+                                @endforeach
+                            @endif
+                        @endforeach
+                        <td>{{ $purchaseTotalAll }}</td>
+                    </tr>
                     
+                    <tr>
+                        <td><strong style="color:coral">Total Purchase</strong></td>
+                        @foreach ($purchaseColumnTotals as $total)
+                            <td><strong style="color:coral">{{ $total }}</strong></td>
+                        @endforeach
+                        <td><strong style="color:coral">{{ $purchaseTotalAll }}</strong></td>
+                    </tr>
+                    
+                    
+                    
+                    <tr>
+                        <td><strong style="color: coral">Gross Profit</strong></td>
+                        @php
+                            $grossProfitColumnTotal = 0;
+                        @endphp
+                        @foreach ($shops as $index => $shop)
+                            @php
+                                $netCashFlow = $columnTotals[$index] - $purchaseColumnTotals[$index];
+                                $grossProfitColumnTotal += $netCashFlow;
+                            @endphp
+                            <td><strong style="color: coral">{{ $netCashFlow }}</strong></td>
+                        @endforeach
+                        <td><strong style="color: coral">{{ $grossProfitColumnTotal }}</strong></td>
+                    </tr>
+                    
+                    
+                    
+                    
+
                     <tr>
                         <td>&nbsp;</td>
                     </tr>
 
                     <tr>
-                        <th style="color:forestgreen">Cash Out Flows</th>
+                        <th style="color:forestgreen">Expenses</th>
                     </tr>
 
                     @php
@@ -140,7 +194,7 @@
                     @endphp
 
                     @foreach ($report as $subCategory => $subCategoryData)
-                    @if ($subCategoryData['supplier'] !== 'Income Tax')
+                    @if(($subCategoryData['supplier'] !== 'Income Tax')&&(!($subCategory === 'Purchase'|| $subCategory === 'Purchases')))
                     <tr>
                         <td>{{ $subCategory }}</td>
                         @php
@@ -157,6 +211,57 @@
                     </tr>
                     @endif
                     @endforeach
+
+                    
+
+                    <tr>
+                        <td><strong style="color: coral">Total Expenses</strong></td>
+                        @php
+                            $totalExpenses = 0;
+                        @endphp
+                        @foreach ($shops as $index => $shop)
+                            @php
+                                $expenseValue = $outflowColumnTotals[$index];
+                                $totalExpenses += $expenseValue;
+                            @endphp
+                            <td><strong style="color: coral">{{ $expenseValue }}</strong></td>
+                        @endforeach
+                        <td><strong style="color: coral">{{ $totalExpenses }}</strong></td>
+                    </tr>
+                    
+                    
+                    
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: coral">Profit</strong></td>
+                        @php
+                            $totalProfit = 0;
+                        @endphp
+                        @foreach ($shops as $index => $shop)
+                            @php
+                                $grossProfit = $columnTotals[$index] - $purchaseColumnTotals[$index];
+                                $expenses = $outflowColumnTotals[$index];
+                                $netProfit = $grossProfit - $expenses;
+                                $totalProfit += $netProfit;
+                            @endphp
+                            <td><strong style="color: coral">{{ $netProfit }}</strong></td>
+                        @endforeach
+                        <td><strong style="color: coral">{{ $totalProfit }}</strong></td>
+                    </tr>
+                    
+                    
+                    
+
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+
+
+                    <tr>
+                        <th style="color:forestgreen">Income Tax</th>
+                    </tr>
 
                     @foreach ($report as $subCategory => $subCategoryData)
                     @if ($subCategoryData['supplier'] === 'Income Tax')
@@ -179,31 +284,9 @@
                     </tr>
                     @endif
                     @endforeach
-
-                    <tr>
-                        <td><strong style="color:coral">Total</strong></td>
-                        @foreach ($outflowColumnTotals as $total)
-                        <td><strong style="color:coral">{{ $total }}</strong></td>
-                        @endforeach
-                    </tr>
-
                     <tr>
                         <td>&nbsp;</td>
                     </tr>
-                    <tr>
-                        <td><strong style="color:coral">Net cash Flow</strong></td>
-                        @foreach ($columnTotals as $key => $total)
-                        @php
-                        $outflowTotal = $outflowColumnTotals[$key];
-                        @endphp
-                        <td><strong style="color:coral">{{ $total - $outflowTotal }}</strong></td>
-                        @endforeach
-                    </tr>
-
-                    <tr>
-                        <td>&nbsp;</td>
-                    </tr>
-
                     {{-- Aditional Capital --}}
 
                     <tr>

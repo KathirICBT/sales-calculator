@@ -2059,4 +2059,173 @@ public function showCashMoveReportother()
 
     //=====================================================================================
 
+    public function generateIncomeExportReport(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date|after_or_equal:from_date',
+        ]);
+
+        // Retrieve all departments and shops
+        $departments = Department::all();
+        $shops = Shop::all();
+
+        // Initialize an array to store shop-specific department totals
+        $shopDepartmentTotals = [];
+
+        // Iterate over each shop to initialize department totals
+        foreach ($shops as $shop) {
+            $shopDepartmentTotals[$shop->id]['normal'] = 0;
+            $shopDepartmentTotals[$shop->id]['other_taking'] = 0;
+            $shopDepartmentTotals[$shop->id]['fuel'] = 0;
+        }
+
+        // Process each department's sales data within the specified date range
+        foreach ($departments as $department) {
+            $departmentId = $department->id;
+
+            // Retrieve Shift IDs within the Date Range for this department
+            $shiftIds = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])
+                ->pluck('id');
+
+            // Retrieve sales data for this department within the date range
+            $sales = Sale::whereIn('shift_id', $shiftIds)
+                ->where('dept_id', $departmentId)
+                ->get();
+
+            // Update shop-specific department totals based on sales
+            foreach ($sales as $sale) {
+                $amount = $sale->amount;
+                $departmentType = $this->getDepartmentType($departmentId);
+                $shopId = $sale->shift->shop_id;
+
+                // Update the corresponding shop's department total
+                $shopDepartmentTotals[$shopId][$departmentType] += $amount;
+            }
+        }
+
+        // Initialize an array to store shop-specific other income totals
+        $shopOtherIncomeTotals = [];
+
+        // Retrieve other incomes within the specified date range and matching subcategory
+        $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+            ->whereHas('otherIncomeDepartment', function ($query) {
+                $query->where('subcategory', 'Direct Income');
+            })
+            ->get();
+
+        // Process other incomes for each shop
+        foreach ($otherIncomes as $income) {
+            $shopId = $income->shop_id;
+            $amount = $income->amount;
+
+            if (!isset($shopOtherIncomeTotals[$shopId])) {
+                $shopOtherIncomeTotals[$shopId] = 0;
+            }
+
+            // Add other income amount to the shop's total
+            $shopOtherIncomeTotals[$shopId] += $amount;
+        }
+
+        $LoanTotals = [];
+
+        // Retrieve other incomes within the specified date range and matching subcategory
+        $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+        ->whereHas('otherIncomeDepartment.incomeCategory', function ($query) {
+            $query->where('category', 'Loan');
+        })
+        ->get();
+
+        // Process other incomes for each shop
+        foreach ($otherIncomes as $income) {
+            $shopId = $income->shop_id;
+            $amount = $income->amount;
+
+            if (!isset($LoanTotals[$shopId])) {
+                $LoanTotals[$shopId] = 0;
+            }
+
+            // Add other income amount to the shop's total
+            $LoanTotals[$shopId] += $amount;
+        }
+
+        //ADITIONAL CAPITAL ======================================================
+
+        $additionalCapitalTotals = [];
+
+        // Initialize $additionalCapitalTotals with shop IDs as keys
+        foreach ($shops as $shop) {
+            $additionalCapitalTotals[$shop->id] = 0;
+        }
+
+        // Retrieve other incomes within the specified date range and matching subcategory
+        $additionalCapitals = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+            ->whereHas('otherIncomeDepartment.incomeCategory', function ($query) {
+                $query->where('category', 'Additional Capital');
+            })
+            ->get();
+
+        // Process other incomes for each shop
+        foreach ($additionalCapitals as $income) {
+            $shopId = $income->shop_id;
+            $amount = $income->amount;
+
+            // Add other income amount to the shop's total
+            $additionalCapitalTotals[$shopId] += $amount;
+        }
+
+    //==============================================================================
+
+        // Initialize other report data
+        //$otherReportData = $this->generateCashMovementotherReport($request);
+
+    // Retrieve report data from other report method
+    $report = $this->generateCashMovementotherReport($request);
+    $ownerCashMovement = $this->ownerCashMovementotherReport($request);
+
+    //dd($report);
+
+    // Ensure $otherReportData is an array with expected keys
+    //    if (is_array($otherReportData) && isset($otherReportData['reportData'], $otherReportData['shops'])) {
+    //        // Extract reportData and shops from $otherReportData
+    //        $reportData = $otherReportData['reportData'];
+    //        $otherShops = $otherReportData['shops'];
+    //    } else {
+    //        // Handle error or unexpected response from generateCashMovementotherReport
+    //        $reportData = [];
+    //        $otherShops = [];
+    //    }
+    
+    // Merge other report data with main report data
+    $mergedReportData = [
+        'departments' => $departments,
+        'from_date' => $request->from_date,
+        'to_date' => $request->to_date,
+        //'shops' => $shops->merge($otherShops), // Merge main shops with otherShops
+        'shops' => Shop::all(),
+        'shopDepartmentTotals' => $shopDepartmentTotals,
+        'shopOtherIncomeTotals' => $shopOtherIncomeTotals,
+        'ownerCashMovement' => $ownerCashMovement,
+        'LoanTotals' => $LoanTotals,
+        'additionalCapitalTotals' => $additionalCapitalTotals,
+        'report' => $report, // Merge the report data into the main data
+    ];
+    
+    // Return the view with required data
+    return view('pages.reports.incomeExportReport', $mergedReportData);
+    }   
+
+    
+    public function showIncomeExpoReport()
+    {
+        $departments = Department::all();
+        $shops = Shop::all(); // Retrieve all shops
+
+        return view('pages.reports.incomeExportReport', [
+            'departments' => $departments,
+            'shops' => $shops,
+            
+        ]);
+    }
 }
