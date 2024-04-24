@@ -2108,12 +2108,14 @@ public function showCashMoveReportother()
         // Initialize an array to store shop-specific other income totals
         $shopOtherIncomeTotals = [];
 
-        // Retrieve other incomes within the specified date range and matching subcategory
-        $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
-            ->whereHas('otherIncomeDepartment', function ($query) {
-                $query->where('subcategory', 'Direct Income');
-            })
-            ->get();
+            $subcategories = ['Direct Income', 'Calculated Income'];
+
+            // Retrieve other incomes that fall within the specified date range and belong to the specified subcategories
+            $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+                ->whereHas('otherIncomeDepartment', function ($query) use ($subcategories) {
+                    $query->whereIn('subcategory', $subcategories);
+                })
+                ->get();
 
         // Process other incomes for each shop
         foreach ($otherIncomes as $income) {

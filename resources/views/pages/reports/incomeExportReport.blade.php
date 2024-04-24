@@ -81,45 +81,11 @@
                         @endphp
                     </tr>
                     @endforeach
+                    
 
-                    <tr>
-                        <td>Loan</td>
-                        @php
-                        $loanTotalAll = 0;
-                        @endphp
-                        @foreach ($shops as $index => $shop)
-                        @php
-                        $value = $LoanTotals[$shop->id] ?? 0;
-                        $loanTotalAll += $value;
-                        $columnTotals[$index] += $value;
-                        @endphp
-                        <td>{{ $value }}</td>
-                        @endforeach
-                        <td>{{ $loanTotalAll }}</td>
-                        @php
-                        $columnTotals[count($shops)] += $loanTotalAll;
-                        @endphp
-                    </tr>
+                
 
-                    <tr>
-                        <td>Other Incomes</td>
-                        @php
-                        $otherIncomesTotalAll = 0;
-                        @endphp
-                        @foreach ($shops as $index => $shop)
-                        @php
-                        $value = $shopOtherIncomeTotals[$shop->id] ?? 0;
-                        $otherIncomesTotalAll += $value;
-                        $columnTotals[$index] += $value;
-                        @endphp
-                        <td>{{ $value }}</td>
-                        @endforeach
-                        <td>{{ $otherIncomesTotalAll }}</td>
-                        @php
-                        $columnTotals[count($shops)] += $otherIncomesTotalAll;
-                        @endphp
-                    </tr>
-
+                   
                     <tr>
                         <td><strong style="color:coral">Total Cash Inflow</strong></td>
                         @foreach ($columnTotals as $total)
@@ -159,7 +125,9 @@
                         @endforeach
                         <td><strong style="color:coral">{{ $purchaseTotalAll }}</strong></td>
                     </tr>
-                    
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
                     
                     
                     <tr>
@@ -250,8 +218,40 @@
                         @endforeach
                         <td><strong style="color: coral">{{ $totalProfit }}</strong></td>
                     </tr>
-                    
-                    
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="{{ count($shops) + 2 }}" style="color:forestgreen">Other Incomes</td>
+                    </tr>
+                    <tr>
+                        <td>Other Incomes Total</td>
+                        @php
+                        $otherIncomesTotalAll = 0;
+                        @endphp
+                        @foreach ($shops as $index => $shop)
+                        @php
+                        $value = $shopOtherIncomeTotals[$shop->id] ?? 0;
+                        $otherIncomesTotalAll += $value;
+                        @endphp
+                        <td>{{ $value }}</td>
+                        @endforeach
+                        <td>{{ $otherIncomesTotalAll }}</td>
+                    </tr>
+
+                    <tr>
+                        <td><strong style="color: coral">Profit Before Tax</strong></td>
+                        @php
+                            $profitBeforeTaxTotal = $totalProfit + $otherIncomesTotalAll;
+                        @endphp
+                        @foreach ($shops as $index => $shop)
+                            @php
+                                $profitBeforeTax = $columnTotals[$index] - $purchaseColumnTotals[$index] - $outflowColumnTotals[$index]+ ($shopOtherIncomeTotals[$shop->id] ?? 0);
+                            @endphp
+                            <td><strong style="color: coral">{{ $profitBeforeTax }}</strong></td>
+                        @endforeach
+                        <td><strong style="color: coral">{{ $profitBeforeTaxTotal }}</strong></td>
+                    </tr>                   
                     
 
                     <tr>
@@ -287,89 +287,23 @@
                     <tr>
                         <td>&nbsp;</td>
                     </tr>
-                    {{-- Aditional Capital --}}
-
                     <tr>
-                        <td>Owner Additional Capital</td>
+                        <td><strong style="color: coral">Profit After Tax</strong></td>
                         @php
-                        $additionalCapitalTotalAll = 0;
-                        $additionalCapitalColumnTotals = [];
+                            $profitBeforeTaxTotal = $totalProfit + $otherIncomesTotalAll;
+                            $incomeTaxTotal = $outflowColumnTotals[count($shops)] ?? 0;
+                            $profitAfterTaxTotal = $profitBeforeTaxTotal - $incomeTaxTotal;
                         @endphp
                         @foreach ($shops as $index => $shop)
-                        @php
-                        $value = $additionalCapitalTotals[$shop->id] ?? 0;
-                        $additionalCapitalTotalAll += $value;
-                        $additionalCapitalColumnTotals[] = $value;
-                        echo '<td>' . $value . '</td>';
-                        @endphp
+                            @php
+                                $profitBeforeTax =  $columnTotals[$index] - $purchaseColumnTotals[$index] + ($shopOtherIncomeTotals[$shop->id] ?? 0);
+                                $incomeTax = $outflowColumnTotals[$index] ?? 0;
+                                $profitAfterTax = $profitBeforeTax - $incomeTax;
+                            @endphp
+                            <td><strong style="color: coral">{{ $profitAfterTax }}</strong></td>
                         @endforeach
-                        <td>{{ $additionalCapitalTotalAll }}</td>
+                        <td><strong style="color: coral">{{ $profitAfterTaxTotal }}</strong></td>
                     </tr>
-
-                    @php
-                    $additionalCapitalColumnTotals[] = $additionalCapitalTotalAll;
-                    @endphp
-
-                    {{-- Aditional Capital --}}
-
-                    {{-- OWNER --}}
-
-                    @php
-                    $ownerWithdrawalTotals = array_fill(0, count($shops) + 1, 0);
-                    @endphp
-
-                    @foreach ($ownerCashMovement as $subCategory => $subCategoryData)
-                    <tr>
-                        <td>{{ $subCategory . " Withdrawal" }}</td>
-                        @php
-                        $subCategoryTotal = 0;
-                        @endphp
-                        @foreach ($shops as $index => $shop)
-                        <td>{{ $subCategoryData['data'][$shop->id] ?? 0 }}</td>
-                        @php
-                        $amount = $subCategoryData['data'][$shop->id] ?? 0;
-                        $subCategoryTotal += $amount;
-                        $ownerWithdrawalTotals[$index] += $amount;
-                        @endphp
-                        @endforeach
-                        <td>{{ $subCategoryTotal }}</td>
-                        @php
-                        $ownerWithdrawalTotals[count($shops)] += $subCategoryTotal;
-                        @endphp
-                    </tr>
-                    @endforeach
-
-                    <tr>
-                        <td><strong style="color:coral">Owner Cash</strong></td>
-                        @foreach ($additionalCapitalColumnTotals as $key => $additionalCapitalTotal)
-                        @php
-                        $ownerWithdrawalTotal = $ownerWithdrawalTotals[$key] ?? 0;
-                        $ownerCash = $additionalCapitalTotal - $ownerWithdrawalTotal;
-                        @endphp
-                        <td><strong style="color:coral">{{ $ownerCash }}</strong></td>
-                        @endforeach
-                    </tr>
-
-                    <tr>
-                        <td>&nbsp;</td>
-                    </tr>
-
-                    <tr>
-                        <td><strong style="color:rgb(90, 201, 0)">Master Net Cash Flow</strong></td>
-                        @foreach ($additionalCapitalColumnTotals as $key => $additionalCapitalTotal)
-                        @php
-                        $columnTotal = $columnTotals[$key] ?? 0;
-                        $outflowColumnTotal = $outflowColumnTotals[$key] ?? 0;
-                        $ownerWithdrawalTotal = $ownerWithdrawalTotals[$key] ?? 0;
-                        $masterNetCashFlow = $columnTotal - $outflowColumnTotal + $additionalCapitalTotal -
-                        $ownerWithdrawalTotal;
-                        @endphp
-                        <td><strong style="color:rgb(90, 201, 0)">{{ $masterNetCashFlow }}</strong></td>
-                        @endforeach
-                    </tr>
-
-                    {{-- OWNER --}}
-
                 </tbody>
             </table>
             @endif
