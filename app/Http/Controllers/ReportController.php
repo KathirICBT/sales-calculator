@@ -2105,30 +2105,78 @@ public function showCashMoveReportother()
             }
         }
 
-        // Initialize an array to store shop-specific other income totals
-        $shopOtherIncomeTotals = [];
+        $shopOtherIncomeTotals=[];
+        $shopDirectIncomeTotals = [];
 
-            $subcategories = ['Direct Income', 'Calculated Income'];
+    // Retrieve other incomes within the specified date range and matching subcategory
+    $otherDirectIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+        ->whereHas('otherIncomeDepartment', function ($query) {
+            $query->where('subcategory', 'Direct Income');
+        })
+        ->get();
 
-            // Retrieve other incomes that fall within the specified date range and belong to the specified subcategories
-            $otherIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
-                ->whereHas('otherIncomeDepartment', function ($query) use ($subcategories) {
-                    $query->whereIn('subcategory', $subcategories);
-                })
-                ->get();
+    // Process other incomes for each shop
+    foreach ($otherDirectIncomes as $income) {
+        $shopId = $income->shop_id;
+        $amount = $income->amount;
 
-        // Process other incomes for each shop
-        foreach ($otherIncomes as $income) {
-            $shopId = $income->shop_id;
-            $amount = $income->amount;
-
-            if (!isset($shopOtherIncomeTotals[$shopId])) {
-                $shopOtherIncomeTotals[$shopId] = 0;
-            }
-
-            // Add other income amount to the shop's total
-            $shopOtherIncomeTotals[$shopId] += $amount;
+        if (!isset($shopDirectIncomeTotals[$shopId])) {
+            $shopDirectIncomeTotals[$shopId] = 0;
         }
+
+        // Add other income amount to the shop's total
+        $shopDirectIncomeTotals[$shopId] += $amount;
+    }
+
+    $shopCalculatedIncomeTotals = [];
+
+    // Retrieve other incomes within the specified date range and matching subcategory
+    $otherCalculatedIncomes = OtherIncome::whereBetween('date', [$request->from_date, $request->to_date])
+        ->whereHas('otherIncomeDepartment', function ($query) {
+            $query->where('subcategory', 'Calculated Income');
+        })
+        ->get();
+
+    // Process other incomes for each shop
+    foreach ($otherCalculatedIncomes as $income) {
+        $shopId = $income->shop_id;
+        $amount = $income->amount;
+
+        if (!isset($shopCalculatedIncomeTotals[$shopId])) {
+            $shopCalculatedIncomeTotals[$shopId] = 0;
+        }
+
+        // Add other income amount to the shop's total
+        $shopCalculatedIncomeTotals[$shopId] += $amount;
+    }
+
+    $shopOtherIncomeTotals = [];
+
+// Loop through each shop ID that has direct income totals
+foreach ($shopDirectIncomeTotals as $shopId => $directIncomeTotal) {
+    // Initialize the total for the shop if not already set
+    if (!isset($shopOtherIncomeTotals[$shopId])) {
+        $shopOtherIncomeTotals[$shopId] = 0;
+    }
+
+    // Add direct income total to the shop's other income total
+    $shopOtherIncomeTotals[$shopId] += $directIncomeTotal;
+}
+
+// Loop through each shop ID that has calculated income totals
+foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
+    // Initialize the total for the shop if not already set
+    if (!isset($shopOtherIncomeTotals[$shopId])) {
+        $shopOtherIncomeTotals[$shopId] = 0;
+    }
+
+    // Add calculated income total to the shop's other income total
+    $shopOtherIncomeTotals[$shopId] += $calculatedIncomeTotal;
+}
+
+    
+    
+        
 
         $LoanTotals = [];
 
@@ -2208,6 +2256,8 @@ public function showCashMoveReportother()
         'shops' => Shop::all(),
         'shopDepartmentTotals' => $shopDepartmentTotals,
         'shopOtherIncomeTotals' => $shopOtherIncomeTotals,
+        'shopDirectIncomeTotals' =>$shopDirectIncomeTotals,
+        'shopCalculatedIncomeTotals' =>$shopCalculatedIncomeTotals,
         'ownerCashMovement' => $ownerCashMovement,
         'LoanTotals' => $LoanTotals,
         'additionalCapitalTotals' => $additionalCapitalTotals,

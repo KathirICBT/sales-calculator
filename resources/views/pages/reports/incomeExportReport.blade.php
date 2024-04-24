@@ -61,7 +61,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (['normal', 'other_taking', 'fuel'] as $departmentType)
+                    @foreach (['normal', 'fuel'] as $departmentType)
                     <tr>
                         <td>{{ ucfirst(str_replace('_', ' ', $departmentType)) }} Department Total</td>
                         @php
@@ -224,21 +224,59 @@
                     <tr>
                         <td colspan="{{ count($shops) + 2 }}" style="color:forestgreen">Other Incomes</td>
                     </tr>
+                    
+                    
+                    
                     <tr>
-                        <td>Other Incomes Total</td>
+                        <td>Direct Incomes Total</td>
+                        @php
+                        $directIncomesTotalAll = 0;
+                        @endphp
+                        @foreach ($shops as $shop)
+                            @php
+                            $value = $shopDirectIncomeTotals[$shop->id] ?? 0;
+                            $directIncomesTotalAll += $value;
+                            @endphp
+                            <td>{{ $value }}</td>
+                        @endforeach
+                        <td>{{ $directIncomesTotalAll }}</td>
+                    </tr>
+                    <tr>
+                        <td>Calculated Incomes Total</td>
+                        @php
+                        $calculatedIncomesTotalAll = 0;
+                        @endphp
+                        @foreach ($shops as $shop)
+                            @php
+                            $value = $shopCalculatedIncomeTotals[$shop->id] ?? 0;
+                            $calculatedIncomesTotalAll += $value;
+                            @endphp
+                            <td>{{ $value }}</td>
+                        @endforeach
+                        <td>{{ $calculatedIncomesTotalAll }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td> <strong style="color: coral">Other Incomes Total</strong></td>
                         @php
                         $otherIncomesTotalAll = 0;
                         @endphp
-                        @foreach ($shops as $index => $shop)
-                        @php
-                        $value = $shopOtherIncomeTotals[$shop->id] ?? 0;
-                        $otherIncomesTotalAll += $value;
-                        @endphp
-                        <td>{{ $value }}</td>
+                        @foreach ($shops as $shop)
+                            @php
+                            $value = $shopOtherIncomeTotals[$shop->id] ?? 0;
+                            $otherIncomesTotalAll += $value;
+                            @endphp
+                            <td><strong style="color: coral">{{ $value }}</strong></td>
                         @endforeach
-                        <td>{{ $otherIncomesTotalAll }}</td>
+                        <td><strong style="color: coral">{{ $otherIncomesTotalAll }}</strong></td>
                     </tr>
-
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+                    
                     <tr>
                         <td><strong style="color: coral">Profit Before Tax</strong></td>
                         @php
