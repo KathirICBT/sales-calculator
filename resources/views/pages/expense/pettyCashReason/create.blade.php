@@ -2,9 +2,9 @@
 @section('content')
 <div class="container-fluid">
 
-    <x-content-header title="Expense Reason Management" />  
-    <x-alert-message /> 
-    
+    <x-content-header title="Expense Reason Management" />
+    <x-alert-message />
+
     <div class="row">
         <div class="col-12 col-md-6 d-flex">
             <div class="card flex-fill border-0">
@@ -12,60 +12,96 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">
-                                <h4 class="n_h_style rounded">Expense Reason</h4>                              
-                                
+                                <h4 class="n_h_style rounded">Expense Reason</h4>
+
 
                                 <form class="row g-3" method="POST" action="{{ route('pettycashreason.store') }}">
                                     @csrf
                                     <div class="col-md-12">
                                         <label for="petty_cash_reason" class="form-label">Petty Cash Reason:</label>
-                                        <input type="text" class="form-control" id="petty_cash_reason" name="petty_cash_reason">
+                                        <input type="text" class="form-control" id="petty_cash_reason"
+                                            name="petty_cash_reason">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="expense_category_id" class="form-label">Expense Category:</label>
                                         <select class="form-select" id="expense_category_id" name="expense_category_id">
                                             <option value="">Select Expense Category</option>
                                             @foreach($expenseCategories as $expenseCategory)
-                                            <option value="{{ $expenseCategory->id }}">{{ $expenseCategory->category }}</option>
+                                            <option value="{{ $expenseCategory->id }}">{{ $expenseCategory->category }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="expense_sub_category_id" class="form-label">Expense Sub Category:</label>
-                                        <select class="form-select" id="expense_sub_category_id" name="expense_sub_category_id">
+                                        <label for="expense_sub_category_id" class="form-label">Expense Sub
+                                            Category:</label>
+                                        <select class="form-select" id="expense_sub_category_id"
+                                            name="expense_sub_category_id">
                                             <option value="">Select Expense Sub Category</option>
                                             @foreach($expenseSubCategories as $expenseSubCategory)
-                                            <option value="{{ $expenseSubCategory->id }}">{{ $expenseSubCategory->sub_category }}</option>
+                                            <option value="{{ $expenseSubCategory->id }}">{{
+                                                $expenseSubCategory->sub_category }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+
                                     <div class="col-md-12 mt-3">
-                                        <label class="form-label">Select Reason Type:</label>
+
+                                        <label for="supplier" class="form-label">Select Reason Type:</label>
                                         <div class="form-control">
-                                            <div class="d-flex">
-                                                <div class="form-check form-check-inline col-md-3">
-                                                    <input class="form-check-input" type="radio" id="store_supplier" name="supplier" value="Supplier" checked>
-                                                    <label class="form-check-label" for="store_supplier">Supplier</label>
-                                                </div>
-                                                <div class="form-check form-check-inline col-md-3">
-                                                    <input class="form-check-input" type="radio" id="store_owner" name="supplier" value="Owner">
-                                                    <label class="form-check-label" for="store_owner">Owner</label>
-                                                </div>
-                                                <div class="form-check form-check-inline col-md-3">
-                                                    <input class="form-check-input" type="radio" id="store_banking" name="supplier" value="Banking">
-                                                    <label class="form-check-label" for="store_banking">Banking</label>
-                                                </div>
-                                                <div class="form-check form-check-inline col-md-3">
-                                                    <input class="form-check-input" type="radio" id="store_income_tax" name="supplier" value="Income Tax">
-                                                    <label class="form-check-label" for="store_income_tax">Income Tax</label>
-                                                </div>
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" id="store_supplier"
+                                                    name="supplier" value="Supplier" checked>
+                                                <label class="form-check-label" for="store_supplier">Supplier</label>
+                                            </div>
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" id="store_owner"
+                                                    name="supplier" value="Owner">
+                                                <label class="form-check-label" for="store_owner">Owner</label>
+                                            </div>
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" id="store_banking"
+                                                    name="supplier" value="Banking">
+                                                <label class="form-check-label" for="store_banking">Banking</label>
+                                            </div>
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" id="store_income_tax"
+                                                    name="supplier" value="Income Tax">
+                                                <label class="form-check-label" for="store_income_tax">Income
+                                                    Tax</label>
                                             </div>
                                         </div>
-
                                     </div>
+
+                                    {{-- Purchase --}}
+
+                                    <div class="col-md-12" id="purchase_section">
+                                        <label for="purchase" class="form-label">Purchase: </label>
+                                        <div class="form-control">
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" name="purchase"
+                                                    id="normal_purchase" value="Normal Purchase" checked>
+                                                <label class="form-check-label" for="normal_purchase">
+                                                    Normal Purchase
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" name="purchase"
+                                                    id="fuel_purchase" value="Fuel Purchase">
+                                                <label class="form-check-label" for="fuel_purchase">
+                                                    Fuel Purchase
+                                                </label>
+                                            </div>                                            
+                                        </div>
+                                    </div>                                   
                                     
-                                    <div class="col-md-6">                                        
-                                        <button type="submit" class="btn btn-success rounded-pill" style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>                                        
+
+                                    {{-- Purchase --}}
+
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-success rounded-pill"
+                                            style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add
+                                        </button>
                                     </div>
                                 </form>
 
@@ -83,10 +119,12 @@
                         <div class="col-12">
                             <div class="p-3 m-1">
                                 <h4 class="n_h2_style rounded">Expense Reasons</h4>
-                                 <!-- SEARCH -->
+                                <!-- SEARCH -->
                                 <div class="input-group mt-3">
-                                    <input type="text" class="form-control" placeholder="Search payment method..." id="searchInput">
-                                    <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                    <input type="text" class="form-control" placeholder="Search payment method..."
+                                        id="searchInput">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        id="searchButton">Search</button>
                                 </div>
                                 <!-- SEARCH -->
                                 <div style="height: 300px; overflow-y: auto;">
@@ -108,11 +146,19 @@
                                                 <td>{{ $pettyCashReason->expenseSubCategory->sub_category }}</td>
                                                 <td>{{ $pettyCashReason->supplier }}</td>
                                                 <td>
-                                                    <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#pettyCashReasonModal" data-id="{{ $pettyCashReason->id }}"><i class="fa-regular fa-pen-to-square"></i></a>
-                                                    <form method="post" style="display: inline;" action="{{ route('pettycashreason.destroy', $pettyCashReason->id) }}">
+                                                    <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn"
+                                                        style="width: 40%;" data-toggle="modal"
+                                                        data-target="#pettyCashReasonModal"
+                                                        data-id="{{ $pettyCashReason->id }}"><i
+                                                            class="fa-regular fa-pen-to-square"></i></a>
+                                                    <form method="post" style="display: inline;"
+                                                        action="{{ route('pettycashreason.destroy', $pettyCashReason->id) }}">
                                                         @csrf
                                                         @method('delete')
-                                                        <button class="btn btn-danger btn-sm rounded-pill" style="width: 40%;" onclick="return confirm('Are you sure you want to delete this payment method?')" type="submit"><i class="fa-solid fa-trash-can"></i></button>
+                                                        <button class="btn btn-danger btn-sm rounded-pill"
+                                                            style="width: 40%;"
+                                                            onclick="return confirm('Are you sure you want to delete this payment method?')"
+                                                            type="submit"><i class="fa-solid fa-trash-can"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -131,8 +177,8 @@
 @endsection
 
 <!-- Edit Payment Method Modal -->
-<div class="modal fade" id="pettyCashReasonModal" tabindex="-1" role="dialog" aria-labelledby="pettyCashReasonModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="pettyCashReasonModal" tabindex="-1" role="dialog"
+    aria-labelledby="pettyCashReasonModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -148,7 +194,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="model_petty_cash_reason" class="form-label">Petty Cash Reason:</label>
-                        <input type="text" class="form-control" id="model_petty_cash_reason" name="model_petty_cash_reason">
+                        <input type="text" class="form-control" id="model_petty_cash_reason"
+                            name="model_petty_cash_reason">
                     </div>
                     <div class="form-group mt-2">
                         <label for="model_expense_category_id" class="form-label">Expense Category:</label>
@@ -161,10 +208,12 @@
                     </div>
                     <div class="form-group mt-2">
                         <label for="model_expense_sub_category_id" class="form-label">Expense Sub Category:</label>
-                        <select class="form-select" id="model_expense_sub_category_id" name="model_expense_sub_category_id">
+                        <select class="form-select" id="model_expense_sub_category_id"
+                            name="model_expense_sub_category_id">
                             <option value="">Select Expense Sub Category</option>
                             @foreach($expenseSubCategories as $expenseSubCategory)
-                            <option value="{{ $expenseSubCategory->id }}">{{ $expenseSubCategory->sub_category }}</option>
+                            <option value="{{ $expenseSubCategory->id }}">{{ $expenseSubCategory->sub_category }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -172,19 +221,23 @@
                         <label class="form-label">Select Supplier:</label>
                         <div class="d-flex form-control">
                             <div class="form-check me-3">
-                                <input class="form-check-input" type="radio" id="supplier" name="model_supplier" value="Supplier" checked>
+                                <input class="form-check-input" type="radio" id="supplier" name="model_supplier"
+                                    value="Supplier" checked>
                                 <label class="form-check-label" for="supplier">Supplier</label>
                             </div>
                             <div class="form-check me-3">
-                                <input class="form-check-input" type="radio" id="owner" name="model_supplier" value="Owner">
+                                <input class="form-check-input" type="radio" id="owner" name="model_supplier"
+                                    value="Owner">
                                 <label class="form-check-label" for="owner">Owner</label>
                             </div>
                             <div class="form-check me-3">
-                                <input class="form-check-input" type="radio" id="banking" name="model_supplier" value="Banking">
+                                <input class="form-check-input" type="radio" id="banking" name="model_supplier"
+                                    value="Banking">
                                 <label class="form-check-label" for="banking">Banking</label>
                             </div>
                             <div class="form-check me-3">
-                                <input class="form-check-input" type="radio" id="income_tax" name="model_supplier" value="Income Tax">
+                                <input class="form-check-input" type="radio" id="income_tax" name="model_supplier"
+                                    value="Income Tax">
                                 <label class="form-check-label" for="income_tax">Income Tax</label>
                             </div>
                         </div>
@@ -198,7 +251,7 @@
         </div>
     </div>
 </div>
- 
+
 {{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
     const editButtons = document.querySelectorAll('.edit-btn');
@@ -283,7 +336,7 @@
 </script> --}}
 
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
         const editButtons = document.querySelectorAll('.edit-btn');
         const editForm = document.getElementById('pettyCashReasonModalForm');
         const expenseCategorySelect = document.getElementById('model_expense_category_id');
@@ -415,7 +468,7 @@
         });
     });
 </script>
- 
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var expenseCategorySelect = document.getElementById('expense_category_id');
@@ -478,5 +531,13 @@
         });
     });
 </script>
+
+
+
+
+
+
+
+
 
 
