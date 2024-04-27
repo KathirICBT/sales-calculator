@@ -16,10 +16,45 @@ class PettyCashReasonController extends Controller
        //
     }
     
+    // public function store(Request $request)
+    // {
+    //     if ($request->isMethod('post')) {
+    //         // Validate the request data
+    //         $validatedData = $request->validate([
+    //             'petty_cash_reason' => 'required|string|unique:petty_cash_reasons,reason',
+    //             'expense_category_id' => 'required|exists:expense_categories,id',
+    //             'expense_sub_category_id' => 'required|exists:expense_sub_categories,id',
+    //             'supplier' => 'required|in:Supplier,Owner,Banking,Income Tax',
+    //         ], [
+    //             'petty_cash_reason.unique' => 'The petty cash reason has already been added.',
+    //         ]);
+
+    //         // Create a new PettyCashReason instance
+    //         $pettyCashReason = new PettyCashReason();
+    //         $pettyCashReason->reason = $validatedData['petty_cash_reason'];
+    //         $pettyCashReason->expense_category_id = $validatedData['expense_category_id'];
+    //         $pettyCashReason->expense_sub_category_id = $validatedData['expense_sub_category_id'];
+    //         $pettyCashReason-> supplier= $validatedData['supplier'];
+
+    //         // Save the new petty cash reason
+    //         $pettyCashReason->save();            
+
+    //         // Redirect back with success message
+    //         return redirect()->route('pettycashreason.store')->with('success', 'Expense Reason added successfully!');
+    //     }
+
+    //     // Load necessary data for the form
+    //     $pettyCashReasons = PettyCashReason::all(); 
+    //     $expenseSubCategories = ExpenseSubCategory::all();
+    //     $expenseCategories = ExpenseCategory::all(); 
+
+    //     return view('pages.expense.pettyCashReason.create', compact('pettyCashReasons', 'expenseSubCategories', 'expenseCategories'));
+    // }
+
+
     public function store(Request $request)
     {
-        if ($request->isMethod('post')) {
-            // Validate the request data
+        if ($request->isMethod('post')) {            
             $validatedData = $request->validate([
                 'petty_cash_reason' => 'required|string|unique:petty_cash_reasons,reason',
                 'expense_category_id' => 'required|exists:expense_categories,id',
@@ -28,28 +63,29 @@ class PettyCashReasonController extends Controller
             ], [
                 'petty_cash_reason.unique' => 'The petty cash reason has already been added.',
             ]);
-
-            // Create a new PettyCashReason instance
+            
             $pettyCashReason = new PettyCashReason();
             $pettyCashReason->reason = $validatedData['petty_cash_reason'];
             $pettyCashReason->expense_category_id = $validatedData['expense_category_id'];
             $pettyCashReason->expense_sub_category_id = $validatedData['expense_sub_category_id'];
-            $pettyCashReason-> supplier= $validatedData['supplier'];
-
-            // Save the new petty cash reason
-            $pettyCashReason->save();            
-
-            // Redirect back with success message
+            $pettyCashReason->supplier = $validatedData['supplier'];
+            
+            if ($validatedData['supplier'] === 'Supplier') {
+                $pettyCashReason->purchase_type = $request->input('purchase');
+            }
+            
+            $pettyCashReason->save();
+            
             return redirect()->route('pettycashreason.store')->with('success', 'Expense Reason added successfully!');
         }
-
-        // Load necessary data for the form
-        $pettyCashReasons = PettyCashReason::all(); 
+        
+        $pettyCashReasons = PettyCashReason::all();
         $expenseSubCategories = ExpenseSubCategory::all();
-        $expenseCategories = ExpenseCategory::all(); 
+        $expenseCategories = ExpenseCategory::all();
 
         return view('pages.expense.pettyCashReason.create', compact('pettyCashReasons', 'expenseSubCategories', 'expenseCategories'));
     }
+
 
     // Expense Sub Catergories =======================================
 
@@ -81,9 +117,43 @@ class PettyCashReasonController extends Controller
         return response()->json($pettyCashReason);
     }
 
+    // public function update(Request $request, $id)
+    // {
+    //     // Validate the request data
+    //     $validatedData = $request->validate([
+    //         'model_petty_cash_reason' => [
+    //             'required',
+    //             'string',
+    //             Rule::unique('petty_cash_reasons', 'reason')->ignore($id),
+    //         ],
+    //         'model_expense_category_id' => 'required|exists:expense_categories,id',
+    //         'model_expense_sub_category_id' => 'required|exists:expense_sub_categories,id',
+    //         'model_supplier' => [
+    //             'required',
+    //             Rule::in(['Supplier', 'Owner', 'Banking', 'Income Tax']), // Validate against 'Supplier' or 'Other'
+    //         ],
+    //     ], [
+    //         'model_petty_cash_reason.unique' => 'The petty cash reason has already been added.',
+    //     ]);
+
+    //     // Find the petty cash reason by ID
+    //     $pettyCashReason = PettyCashReason::findOrFail($id);
+        
+    //     // Update the petty cash reason attributes
+    //     $pettyCashReason->reason = $validatedData['model_petty_cash_reason'];
+    //     $pettyCashReason->expense_category_id = $validatedData['model_expense_category_id'];
+    //     $pettyCashReason->expense_sub_category_id = $validatedData['model_expense_sub_category_id'];
+    //     $pettyCashReason-> supplier= $validatedData['model_supplier'];
+
+    //     // Save the updated petty cash reason
+    //     $pettyCashReason->save();            
+
+    //     // Redirect back with success message
+    //     return redirect()->back()->with('success', 'Expense Reason updated successfully!');
+    // }
+
     public function update(Request $request, $id)
-    {
-        // Validate the request data
+    {        
         $validatedData = $request->validate([
             'model_petty_cash_reason' => [
                 'required',
@@ -99,22 +169,25 @@ class PettyCashReasonController extends Controller
         ], [
             'model_petty_cash_reason.unique' => 'The petty cash reason has already been added.',
         ]);
-
-        // Find the petty cash reason by ID
-        $pettyCashReason = PettyCashReason::findOrFail($id);
         
-        // Update the petty cash reason attributes
+        $pettyCashReason = PettyCashReason::findOrFail($id);        
+        
         $pettyCashReason->reason = $validatedData['model_petty_cash_reason'];
         $pettyCashReason->expense_category_id = $validatedData['model_expense_category_id'];
         $pettyCashReason->expense_sub_category_id = $validatedData['model_expense_sub_category_id'];
-        $pettyCashReason-> supplier= $validatedData['model_supplier'];
-
-        // Save the updated petty cash reason
-        $pettyCashReason->save();            
-
-        // Redirect back with success message
+        $pettyCashReason->supplier = $validatedData['model_supplier'];
+        
+        if ($validatedData['model_supplier'] === 'Supplier') {
+            $pettyCashReason->purchase_type = $request->input('model_purchase');
+        } else {            
+            $pettyCashReason->purchase_type = null;
+        }
+       
+        $pettyCashReason->save();
+        
         return redirect()->back()->with('success', 'Expense Reason updated successfully!');
     }
+
 
     //=======================================================================================
 

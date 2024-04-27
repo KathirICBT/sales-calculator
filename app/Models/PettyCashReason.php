@@ -14,6 +14,7 @@ class PettyCashReason extends Model
         'expense_category_id',
         'expense_sub_category_id',
         'supplier',
+        'purchase_type',
     ];
 
     public function expenseCategory()

@@ -78,23 +78,29 @@
                                     <div class="col-md-12" id="purchase_section">
                                         <label for="purchase" class="form-label">Purchase: </label>
                                         <div class="form-control">
-                                            <div class="form-check form-check-inline col-md-5">
+                                            <div class="form-check form-check-inline col-md-3">
                                                 <input class="form-check-input" type="radio" name="purchase"
-                                                    id="normal_purchase" value="Normal Purchase" checked>
-                                                <label class="form-check-label" for="normal_purchase">
-                                                    Normal Purchase
+                                                    id="expense" value="Expense" checked>
+                                                <label class="form-check-label" for="expense">
+                                                    Expense
                                                 </label>
                                             </div>
-                                            <div class="form-check form-check-inline col-md-5">
+                                            <div class="form-check form-check-inline col-md-4">
                                                 <input class="form-check-input" type="radio" name="purchase"
-                                                    id="fuel_purchase" value="Fuel Purchase">
+                                                    id="normal_purchase" value="Shop Sale">
+                                                <label class="form-check-label" for="normal_purchase">
+                                                    Shop Sale Purchase
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline col-md-3">
+                                                <input class="form-check-input" type="radio" name="purchase"
+                                                    id="fuel_purchase" value="Fuel">
                                                 <label class="form-check-label" for="fuel_purchase">
                                                     Fuel Purchase
                                                 </label>
-                                            </div>                                            
+                                            </div>
                                         </div>
-                                    </div>                                   
-                                    
+                                    </div>
 
                                     {{-- Purchase --}}
 
@@ -132,10 +138,11 @@
                                         <thead>
                                             <tr>
                                                 <th>Reasons</th>
-                                                <th>Expense Category</th>
-                                                <th>Expense Sub Category</th>
-                                                <th>Supplier or Other</th>
-                                                <th scope="col" style="width: 30%">Action</th>
+                                                <th>Category</th>
+                                                <th>Sub Category</th>
+                                                <th>Expense Type</th>
+                                                <th>Purchase Type</th>
+                                                <th scope="col" style="width: 20%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -145,18 +152,20 @@
                                                 <td>{{ $pettyCashReason->expenseCategory->category }}</td>
                                                 <td>{{ $pettyCashReason->expenseSubCategory->sub_category }}</td>
                                                 <td>{{ $pettyCashReason->supplier }}</td>
+                                                <td>{{ $pettyCashReason->purchase_type }}</td>
                                                 <td>
                                                     <a href="#" class="btn btn-warning btn-sm rounded-pill edit-btn"
-                                                        style="width: 40%;" data-toggle="modal"
+                                                        style="width: 45%;" data-toggle="modal"
                                                         data-target="#pettyCashReasonModal"
-                                                        data-id="{{ $pettyCashReason->id }}"><i
+                                                        data-id="{{ $pettyCashReason->id }}"
+                                                        onclick="toggleModelPurchaseSection('{{ $pettyCashReason->supplier }}')"><i
                                                             class="fa-regular fa-pen-to-square"></i></a>
                                                     <form method="post" style="display: inline;"
                                                         action="{{ route('pettycashreason.destroy', $pettyCashReason->id) }}">
                                                         @csrf
                                                         @method('delete')
                                                         <button class="btn btn-danger btn-sm rounded-pill"
-                                                            style="width: 40%;"
+                                                            style="width: 45%;"
                                                             onclick="return confirm('Are you sure you want to delete this payment method?')"
                                                             type="submit"><i class="fa-solid fa-trash-can"></i></button>
                                                     </form>
@@ -242,6 +251,38 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Purchase --}}
+
+                    <div class="col-md-12" id="model_purchase_section">
+                        <label for="model_purchase" class="form-label">Purchase: </label>
+                        <div class="form-control">
+                            <div class="form-check form-check-inline col-md-3">
+                                <input class="form-check-input" type="radio" name="model_purchase"
+                                    id="model_expense" value="Expense" checked>
+                                <label class="form-check-label" for="model_expense">
+                                    Expense
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline col-md-4">
+                                <input class="form-check-input" type="radio" name="model_purchase"
+                                    id="model_normal_purchase" value="Shop Sale">
+                                <label class="form-check-label" for="model_normal_purchase">
+                                    Shop Sale Purchase
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline col-md-3">
+                                <input class="form-check-input" type="radio" name="model_purchase"
+                                    id="model_fuel_purchase" value="Fuel">
+                                <label class="form-check-label" for="model_fuel_purchase">
+                                    Fuel Purchase
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Purchase --}}
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -369,6 +410,16 @@
                         const supplierOption = data.supplier;
                         editForm.querySelector(`input[name="model_supplier"][value="${supplierOption}"]`).checked = true;
 
+                        const purchaseType = data.purchase_type;
+                        editForm.querySelector(`input[name="model_purchase"][value="${purchaseType}"]`).checked = true;
+
+                        const modelPurchaseSection = document.getElementById('model_purchase_section');
+                        if (supplierOption === 'Supplier') {
+                            modelPurchaseSection.style.display = 'block'; // Display purchase section
+                        } else {
+                            modelPurchaseSection.style.display = 'none'; // Hide purchase section
+                        }
+
                         $('#pettyCashReasonModal').modal('show');
                     })
                     .catch(error => {
@@ -431,6 +482,107 @@
             // Here you can handle the change in expenseSubCategorySelect
         });
     });
+
+
+    //Safe ====
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const editButtons = document.querySelectorAll('.edit-btn');
+        const editForm = document.getElementById('pettyCashReasonModalForm');
+        const expenseCategorySelect = document.getElementById('model_expense_category_id');
+        const expenseSubCategorySelect = document.getElementById('model_expense_sub_category_id');
+        let isModalSubmitted = false;
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const pettyCashReasonId = this.getAttribute('data-id');
+
+                // Set the petty cash reason ID in the form
+                editForm.querySelector('#pettyCashReasonId').value = pettyCashReasonId;
+
+                // Set the action URL for the form
+                editForm.setAttribute('action', `/pettycashreason/${pettyCashReasonId}`);
+
+                // Fetch the petty cash reason data and populate the form fields
+                fetch(`/pettycashreason/${pettyCashReasonId}/edit`)
+                    .then(response => response.json())
+                    .then(data => {
+                        editForm.querySelector('#model_petty_cash_reason').value = data.reason;
+                        expenseCategorySelect.value = data.expense_category_id;
+                        populateSubCategories(data.expense_category_id, data.expense_sub_category_id);
+
+                        // Set supplier radio button based on fetched data
+                        // const supplierOption = data.supplier === 'Supplier' ? 'Supplier' : 'Other';
+                        // editForm.querySelector(`input[name="model_supplier"][value="${supplierOption}"]`).checked = true;
+
+                        // Set supplier radio button based on fetched data
+                        const supplierOption = data.supplier;
+                        editForm.querySelector(`input[name="model_supplier"][value="${supplierOption}"]`).checked = true;
+
+                        $('#pettyCashReasonModal').modal('show');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+
+        $('#pettyCashReasonModal').on('hidden.bs.modal', function() {
+            if (!isModalSubmitted) {
+                // Clear the form fields and reset dropdown lists
+                editForm.reset();
+                expenseCategorySelect.value = '';
+                expenseSubCategorySelect.innerHTML = '<option value="">Select Expense Sub Category</option>';
+            }
+            isModalSubmitted = false;
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+            $('body').css('overflow', 'auto');
+        });
+
+        $('#pettyCashReasonModalForm').on('submit', function() {
+            // Set the flag to true when the form is submitted
+            isModalSubmitted = true;
+        });
+
+        // Function to populate Expense Sub Categories based on the selected Expense Category
+        function populateSubCategories(categoryId, selectedSubCategoryId = '') {
+            if (categoryId) {
+                fetch(`/fetch-expense-sub-categories/${categoryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        expenseSubCategorySelect.innerHTML = '<option value="">Select Expense Sub Category</option>';
+                        data.forEach(subCategory => {
+                            const option = document.createElement('option');
+                            option.value = subCategory.id;
+                            option.textContent = subCategory.sub_category;
+                            if (subCategory.id === selectedSubCategoryId) {
+                                option.selected = true;
+                            }
+                            expenseSubCategorySelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching expense sub categories:', error));
+            } else {
+                // Reset Expense Sub Category to default if no Expense Category is selected
+                expenseSubCategorySelect.innerHTML = '<option value="">Select Expense Sub Category</option>';
+            }
+        }
+
+        // Event listener for Expense Category selection
+        expenseCategorySelect.addEventListener('change', function() {
+            const selectedCategoryId = this.value;
+            populateSubCategories(selectedCategoryId);
+        });
+
+        // Event listener for Expense Sub Category selection
+        expenseSubCategorySelect.addEventListener('change', function() {
+            const selectedSubCategoryId = this.value;
+            // Here you can handle the change in expenseSubCategorySelect
+        });
+    });
+
+    //=========
 </script>
 
 
@@ -451,14 +603,16 @@
                 const expense_category = row.cells[1]; // Assuming payment type is in the second cell
                 const expense_sub_category = row.cells[2];
                 const supplier = row.cells[3];
+                const purchase_type = row.cells[4];
 
-                if (reason && expense_category && expense_sub_category && supplier) {
+                if (reason && expense_category && expense_sub_category && supplier && purchase_type) {
                     const reasonText = reason.textContent.trim().toLowerCase();
                     const expense_categoryText = expense_category.textContent.trim().toLowerCase();
                     const expense_sub_categoryText = expense_sub_category.textContent.trim().toLowerCase();
                     const supplierText = supplier.textContent.trim().toLowerCase();
+                    const purchase_typeText = purchase_type.textContent.trim().toLowerCase();
 
-                    if (reasonText.includes(query) || expense_categoryText.includes(query) || expense_sub_categoryText.includes(query) || supplierText.includes(query)) {
+                    if (reasonText.includes(query) || expense_categoryText.includes(query) || expense_sub_categoryText.includes(query) || supplierText.includes(query) || purchase_typeText.includes(query)) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';
@@ -533,11 +687,45 @@
 </script>
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const storeSupplierRadioButton = document.getElementById('store_supplier');
+        const purchaseSection = document.getElementById('purchase_section');
+
+        // Function to show/hide purchase section based on radio button state
+        function togglePurchaseSection() {
+            if (storeSupplierRadioButton.checked) {
+                purchaseSection.style.display = 'block';
+            } else {
+                purchaseSection.style.display = 'none';
+            }
+        }
+
+        // Initial toggle based on initial radio button state
+        togglePurchaseSection();
+
+        // Add event listener to the radio button group
+        const radioButtons = document.querySelectorAll('input[name="supplier"]');
+        radioButtons.forEach(function(button) {
+            button.addEventListener('change', togglePurchaseSection);
+        });
+    });
+</script>
 
 
-
-
-
-
-
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modelSupplierRadioButtons = document.querySelectorAll('input[name="model_supplier"]');
+        const modelPurchaseSection = document.getElementById('model_purchase_section');
+        
+        function toggleModelPurchaseSection() {
+            modelPurchaseSection.style.display = modelSupplierRadioButtons[0].checked ? 'block' : 'none';
+        }
+        
+        toggleModelPurchaseSection();
+        
+        modelSupplierRadioButtons.forEach(function(radioButton) {
+            radioButton.addEventListener('change', toggleModelPurchaseSection);
+        });
+    });
+</script>
