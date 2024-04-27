@@ -408,13 +408,12 @@
 
                         // Set supplier radio button based on fetched data
                         const supplierOption = data.supplier;
-                        editForm.querySelector(`input[name="model_supplier"][value="${supplierOption}"]`).checked = true;
-
-                        const purchaseType = data.purchase_type;
-                        editForm.querySelector(`input[name="model_purchase"][value="${purchaseType}"]`).checked = true;
+                        editForm.querySelector(`input[name="model_supplier"][value="${supplierOption}"]`).checked = true;                        
 
                         const modelPurchaseSection = document.getElementById('model_purchase_section');
                         if (supplierOption === 'Supplier') {
+                            const purchaseType = data.purchase_type;
+                            editForm.querySelector(`input[name="model_purchase"][value="${purchaseType}"]`).checked = true;
                             modelPurchaseSection.style.display = 'block'; // Display purchase section
                         } else {
                             modelPurchaseSection.style.display = 'none'; // Hide purchase section
