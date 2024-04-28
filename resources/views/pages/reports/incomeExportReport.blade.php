@@ -103,41 +103,7 @@
                         <tr>
                             <th style="color:forestgreen">Purchase</th>
                         </tr>
-                        {{-- @foreach ($purchasereport as $purchaseType => $purchaseTypeData)
-                            <tr>
-                                @if($purchaseType!=='Expense')
-                                <td>{{ $purchaseType }}</td>
-                                @php
-                                $purchaseTypeTotal = 0;
-                                $purchaseColumnTotals = array_fill(0, count($shops), 0);  
-                                @endphp
-                                @foreach ($shops as $index => $shop)
-                                    @php
-                                    $value = $purchaseTypeData['data'][$shop->id] ?? 0;
-                                    $purchaseTypeTotal += $value;
-                                    $purchaseColumnTotals[$index] += $value;
-                                    @endphp
-                                    <td>{{ $value }}</td>
-                                @endforeach
-                                <td>{{ $purchaseTypeTotal }}</td>
-                                @endif
-                            </tr>
-                        @endforeach
-                        
-                        <tr>
-                                @php
-                                    $purchaseTotalAll=0 ;
-                                @endphp
-                            <td><strong style="color:coral">Total Purchase</strong></td>
-                            @foreach ($purchaseColumnTotals as $total)
-                                @php
-                                    $purchaseTotalAll+=$total ;
-                                @endphp
-                                <td><strong style="color:coral">{{ $total }}</strong></td>
-                            @endforeach
-                            <td><strong style="color:coral">{{ $purchaseTotalAll }}</strong></td>
-                        </tr> --}}
-            
+                       
                         @php
                             $purchaseColumnTotals = array_fill(0, count($shops), 0); // Initialize column totals array
                             $purchaseTotalAll = 0; // Initialize overall purchase total
@@ -208,6 +174,50 @@
                         
                         
 
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                      
+                        <tr>
+                            <td><strong style="color: coral">Shop Margin %</strong></td>
+                            @php
+                                $shopMarginTotal = 0; // Initialize shop margin total
+                            @endphp
+                            
+                            @foreach ($shops as $shop)
+                                @php
+                                    $normalValue = $shopDepartmentTotals[$shop->id]['normal'] ?? 0;
+                                    $shopSaleValue = $purchasereport['Shop Sale']['data'][$shop->id] ?? 0;
+                                    $shopMargin = $normalValue != 0 ?( ($normalValue - $shopSaleValue) / $normalValue)*100 : 0; // Calculate shop margin for Shop Sale
+                                    $shopMarginTotal += $shopMargin; // Accumulate shop margin total
+                                @endphp
+                                <td>{{ number_format($shopMargin, 2) }}%</td>
+                            @endforeach
+                            
+                            {{-- <td><strong style="color: coral">{{ number_format($shopMarginTotal, 2) }}</strong></td>  --}}
+                        </tr>
+                        
+
+                        <tr>
+                            <td><strong style="color: coral">Fuel Margin %</strong></td>
+                            @php
+                                $fuelMarginTotal = 0; // Initialize fuel margin total
+                            @endphp
+                            
+                            @foreach ($shops as $shop)
+                                @php
+                                    $normalValue = $shopDepartmentTotals[$shop->id]['fuel'] ?? 0;
+                                    $fuelSaleValue = $purchasereport['Fuel']['data'][$shop->id] ?? 0;
+                                    $fuelMargin = $normalValue != 0 ? (($normalValue - $fuelSaleValue) / $normalValue) * 100 : 0; // Calculate fuel margin for Shop Sale
+                                    $fuelMarginTotal += $fuelMargin; // Accumulate fuel margin total
+                                @endphp
+                                <td>{{ number_format($fuelMargin, 2) }}%</td>
+                            @endforeach
+                            
+                            {{-- <td><strong style="color: coral">{{ number_format($fuelMarginTotal, 2) }}</strong></td> --}}
+                        </tr>
+                        
+                        
                         <tr>
                             <td>&nbsp;</td>
                         </tr>
