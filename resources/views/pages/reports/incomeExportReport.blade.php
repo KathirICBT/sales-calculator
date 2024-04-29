@@ -181,7 +181,9 @@
                         <tr>
                             <td><strong style="color: coral">Shop Margin %</strong></td>
                             @php
-                                $shopMarginTotal = 0; // Initialize shop margin total
+                                $shopMarginTotal = 0;
+                                $normaltotal=0;
+                                $shopsaletotal=0;// Initialize shop margin total
                             @endphp
                             
                             @foreach ($shops as $shop)
@@ -189,19 +191,27 @@
                                     $normalValue = $shopDepartmentTotals[$shop->id]['normal'] ?? 0;
                                     $shopSaleValue = $purchasereport['Shop Sale']['data'][$shop->id] ?? 0;
                                     $shopMargin = $normalValue != 0 ?( ($normalValue - $shopSaleValue) / $normalValue)*100 : 0; // Calculate shop margin for Shop Sale
-                                    $shopMarginTotal += $shopMargin; // Accumulate shop margin total
+ 
+                                    $normaltotal+=$normalValue;
+                                    $shopsaletotal+=$shopSaleValue;
                                 @endphp
                                 <td>{{ number_format($shopMargin, 2) }}%</td>
                             @endforeach
+                            @php
+                                $shopMarginTotal = $normaltotal != 0 ?( ($normaltotal - $shopsaletotal) / $normaltotal)*100 : 0;
+                            @endphp
+
                             
-                            {{-- <td><strong style="color: coral">{{ number_format($shopMarginTotal, 2) }}</strong></td>  --}}
+                            <td><strong style="color: coral">{{ number_format($shopMarginTotal, 2) }}%</strong></td> 
                         </tr>
                         
 
                         <tr>
                             <td><strong style="color: coral">Fuel Margin %</strong></td>
                             @php
-                                $fuelMarginTotal = 0; // Initialize fuel margin total
+                                $fuelMarginTotal = 0;
+                                $fueltotal=0;
+                                $fuelsaletotal=0; // Initialize fuel margin total
                             @endphp
                             
                             @foreach ($shops as $shop)
@@ -209,12 +219,15 @@
                                     $normalValue = $shopDepartmentTotals[$shop->id]['fuel'] ?? 0;
                                     $fuelSaleValue = $purchasereport['Fuel']['data'][$shop->id] ?? 0;
                                     $fuelMargin = $normalValue != 0 ? (($normalValue - $fuelSaleValue) / $normalValue) * 100 : 0; // Calculate fuel margin for Shop Sale
-                                    $fuelMarginTotal += $fuelMargin; // Accumulate fuel margin total
+                                    $fueltotal += $normalValue; 
+                                    $fuelsaletotal += $fuelSaleValue; // Accumulate fuel margin total
                                 @endphp
                                 <td>{{ number_format($fuelMargin, 2) }}%</td>
                             @endforeach
-                            
-                            {{-- <td><strong style="color: coral">{{ number_format($fuelMarginTotal, 2) }}</strong></td> --}}
+                            @php
+                                $fuelMarginTotal = $fueltotal != 0 ?( ($fueltotal - $fuelsaletotal) / $fueltotal)*100 : 0;
+                            @endphp
+                            <td><strong style="color: coral">{{ number_format($fuelMarginTotal, 2) }}%</strong></td>
                         </tr>
                         
                         
