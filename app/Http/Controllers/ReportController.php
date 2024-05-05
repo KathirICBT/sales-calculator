@@ -1155,7 +1155,7 @@ public function generateCashMovementReport(Request $request)
         $departmentId = $department->id;
 
         // Retrieve Shift IDs within the Date Range for this department
-        $shiftIds = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])
+        $shiftIds = Shift::whereBetween('end_date', [$request->from_date, $request->to_date])
             ->pluck('id');
 
         // Retrieve sales data for this department within the date range
@@ -1942,7 +1942,7 @@ public function showCashMoveReportother()
 
         $pettyCash = Petticash::with(['shift', 'pettyCashReason.expenseSubCategory'])
             ->whereHas('shift', function ($query) use ($fromDate, $toDate) {
-                $query->whereBetween('start_date', [$fromDate, $toDate]);
+                $query->whereBetween('end_date', [$fromDate, $toDate]);
             })
             ->whereHas('pettyCashReason.expenseSubCategory')
             ->where(function ($query) {
@@ -2020,7 +2020,7 @@ public function showCashMoveReportother()
 
         $pettyCash = Petticash::with(['shift', 'pettyCashReason.expenseSubCategory'])
             ->whereHas('shift', function ($query) use ($fromDate, $toDate) {
-                $query->whereBetween('start_date', [$fromDate, $toDate]);
+                $query->whereBetween('end_date', [$fromDate, $toDate]);
             })
             ->whereHas('pettyCashReason.expenseSubCategory')
             ->where(function ($query) {
