@@ -78,25 +78,32 @@
                                     <div class="col-md-12" id="purchase_section">
                                         <label for="purchase" class="form-label">Purchase: </label>
                                         <div class="form-control">
-                                            <div class="form-check form-check-inline col-md-3">
+                                            <div class="form-check form-check-inline col-md-5">
                                                 <input class="form-check-input" type="radio" name="purchase"
                                                     id="expense" value="Expense" checked>
                                                 <label class="form-check-label" for="expense">
                                                     Expense
                                                 </label>
                                             </div>
-                                            <div class="form-check form-check-inline col-md-4">
+                                            <div class="form-check form-check-inline col-md-5">
                                                 <input class="form-check-input" type="radio" name="purchase"
                                                     id="normal_purchase" value="Shop Sale">
                                                 <label class="form-check-label" for="normal_purchase">
                                                     Shop Sale Purchase
                                                 </label>
                                             </div>
-                                            <div class="form-check form-check-inline col-md-3">
+                                            <div class="form-check form-check-inline col-md-5">
                                                 <input class="form-check-input" type="radio" name="purchase"
                                                     id="fuel_purchase" value="Fuel">
                                                 <label class="form-check-label" for="fuel_purchase">
                                                     Fuel Purchase
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" name="purchase"
+                                                    id="other_payment" value="Other Payment">
+                                                <label class="form-check-label" for="other_payment">
+                                                    Other Payment
                                                 </label>
                                             </div>
                                         </div>
@@ -133,9 +140,9 @@
                                         id="searchButton">Search</button>
                                 </div>
                                 <!-- SEARCH -->
-                                <div style="height: 300px; overflow-y: auto;">
+                                <div style="height: 400px; overflow-y: auto;" class="mt-3 rounded-top">
                                     <table class="table" id="expenseReasonsTable">
-                                        <thead>
+                                        <thead style="position: sticky; top: 0; background-color: #1a1d20; z-index: 1;">
                                             <tr>
                                                 <th>Reasons</th>
                                                 <th>Category</th>
@@ -257,25 +264,32 @@
                     <div class="col-md-12" id="model_purchase_section">
                         <label for="model_purchase" class="form-label">Purchase: </label>
                         <div class="form-control">
-                            <div class="form-check form-check-inline col-md-3">
+                            <div class="form-check form-check-inline col-md-5">
                                 <input class="form-check-input" type="radio" name="model_purchase"
                                     id="model_expense" value="Expense" checked>
                                 <label class="form-check-label" for="model_expense">
                                     Expense
                                 </label>
                             </div>
-                            <div class="form-check form-check-inline col-md-4">
+                            <div class="form-check form-check-inline col-md-5">
                                 <input class="form-check-input" type="radio" name="model_purchase"
                                     id="model_normal_purchase" value="Shop Sale">
                                 <label class="form-check-label" for="model_normal_purchase">
                                     Shop Sale Purchase
                                 </label>
                             </div>
-                            <div class="form-check form-check-inline col-md-3">
+                            <div class="form-check form-check-inline col-md-5">
                                 <input class="form-check-input" type="radio" name="model_purchase"
                                     id="model_fuel_purchase" value="Fuel">
                                 <label class="form-check-label" for="model_fuel_purchase">
                                     Fuel Purchase
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline col-md-5">
+                                <input class="form-check-input" type="radio" name="model_purchase"
+                                    id="model_other_payment" value="Other Payment">
+                                <label class="form-check-label" for="model_other_payment">
+                                    Other Payment
                                 </label>
                             </div>
                         </div>
