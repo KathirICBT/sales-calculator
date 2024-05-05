@@ -110,7 +110,7 @@
                         @endphp
 
                         @foreach ($purchasereport as $purchaseType => $purchaseTypeData)
-                            @if ($purchaseType !== 'Expense')
+                            @if ($purchaseType !== 'Expense' &&$purchaseType !== 'Other Payment')
                                 <tr>
                                     <td>{{ $purchaseType }}</td>
                                     @php
