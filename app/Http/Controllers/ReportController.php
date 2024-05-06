@@ -1982,7 +1982,7 @@ public function showCashMoveReportother()
             } elseif ($item instanceof Petticash) {
                 $shopId = $item->shift->shop_id;
                 $subCategory = $item->pettyCashReason->expenseSubCategory->sub_category;
-                // $purchaseType = $item->expenseReason->purchase_type;
+                 $purchaseType = $item->pettyCashReason->purchase_type;
                 $supplier = $item->pettyCashReason->supplier;
             }
             
@@ -2249,10 +2249,10 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
         //$otherReportData = $this->generateCashMovementotherReport($request);
 
     // Retrieve report data from other report method
-    $report = $this->generateCashMovementotherReport($request);
+    $expenseReport = $this->Expense($request);
     $ownerCashMovement = $this->ownerCashMovementotherReport($request);
     $purchasereport=$this->marginPercentage($request);
-
+    $report = $this->generateCashMovementotherReport($request);
     //dd($report);
 
     // Ensure $otherReportData is an array with expected keys
@@ -2282,6 +2282,7 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
         'additionalCapitalTotals' => $additionalCapitalTotals,
         'report' => $report, // Merge the report data into the main data
         'purchasereport' => $purchasereport,
+        'expenseReport'=> $expenseReport,
     ];
     
     // Return the view with required data
@@ -2361,4 +2362,75 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
     }
     
 
+    public function Expense(Request $request)
+    {        
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date|after_or_equal:from_date',
+        ]);
+        
+        $fromDate = $request->input('from_date');
+        $toDate = $request->input('to_date'); 
+    
+        // Retrieve OtherExpense records
+        $expenses = OtherExpense::with('expenseReason')
+            ->whereHas('expenseReason', function ($query) {
+                $query->where('supplier', 'Supplier');
+            })
+            ->whereHas('expenseReason', function ($query) {
+                $query->where('purchase_type', 'Expense');
+            })
+            ->whereBetween('date', [$fromDate, $toDate])
+            ->get();
+    
+        // Retrieve Petticash records
+        $pettyCash = Petticash::with('pettyCashReason')
+            ->whereHas('pettyCashReason', function ($query) {
+                $query->where('supplier', 'Supplier');
+            })
+            ->whereHas('pettyCashReason', function ($query) {
+                $query->where('purchase_type', 'Expense');
+            })
+            ->whereHas('shift', function ($query) use ($fromDate, $toDate) {
+                $query->whereBetween('end_date', [$fromDate, $toDate]);
+            })
+            ->get();
+    
+        // Merge data from both sources
+        $data = $expenses->merge($pettyCash);
+    
+        // Initialize an empty report array
+        $expenseReport = [];
+    
+        // Process each item in the merged data
+        foreach ($data as $item) {
+            if ($item instanceof OtherExpense) {
+                $shopId = $item->shop_id;
+                $purchaseType = $item->expenseReason->purchase_type;
+                $subCategory = $item->expenseReason->expenseSubCategory->sub_category;
+                $supplier = $item->expenseReason->supplier;
+            } elseif ($item instanceof Petticash) {
+                $shopId = $item->shift->shop_id;
+                $purchaseType = $item->pettyCashReason->purchase_type;
+                $subCategory = $item->pettyCashReason->expenseSubCategory->sub_category;
+                $supplier = $item->pettyCashReason->supplier;
+            }
+    
+           
+
+            // Ensure the purchaseType is valid and not empty
+            if (!empty($purchaseType)) {
+                if (!isset($expenseReport[$subCategory])) {
+                    $expenseReport[$subCategory] = ['supplier' => $supplier, 'data' => []];
+                }
+    
+                if (!isset($expenseReport[$subCategory]['data'][$shopId])) {
+                    $expenseReport[$subCategory]['data'][$shopId] = 0;
+                }
+    
+                $expenseReport[$subCategory]['data'][$shopId] += $item->amount;
+            }
+        }
+            return $expenseReport;
+        }
 }

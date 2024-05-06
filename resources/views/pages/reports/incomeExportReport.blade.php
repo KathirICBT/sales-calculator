@@ -110,7 +110,7 @@
                         @endphp
 
                         @foreach ($purchasereport as $purchaseType => $purchaseTypeData)
-                            @if ($purchaseType !== 'Expense' &&$purchaseType !== 'Other Payment')
+                            @if ($purchaseType !== 'Expense' && $purchaseType !== 'Other Payment')
                                 <tr>
                                     <td>{{ $purchaseType }}</td>
                                     @php
@@ -243,24 +243,45 @@
                         $outflowColumnTotals = array_fill(0, count($shops) + 1, 0);
                         @endphp
 
-                        @foreach ($report as $subCategory => $subCategoryData)
-                        @if(($subCategoryData['supplier'] !== 'Income Tax')&&(!($subCategory === 'Purchase'|| $subCategory === 'Purchases')))
-                        <tr>
-                            <td>{{ $subCategory }}</td>
-                            @php
-                            $subCategoryTotal = 0;
-                            @endphp
-                            @foreach ($shops as $index => $shop)
-                            <td>{{ $subCategoryData['data'][$shop->id] ?? 0 }}</td>
-                            @php
-                            $subCategoryTotal += $subCategoryData['data'][$shop->id] ?? 0;
-                            $outflowColumnTotals[$index] += $subCategoryData['data'][$shop->id] ?? 0;
-                            @endphp
-                            @endforeach
-                            <td>{{ $subCategoryTotal }}</td>
-                        </tr>
-                        @endif
+                        @foreach ($expenseReport as $subCategory => $subCategoryData)
+                            <tr>
+                                <td>{{ $subCategory }}</td>
+                                @php
+                                $subCategoryTotal = 0;
+                                @endphp
+                                @foreach ($shops as $index => $shop)
+                                <td>{{ $subCategoryData['data'][$shop->id] ?? 0 }}</td>
+                                @php
+                                $subCategoryTotal += $subCategoryData['data'][$shop->id] ?? 0;
+                                $outflowColumnTotals[$index] += $subCategoryData['data'][$shop->id] ?? 0;
+                                @endphp
+                                @endforeach
+                                <td>{{ $subCategoryTotal }}</td>
+                            </tr>                       
                         @endforeach
+                        {{-- @foreach ($expenseReport as $purchaseType => $purchaseTypeData)
+                           
+                                <tr>
+                                    <td>{{ $purchaseType }}</td>
+                                    @php
+                                        $subCategoryTotal = 0;
+                                        // $subcategoryColumnTotals=[]; // Initialize purchase type total
+                                    @endphp
+
+                                    @foreach ($shops as $index => $shop)
+                                        @php
+                                            $value = $purchaseTypeData['data'][$shop->id] ?? 0; // Get purchase amount for current shop
+                                            $subCategoryTotal += $value; // Increment purchase type total
+                                            $subcategoryColumnTotals[$index] += $value; // Increment column total for current shop
+                                        @endphp
+                                        <td>{{ $value }}</td> <!-- Display purchase amount for current shop -->
+                                    @endforeach
+
+                                    <td>{{ $subCategoryTotal }}</td> <!-- Display total for current purchase type -->
+                                </tr>
+                            
+                        @endforeach --}}
+
 
                         
 
