@@ -1963,7 +1963,7 @@ public function showCashMoveReportother()
             if ($item instanceof OtherExpense) {
                 $shopId = $item->shop_id;
                 $subCategory = $item->expenseReason->expenseSubCategory->sub_category;
-                $purchaseType = $item->expenseReason->purchase_type;
+                //$purchaseType = $item->expenseReason->purchase_type;
                 $supplier = $item->expenseReason->supplier;
             } elseif ($item instanceof Petticash) {
                 $shopId = $item->shift->shop_id;
@@ -2038,12 +2038,12 @@ public function showCashMoveReportother()
             if ($item instanceof OtherExpense) {
                 $shopId = $item->shop_id;
                 $subCategory = $item->expenseReason->expenseSubCategory->sub_category;
-                $purchaseType = $item->expenseReason->purchase_type;
+                //$purchaseType = $item->expenseReason->purchase_type;
                 $supplier = $item->expenseReason->supplier;
             } elseif ($item instanceof Petticash) {
                 $shopId = $item->shift->shop_id;
                 $subCategory = $item->pettyCashReason->expenseSubCategory->sub_category;
-                $purchaseType = $item->expenseReason->purchase_type;
+                //$purchaseType = $item->expenseReason->purchase_type;
                 $supplier = $item->pettyCashReason->supplier;
             }
             
