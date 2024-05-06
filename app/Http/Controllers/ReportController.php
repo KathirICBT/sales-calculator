@@ -1940,6 +1940,8 @@ public function showCashMoveReportother()
             ->whereBetween('date', [$fromDate, $toDate])
             ->get();
 
+            //dd($expenses->all());
+
         $pettyCash = Petticash::with(['shift', 'pettyCashReason.expenseSubCategory'])
             ->whereHas('shift', function ($query) use ($fromDate, $toDate) {
                 $query->whereBetween('end_date', [$fromDate, $toDate]);
@@ -1953,9 +1955,21 @@ public function showCashMoveReportother()
                     $subQuery->where('supplier', 'Income Tax');
                 });
             })
-            ->get();
+            ->get();            
         
         $data = $expenses->merge($pettyCash);
+
+        foreach ($expenses as $expense) {
+            if (!$data->contains($expense)) {
+                $data->push($expense);
+            }
+        }
+
+        foreach ($pettyCash as $pettyCashRecord) {
+            if (!$data->contains($pettyCashRecord)) {
+                $data->push($pettyCashRecord);
+            }
+        }        
         
         $report = [];
         
