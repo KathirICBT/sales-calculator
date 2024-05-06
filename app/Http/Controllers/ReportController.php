@@ -2045,6 +2045,18 @@ public function showCashMoveReportother()
             ->get();
 
         $data = $expenses->merge($pettyCash);
+
+        foreach ($expenses as $expense) {
+            if (!$data->contains($expense)) {
+                $data->push($expense);
+            }
+        }
+
+        foreach ($pettyCash as $pettyCashRecord) {
+            if (!$data->contains($pettyCashRecord)) {
+                $data->push($pettyCashRecord);
+            }
+        }
         
         $report = [];
         
@@ -2332,6 +2344,18 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
     // Merge data from both sources
     $data = $expenses->merge($pettyCash);
 
+    foreach ($expenses as $expense) {
+        if (!$data->contains($expense)) {
+            $data->push($expense);
+        }
+    }
+
+    foreach ($pettyCash as $pettyCashRecord) {
+        if (!$data->contains($pettyCashRecord)) {
+            $data->push($pettyCashRecord);
+        }
+    }
+
     // Initialize an empty report array
     $purchaseReport = [];
 
@@ -2398,6 +2422,18 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
     
         // Merge data from both sources
         $data = $expenses->merge($pettyCash);
+
+         foreach ($expenses as $expense) {
+            if (!$data->contains($expense)) {
+                $data->push($expense);
+            }
+        }
+
+        foreach ($pettyCash as $pettyCashRecord) {
+            if (!$data->contains($pettyCashRecord)) {
+                $data->push($pettyCashRecord);
+            }
+        }
     
         // Initialize an empty report array
         $expenseReport = [];
