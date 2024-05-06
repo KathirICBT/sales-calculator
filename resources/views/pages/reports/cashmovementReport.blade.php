@@ -154,6 +154,9 @@
                         @endphp
                         @endforeach
                         <td>{{ $subCategoryTotal }}</td>
+                        @php
+                        $outflowColumnTotals[count($shops)] += $subCategoryTotal;
+                        @endphp
                     </tr>
                     @endif
                     @endforeach
