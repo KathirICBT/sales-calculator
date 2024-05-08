@@ -53,17 +53,20 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th style="color:forestgreen">Cash In Flows</th>
+                            <th></th>
                             @php
                             $columnTotals = array_fill(0, count($shops) + 1, 0);
                             @endphp
                             @foreach ($shops as $shop)
-                            <th style="color:forestgreen">{{ $shop->name }}</th>
+                            <th  style="color:forestgreen; text-align: center;">{{ $shop->name }}</th>
                             @endforeach
-                            <th style="color:forestgreen">Total</th>
+                            <th style="color:forestgreen; text-align: center;">Total</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <th style="color:forestgreen">Cash In Flows</th>
+                        </tr>
                         @foreach (['normal', 'fuel'] as $departmentType)
                         <tr>
                             <td>{{ ucfirst(str_replace('_', ' ', $departmentType)) }} Department Total</td>
@@ -194,14 +197,14 @@
                                     $normaltotal+=$normalValue;
                                     $shopsaletotal+=$shopSaleValue;
                                 @endphp
-                                <td>{{ number_format($shopMargin, 2) }}%</td>
+                                <td align="right">{{ number_format($shopMargin, 2) }}%</td>
                             @endforeach
                             @php
                                 $shopMarginTotal = $normaltotal != 0 ?( ($normaltotal - $shopsaletotal) / $normaltotal)*100 : 0;
                             @endphp
 
                             
-                            <td><strong style="color: coral">{{ number_format($shopMarginTotal, 2) }}%</strong></td> 
+                            <td align="right"><strong style="color: coral">{{ number_format($shopMarginTotal, 2) }}%</strong></td> 
                         </tr>
                         
 
@@ -221,12 +224,12 @@
                                     $fueltotal += $normalValue; 
                                     $fuelsaletotal += $fuelSaleValue; // Accumulate fuel margin total
                                 @endphp
-                                <td>{{ number_format($fuelMargin, 2) }}%</td>
+                                <td align="right">{{ number_format($fuelMargin, 2) }}%</td>
                             @endforeach
                             @php
                                 $fuelMarginTotal = $fueltotal != 0 ?( ($fueltotal - $fuelsaletotal) / $fueltotal)*100 : 0;
                             @endphp
-                            <td><strong style="color: coral">{{ number_format($fuelMarginTotal, 2) }}%</strong></td>
+                            <td align="right"><strong style="color: coral">{{ number_format($fuelMarginTotal, 2) }}%</strong></td>
                         </tr>
                         
                         

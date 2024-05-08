@@ -50,7 +50,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th style="color:forestgreen">Cash In Flows</th>
+                        <th style="color:forestgreen"></th>
                         @php
                         $columnTotals = array_fill(0, count($shops) + 1, 0);
                         @endphp
@@ -61,6 +61,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <th style="color:forestgreen">Cash In Flows</th>
+                    </tr>
                     @foreach (['normal', 'other_taking', 'fuel'] as $departmentType)
                     <tr>
                         <td>{{ ucfirst(str_replace('_', ' ', $departmentType)) }} Department Total</td>
