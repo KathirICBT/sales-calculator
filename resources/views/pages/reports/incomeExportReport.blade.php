@@ -76,9 +76,9 @@
                             $departmentTypeTotal += $value;
                             $columnTotals[$index] += $value;
                             @endphp
-                            <td>{{ $value }}</td>
+                            <td align="right">{{ number_format($value, 2) }}</td>
                             @endforeach
-                            <td>{{ $departmentTypeTotal }}</td>
+                                <td align="right">{{ number_format($departmentTypeTotal, 2) }}</td>
                             @php
                             $columnTotals[count($shops)] += $departmentTypeTotal;
                             @endphp
@@ -92,7 +92,7 @@
                         <tr>
                             <td><strong style="color:coral">Total Cash Inflow</strong></td>
                             @foreach ($columnTotals as $total)
-                            <td><strong style="color:coral">{{ $total }}</strong></td>
+                            <td align="right"><strong style="color:coral">{{ number_format($total, 2) }}</strong></td>                           
                             @endforeach
                         </tr>
                         <tr>
@@ -123,10 +123,9 @@
                                             $purchaseTypeTotal += $value; // Increment purchase type total
                                             $purchaseColumnTotals[$index] += $value; // Increment column total for current shop
                                         @endphp
-                                        <td>{{ $value }}</td> <!-- Display purchase amount for current shop -->
+                                        <td align="right">{{ number_format($value, 2) }}</td>
                                     @endforeach
-
-                                    <td>{{ $purchaseTypeTotal }}</td> <!-- Display total for current purchase type -->
+                                    <td align="right">{{ number_format($purchaseTypeTotal, 2) }}</td>
                                 </tr>
                             @endif
                         @endforeach
@@ -138,10 +137,9 @@
                                 @php
                                     $purchaseTotalAll += $total; // Accumulate the total purchases
                                 @endphp
-                                <td><strong style="color: coral">{{ $total }}</strong></td> <!-- Display shop's total -->
+                                <td align="right"><strong style="color:coral">{{ number_format($total, 2) }}</strong></td>  <!-- Display shop's total -->
                             @endforeach
-
-                            <td><strong style="color: coral">{{ $purchaseTotalAll }}</strong></td> <!-- Display overall total -->
+                            <td align="right"><strong style="color:coral">{{ number_format($purchaseTotalAll, 2) }}</strong></td>  <!-- Display overall total -->
                         </tr>
 
                     
@@ -165,9 +163,10 @@
                                     $netCashFlow = $columnTotals[$index] - $purchaseColumnTotals[$index];
                                     $grossProfitColumnTotal += $netCashFlow;
                                 @endphp
-                                <td><strong style="color: coral">{{ $netCashFlow }}</strong></td>
+                                <td align="right"><strong style="color:coral">{{ number_format($netCashFlow, 2) }}</strong></td>
                             @endforeach
-                            <td><strong style="color: coral">{{ $grossProfitColumnTotal }}</strong></td>
+                            <td align="right"><strong style="color:coral">{{ number_format($grossProfitColumnTotal, 2) }}</strong></td>
+
                         </tr>
                         
                         
@@ -250,13 +249,16 @@
                                 $subCategoryTotal = 0;
                                 @endphp
                                 @foreach ($shops as $index => $shop)
-                                <td>{{ $subCategoryData['data'][$shop->id] ?? 0 }}</td>
+                                {{-- <td>{{ $subCategoryData['data'][$shop->id] ?? 0 }}</td> --}}
+                                <td align="right">{{ number_format($subCategoryData['data'][$shop->id] ?? 0 , 2) }}</td>
                                 @php
                                 $subCategoryTotal += $subCategoryData['data'][$shop->id] ?? 0;
                                 $outflowColumnTotals[$index] += $subCategoryData['data'][$shop->id] ?? 0;
                                 @endphp
                                 @endforeach
-                                <td>{{ $subCategoryTotal }}</td>
+                                {{-- <td>{{ $subCategoryTotal }}</td> --}}
+                                <td align="right">{{ number_format($subCategoryTotal , 2) }}</td>
+                                
                             </tr>                       
                         @endforeach
                         {{-- @foreach ($expenseReport as $purchaseType => $purchaseTypeData)
@@ -294,10 +296,10 @@
                                 @php
                                     $expenseValue = $outflowColumnTotals[$index];
                                     $totalExpenses += $expenseValue;
-                                @endphp
-                                <td><strong style="color: coral">{{ $expenseValue }}</strong></td>
+                                @endphp                                
+                                <td align="right"><strong style="color:coral">{{ number_format($expenseValue, 2) }}</strong></td>                                
                             @endforeach
-                            <td><strong style="color: coral">{{ $totalExpenses }}</strong></td>
+                                <td align="right"><strong style="color:coral">{{ number_format($totalExpenses, 2) }}</strong></td>
                         </tr>
                         
                         
@@ -316,10 +318,10 @@
                                     $expenses = $outflowColumnTotals[$index];
                                     $netProfit = $grossProfit - $expenses;
                                     $totalProfit += $netProfit;
-                                @endphp
-                                <td><strong style="color: coral">{{ $netProfit }}</strong></td>
+                                @endphp                                
+                                <td align="right"><strong style="color:coral">{{ number_format($netProfit, 2) }}</strong></td>
                             @endforeach
-                            <td><strong style="color: coral">{{ $totalProfit }}</strong></td>
+                                <td align="right"><strong style="color:coral">{{ number_format($totalProfit, 2) }}</strong></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -339,10 +341,10 @@
                                 @php
                                 $value = $shopDirectIncomeTotals[$shop->id] ?? 0;
                                 $directIncomesTotalAll += $value;
-                                @endphp
-                                <td>{{ $value }}</td>
-                            @endforeach
-                            <td>{{ $directIncomesTotalAll }}</td>
+                                @endphp                                
+                                <td align="right">{{ number_format($value, 2) }}</td>
+                            @endforeach                            
+                            <td align="right">{{ number_format($directIncomesTotalAll, 2) }}</td>
                         </tr>
                         <tr>
                             <td>Calculated Incomes Total</td>
@@ -354,9 +356,10 @@
                                 $value = $shopCalculatedIncomeTotals[$shop->id] ?? 0;
                                 $calculatedIncomesTotalAll += $value;
                                 @endphp
-                                <td>{{ $value }}</td>
+                                <td align="right">{{ number_format($value, 2) }}</td>
                             @endforeach
-                            <td>{{ $calculatedIncomesTotalAll }}</td>
+                            
+                            <td align="right">{{ number_format($calculatedIncomesTotalAll, 2) }}</td>
                         </tr>
                         
                         <tr>
@@ -369,9 +372,10 @@
                                 $value = $shopOtherIncomeTotals[$shop->id] ?? 0;
                                 $otherIncomesTotalAll += $value;
                                 @endphp
-                                <td><strong style="color: coral">{{ $value }}</strong></td>
+                                <td align="right"><strong style="color: coral">{{ number_format($value, 2) }}</strong></td>
                             @endforeach
-                            <td><strong style="color: coral">{{ $otherIncomesTotalAll }}</strong></td>
+                            
+                            <td align="right"><strong style="color: coral">{{ number_format($otherIncomesTotalAll, 2) }}</strong></td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -388,10 +392,10 @@
                             @foreach ($shops as $index => $shop)
                                 @php
                                     $profitBeforeTax = $columnTotals[$index] - $purchaseColumnTotals[$index] - $outflowColumnTotals[$index]+ ($shopOtherIncomeTotals[$shop->id] ?? 0);
-                                @endphp
-                                <td><strong style="color: coral">{{ $profitBeforeTax }}</strong></td>
-                            @endforeach
-                            <td><strong style="color: coral">{{ $profitBeforeTaxTotal }}</strong></td>
+                                @endphp                                
+                                <td align="right"><strong style="color: coral">{{ number_format($profitBeforeTax, 2) }}</strong></td>
+                            @endforeach                            
+                            <td align="right"><strong style="color: coral">{{ number_format($profitBeforeTaxTotal, 2) }}</strong></td>
                         </tr>                   
                         
 
@@ -411,14 +415,14 @@
                             @php
                             $subCategoryTotal = 0;
                             @endphp
-                            @foreach ($shops as $index => $shop)
-                            <td>{{ $subCategoryData['data'][$shop->id] ?? 0 }}</td>
+                            @foreach ($shops as $index => $shop)                            
+                            <td align="right">{{ number_format($subCategoryData['data'][$shop->id] ?? 0 , 2) }}</td>
                             @php
                             $subCategoryTotal += $subCategoryData['data'][$shop->id] ?? 0;
                             $outflowColumnTotals[$index] += $subCategoryData['data'][$shop->id] ?? 0;
                             @endphp
                             @endforeach
-                            <td>{{ $subCategoryTotal }}</td>
+                                <td align="right">{{ number_format($subCategoryTotal, 2) }}</td>
                             @php
                             $outflowColumnTotals[count($shops)] += $subCategoryTotal;
                             @endphp
@@ -440,10 +444,11 @@
                                     $profitBeforeTax =  $columnTotals[$index] - $purchaseColumnTotals[$index] + ($shopOtherIncomeTotals[$shop->id] ?? 0);
                                     $incomeTax = $outflowColumnTotals[$index] ?? 0;
                                     $profitAfterTax = $profitBeforeTax - $incomeTax;
-                                @endphp
-                                <td><strong style="color: coral">{{ $profitAfterTax }}</strong></td>
-                            @endforeach
-                            <td><strong style="color: coral">{{ $profitAfterTaxTotal }}</strong></td>
+                                @endphp                                
+                                <td align="right"><strong style="color: coral">{{ number_format($profitAfterTax, 2) }}</strong></td>
+                                
+                            @endforeach                            
+                            <td align="right"><strong style="color: coral">{{ number_format($profitAfterTaxTotal, 2) }}</strong></td>
                         </tr>
                     </tbody>
                 </table>
