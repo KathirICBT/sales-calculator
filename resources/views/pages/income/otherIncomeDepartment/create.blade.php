@@ -85,9 +85,9 @@
                                         id="searchButton">Search</button>
                                 </div>
                                 {{-- SEARCH --}}
-                                <div style="height: 300px; overflow-y: auto;">
+                                <div style="height: 300px; overflow-y: auto;" class="mt-3 rounded-top">
                                     <table class="table" id="otherIncomeDepartmentTable">
-                                        <thead>
+                                        <thead style="position: sticky; top: 0; background-color: #1a1d20; z-index: 1;">
                                             <tr>
                                                 <th scope="col">Income Name</th>
                                                 <th scope="col">Category</th>

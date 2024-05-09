@@ -88,12 +88,12 @@
                                     </p>
                                 </div>
 
-                                <div class="card-body">
+                                <div class="card-body" class="mt-3 rounded-top">
                                     <form class="row g-3" id="salesForm" method="post"
                                         action="{{ route('shifts.store.submit') }}">
                                         @csrf
                                         <table class="table" id="repeater-table">
-                                            <thead>
+                                            <thead style="position: sticky; top: 0; background-color: #1a1d20; z-index: 1;">
                                                 <tr>
                                                     <th>Department</th>
                                                     <th>Amount</th>

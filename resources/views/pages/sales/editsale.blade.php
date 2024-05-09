@@ -55,7 +55,7 @@
                                     @if($staffDetails->isNotEmpty())
                                         <div class="table-responsive">
                                             <table class="table table-striped table-hover">
-                                                <thead>
+                                                <thead style="position: sticky; top: 0; background-color: #1a1d20; z-index: 1;">
                                                     <tr>
                                                         <th>Staff Name</th>
                                                         <th>Shop Name</th>
@@ -107,9 +107,9 @@
                             <div class="card-body">
                                 @isset($salesDetails)
                                     @if($salesDetails->isNotEmpty())
-                                    <div class="table-responsive">
+                                    <div class="table-responsive" class="mt-3 rounded-top">
                                         <table class="table table-striped table-hover sales-details-table">
-                                            <thead>
+                                            <thead style="position: sticky; top: 0; background-color: #1a1d20; z-index: 1;">
                                                 <tr>
                                                     <th>Sale ID</th>
                                                     <th>Department</th>

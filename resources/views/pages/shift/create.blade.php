@@ -79,9 +79,9 @@
                                         <button class="btn btn-outline-secondary" type="button" id="searchShiftButton">Search</button>
                                     </div>
                                     {{-- SEARCH --}}
-                                <div style="height: 300px; overflow-y: auto;">
+                                <div style="height: 300px; overflow-y: auto;" class="mt-3 rounded-top">
                                     <table class="table" id="staffTable">
-                                        <thead>
+                                        <thead style="position: sticky; top: 0; background-color: #1a1d20; z-index: 1;">
                                             <tr>
                                                 <th>Staff</th>
                                                 <th>Shop</th>

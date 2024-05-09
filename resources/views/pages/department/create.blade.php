@@ -62,9 +62,9 @@
                                     <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
                                 </div>
                                 {{-- SEARCH --}}
-                                <div style="height: 300px; overflow-y: auto;">
+                                <div style="height: 300px; overflow-y: auto;" class="mt-3 rounded-top">
                                     <table class="table" id="departmentTable">
-                                        <thead>
+                                        <thead style="position: sticky; top: 0; background-color: #1a1d20; z-index: 1;">
                                             <tr>
                                                 <th scope="col" style="width: 30%">Department Name</th>
                                                 <th scope="col" style="width: 20%">Other Taking</th>

@@ -95,9 +95,9 @@
                                     <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
                                 </div>
                                 {{-- SEARCH --}}
-                                <div style="overflow-x: auto;">
+                                <div style="overflow-x: auto;" class="mt-3 rounded-top">
                                 <table class="table" id="otherIncomeTable">
-                                    <thead>
+                                    <thead style="position: sticky; top: 0; background-color: #1a1d20; z-index: 1;">
                                         <tr>                                                            
                                             <th>Shop</th>
                                             <th>Date</th>
