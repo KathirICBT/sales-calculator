@@ -151,4 +151,24 @@ class AuthController extends Controller
         }
     }
 
+
+    public function authenticateUser(Request $request)
+{
+    $credentials = $request->only('username', 'password');
+
+    if (Auth::attempt($credentials)) {
+        // Authentication passed
+        $request->session()->regenerate();
+        $user = Auth::user();
+        $request->session()->put('username', $user->username); // Storing username in session
+        return redirect()->route("dashboard");
+    }
+
+    // Authentication failed
+    return redirect()->route("auth.login")->withErrors([
+        "username" => "Invalid username or password",
+        "password" => "Invalid username or password"
+    ]);
+}
+
 }

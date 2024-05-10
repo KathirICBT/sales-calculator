@@ -634,6 +634,29 @@ protected function storeShift(Request $request)
 
         
 
-      
+        public function searchShiftStaff()
+    {
+        $staffUsernames = Staff::pluck('username')->toArray();
+        return view('pages.reports.shiftStaff', compact('staffUsernames'));
+    }
 
+    public function displayShifts(Request $request)
+    {
+        $username = $request->input('username');
+
+        // Find staff member by username
+        $staff = Staff::where('username', $username)->first();
+
+        if (!$staff) {
+            return redirect()->route('search.shift.staff')->with('error', 'Staff not found');
+        }
+
+        // Retrieve shifts related to the staff member
+        $shifts = Shift::where('staff_id', $staff->id)->get();
+
+        // Retrieve all staff usernames for the dropdown
+        $staffUsernames = Staff::pluck('username')->toArray();
+
+        return view('pages.reports.shiftStaff', compact('staff', 'shifts', 'staffUsernames'));
+    }
 }

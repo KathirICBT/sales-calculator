@@ -195,7 +195,7 @@
                         <a href="#" class="sidebar-link text">Login</a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{route('user.create')}}" class="sidebar-link text">Register</a>
+                        <a href="#" class="sidebar-link text">Register</a>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link text">Forgot Password</a>
@@ -207,6 +207,12 @@
                 <a href="{{route('shiftstaff.search')}}" class="sidebar-link collapsed text" >
                     <i class="fa-solid fa-clock-rotate-left pe-2"></i>
                     ShiftEdit 
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{{route( 'search.shiftsStaff')}}" class="sidebar-link collapsed text" >
+                    <i class="fa-solid fa-clock-rotate-left pe-2"></i>
+                    Serach shifts by Staffs
                 </a>
             </li>
 

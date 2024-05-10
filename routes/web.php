@@ -211,6 +211,7 @@ Route::delete('/paymentmethods/{id}', [PaymentmethodController::class, 'destroy'
 
  Route::get('/', [AuthController::class, 'login'])->name('auth.login');
  Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
+
 // Route::post('/login', 'AuthController@authenticate')->name('login');
 
 // Route::get('/', function () {
@@ -273,16 +274,21 @@ Route::delete('/shops/{id}', [ShopController::class, 'destroy'])->name('shop.des
 // Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 // Route::post('/register', [AuthController::class, 'register']);
 
-Route::get('/user', [AuthController::class, 'showRegistrationForm'])->name('user.create');
+Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('registration.show');
 Route::post('/user/register', [AuthController::class, 'register'])->name('register');
 
 //Route::get('/', [AuthController::class, 'showuserLoginForm'])->name('ulogin');
-Route::post('/userlogin', [AuthController::class, 'userlogin'])->name('user.login');
+Route::post('/userlogin', [AuthController::class, 'authenticateUser'])->name('user.login');
 
 
 Route::get('/user/profile', [AuthController::class, 'showProfile'])->name('user.profile');
 
-Route::get('/user/profile', [StaffController::class, 'showProfile'])->name('user.profile');
+// Route::get('/user/profile', [StaffController::class, 'showProfile'])->name('user.profile');
+/////////////////
+// Route::post('/loginUser', [AuthController::class, 'authenticateUser'])->name('user.login');
+// Route::post('/RegisterUser', [AuthController::class, 'register'])->name('registration');
+
+// Route::get('/RegisterUser', [AuthController::class, 'showRegistrationForm'])->name('registration.show');
 
 
 // Route::get('/forgot-password', 'ForgotPasswordController@showForgotPasswordForm')->name('forgot-password');
@@ -519,3 +525,7 @@ Route::get('/reports/incomExpo', [ReportController::class, 'showIncomeExpoReport
 Route::post('/reports/incomExpo', [ReportController::class, 'generateIncomeExportReport'])->name('reports.generateIncomeExpo');
 
 
+
+
+Route::get('/search-shifts', [ShiftController::class, 'searchShiftStaff'])->name('search.shiftsStaff');
+Route::post('/search-shifts', [ShiftController::class, 'displayShifts'])->name('display.shifts');
