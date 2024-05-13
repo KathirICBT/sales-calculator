@@ -13,26 +13,32 @@
     <style>
         /* Define the styles for the text */
         .text {
-          font-size: 24px;
-          color: #333; /* Default color */
-          transition: color 0.3s; /* Smooth transition effect */
+            font-size: 24px;
+            color: #333;
+            /* Default color */
+            transition: color 0.3s;
+            /* Smooth transition effect */
         }
-        
+
         /* Define the hover effect */
         .text:hover {
-          color: #ffd000; /* Color to change to on hover */
-          cursor: pointer; /* Change cursor to pointer on hover */
+            color: #ffd000;
+            /* Color to change to on hover */
+            cursor: pointer;
+            /* Change cursor to pointer on hover */
         }
-      </style>
-    
+    </style>
+
 </head>
 
 
 <body>
-    <div class="wrapper">
+    <div class="wrapper">        
 
-        <x-side-bar />
-        
+        @if(session()->has('adminusername'))
+        <x-side-bar />        
+        @endif
+
         <div class="main">
             <nav class="navbar navbar-expand px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">
@@ -42,15 +48,19 @@
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                                <img src="{{ asset('image/profile.jpg') }}" class="avatar img-fluid rounded-circle" alt="">                                
+                                <img src="{{ asset('image/profile.jpg') }}" class="avatar img-fluid rounded-circle"
+                                    alt="">
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a href="{{route('user.profile')}}" class="dropdown-item">Profile</a>
                                 <a href="#" class="dropdown-item">Setting</a>
-                                <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('auth.logout') }}" method="POST"
+                                    style="display: none;">
                                     @csrf
                                 </form>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item">Logout</a>
+                                <a href="#"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                    class="dropdown-item">Logout</a>
                             </div>
                         </li>
                     </ul>
@@ -87,7 +97,7 @@
                                 </li>
                                 <li class="list-inline-item">
                                     <a href="#" class="text-muted">Terms</a>
-                                </li>                                
+                                </li>
                             </ul>
                         </div>
                     </div>

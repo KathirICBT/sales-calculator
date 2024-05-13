@@ -12,6 +12,15 @@ use App\Models\Staff;
 class AuthController extends Controller
 {
     public function login() {
+        // If staff is already authenticated, redirect to the staff dashboard
+        if(Auth::guard('staff')->check()) {
+            return redirect()->route('shifts.index');
+        }
+        
+        // If admin is already authenticated, redirect to the admin dashboard
+        if(Auth::check()) {
+            return redirect()->route('dashboard');
+        }
         return view("auth.login");
     }
     // public function authenticate(){        
@@ -61,7 +70,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::guard('staff')->user();
             $request->session()->put('username', $user->username); // Storing username in session
-            return redirect()->route("dashboard");
+            return redirect()->route("shifts.index");
         }
 
         // Authentication failed
@@ -85,8 +94,6 @@ class AuthController extends Controller
 
 
 //====================================================================
-
-
 
     public function showRegistrationForm()
     {
@@ -133,7 +140,6 @@ class AuthController extends Controller
 
     }
 
-
     // public function showProfile()
     // {
     //     return view('auth.register');
@@ -160,7 +166,7 @@ class AuthController extends Controller
         // Authentication passed
         $request->session()->regenerate();
         $user = Auth::user();
-        $request->session()->put('username', $user->username); // Storing username in session
+        $request->session()->put('adminusername', $user->username); // Storing username in session
         return redirect()->route("dashboard");
     }
 
