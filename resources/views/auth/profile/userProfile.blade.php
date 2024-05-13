@@ -14,7 +14,7 @@
                     <div class="row g-0 w-100">
                         <div class="col-6">
                             <div class="p-3 m-1">
-                                <h4>Welcome, {{ $user->name }}</h4>
+                                <h4>Welcome, {{ $user->username }}</h4>
                                 <p class="mb-0">RESET PASSWORD</p>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                                                         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
                                                             alt="avatar" class="rounded-circle img-fluid"
                                                             style="width: 70px;">
-                                                        <h5 class="my-3">{{ $user->name }}</h5>
+                                                        <h5 class="my-3">{{ $user->username }}</h5>
                                                     </div>
                                                 </div>
                                                 <div class="text-center">
