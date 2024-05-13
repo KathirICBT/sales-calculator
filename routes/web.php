@@ -296,6 +296,15 @@ Route::get('/user/profile', [AuthController::class, 'showProfile'])->name('user.
 
 
 Route::post('reset-password', [StaffController::class, 'resetPassword'])->name('staff.resetPassword');
+// routes/web.php
+
+
+
+// Route for displaying the user dashboard
+Route::get('/user/adminProfile', [AuthController::class, 'showDashboard'])->name('user.dashboard');
+// Route for handling password reset
+Route::post('/user/reset-password', [AuthController::class, 'userResetPassword'])->name('user.resetPassword');
+
 
 //LOGOUT ======================================================================
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');

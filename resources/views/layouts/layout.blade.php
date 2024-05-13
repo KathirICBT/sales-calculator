@@ -52,7 +52,14 @@
                                     alt="">
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a href="{{route('user.profile')}}" class="dropdown-item">Profile</a>
+
+                                @if(session()->has('adminusername'))
+                                    <a href="{{route('user.dashboard')}}" class="dropdown-item">Profile</a>
+                                @else
+                                    <a href="{{route('user.profile')}}" class="dropdown-item">Profile</a>
+                                @endif
+
+                                
                                 <a href="#" class="dropdown-item">Setting</a>
                                 <form id="logout-form" action="{{ route('auth.logout') }}" method="POST"
                                     style="display: none;">

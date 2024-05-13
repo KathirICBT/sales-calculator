@@ -177,4 +177,24 @@ class AuthController extends Controller
     ]);
 }
 
+
+public function showDashboard()
+    {
+        $user = Auth::user(); // Assuming you are using authentication
+        return view('auth.profile.userProfile', compact('user'));
+    }
+
+    // Handle password reset
+    public function userResetPassword(Request $request)
+    {
+        $request->validate([
+            'newPassword' => 'required|min:6|confirmed', // Ensure 'newPassword' matches 'newPassword_confirmation'
+        ]);
+
+        $user =Auth::user(); // Assuming you are using authentication
+        $user->password = bcrypt($request->input('newPassword'));
+        $user->save();
+
+        return redirect()->route('user.dashboard')->with('success', 'Password reset successfully!');
+    }
 }
