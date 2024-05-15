@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Validator;
 
-
 class AuthController extends Controller
 {
     public function login() {
@@ -198,6 +197,55 @@ public function showDashboard()
 
     //     return redirect()->route('user.dashboard')->with('success', 'Password reset successfully!');
     // }
-    
+    // public function userResetPassword(Request $request)
+    // {      
+    //     // Validate the request data
+    //     $validator = Validator::make($request->all(), [
+    //         'username' => 'required',
+    //         'newPassword' => 'required|string|min:5|confirmed',
+    //     ]);
+
+    //     // Check if validation fails
+    //     if ($validator->fails()) {
+    //         return redirect()->back()->withErrors($validator)->withInput();
+    //     }
+
+    //     // Find the staff member by username
+    //     $user = Auth::where('username', $request->username)->first();
+
+    //     if (!$user) {
+    //         // Handle case where staff member is not found
+    //         return redirect()->back()->withErrors(['username' => 'User member not found']);
+    //     }
+
+    //     // Update the staff member's password
+    //     $user->password = Hash::make($request->newPassword);
+        
+    //     try {
+    //         $user->save();
+    //         // Redirect back with success message
+    //         return redirect()->back()->with('success', 'Password reset successfully');
+    //     } catch (\Exception $e) {
+    //         // Handle database save error
+    //         return redirect()->back()->with('error', 'Failed to reset password. Please try again.');
+    //     }
+    // }
+    public function userResetPassword(Request $request)
+    {        
+        $request->validate([
+            'newPassword' => 'required|min:6|confirmed', // Ensure 'newPassword' matches 'newPassword_confirmation'
+        ]);
+       
+        $user = User::where('username', $request->username)->first();
+        
+        if (!$user) {
+            return back()->withErrors(['username' => 'Invalid username.']);
+        }
+        
+        $user->password = bcrypt($request->newPassword);
+        $user->save();
+        
+        return back()->with('success', 'Password reset successfully!');
+    }
 
 }
