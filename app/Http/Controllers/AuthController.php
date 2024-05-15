@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Staff;
+use Illuminate\Support\Facades\Validator;
 
 
 class AuthController extends Controller
@@ -159,23 +160,23 @@ class AuthController extends Controller
 
 
     public function authenticateUser(Request $request)
-{
-    $credentials = $request->only('username', 'password');
+    {
+        $credentials = $request->only('username', 'password');
 
-    if (Auth::attempt($credentials)) {
-        // Authentication passed
-        $request->session()->regenerate();
-        $user = Auth::user();
-        $request->session()->put('adminusername', $user->username); // Storing username in session
-        return redirect()->route("dashboard");
+        if (Auth::attempt($credentials)) {
+            // Authentication passed
+            $request->session()->regenerate();
+            $user = Auth::user();
+            $request->session()->put('adminusername', $user->username); // Storing username in session
+            return redirect()->route("dashboard");
+        }
+
+        // Authentication failed
+        return redirect()->route("auth.login")->withErrors([
+            "username" => "Invalid username or password",
+            "password" => "Invalid username or password"
+        ]);
     }
-
-    // Authentication failed
-    return redirect()->route("auth.login")->withErrors([
-        "username" => "Invalid username or password",
-        "password" => "Invalid username or password"
-    ]);
-}
 
 
 public function showDashboard()
@@ -197,38 +198,6 @@ public function showDashboard()
 
     //     return redirect()->route('user.dashboard')->with('success', 'Password reset successfully!');
     // }
-    public function userResetPassword(Request $request)
-{      
-    // Validate the request data
-    $validator = Validator::make($request->all(), [
-        'username' => 'required',
-        'newPassword' => 'required|string|min:5|confirmed',
-    ]);
-
-    // Check if validation fails
-    if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
-    }
-
-    // Find the staff member by username
-    $user = Auth::where('username', $request->username)->first();
-
-    if (!$user) {
-        // Handle case where staff member is not found
-        return redirect()->back()->withErrors(['username' => 'User member not found']);
-    }
-
-    // Update the staff member's password
-    $user->password = Hash::make($request->newPassword);
     
-    try {
-        $user->save();
-        // Redirect back with success message
-        return redirect()->back()->with('success', 'Password reset successfully');
-    } catch (\Exception $e) {
-        // Handle database save error
-        return redirect()->back()->with('error', 'Failed to reset password. Please try again.');
-    }
-}
 
 }
