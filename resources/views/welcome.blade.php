@@ -29,7 +29,7 @@
                                             <div class="col-6">
                                                 <div class="p-3 m-1">
                                                     <h4>Welcome, {{ session('adminusername') }}</h4>                                                                                                      
-                                                    <p class="mb-0">Admin Dashboard, Sales Calculator</p>
+                                                    <p class="mb-0">Admin Dashboard, Sales Calculator : {{ Auth::user()->username }}</p>
                                                 </div>
                                             </div>
                                         @else                                            
