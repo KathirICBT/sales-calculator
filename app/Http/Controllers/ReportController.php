@@ -96,7 +96,7 @@ class ReportController extends Controller
         ]);
 
         // Get shifts within the specified duration based on the created_at column
-        $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
+        $shifts = Shift::whereBetween('end_date', [$request->from_date, $request->to_date])->get();
 
         // Get cash differences for the matching shifts
         $cashdiffers = Cashdiffer::whereIn('shift_id', $shifts->pluck('id'))->get();
@@ -105,7 +105,7 @@ class ReportController extends Controller
         $shopTotalsByDate = [];
         foreach ($shifts as $shift) {
             foreach ($cashdiffers->where('shift_id', $shift->id) as $cashdiffer) {
-                $date = $shift->start_date;
+                $date = $shift->end_date;
                 $shopId = $shift->shop_id;
                 $cashDifference = $cashdiffer->cashdifference;
                 // Add cash difference to existing total or initialize a new total
@@ -268,7 +268,7 @@ class ReportController extends Controller
     ]);
 
     // Get shifts within the specified duration based on the start_date column
-    $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
+    $shifts = Shift::whereBetween('end_date', [$request->from_date, $request->to_date])->get();
 
     // Get paymentsales for the matching shifts and payment method
     $paymentSales = PaymentSale::whereIn('shift_id', $shifts->pluck('id'))
@@ -282,7 +282,7 @@ class ReportController extends Controller
     $shopTotalsByDate = [];
 
     foreach ($paymentSales as $sale) {
-        $date = $sale->shift->start_date;
+        $date = $sale->shift->end_date;
         $shopId = $sale->shift->shop_id;
         $amount = $sale->amount;
 
@@ -332,13 +332,13 @@ public function generatePaymentReports(Request $request)
     // Iterate over each payment method and generate reports
     foreach ($paymentMethods as $method) {
         $paymentSales = PaymentSale::whereHas('shift', function ($query) use ($request) {
-            $query->whereBetween('start_date', [$request->from_date, $request->to_date]);
+            $query->whereBetween('end_date', [$request->from_date, $request->to_date]);
         })->where('paymentmethod_id', $method->id)->get();
 
         $shopTotalsByDate = [];
 
         foreach ($paymentSales as $sale) {
-            $date = $sale->shift->start_date;
+            $date = $sale->shift->end_date;
             $shopId = $sale->shift->shop_id;
             $amount = $sale->amount;
 
@@ -628,7 +628,7 @@ public function generatePaymentReports(Request $request)
         $paymentTypeValue = strtolower($paymentType->payment_type);
 
         // Get shifts within the specified duration based on the start_date column
-        $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
+        $shifts = Shift::whereBetween('end_date', [$request->from_date, $request->to_date])->get();
 
         // Get other expenses within the specified duration
         $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
@@ -646,7 +646,7 @@ public function generatePaymentReports(Request $request)
             $petticashes = Petticash::where('shift_id', $shift->id)->get();
 
             foreach ($petticashes as $petticash) {
-                $date = $shift->start_date;
+                $date = $shift->end_date;
                 $shopId = $shift->shop_id;
                 $amount = $petticash->amount;
 
@@ -726,7 +726,7 @@ public function generatePaymentReports(Request $request)
         ]);
 
         // Get shifts within the specified duration based on the start_date column
-        $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
+        $shifts = Shift::whereBetween('end_date', [$request->from_date, $request->to_date])->get();
 
         // Get other expenses within the specified duration and for the specified petty cash reason
         $otherExpenses = OtherExpense::whereBetween('date', [$request->from_date, $request->to_date])
@@ -746,7 +746,7 @@ public function generatePaymentReports(Request $request)
                 ->get();
 
             foreach ($petticashes as $petticash) {
-                $date = $shift->start_date;
+                $date = $shift->end_date;
                 $shopId = $shift->shop_id;
                 $amount = $petticash->amount;
 
