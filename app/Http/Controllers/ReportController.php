@@ -18,7 +18,7 @@ use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\PaymentSale;
+use App\Models\Paymentsale;
 use App\Models\Paymentmethod;
 
 use App\Models\ExpenseSubCategory;
@@ -271,7 +271,7 @@ class ReportController extends Controller
     $shifts = Shift::whereBetween('start_date', [$request->from_date, $request->to_date])->get();
 
     // Get paymentsales for the matching shifts and payment method
-    $paymentSales = Paymentsale::whereIn('shift_id', $shifts->pluck('id'))
+    $paymentSales = PaymentSale::whereIn('shift_id', $shifts->pluck('id'))
         ->where('paymentmethod_id', $request->payment_method_id)
         ->get();
 
@@ -331,7 +331,7 @@ public function generatePaymentReports(Request $request)
 
     // Iterate over each payment method and generate reports
     foreach ($paymentMethods as $method) {
-        $paymentSales = Paymentsale::whereHas('shift', function ($query) use ($request) {
+        $paymentSales = PaymentSale::whereHas('shift', function ($query) use ($request) {
             $query->whereBetween('start_date', [$request->from_date, $request->to_date]);
         })->where('paymentmethod_id', $method->id)->get();
 
