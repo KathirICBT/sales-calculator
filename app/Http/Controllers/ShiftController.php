@@ -21,7 +21,7 @@ class ShiftController extends Controller
     // {
     //     // Fetch all shifts from the database
     //     $shifts = Shift::all();
-    //     return view('shifts.index', compact('shifts'));
+    //     // return view('shifts.index', compact('shifts'));
     // }
 
     public function create()

@@ -27,19 +27,19 @@
 
                                         @foreach($staffs as $staff)
                                         @if(session('username')==$staff->username)
-
+                                        <label for="staff_name" class="form-label">Staff: {{ $staff->staff_name }}</label>
                                         <input type="hidden" id="staff_id" name="staff_id" value="{{ $staff->id }}">
                                         @endif
                                         @endforeach
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="shop_id" class="form-label">Shop:</label>
-                                        <select class="form-select" name="shop_id" id="shop_id" required>
-                                            <option value="">Select a Shop</option>
-                                            @foreach($shops as $shop)
-                                            <option value="{{ $shop->id }}">{{ $shop->name }}</option>
-                                            @endforeach
-                                        </select>
+
+                                        @foreach($staffs as $staff)
+                                        @if(session('username')==$staff->username)
+                                        <label for="shop_name" class="form-label">Shop: {{ $staff->shop->name }}</label>
+                                        <input type="hidden" id="shop_id" name="shop_id" value="{{ $staff->shop_id }}">
+                                        @endif
+                                        @endforeach
                                     </div>
                                     <div class="col-md-3">
                                         <label for="shift_start_date" class="form-label">Shift Start Date:</label>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Staff;
+use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -16,12 +17,16 @@ class StaffController extends Controller
     public function index()
     {
         $staffs = Staff::all();
-        return view('staff.index', compact('staffs'));
+        $shops = Shop::all();
+        return view('staff.index', compact('staffs','shops'));
     }
 
     public function showRegistrationForm()
     {
-        return view('pages.staff.addstaff');
+        $staffs = Staff::all();
+        $shops = Shop::all();
+        return view('pages.staff.addstaff', compact('staffs','shops'));
+       
     }
 
     // public function addstaff(Request $request)
@@ -86,6 +91,8 @@ class StaffController extends Controller
                 'username' => 'required|string|unique:staffs',
                 'password' => 'required|string',
                 'phonenumber' => 'required|string|max:20',
+                'shop_id' => 'required',
+
             ]);
 
             // Create a new staff member
@@ -94,6 +101,7 @@ class StaffController extends Controller
                 'username' => $validatedData['username'],
                 'password' => Hash::make($validatedData['password']),
                 'phonenumber' => $validatedData['phonenumber'],
+                'shop_id' => $validatedData['shop_id'],
             ]);
 
             // Redirect back to the index page with a success message
@@ -103,9 +111,10 @@ class StaffController extends Controller
         // If the request is not a POST request, retrieve all staff members
         $staffCount = Staff::count(); // Count the number of staff members
         $staffs = Staff::all();
+        $shops = Shop::all();
 
         // Display the index view with the staff members
-        return view('pages.staff.addstaff', compact('staffs', 'staffCount'));
+        return view('pages.staff.addstaff', compact('staffs', 'staffCount','shops'));
     }
 
 
@@ -137,6 +146,8 @@ class StaffController extends Controller
         $validatedData = $request->validate([
             'staff_name' => 'required|string|max:255',
             'phonenumber' => 'required|string|max:20',
+            'shop_id' => 'required',
+
             // 'username' => 'required|string|unique:staffs,username,' . $staff->id,                      
         ]);  
 
@@ -172,6 +183,7 @@ class StaffController extends Controller
         $staff = Staff::where('staff_name', 'LIKE', "%$search%")
                       ->orWhere('phonenumber', 'LIKE', "%$search%")
                       ->orWhere('username', 'LIKE', "%$search%")
+                      ->orWhere('shop_id', 'LIKE', "%$search%")
                       ->get();
 
         return view('staff.search', compact('staff'));

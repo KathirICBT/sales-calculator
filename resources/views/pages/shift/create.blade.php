@@ -33,16 +33,18 @@
                                         @endif
                                         @endforeach
                                     </div>
-
-                                    <div class="col-md-6">
-                                        <label for="shop_id" class="form-label">Shop:</label>
-                                        <select name="shop_id" id="shop_id" required>
-                                            <option value="" >Select a Shop</option>
-                                            @foreach($shops as $shop)
-                                                <option value="{{ $shop->id }}">{{ $shop->name }}</option>
-                                            @endforeach
-                                        </select>
+                                    <div class="col-md-6">                                           
+                                        <label for="shop_name" class="form-label">Shop Name: </label>
+                                        @foreach($staffs as $staff)
+                                        @if(session('username')==$staff->username)
+                                        <label for="shop_name" class="form-label">{{ $staff->shop->name }}</label>
+                                        <input type="text" class="form-control" id="shop_name_display" value="{{ $staff->shop->name }}" readonly>
+                                        <input type="hidden" id="shop_id" name="shop_id" value="{{ $staff->shop_id }}">
+                                        @endif
+                                        @endforeach
                                     </div>
+
+                                    
                                     <div class="col-md-6">
                                         <label for="shift_date" class="form-label">Shift Date:</label>
                                         <input type="date" class="form-control" id="date" name="date" required >

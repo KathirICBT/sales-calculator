@@ -15,5 +15,11 @@ class Staff extends Authenticatable
         'phonenumber',
         'username',
         'password',
+        'shop_id'
     ];
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class, 'shop_id');
+    }
 }

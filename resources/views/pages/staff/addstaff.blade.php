@@ -34,6 +34,15 @@
                                             >
                                     </div>
                                     <div class="col-md-6">
+                                        <label for="shop_id" class="form-label">Shop:</label>
+                                        <select name="shop_id" id="shop_id" required>
+                                            <option value="" >Select a Shop</option>
+                                            @foreach($shops as $shop)
+                                                <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
                                         <button type="submit" class="btn btn-success rounded-pill" style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>                                        
                                     </div>
                                 </form>
@@ -62,6 +71,7 @@
                                             <tr>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Phonenumber</th>
+                                                <th scope="col">Shop</th>
                                                 <th scope="col" style="width: 30%">Action</th>
                                             </tr>
                                         </thead>
@@ -70,6 +80,7 @@
                                             <tr>
                                                 <td>{{ $staff->staff_name }}</td>
                                                 <td>{{ $staff->phonenumber }}</td>
+                                                <td>{{ $staff->shop->name }}</td>
                                                 <td>
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
                                                         style="width: 40%;" data-toggle="modal"
@@ -130,6 +141,15 @@
                         <label for="phonenumber">Phone Number</label>
                         <input type="text" class="form-control" id="phonenumber" name="phonenumber">
                     </div>
+                    <div class="form-group">
+                        <label for="shop_id">Shop:</label>
+                        <select name="shop_id" id="shop_id" required>
+                            <option value="" >Select a Shop</option>
+                            @foreach($shops as $shop)
+                                <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -160,7 +180,8 @@
                     .then(data => {                        
                         editForm.querySelector('#staff_name').value = data.staff_name;
                         editForm.querySelector('#username').value = data.username;
-                        editForm.querySelector('#phonenumber').value = data.phonenumber;                        
+                        editForm.querySelector('#phonenumber').value = data.phonenumber;   
+                        editForm.querySelector('#shop_id').value = data.shop_id;                     
                         $('#editStaffModal').modal('show');
                     })
                     .catch(error => {
