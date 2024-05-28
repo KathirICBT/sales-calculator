@@ -24,7 +24,6 @@
                                     action="{{ route('shifts.shift.submit') }}">
                                     @csrf
                                     <div class="col-md-12">
-
                                         @foreach($staffs as $staff)
                                         @if(session('username')==$staff->username)
                                         <label for="staff_name" class="form-label">Staff: {{ $staff->staff_name }}</label>
@@ -32,15 +31,27 @@
                                         @endif
                                         @endforeach
                                     </div>
-                                    <div class="col-md-12">
-
-                                        @foreach($staffs as $staff)
-                                        @if(session('username')==$staff->username)
-                                        <label for="shop_name" class="form-label">Shop: {{ $staff->shop->name }}</label>
-                                        <input type="hidden" id="shop_id" name="shop_id" value="{{ $staff->shop_id }}">
-                                        @endif
-                                        @endforeach
-                                    </div>
+                                    
+                                    @if(session()->has('adminusername'))
+                                        <div class="col-md-12">
+                                            <label for="shop_id" class="form-label">Shop:</label>
+                                            <select name="shop_id" id="shop_id" class="form-select">
+                                                <option value="" >Select a Shop</option>
+                                                @foreach($shops as $shop)
+                                                    <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @else
+                                        <div class="col-md-12">
+                                            @foreach($staffs as $staff)
+                                            @if(session('username')==$staff->username)
+                                            <label for="shop_name" class="form-label">Shop: {{ $staff->shop->name }}</label>
+                                            <input type="hidden" id="shop_id" name="shop_id" value="{{ $staff->shop_id }}">
+                                            @endif
+                                            @endforeach
+                                        </div>
+                                    @endif
                                     <div class="col-md-3">
                                         <label for="shift_start_date" class="form-label">Shift Start Date:</label>
                                         <input type="date" class="form-control" id="start_date" name="start_date"
