@@ -23,17 +23,18 @@
                                 <form class="row g-3" id="shiftForm" method="POST"
                                     action="{{ route('shifts.shift.submit') }}">
                                     @csrf
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         @foreach($staffs as $staff)
                                         @if(session('username')==$staff->username)
-                                        <label for="staff_name" class="form-label">Staff: {{ $staff->staff_name }}</label>
+                                        <label for="staff_name" class="form-label">User: </label>
+                                        <input type="text" class="form-control" id="staff_name" name="staff_name" value="{{ $staff->staff_name }}" readonly>
                                         <input type="hidden" id="staff_id" name="staff_id" value="{{ $staff->id }}">
                                         @endif
                                         @endforeach
                                     </div>
                                     
                                     @if(session()->has('adminusername'))
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <label for="shop_id" class="form-label">Shop:</label>
                                             <select name="shop_id" id="shop_id" class="form-select">
                                                 <option value="" >Select a Shop</option>
@@ -43,10 +44,11 @@
                                             </select>
                                         </div>
                                     @else
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             @foreach($staffs as $staff)
                                             @if(session('username')==$staff->username)
-                                            <label for="shop_name" class="form-label">Shop: {{ $staff->shop->name }}</label>
+                                            <label for="shop_name" class="form-label">Shop: </label>
+                                            <input type="text" class="form-control" id="shop_name" name="shop_name" value="{{ $staff->shop->name }}" readonly>
                                             <input type="hidden" id="shop_id" name="shop_id" value="{{ $staff->shop_id }}">
                                             @endif
                                             @endforeach
