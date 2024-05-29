@@ -538,3 +538,6 @@ Route::post('/reports/incomExpo', [ReportController::class, 'generateIncomeExpor
 
 Route::get('/search-shifts', [ShiftController::class, 'searchShiftStaff'])->name('search.shiftsStaff');
 Route::post('/search-shifts', [ShiftController::class, 'displayShifts'])->name('display.shifts');
+
+
+Route::post('/combined-register', [AuthController::class, 'combinedRegister'])->name('combined.register');

@@ -25,7 +25,7 @@
                                     @csrf
                                     <div class="col-md-6">
                                         @foreach($staffs as $staff)
-                                        @if(session('username')==$staff->username)
+                                        @if(session('username')==$staff->username ||session('adminusername')==$staff->username)
                                         <label for="staff_name" class="form-label">User: </label>
                                         <input type="text" class="form-control" id="staff_name" name="staff_name" value="{{ $staff->staff_name }}" readonly>
                                         <input type="hidden" id="staff_id" name="staff_id" value="{{ $staff->id }}">

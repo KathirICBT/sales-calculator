@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Shop;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Validator;
 
@@ -98,7 +99,8 @@ class AuthController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        $shops = Shop::all();
+        return view('auth.register', compact('shops'));
     }
 
     public function register(Request $request)
@@ -249,4 +251,40 @@ public function showDashboard()
         return back()->with('success', 'Password reset successfully!');
     }
 
+
+    public function combinedRegister(Request $request)
+    {
+        // Validate the form data
+        $request->validate([
+            'username' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'staff_name' => 'required|string|max:255',
+            'phonenumber' => 'required|string|max:15',
+            'shop_id' => 'required|exists:shops,id',
+        ]);
+
+        // // Create the user
+        // $user = User::create([
+        //     'username' => $request->username,
+        //     'password' => Hash::make($request->password),
+        // ]);
+
+        User::create([
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+        ]);
+        // Create the staff
+        Staff::create([
+            // 'user_id' => $user->id, // Assuming there's a user_id field to link the staff to the user
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'staff_name' => $request->staff_name,
+            'phonenumber' => $request->phonenumber,
+            'shop_id' => $request->shop_id,
+        ]);
+
+        // Redirect or respond accordingly
+        // return redirect()->route('some.route')->with('success', 'Registration successful');
+        return redirect('/')->with('success', 'Registration successful. You can now login.');
+    }
 }
