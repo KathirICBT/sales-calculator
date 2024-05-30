@@ -12,7 +12,8 @@ class BillImageController extends Controller
     {
         $staffs = Staff::all();
         $shops = Shop::all();
-        return view('pages.billImages.create', compact('staffs', 'shops'));
+        $billImages = BillImage::all();
+        return view('pages.billImages.create', compact('staffs', 'shops','billImages'));
     }
 
     public function store(Request $request)
@@ -36,4 +37,50 @@ class BillImageController extends Controller
 
         return back()->with('success', 'Image uploaded successfully.');
     }
+
+    public function edit(BillImage $billImages )
+    {
+        // $billImage = BillImage::with('staff', 'shop')->find($id);
+        // if (!$billImage) {
+        //     return abort(404); // Handle case when record is not found
+        // }
+        // $staffs = Staff::all();
+        // $shops = Shop::all();
+        // return view('pages.billImages.create', compact('billImage', 'staffs', 'shops'));
+        return response()->json($billImages);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'staff_id' => 'required|exists:staffs,id',
+            'shop_id' => 'nullable|exists:shops,id',
+            'date' => 'required|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $billImage = BillImage::find($id);
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $billImage->image = 'images/' . $imageName;
+        }
+
+        $billImage->staff_id = $request->staff_id;
+        $billImage->shop_id = $request->shop_id;
+        $billImage->date = $request->date;
+        $billImage->save();
+
+        return back()->with('success', 'Bill Image updated successfully.');
+    }
+
+    public function destroy($id)
+{
+    $billImage = BillImage::find($id);
+    $billImage->delete();
+
+    return back()->with('success', 'Bill Image deleted successfully.');
+}
+
 }
