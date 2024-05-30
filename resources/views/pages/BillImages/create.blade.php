@@ -97,7 +97,10 @@
                                                 <td>{{ $billImage->staff->staff_name }}</td>
                                                 <td>{{ $billImage->shop->name }}</td>
                                                 <td>{{ $billImage->date }}</td>
-                                                <td><img src="{{ asset($billImage->image) }}" alt="Bill Image" width="50"></td>
+                                                {{-- <td><img src="{{ asset($billImage->image) }}" alt="Bill Image" width="50"></td> --}}
+                                                <td>
+                                                    <img src="{{ asset($billImage->image) }}" alt="Bill Image" width="50" class="img-thumbnail" data-toggle="modal" data-target="#imageModal" data-image="{{ asset($billImage->image) }}">
+                                                </td>
                                                 <td>
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
                                                         style="width: 40%;" data-toggle="modal"
@@ -183,6 +186,22 @@
         </div>
     </div>
 </div>
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Bill Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="Bill Image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -242,3 +261,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#imageModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var imageSrc = button.data('image'); // Extract info from data-* attributes
+            var modal = $(this);
+            modal.find('.modal-body img').attr('src', imageSrc);
+        });
+    });
+    </script>
+    
