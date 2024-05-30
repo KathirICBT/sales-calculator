@@ -52,6 +52,12 @@
                             <i class="fa-solid fa-sliders pe-2"></i>
                             Sales
                         </a>
+                    </li> 
+                    <li class="sidebar-item ms-3">
+                        <a href="{{route('bill_images.create')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-sliders pe-2"></i>
+                            Bill Images
+                        </a>
                     </li>                                                
                 </ul>
             </li>
