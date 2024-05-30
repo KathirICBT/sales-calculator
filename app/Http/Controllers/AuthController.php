@@ -260,7 +260,7 @@ public function showDashboard()
             'password' => 'required|string|min:8|confirmed',
             'staff_name' => 'required|string|max:255',
             'phonenumber' => 'required|string|max:15',
-            'shop_id' => 'required|exists:shops,id',
+            // 'shop_id' => 'required|exists:shops,id',
         ]);
 
         // // Create the user
@@ -280,7 +280,7 @@ public function showDashboard()
             'password' => Hash::make($request->password),
             'staff_name' => $request->staff_name,
             'phonenumber' => $request->phonenumber,
-            'shop_id' => $request->shop_id,
+            // 'shop_id' => $request->shop_id,
         ]);
 
         // Redirect or respond accordingly

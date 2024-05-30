@@ -35,7 +35,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="shop_id" class="form-label">Shop:</label>
-                                        <select name="shop_id" id="shop_id" required>
+                                        <select name="shop_id" id="shop_id" class="form-select" required>
                                             <option value="" >Select a Shop</option>
                                             @foreach($shops as $shop)
                                                 <option value="{{ $shop->id }}">{{ $shop->name }}</option>
@@ -43,6 +43,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6">
+                                        <label for="shop_id" class="form-label">Save:</label>
                                         <button type="submit" class="btn btn-success rounded-pill" style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>                                        
                                     </div>
                                 </form>
