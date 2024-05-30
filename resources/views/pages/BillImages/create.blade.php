@@ -152,9 +152,7 @@
                             <label for="staff_id" id="staff_id_edit" class="form-label">Staff:</label>
                             <select name="staff_id" id="staff_id_edit" class="form-select" >
                                 @foreach($staffs as $staff)
-
-                                    <option value="{{ $staff->id }}" >{{ $staff->staff_name }}</option>
-
+                                    <option value="{{ $staff->id }}" {{ $staff->id == $billImage->staff_id ? 'selected' : '' }}>{{ $staff->staff_name }}</option>
                                 @endforeach
                             </select>
                         
