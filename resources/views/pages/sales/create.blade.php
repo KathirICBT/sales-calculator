@@ -47,9 +47,18 @@
                                         <div class="col-md-6">
                                             @foreach($staffs as $staff)
                                             @if(session('username')==$staff->username)
-                                            <label for="shop_name" class="form-label">Shop: </label>
-                                            <input type="text" class="form-control" id="shop_name" name="shop_name" value="{{ $staff->shop->name }}" readonly>
-                                            <input type="hidden" id="shop_id" name="shop_id" value="{{ $staff->shop_id }}">
+                                                <label for="shop_name" class="form-label">Shop: </label>
+                                                @if ($staff->shop && $staff->shop->name)
+                                                    <input type="text" class="form-control" id="shop_name" name="shop_name" value="{{ $staff->shop->name }}" readonly>
+                                                    <input type="hidden" id="shop_id" name="shop_id" value="{{ $staff->shop_id }}">
+                                                @else                                                                                                   
+                                                    <select name="shop_id" id="shop_id" class="form-select">
+                                                        <option value="" >Select a Shop</option>
+                                                        @foreach($shops as $shop)
+                                                            <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                                                        @endforeach
+                                                    </select>                                                
+                                                @endif                                            
                                             @endif
                                             @endforeach
                                         </div>

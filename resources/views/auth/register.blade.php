@@ -132,14 +132,14 @@
                                 
                                     <!-- Staff Details Fields -->
                                     <div class="col-md-6">
-                                        <label for="staff_name" class="form-label">Staff Name: </label>
+                                        <label for="staff_name" class="form-label">Owner Name: </label>
                                         <input type="text" class="form-control" id="staff_name" name="staff_name">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="phone" class="form-label">Phone:</label>
                                         <input type="text" class="form-control" id="phone" name="phonenumber">
                                     </div>
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <label for="shop_id" class="form-label">Shop:</label>
                                         <select name="shop_id" id="shop_id" required>
                                             <option value="">Select a Shop</option>
@@ -147,7 +147,7 @@
                                                 <option value="{{ $shop->id }}">{{ $shop->name }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary rounded-pill">Register</button>
                                     </div>
