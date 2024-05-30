@@ -550,3 +550,14 @@ Route::post('/combined-register', [AuthController::class, 'combinedRegister'])->
 
 Route::get('/bill-images/create', [BillImageController::class, 'create'])->name('bill_images.create');
 Route::post('/bill-images', [BillImageController::class, 'store'])->name('bill_images.store');
+//DEPARTMENT UPDATE =======================================================================
+Route::get('/bill_images/{bill_images}/edit', [BillImageController::class, 'edit'])->name('bill_images.edit');
+Route::put('/bill_images/{bill_images}', [BillImageController::class, 'update'])->name('bill_images.update');
+
+
+
+//DEPARTMENT DELETE =======================================================================
+// Route::delete('/bill_images/{bill-image}', [BillImageController::class, 'destroy'])->name('bill_images.destroy');
+// use App\Http\Controllers\BillImageController;
+
+Route::delete('/bill_images/{billImage}', [BillImageController::class, 'destroy'])->name('bill_images.destroy');
