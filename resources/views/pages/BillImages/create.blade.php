@@ -101,7 +101,7 @@
                                                 <td>
                                                     <img src="{{ asset($billImage->image) }}" alt="Bill Image" width="50" class="img-thumbnail" data-toggle="modal" data-target="#imageModal" data-image="{{ asset($billImage->image) }}">
                                                 </td>
-                                                <td>
+                                                <td style="width: 30%;">
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
                                                         style="width: 40%;" data-toggle="modal"
                                                         data-target="#editBillImageModal"
