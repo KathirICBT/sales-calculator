@@ -20,6 +20,8 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\OtherExpenseController;
 use App\Http\Controllers\IncomeCategoryController;
 
+use App\Http\Controllers\BillImageController;
+
 
 
 use App\Http\Controllers\OtherIncomeController;
@@ -541,3 +543,10 @@ Route::post('/search-shifts', [ShiftController::class, 'displayShifts'])->name('
 
 
 Route::post('/combined-register', [AuthController::class, 'combinedRegister'])->name('combined.register');
+
+
+// routes/web.php
+
+
+Route::get('/bill-images/create', [BillImageController::class, 'create'])->name('bill_images.create');
+Route::post('/bill-images', [BillImageController::class, 'store'])->name('bill_images.store');
