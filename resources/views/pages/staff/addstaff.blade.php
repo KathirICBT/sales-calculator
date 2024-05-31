@@ -81,7 +81,14 @@
                                             <tr>
                                                 <td>{{ $staff->staff_name }}</td>
                                                 <td>{{ $staff->phonenumber }}</td>
-                                                <td>{{ $staff->shop->name }}</td>
+                                                {{-- <td>{{ $staff->shop->name }}</td> --}}
+                                                <td>
+                                                    @if($staff->shop)
+                                                        {{ $staff->shop->name }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
                                                         style="width: 40%;" data-toggle="modal"
