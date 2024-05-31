@@ -246,10 +246,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const row = tableRows[i];
             const userColumn = row.cells[0];
             const shopColumn = row.cells[1];
-            if (userColumn && shopColumn) {
+            const dateColumn = row.cells[2];
+            if (userColumn && shopColumn && dateColumn) {
                 const userText = userColumn.textContent.toLowerCase();
                 const shopText = shopColumn.textContent.toLowerCase();
-                if (userText.includes(query) || shopText.includes(query)) {
+                const dateText = dateColumn.textContent.toLowerCase();
+                if (userText.includes(query) || shopText.includes(query) || dateText.includes(query)) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';

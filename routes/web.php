@@ -19,6 +19,7 @@ use App\Http\Controllers\ExpenseSubCategoryController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\OtherExpenseController;
 use App\Http\Controllers\IncomeCategoryController;
+use App\Http\Controllers\ShiftNoteController;
 
 use App\Http\Controllers\BillImageController;
 
@@ -561,3 +562,9 @@ Route::put('/bill_images/{bill_images}', [BillImageController::class, 'update'])
 // use App\Http\Controllers\BillImageController;
 
 Route::delete('/bill_images/{billImage}', [BillImageController::class, 'destroy'])->name('bill_images.destroy');
+
+//SHIFT NODE ===============================================================================
+Route::get('/shift-note/index', [ShiftNoteController::class, 'index'])->name('shiftNode.index');
+Route::post('/shift-note/store', [ShiftNoteController::class, 'store'])->name('shiftNote.store');
+
+Route::get('/shift-note/show', [ShiftNoteController::class, 'show'])->name('shiftNode.show');

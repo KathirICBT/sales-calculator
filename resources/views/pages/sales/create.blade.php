@@ -869,7 +869,7 @@
                                                                         // Display success message or perform other actions
                                                                         alert('All forms submitted successfully.');
                                                                         // Redirect to the desired page
-                                                                        window.location.href = "{{ route('shifts.index') }}";
+                                                                        window.location.href = "{{ route('shiftNode.index') }}";
                                                                     },
                                                                     error: function(xhr, status, error) {
                                                                         console.error('Form 5 Submission Error:', error);
@@ -881,7 +881,7 @@
                                                                 // If form 5 is not filled, proceed with success message
                                                                 alert('Forms 1, 2, 3, and 4 submitted successfully. Cash difference form not filled.');
                                                                 // Redirect to the desired page
-                                                                window.location.href = "{{ route('shifts.index') }}";
+                                                                window.location.href = "{{ route('shiftNode.index') }}";
                                                             }
                                                         },
                                                         error: function(xhr, status, error) {
@@ -903,7 +903,7 @@
                                                                 // Display success message or perform other actions
                                                                 alert('Forms 1, 2, 3, and 5 submitted successfully. Form 4 not filled.');
                                                                 // Redirect to the desired page
-                                                                window.location.href = "{{ route('shifts.index') }}";
+                                                                window.location.href = "{{ route('shiftNode.index') }}";
                                                             },
                                                             error: function(xhr, status, error) {
                                                                 console.error('Form 5 Submission Error:', error);
@@ -915,7 +915,7 @@
                                                         // If form 4 and form 5 are not filled, display message and redirect
                                                         alert('Forms 1, 2, and 3 submitted successfully. Form 4 not filled. Cash difference form not filled.');
                                                         // Redirect to the desired page
-                                                        window.location.href = "{{ route('shifts.index') }}";
+                                                        window.location.href = "{{ route('shiftNode.index') }}";
                                                     }
                                                     
                                                 }
@@ -947,7 +947,7 @@
                                                                 // Display success message or perform other actions
                                                                 alert('Forms 1, 2, 4, and 5 submitted successfully. Form 3 not filled.');
                                                                 // Redirect to the desired page
-                                                                window.location.href = "{{ route('shifts.index') }}";
+                                                                window.location.href = "{{ route('shiftNode.index') }}";
                                                             },
                                                             error: function(xhr, status, error) {
                                                                 console.error('Form 5 Submission Error:', error);
@@ -959,7 +959,7 @@
                                                         // If form 5 is not filled, display message and redirect
                                                         alert('Forms 1, 2, and 4 submitted successfully. Form 3 not filled. Cash difference form not filled.');
                                                         // Redirect to the desired page
-                                                        window.location.href = "{{ route('shifts.index') }}";
+                                                        window.location.href = "{{ route('shiftNode.index') }}";
                                                     }
                                                 },
                                                 error: function(xhr, status, error) {
@@ -980,7 +980,7 @@
                                                         // Display success message or perform other actions
                                                         alert('Forms 1, 2, and 5 submitted successfully. Form 3 and 4 not filled.');
                                                         // Redirect to the desired page
-                                                        window.location.href = "{{ route('shifts.index') }}";
+                                                        window.location.href = "{{ route('shiftNode.index') }}";
                                                     },
                                                     error: function(xhr, status, error) {
                                                         console.error('Form 5 Submission Error:', error);
@@ -992,7 +992,7 @@
                                                 // If form 4 and form 5 are not filled, display message and redirect
                                                 alert('Forms 1 and 2 submitted successfully. Form 3 and 4 not filled. Cash difference form not filled.');
                                                 // Redirect to the desired page
-                                                window.location.href = "{{ route('shifts.index') }}";
+                                                window.location.href = "{{ route('shiftNode.index') }}";
                                             }
                                         }
                                     }
