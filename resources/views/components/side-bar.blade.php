@@ -207,7 +207,7 @@
                         <a href="#" class="sidebar-link text">Login</a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link text">Register</a>
+                        <a href="{{route('registration.show')}}" class="sidebar-link text">Register</a>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link text">Forgot Password</a>
@@ -215,19 +215,36 @@
                 </ul>
             </li>
 
+            
+            
             <li class="sidebar-item">
-                <a href="{{route('shiftstaff.search')}}" class="sidebar-link collapsed text" >
-                    <i class="fa-solid fa-clock-rotate-left pe-2"></i>
-                    ShiftEdit 
+                <a href="#" class="sidebar-link collapsed text" data-bs-target="#edits" data-bs-toggle="collapse"
+                    aria-expanded="false"><i class="fa-solid fa-cart-shopping pe-2"></i>
+                    Edit
                 </a>
+                <ul id="edits" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item ms-3">
+                        <a href="{{route('sales.list')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-sliders pe-2"></i>
+                            Manage Sales 
+                        </a>
+                    </li>
+                    <li class="sidebar-item ms-3">
+                        <a href="{{route('shiftstaff.search')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-clock-rotate-left pe-2"></i>
+                            ShiftEdit 
+                        </a>
+                    </li>
+                    <li class="sidebar-item ms-3">
+                        <a href="{{route( 'search.shiftsStaff')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-clock-rotate-left pe-2"></i>
+                            Search shifts by Staffs
+                        </a>
+                    </li>
+                     
+                                                                   
+                </ul>
             </li>
-            <li class="sidebar-item">
-                <a href="{{route( 'search.shiftsStaff')}}" class="sidebar-link collapsed text" >
-                    <i class="fa-solid fa-clock-rotate-left pe-2"></i>
-                    Serach shifts by Staffs
-                </a>
-            </li>
-
             <hr>
             
             {{-- <li class="sidebar-header">

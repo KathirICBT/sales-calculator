@@ -74,7 +74,7 @@
                 @enderror                
                 <a href="#">Forgot password?</a>
                 <button type="submit" name="submit">Log In</button>
-                <button type="button" onclick="window.location='{{ route('registration.show') }}'">Register</button>
+                {{-- <button type="button" onclick="window.location='{{ route('registration.show') }}'">Register</button> --}}
                 
             </form>
         </div>
