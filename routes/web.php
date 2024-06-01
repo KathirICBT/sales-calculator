@@ -575,3 +575,9 @@ Route::post('/reports/incomeShop', [ReportController::class, 'generateIncomeShop
 // Route::get('/reports/incomeShop/{shop}', [ReportController::class, 'showShopDetails'])->name('reports.shopDetails');
 Route::get('/reports/incomeShop/{shop}/{from_date}/{to_date}', [ReportController::class, 'showShopDetails'])->name('reports.shopDetails');
 Route::get('/reports/incomeShop/{shop}', [ReportController::class, 'allshowShopDetails'])->name('reports.allshopDetails');
+
+
+Route::get('/dashboard', [ReportController::class, 'showIncomeShops'])->name('reports.incomeShop');
+Route::post('/dashboard', [ReportController::class, 'generateIncomeShops'])->name('reports.generateIncomeShops');
+Route::get('/dashboard/{shop}/{from_date}/{to_date}', [ReportController::class, 'showShopDetails'])->name('reports.shopDetails');
+Route::get('/dashboard/{shop}', [ReportController::class, 'allshowShopDetails'])->name('reports.allshopDetails');

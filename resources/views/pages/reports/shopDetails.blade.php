@@ -43,7 +43,7 @@
                     @if(isset($from_date) && isset($to_date))
                         <a href="{{ route('reports.generateIncomeShops', ['from_date' => $from_date, 'to_date' => $to_date]) }}" class="btn btn-primary">Back to Report</a>
                     @else
-                        <a href="{{ route('reports.incomeShop') }}" class="btn btn-primary">Back to Report</a>
+                        <a href="{{ route('reports.incomeShop') }}" class="btn btn-primary">Back</a>
                     @endif
                 </div>
             </div>

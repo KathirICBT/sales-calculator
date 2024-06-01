@@ -79,28 +79,67 @@
                                     <div class="row g-0 w-100">
                                         <div class="col-12">
                                             <div class="p-3 m-1">                                                
-                                                <h4 class="n_h_style rounded">Add Department</h4>
-                                                <form class="row g-3">
-                                                    <div class="col-md-6">
-                                                        <label for="inputEmail" class="form-label">Department Name:</label>                                                        
-                                                        <select class="form-select" aria-label="Default select example" name="dept_name" id="dept_name">
-                                                            <option selected>Open this select menu</option>
-                                                            <option value="1">Cake</option>
-                                                            <option value="2">Soft Drink</option>
-                                                            <option value="3">Sweet</option>
-                                                        </select>
-                                                            <!-- aria-describedby="emailHelp"> -->
-                                                        <!-- <div id="emailHelp" class="form-text">We'll never share your
-                                                            email with anyone else.</div> -->
+                                                <h4 class="card-title">Shop Income Details Report</h4>
+                                                <form method="POST" action="{{ route('reports.generateIncomeShops') }}" class="row g-3">
+                                                    @csrf
+                                                    <div class="col-md-4 mt-3">
+                                                        <label for="from_date" class="form-label">From Date:</label>
+                                                        <input type="date" class="form-control" id="from_date" name="from_date" required>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <label for="amount" class="form-label">Amount:</label>
-                                                        <input type="text" class="form-control" id="amount" name="amount">
-                                                    </div>                                                    
-                                                    <div class="col-12">
-                                                        <button type="submit" class="btn btn-primary rounded-pill">Add Sale</button>
+                                                    <div class="col-md-4 mt-3">
+                                                        <label for="to_date" class="form-label">To Date:</label>
+                                                        <input type="date" class="form-control" id="to_date" name="to_date" required>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3">
+                                                        <label for="" class="form-label">Generate Report:</label>
+                                                        <button type="submit" class="btn btn-success rounded-pill w-100">Report</button>
                                                     </div>
                                                 </form>
+                                                {{-- @if(isset($from_date) && isset($to_date)) --}}
+                                                <div class="card border-0 mt-3">
+                                                    <div class="card-header">
+                                                        <h5 class="card-title">
+                                                            Shop-wise Cash Movement Details
+                                                        </h5>
+                                                        <h6 class="card-subtitle text-muted">
+                                                            <p>Date Period: {{ $from_date }} to {{ $to_date }}</p>
+                                                        </h6>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        @if($shops->isEmpty())
+                                                        <div class="alert alert-warning" role="alert">
+                                                            No shops found.
+                                                        </div>
+                                                        @else
+                                                        <div class="form-group">
+                                                            <input type="text" id="searchInput" class="form-control" placeholder="Search Shop">
+                                                        </div>
+                                                        <table class="table table-bordered" id="reportTable">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Shop</th>
+                                                                    <th>Total Income</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($shops as $shop)
+                                                                <tr>
+                                                                    @if(isset($from_date) && isset($to_date))
+                                                                    <td><a href="{{ route('reports.shopDetails', ['shop' => $shop->id, 'from_date' => $from_date, 'to_date' => $to_date]) }}">{{ $shop->name }}</a></td>
+                                                                    @else
+                                                                    {{-- <td>{{ $shop->name }}</a></td> --}}
+                                                                    <td><a href="{{ route('reports.allshopDetails', ['shop' => $shop->id]) }}">{{ $shop->name }}</a></td>
+                                                                    @endif
+                                                                    <td>{{ $shopTotalIncome[$shop->id] ?? 0 }}</td>
+                                                                   
+                                                                </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            {{-- @endif --}}
                                             </div>
                                         </div>
                                     </div>
@@ -113,42 +152,7 @@
                                     <div class="row g-0 w-100">
                                         <div class="col-12">
                                             <div class="p-3 m-1">                                                
-                                                <h4 class="n_h2_style rounded">Today Sale</h4>
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>                                                            
-                                                            <th scope="col">Department</th>
-                                                            <th scope="col">Amount</th>
-                                                            <th scope="col" style="width: 30%">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>                                                            
-                                                            <td>Soft Drink</td>
-                                                            <td>10</td>
-                                                            <td>
-                                                                <a href="" class="btn btn-warning btn-sm rounded-pill" style="width: 40%;"> Edit </a>
-                                                                <a href="" class="btn btn-danger btn-sm rounded-pill" style="width: 40%;"> Delete </a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>                                                            
-                                                            <td>Cake</td>
-                                                            <td>15</td>
-                                                            <td>
-                                                                <a href="" class="btn btn-warning btn-sm rounded-pill" style="width: 40%;"> Edit </a>
-                                                                <a href="" class="btn btn-danger btn-sm rounded-pill" style="width: 40%;"> Delete </a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Apple</td>
-                                                            <td>20</td>
-                                                            <td>
-                                                                <a href="" class="btn btn-warning btn-sm rounded-pill" style="width: 40%;"> Edit </a>
-                                                                <a href="" class="btn btn-danger btn-sm rounded-pill" style="width: 40%;"> Delete </a>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                
                                             </div>
                                         </div>
                                     </div>

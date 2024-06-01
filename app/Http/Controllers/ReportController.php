@@ -2501,7 +2501,13 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
         $shopTotalIncome[$shopId] = $shopTotal;
     }
 
-    return view('pages.reports.incomeShops', [
+    // return view('pages.reports.incomeShops', [
+    //     'shops' => $shops,
+    //     'shopTotalIncome' => $shopTotalIncome,
+    //     'from_date' => $request->from_date,
+    //     'to_date' => $request->to_date,
+    // ]);
+    return view('welcome', [
         'shops' => $shops,
         'shopTotalIncome' => $shopTotalIncome,
         'from_date' => $request->from_date,
@@ -2535,12 +2541,20 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
         $departments = Department::all();
         $shops = Shop::all(); // Retrieve all shops
 
-        return view('pages.reports.incomeShops', [
+        // return view('pages.reports.incomeShops', [
+        //     'departments' => $departments,
+        //     'shops' => $shops,
+        //     'shopTotalIncome' => $shopTotalIncome,
+        //     'from_date' =>null,
+        // 'to_date' => null,
+            
+        // ]);
+        return view('welcome', [
             'departments' => $departments,
             'shops' => $shops,
             'shopTotalIncome' => $shopTotalIncome,
             'from_date' =>null,
-        'to_date' => null,
+            'to_date' => null,
             
         ]);
     }
@@ -2605,6 +2619,13 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
             'from_date' => $from_date,
             'to_date' => $to_date,
         ]);
+        // return view('welcome', [
+        //     'shop' => $shop,
+        //     'departmentTotals' => $departmentTotals,
+        //     'departmentData' => $departmentData,
+        //     'from_date' => $from_date,
+        //     'to_date' => $to_date,
+        // ]);
     }
     public function allshowShopDetails($shopId)
     {
@@ -2646,6 +2667,7 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
             'departmentData' => $departmentData,
             
         ]);
+       
     }
 
 
