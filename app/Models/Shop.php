@@ -17,4 +17,5 @@ class Shop extends Model
         'phone',
         'address',
     ];
+   
 }

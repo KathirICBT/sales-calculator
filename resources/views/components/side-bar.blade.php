@@ -322,6 +322,12 @@
                             Income And Expense Report 
                         </a>
                     </li>
+                    <li class="sidebar-item ms-3">
+                        <a href="{{route('reports.incomeShop')}}" class="sidebar-link text">
+                            <i class="fa-regular fa-file pe-2"></i>
+                            Shop Income Report 
+                        </a>
+                    </li>
                     {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#level-1"
                             data-bs-toggle="collapse" aria-expanded="false">Level 1</a>

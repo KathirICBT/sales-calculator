@@ -568,3 +568,10 @@ Route::get('/shift-note/index', [ShiftNoteController::class, 'index'])->name('sh
 Route::post('/shift-note/store', [ShiftNoteController::class, 'store'])->name('shiftNote.store');
 
 Route::get('/shift-note/show', [ShiftNoteController::class, 'show'])->name('shiftNode.show');
+
+
+Route::get('/reports/incomeShop', [ReportController::class, 'showIncomeShops'])->name('reports.incomeShop');
+Route::post('/reports/incomeShop', [ReportController::class, 'generateIncomeShops'])->name('reports.generateIncomeShops');
+// Route::get('/reports/incomeShop/{shop}', [ReportController::class, 'showShopDetails'])->name('reports.shopDetails');
+Route::get('/reports/incomeShop/{shop}/{from_date}/{to_date}', [ReportController::class, 'showShopDetails'])->name('reports.shopDetails');
+Route::get('/reports/incomeShop/{shop}', [ReportController::class, 'allshowShopDetails'])->name('reports.allshopDetails');

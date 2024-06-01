@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Department;
-
+use App\Models\Shop;
 
 class DepartmentController extends Controller
 {  
@@ -85,10 +85,16 @@ class DepartmentController extends Controller
         }
     }
 
-    $departmentCount = Department::count(); // Count the number of departments
-    $departments = Department::all();        
+    // $departmentCount = Department::count(); // Count the number of departments
+    $shops=Shop::all();
+    $departments = Department::all();     
+    return view('pages.department.create', [
+        'departments' => $departments,
+        'shops' => $shops,
+        
+    ]);   
 
-    return view('pages.department.create', compact('departments', 'departmentCount'));
+    // return view('pages.department.create', compact('departments', 'departmentCount'));
 }
 
 

@@ -2,13 +2,7 @@
 @section('content')
 <div class="container-fluid">
 
-    <p class="mb-2">
-        Total Departments
-    </p>
-    <h4 class="mb-2">
-        {{ $departmentCount }}
-    </h4>
-
+    
     <x-content-header title="Department Management" />  
     <x-alert-message /> 
 

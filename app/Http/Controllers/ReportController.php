@@ -2469,4 +2469,184 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
         }
             return $expenseReport;
         }
+
+        public function generateIncomeShops(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'from_date' => 'required|date',
+        'to_date' => 'required|date|after_or_equal:from_date',
+    ]);
+
+    // Retrieve all shops
+    $shops = Shop::all();
+
+    // Initialize an array to store shop-wise total income
+    $shopTotalIncome = [];
+
+    // Process each shop's sales data within the specified date range
+    foreach ($shops as $shop) {
+        $shopId = $shop->id;
+
+        // Retrieve Shift IDs within the Date Range for this shop
+        $shiftIds = Shift::whereBetween('end_date', [$request->from_date, $request->to_date])
+            ->where('shop_id', $shopId)
+            ->pluck('id');
+
+        // Retrieve sales data for this shop within the date range
+        $sales = Sale::whereIn('shift_id', $shiftIds)->get();
+
+        // Calculate total income for this shop
+        $shopTotal = $sales->sum('amount');
+        $shopTotalIncome[$shopId] = $shopTotal;
+    }
+
+    return view('pages.reports.incomeShops', [
+        'shops' => $shops,
+        'shopTotalIncome' => $shopTotalIncome,
+        'from_date' => $request->from_date,
+        'to_date' => $request->to_date,
+    ]);
+}
+
+
+        public function showIncomeShops()
+    {
+        $shops = Shop::all();
+
+    // Initialize an array to store shop-wise total income
+    $shopTotalIncome = [];
+
+    // Process each shop's sales data within the specified date range
+    foreach ($shops as $shop) {
+        $shopId = $shop->id;
+
+        // Retrieve Shift IDs within the Date Range for this shop
+        $shiftIds = Shift::where('shop_id', $shopId)
+            ->pluck('id');
+
+        // Retrieve sales data for this shop within the date range
+        $sales = Sale::whereIn('shift_id', $shiftIds)->get();
+
+        // Calculate total income for this shop
+        $shopTotal = $sales->sum('amount');
+        $shopTotalIncome[$shopId] = $shopTotal;
+    }
+        $departments = Department::all();
+        $shops = Shop::all(); // Retrieve all shops
+
+        return view('pages.reports.incomeShops', [
+            'departments' => $departments,
+            'shops' => $shops,
+            'shopTotalIncome' => $shopTotalIncome,
+            'from_date' =>null,
+        'to_date' => null,
+            
+        ]);
+    }
+ // Controller method to retrieve shop incomes
+
+
+    public function showShopDetails($shopId, $from_date, $to_date)
+    {
+        $shop = Shop::findOrFail($shopId);
+        $departments = Department::all();
+    
+        $departmentTotals = [
+            'normal' => 0,
+            'other_taking' => 0,
+            'fuel' => 0,
+        ];
+    
+        $departmentData = [
+            'normal' => [],
+            'other_taking' => [],
+            'fuel' => [],
+        ];
+        if ($from_date && $to_date) {
+            foreach ($departments as $department) {
+                $shiftIds = Shift::where('shop_id', $shopId)
+                    ->whereBetween('end_date', [$from_date, $to_date])
+                    ->pluck('id');
+                
+                $sales = Sale::whereIn('shift_id', $shiftIds)
+                    ->where('dept_id', $department->id)
+                    ->get();
+        
+                foreach ($sales as $sale) {
+                    $amount = $sale->amount;
+                    $departmentType = $this->getDepartmentType($department->id);
+                    $departmentTotals[$departmentType] += $amount;
+                    $departmentData[$departmentType][] = $sale;
+                }
+            }
+        }else{
+
+            foreach ($departments as $department) {
+                $shiftIds = Shift::where('shop_id', $shopId)
+                    ->pluck('id');
+                
+                $sales = Sale::whereIn('shift_id', $shiftIds)
+                    ->where('dept_id', $department->id)
+                    ->get();
+        
+                foreach ($sales as $sale) {
+                    $amount = $sale->amount;
+                    $departmentType = $this->getDepartmentType($department->id);
+                    $departmentTotals[$departmentType] += $amount;
+                    $departmentData[$departmentType][] = $sale;
+                }
+            }
+        }
+        return view('pages.reports.shopDetails', [
+            'shop' => $shop,
+            'departmentTotals' => $departmentTotals,
+            'departmentData' => $departmentData,
+            'from_date' => $from_date,
+            'to_date' => $to_date,
+        ]);
+    }
+    public function allshowShopDetails($shopId)
+    {
+        $shop = Shop::findOrFail($shopId);
+        $departments = Department::all();
+    
+        $departmentTotals = [
+            'normal' => 0,
+            'other_taking' => 0,
+            'fuel' => 0,
+        ];
+    
+        $departmentData = [
+            'normal' => [],
+            'other_taking' => [],
+            'fuel' => [],
+        ];
+        
+
+            foreach ($departments as $department) {
+                $shiftIds = Shift::where('shop_id', $shopId)
+                    ->pluck('id');
+                
+                $sales = Sale::whereIn('shift_id', $shiftIds)
+                    ->where('dept_id', $department->id)
+                    ->get();
+        
+                foreach ($sales as $sale) {
+                    $amount = $sale->amount;
+                    $departmentType = $this->getDepartmentType($department->id);
+                    $departmentTotals[$departmentType] += $amount;
+                    $departmentData[$departmentType][] = $sale;
+                }
+            }
+        
+        return view('pages.reports.shopDetails', [
+            'shop' => $shop,
+            'departmentTotals' => $departmentTotals,
+            'departmentData' => $departmentData,
+            
+        ]);
+    }
+
+
 }
