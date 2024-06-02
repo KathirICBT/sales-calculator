@@ -115,7 +115,7 @@
                                                             <input type="text" id="searchInput" class="form-control" placeholder="Search Shop">
                                                         </div>
                                                         <table class="table table-bordered" id="reportTable">
-                                                            <thead>
+                                                            <thead style="color: rgb(250, 139, 60);">
                                                                 <tr>
                                                                     <th>Shop</th>
                                                                     <th>Total Income</th>
@@ -128,7 +128,7 @@
                                                                     <td><a href="{{ route('reports.shopDetails', ['shop' => $shop->id, 'from_date' => $from_date, 'to_date' => $to_date]) }}">{{ $shop->name }}</a></td>
                                                                     @else
                                                                     {{-- <td>{{ $shop->name }}</a></td> --}}
-                                                                    <td><a href="{{ route('reports.allshopDetails', ['shop' => $shop->id]) }}">{{ $shop->name }}</a></td>
+                                                                    <td><a href="{{ route('reports.allshopDetails', ['shop' => $shop->id]) }}" style="color:rgb(60, 150, 250)">{{ $shop->name }}</a></td>
                                                                     @endif
                                                                     <td>{{ $shopTotalIncome[$shop->id] ?? 0 }}</td>
                                                                    
@@ -190,7 +190,7 @@
                                                                 <input type="text" id="searchInput" class="form-control" placeholder="Search">
                                                             </div>
                                                             <table class="table table-bordered" id="reportTable">
-                                                                <thead>
+                                                                <thead style="color: rgb(250, 139, 60);">
                                                                     <tr>
                                                                         <th>Staff Name</th>
                                                                         <th>Shop Name</th>
