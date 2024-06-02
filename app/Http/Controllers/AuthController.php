@@ -20,10 +20,10 @@ class AuthController extends Controller
         
         // If admin is already authenticated, redirect to the admin dashboard
         if(Auth::check()) {
-            return redirect()->route('dashboard');
+            return redirect()->route('reports.incomeShop');
         }
         return view("auth.login");
-    }
+    }  
     // public function authenticate(){        
 
     //     $validated = request()->validate([
@@ -170,7 +170,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
             $request->session()->put('adminusername', $user->username); // Storing username in session
-            return redirect()->route("dashboard");
+            return redirect()->route("reports.incomeShop");
         }
 
         // Authentication failed
@@ -186,6 +186,7 @@ public function showDashboard()
         $user = Auth::user(); // Assuming you are using authentication
         return view('auth.profile.userProfile', compact('user'));
     }
+    
 
     // // Handle password reset
     // public function userResetPassword(Request $request)

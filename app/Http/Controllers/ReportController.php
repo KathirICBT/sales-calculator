@@ -2507,11 +2507,29 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
     //     'from_date' => $request->from_date,
     //     'to_date' => $request->to_date,
     // ]);
+
+    $fromDate = $request->input('from_date');
+    $toDate = $request->input('to_date');
+
+    $query = Shift::query()
+            ->join('shops', 'shifts.shop_id', '=', 'shops.id')
+            ->join('staffs', 'shifts.staff_id', '=', 'staffs.id')
+            ->select('staffs.staff_name as staff_name', 'shops.name as shop_name', \DB::raw('COUNT(shifts.id) as shift_count'));
+
+        if ($fromDate && $toDate) {
+            $query->whereBetween('shifts.end_date', [$fromDate, $toDate]);
+        }
+
+        $query->groupBy('staffs.staff_name', 'shops.name');
+
+        $reportData = $query->get();
+
     return view('welcome', [
         'shops' => $shops,
         'shopTotalIncome' => $shopTotalIncome,
         'from_date' => $request->from_date,
         'to_date' => $request->to_date,
+        'reportData' => $reportData,
     ]);
 }
 
@@ -2549,13 +2567,23 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
         // 'to_date' => null,
             
         // ]);
+        $query = Shift::query()
+        ->join('shops', 'shifts.shop_id', '=', 'shops.id')
+        ->join('staffs', 'shifts.staff_id', '=', 'staffs.id')
+        ->select('staffs.staff_name as staff_name', 'shops.name as shop_name', \DB::raw('COUNT(shifts.id) as shift_count'));
+
+
+    $query->groupBy('staffs.staff_name', 'shops.name');
+
+    $reportData = $query->get();
+
         return view('welcome', [
             'departments' => $departments,
             'shops' => $shops,
             'shopTotalIncome' => $shopTotalIncome,
             'from_date' =>null,
             'to_date' => null,
-            
+            'reportData' => $reportData,
         ]);
     }
  // Controller method to retrieve shop incomes
@@ -2670,5 +2698,57 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
        
     }
 
+    public function generateShiftCount(Request $request)
+    {
+        $fromDate = $request->input('from_date');
+        $toDate = $request->input('to_date');
+        
+        $query = Shift::query()
+            ->join('shops', 'shifts.shop_id', '=', 'shops.id')
+            ->join('staffs', 'shifts.staff_id', '=', 'staffs.id')
+            ->select('staffs.staff_name as staff_name', 'shops.name as shop_name', \DB::raw('COUNT(shifts.id) as shift_count'));
 
+        if ($fromDate && $toDate) {
+            $query->whereBetween('shifts.end_date', [$fromDate, $toDate]);
+        }
+
+        $query->groupBy('staffs.staff_name', 'shops.name');
+
+        $reportData = $query->get();
+
+        return view('welcome', [
+            'reportData' => $reportData,
+            'from_date' => $fromDate,
+            'to_date' => $toDate,
+        ]);
+
+
+    }
+    public function showShiftCount()
+    {
+        $departments = Department::all();
+        $shops = Shop::all(); // Retrieve all shops
+
+        $query = Shift::query()
+            ->join('shops', 'shifts.shop_id', '=', 'shops.id')
+            ->join('staffs', 'shifts.staff_id', '=', 'staffs.id')
+            ->select('staffs.staff_name as staff_name', 'shops.name as shop_name', \DB::raw('COUNT(shifts.id) as shift_count'));
+
+
+        $query->groupBy('staffs.staff_name', 'shops.name');
+
+        $reportData = $query->get();
+
+        
+
+        return view('welcome', [
+            'reportData' => $reportData,
+            'departments' => $departments,
+            'shops' => $shops,
+            'from_date' =>null,
+            'to_date' => null,
+            
+        ]);
+    }
 }
+

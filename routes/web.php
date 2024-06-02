@@ -226,6 +226,8 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 
 
+// Route::get();
+// Route::get('/dashboard', [AuthController::class, 'welcome'])->name('dashboard');
 //STAFF REGISTRATION =================================================================
 Route::get('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff');
 Route::post('/pages/staff/addstaff', [StaffController::class, 'addstaff'])->name('staff.addstaff.submit');
@@ -581,3 +583,10 @@ Route::get('/dashboard', [ReportController::class, 'showIncomeShops'])->name('re
 Route::post('/dashboard', [ReportController::class, 'generateIncomeShops'])->name('reports.generateIncomeShops');
 Route::get('/dashboard/{shop}/{from_date}/{to_date}', [ReportController::class, 'showShopDetails'])->name('reports.shopDetails');
 Route::get('/dashboard/{shop}', [ReportController::class, 'allshowShopDetails'])->name('reports.allshopDetails');
+
+
+Route::get('/reports/showShiftCount', [ReportController::class, 'showShiftCount'])->name('reports.showShiftCount');
+Route::post('/reports/generateshowShiftCount', [ReportController::class, 'generateShiftCount'])->name('reports.generateshowShiftCount');
+
+// Route::get('/dashboard', [ReportController::class, 'showShiftCount'])->name('reports.showShiftCount');
+// Route::post('/dashboard', [ReportController::class, 'generateShiftCount'])->name('reports.generateshowShiftCount');
