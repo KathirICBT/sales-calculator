@@ -42,6 +42,25 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="col-md-12" id="staff_section">
+                                        <label for="staff_type" class="form-label">Staff Type: </label>
+                                        <div class="form-control">
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" name="staff_type"
+                                                    id="A" value="A" checked>
+                                                <label class="form-check-label" for="A">
+                                                    Type A
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline col-md-5">
+                                                <input class="form-check-input" type="radio" name="staff_type"
+                                                    id="B" value="B">
+                                                <label class="form-check-label" for="B">
+                                                    Type B
+                                                </label>
+                                            </div>                                         
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <label for="shop_id" class="form-label">Save:</label>
                                         <button type="submit" class="btn btn-success rounded-pill" style="width: 100%"><i class="fa-solid fa-floppy-disk me-1"></i> Add </button>                                        
@@ -73,6 +92,7 @@
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Phonenumber</th>
                                                 <th scope="col">Shop</th>
+                                                <th scope="col">Staff Type</th>
                                                 <th scope="col" style="width: 30%">Action</th>
                                             </tr>
                                         </thead>
@@ -81,7 +101,7 @@
                                             <tr>
                                                 <td>{{ $staff->staff_name }}</td>
                                                 <td>{{ $staff->phonenumber }}</td>
-                                                {{-- <td>{{ $staff->shop->name }}</td> --}}
+                                                
                                                 <td>
                                                     @if($staff->shop)
                                                         {{ $staff->shop->name }}
@@ -89,6 +109,7 @@
                                                         -
                                                     @endif
                                                 </td>
+                                                <td>{{ $staff->staff_type }}</td>
                                                 <td>
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
                                                         style="width: 40%;" data-toggle="modal"

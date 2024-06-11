@@ -15,7 +15,8 @@ class Staff extends Authenticatable
         'phonenumber',
         'username',
         'password',
-        'shop_id'
+        'shop_id',
+        'staff_type',
     ];
 
     public function shop()

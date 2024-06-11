@@ -92,6 +92,7 @@ class StaffController extends Controller
                 'password' => 'required|string',
                 'phonenumber' => 'required|string|max:20',
                 'shop_id' => 'required',
+                'staff_type' => 'required|string|max:20',
 
             ]);
 
@@ -102,6 +103,7 @@ class StaffController extends Controller
                 'password' => Hash::make($validatedData['password']),
                 'phonenumber' => $validatedData['phonenumber'],
                 'shop_id' => $validatedData['shop_id'],
+                'staff_type' => $validatedData['staff_type'],
             ]);
 
             // Redirect back to the index page with a success message
@@ -147,6 +149,7 @@ class StaffController extends Controller
             'staff_name' => 'required|string|max:255',
             'phonenumber' => 'required|string|max:20',
             'shop_id' => 'required',
+            'staff_type' => 'required|string|max:20',
 
             // 'username' => 'required|string|unique:staffs,username,' . $staff->id,                      
         ]);  
