@@ -118,6 +118,7 @@
                     <div class="row g-0 w-100">
                         <div class="col-12">
                             <div class="p-3 m-1">
+
                                 <div class="card-header">
                                     <h5 class="card-title mt-3">
                                         Add Sales Details
@@ -177,7 +178,7 @@
                                                     class="form-control text-warning">0</span></td>
                                         </tr>
                                         <tr>
-                                            <td><span class="form-control text-warning">Total Cash Amount:</span></td>
+                                            <td><span class="form-control text-warning">Balance Cash Available:</span></td>
                                             <td style="float: right;"><span id="total-amount-after-subtraction"
                                                     class="form-control text-warning">0</span></td>
                                         </tr>
@@ -199,7 +200,7 @@
                         <div class="col-12">
                             <div class="p-3 m-1">
                                 <div class="card-header">
-                                    <h5 class="card-title mt-3">Add Other Payment Sales</h5>
+                                    <h5 class="card-title mt-3">Other Payment Methods</h5>
                                     <p>
                                         @if(session('success'))
                                     <div class="alert" style="color: green;">
@@ -259,7 +260,7 @@
                                 <!-- Petticash -->
 
                                 <div class="card-header">
-                                    <h5 class="card-title mt-3">Additional Cash Taken</h5>
+                                    <h5 class="card-title mt-3">Cash Payments During Shift</h5>
                                     <p>
                                         @if(session('success'))
                                     <div class="alert" style="color: green;">
@@ -392,202 +393,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-
-
-        <!-- Forms -->
-        {{-- <div class="row">
-            <div class="col-12 col-md-6 d-flex">
-                <div class="card flex-fill border-0">
-                    <div class="card-body p-0 d-flex flex-fill">
-                        <div class="row g-0 w-100">
-                            <div class="col-12">
-                                <div class="p-3 m-1">
-                                    <h4 class="n_h_style rounded">Add Shifts name: {{ $staff->staff_name }}</h4>
-                                    @if(session('success'))
-                                    <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-center"
-                                        role="alert">
-                                        <span>{{ session('success') }}</span>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    @endif
-                                    <form class="row g-3" method="POST" action="{{ route('shifts.store.submit') }}">
-                                        @csrf
-                                        <div class="col-md-6">
-                                            <label for="staff_name" class="form-label">Staff Name: </label>
-                                            @foreach($staffs as $staff)
-                                            @if(session('username')==$staff->username)
-                                            <input type="text" class="form-control" id="staff_name_display"
-                                                value="{{ $staff->staff_name }}" readonly>
-                                            <input type="hidden" id="staff_id" name="staff_id" value="{{ $staff->id }}">
-                                            @endif
-                                            @endforeach
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label for="shop_id" class="form-label">Shop:</label>
-                                            <select name="shop_id" id="shop_id" required>
-                                                <option value="">Select a Shop</option>
-                                                @foreach($shops as $shop)
-                                                <option value="{{ $shop->id }}">{{ $shop->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="shift_date" class="form-label">Shift Date:</label>
-                                            <input type="date" class="form-control" id="date" name="date" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="start_time" class="form-label">Start Time:</label>
-                                            <input type="time" class="form-control" id="start_time" name="start_time"
-                                                required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="end_time" class="form-label">End Time:</label>
-                                            <input type="time" class="form-control" id="end_time" name="end_time"
-                                                required>
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="submit" class="btn btn-primary rounded-pill">Register</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6 d-flex">
-                <div class="card flex-fill border-0">
-                    <div class="card-body p-0 d-flex flex-fill">
-                        <div class="row g-0 w-100">
-                            <div class="col-12">
-                                <div class="p-3 m-1">
-                                    <h4 class="n_h2_style rounded">Shifts</h4>
-
-                                    <div class="input-group mt-3">
-                                        <input type="text" class="form-control" placeholder="Search shifts..."
-                                            id="searchShiftInput">
-                                        <button class="btn btn-outline-secondary" type="button"
-                                            id="searchShiftButton">Search</button>
-                                    </div>
-
-                                    <div style="height: 300px; overflow-y: auto;">
-                                        <table class="table" id="staffTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Staff</th>
-                                                    <th>Shop</th>
-                                                    <th>Shift Start Date</th>
-                                                    <th>Start time</th>
-                                                    <th>Shift End Date</th>
-                                                    <th>End time</th>
-                                                    <th scope="col" style="width: 30%">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($shifts as $shift)
-                                                @if($shift->staff->username == session('username'))
-                                                <tr>
-                                                    <td>{{ $shift->staff->staff_name }}</td>
-                                                    <td>{{ $shift->shop->name }}</td>
-                                                    <td>{{ $shift->start_date }}</td>
-                                                    <td>{{ $shift->start_time }}</td>
-                                                    <td>{{ $shift->end_date }}</td>
-                                                    <td>{{ $shift->end_time }}</td>
-                                                    <td>
-                                                        <button class="btn btn-warning btn-sm rounded-pill edit-btn"
-                                                            style="width: 40%;" data-toggle="modal"
-                                                            data-target="#editShiftModal" data-id="{{ $shift->id }}"
-                                                            data-staff-name="{{ $shift->staff->staff_name }}">Edit</button>
-                                                        <form method="post" style="display: inline;"
-                                                            action="{{ route('shifts.destroy', $shift->id) }}">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button class="btn btn-danger btn-sm rounded-pill"
-                                                                style="width: 40%;"
-                                                                onclick="return confirm('Are you sure you want to delete this Shift?')"
-                                                                type="submit">Delete</button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                                @endif
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-        <!-- Forms end -->
+        </div>        
     </div>
-    @endsection
-    <!-- Edit Staff Modal -->
-    {{-- <div class="modal fade" id="editShiftModal" tabindex="-1" role="dialog" aria-labelledby="editShiftModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editShiftModalLabel">Edit Shift</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="editShiftForm" method="POST" action="">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" id="shiftId" name="shift_id">
-                    <input type="hidden" id="staffId" name="staff_id">
-
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="staff_name" class="form-label">Staff Name:</label>
-                            <input type="text" class="form-control" id="staff_name" name="staff_name" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="shop_id">Shop:</label>
-                            <select class="form-control" id="shop_id" name="shop_id">
-                                @foreach($shops as $shop)
-                                <option value="{{ $shop->id }}">{{ $shop->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="date">Shift Start Date:</label>
-                            <input type="start_date" class="form-control" id="date" name="start_date">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="start_time">Start Time:</label>
-                            <input type="time" class="form-control" id="start_time" name="start_time">
-                        </div>
-                        <div class="form-group">
-                            <label for="date">Shift End Date:</label>
-                            <input type="end_date" class="form-control" id="end_date" name="end_date">
-                        </div>
-                        <div class="form-group">
-                            <label for="end_time">End Time:</label>
-                            <input type="time" class="form-control" id="end_time" name="end_time">
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div> --}}
+    @endsection    
 
     {{-- MODEL FOR ADD BILL IMAGE --}}
 
@@ -867,7 +675,7 @@
                                                                     success: function(response) {
                                                                         console.log('Form 5 Submission Response:', response);
                                                                         // Display success message or perform other actions
-                                                                        alert('All forms submitted successfully.');
+                                                                        alert('Shift Time, Sales Total, Payment Methods, Cash Payments, and Cash Difference submitted successfully.');
                                                                         // Redirect to the desired page
                                                                         window.location.href = "{{ route('shiftNode.index') }}";
                                                                     },
@@ -879,7 +687,7 @@
                                                                 });
                                                             } else {
                                                                 // If form 5 is not filled, proceed with success message
-                                                                alert('Forms 1, 2, 3, and 4 submitted successfully. Cash difference form not filled.');
+                                                                alert('Shift Time, Sales Total, Payment Methods, and Cash Payments submitted successfully. Cash difference form not filled.');
                                                                 // Redirect to the desired page
                                                                 window.location.href = "{{ route('shiftNode.index') }}";
                                                             }
@@ -901,7 +709,7 @@
                                                             success: function(response) {
                                                                 console.log('Form 5 Submission Response:', response);
                                                                 // Display success message or perform other actions
-                                                                alert('Forms 1, 2, 3, and 5 submitted successfully. Form 4 not filled.');
+                                                                alert('Shift Time, Sales Total, Payment Methods, and Cash Difference submitted successfully. Cash Payments not filled.');
                                                                 // Redirect to the desired page
                                                                 window.location.href = "{{ route('shiftNode.index') }}";
                                                             },
@@ -913,7 +721,7 @@
                                                         });
                                                     } else {
                                                         // If form 4 and form 5 are not filled, display message and redirect
-                                                        alert('Forms 1, 2, and 3 submitted successfully. Form 4 not filled. Cash difference form not filled.');
+                                                        alert('Shift Time, Sales Total, Payment Methods submitted successfully. Cash Payments not filled. Cash difference form not filled.');
                                                         // Redirect to the desired page
                                                         window.location.href = "{{ route('shiftNode.index') }}";
                                                     }
@@ -945,7 +753,7 @@
                                                             success: function(response) {
                                                                 console.log('Form 5 Submission Response:', response);
                                                                 // Display success message or perform other actions
-                                                                alert('Forms 1, 2, 4, and 5 submitted successfully. Form 3 not filled.');
+                                                                alert('Shift Time, Sales Total, Cash Payments, and Cash Difference submitted successfully. Payment Methods not filled.');
                                                                 // Redirect to the desired page
                                                                 window.location.href = "{{ route('shiftNode.index') }}";
                                                             },
@@ -957,7 +765,7 @@
                                                         });
                                                     } else {
                                                         // If form 5 is not filled, display message and redirect
-                                                        alert('Forms 1, 2, and 4 submitted successfully. Form 3 not filled. Cash difference form not filled.');
+                                                        alert('Shift Time, Sales Total, and Cash Payments submitted successfully. Payment Methods not filled. Cash difference form not filled.');
                                                         // Redirect to the desired page
                                                         window.location.href = "{{ route('shiftNode.index') }}";
                                                     }
@@ -978,7 +786,7 @@
                                                     success: function(response) {
                                                         console.log('Form 5 Submission Response:', response);
                                                         // Display success message or perform other actions
-                                                        alert('Forms 1, 2, and 5 submitted successfully. Form 3 and 4 not filled.');
+                                                        alert('Shift Time, Sales Total, and Cash Difference submitted successfully. Payment Methods and Cash Payments not filled.');
                                                         // Redirect to the desired page
                                                         window.location.href = "{{ route('shiftNode.index') }}";
                                                     },
@@ -990,7 +798,7 @@
                                                 });
                                             } else {
                                                 // If form 4 and form 5 are not filled, display message and redirect
-                                                alert('Forms 1 and 2 submitted successfully. Form 3 and 4 not filled. Cash difference form not filled.');
+                                                alert('Shift Time and Sales Total submitted successfully. Payment Methods, Cash Payments, and Cash Difference not filled.');
                                                 // Redirect to the desired page
                                                 window.location.href = "{{ route('shiftNode.index') }}";
                                             }
@@ -1012,7 +820,7 @@
                     });
                 } else {
                     // If either form 1 or form 2 is invalid, prevent submission and show error message
-                    alert('Please fill out both form 1 and form 2 correctly before submitting.');
+                    alert('Please fill out both form Shift Time and Sales Total correctly before submitting.');
                 }
             }else{
                 alert("NEEDTOFILLFOMECORRECTLY");

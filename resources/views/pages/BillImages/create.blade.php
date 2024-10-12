@@ -82,7 +82,7 @@
                                 {{-- SEARCH --}}
                                 <div style="height: 300px; overflow-y: auto;" class="mt-3 rounded-top">
                                     <table class="table" id="billImageTable">
-                                        <thead style="position: sticky; top: 0; background-color: #1a1d20; z-index: 1;">
+                                        <thead style="position: sticky; top: 0; z-index: 1;">
                                             <tr>
                                                 <th scope="col">User</th>
                                                 <th scope="col">Shop</th>
@@ -94,14 +94,14 @@
                                         <tbody>
                                             @foreach($billImages as $billImage)
                                             <tr>
-                                                <td>{{ $billImage->staff->staff_name }}</td>
-                                                <td>{{ $billImage->shop->name }}</td>
-                                                <td>{{ $billImage->date }}</td>
+                                                <td style="vertical-align: middle;">{{ $billImage->staff->staff_name }}</td>
+                                                <td style="vertical-align: middle;">{{ $billImage->shop->name }}</td>
+                                                <td style="vertical-align: middle;">{{ $billImage->date }}</td>
                                                 {{-- <td><img src="{{ asset($billImage->image) }}" alt="Bill Image" width="50"></td> --}}
-                                                <td>
-                                                    <img src="{{ asset($billImage->image) }}" alt="Bill Image" width="50" class="img-thumbnail" data-toggle="modal" data-target="#imageModal" data-image="{{ asset($billImage->image) }}">
+                                                <td style="vertical-align: middle;">
+                                                    <img src="{{ asset($billImage->image) }}" alt="Bill Image" width="50" class="img-thumbnail" data-toggle="modal" data-target="#imageModal" data-image="{{ asset($billImage->image) }}" style="cursor: pointer; border-radius: 50%; width: 50px; height: 50px; object-fit: cover;">
                                                 </td>
-                                                <td style="width: 30%;">
+                                                <td style="width: 30%; vertical-align: middle;">
                                                     <button class="btn btn-warning btn-sm rounded-pill edit-btn"
                                                         style="width: 40%;" data-toggle="modal"
                                                         data-target="#editBillImageModal"
@@ -197,6 +197,9 @@
             <div class="modal-body text-center">
                 <img id="modalImage" src="" alt="Bill Image" class="img-fluid">
             </div>
+            <div class="modal-footer">
+                <a id="downloadLink" href="#" download="bill_image.jpg" class="btn btn-primary">Download</a>
+            </div>
         </div>
     </div>
 </div>
@@ -268,7 +271,9 @@ document.addEventListener('DOMContentLoaded', function() {
             var imageSrc = button.data('image'); // Extract info from data-* attributes
             var modal = $(this);
             modal.find('.modal-body img').attr('src', imageSrc);
+            // Update download link href to the image source
+            $('#downloadLink').attr('href', imageSrc);
         });
     });
-    </script>
+</script>
     

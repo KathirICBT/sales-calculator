@@ -12,6 +12,8 @@ use App\Models\PettyCashReason;
 use App\Models\Paymentsale;
 use App\Models\Sale; // Import Sale model
 use App\Models\Department;
+use App\Models\Petticash;
+use App\Models\Cashdiffer;
 use Illuminate\Support\Facades\DB; 
 
 
@@ -160,11 +162,11 @@ public function storeShifts(Request $request)
     //     return view('shifts.edit', compact('shift', 'shops', 'staffs'));
     // }
     
-    public function edit(Shift $shift)
-{
-    // Return the shift details as JSON response
-    return response()->json($shift);
-}
+//     public function edit(Shift $shift)
+// {
+//     // Return the shift details as JSON response
+//     return response()->json($shift);
+// }
 
 
 
@@ -223,7 +225,7 @@ public function update(Request $request, $id)
         $shift = Shift::findOrFail($id);
         $shift->delete();
 
-        return redirect()->route('shifts.index')->with('success', 'Shift deleted successfully!');
+        return redirect()->route('shifts.show')->with('success', 'Shift deleted successfully!');
     }
     
 
@@ -659,4 +661,338 @@ protected function storeShift(Request $request)
 
         return view('pages.reports.shiftStaff', compact('staff', 'shifts', 'staffUsernames'));
     }
+
+
+
+    public function show()
+    {
+    // Fetch all shifts from the database
+        $shops = Shop::all();
+        $staffs = Staff::all();
+        $shifts = Shift::all();
+        $departments = Department::all();
+        $paymentmethods = Paymentmethod::all(); 
+        $paymentSales = PaymentSale::all();
+        $pettyCashReasons = PettyCashReason::all();
+        return view('pages.sales.manage_sales.allShifts', compact('shops', 'staffs','shifts','departments','paymentmethods','paymentSales','pettyCashReasons'));
+    }
+
+    public function edit($shiftId)
+    {
+        $shift = Shift::findOrFail($shiftId);
+        return response()->json($shift);
+    }
+
+    // public function shift_update(Request $request, $shiftId)
+    // {
+    //     $request->validate([
+    //         'shop_id' => 'required|exists:shops,id',
+    //         'start_date' => 'required|date',
+    //         'start_time' => 'required',
+    //         'end_date' => 'required|date|after_or_equal:start_date',
+    //         'end_time' => 'required',
+    //     ]);
+
+    //     $shift = Shift::findOrFail($shiftId);
+    //     $shift->update($request->all());
+
+    //     return redirect()->back()->with('success', 'Shift details updated successfully.');
+    // }
+
+    public function shift_update(Request $request, $shiftId)
+    {
+        // Validate the request data
+        $request->validate([
+            'shop_id' => 'required|numeric',
+            'staff_id' => 'required|numeric',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_time' => 'required',
+            'end_time' => [
+                'required',
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDate = Carbon::parse($request->input('start_date'));
+                    $endDate = Carbon::parse($request->input('end_date'));
+                    $startTime = Carbon::parse($request->input('start_time'));
+                    $endTime = Carbon::parse($value);
+
+                    if ($startDate->eq($endDate) && $endTime->lte($startTime)) {
+                        $fail('The end time must be after the start time when the start and end dates are the same.');
+                    }
+                },
+            ],
+        ]);
+
+        // Parse the start and end dates
+        $startDate = Carbon::parse($request->input('start_date'));
+        $endDate = Carbon::parse($request->input('end_date'));
+
+        // Find the existing Shift model instance
+        $shift = Shift::findOrFail($shiftId);
+        $shift->shop_id = $request->input('shop_id');
+        $shift->staff_id = $request->input('staff_id');
+        $shift->start_date = $startDate; // Assign the parsed start date directly
+        $shift->end_date = $endDate; // Assign the parsed end date directly
+        $shift->start_time = $request->input('start_time');
+        $shift->end_time = $request->input('end_time');
+        $shift->save();
+
+        // Return success message or redirect
+        return redirect()->back()->with('success', 'Shift updated successfully!');
+    }
+
+
+
+    //MANAGE SALES ====================================================================
+    
+    // public function manageSales($shiftId)
+    // {
+    //     $shift = Shift::findOrFail($shiftId);
+
+    //     // Retrieve records related to the shift
+    //     $sales = Sale::where('shift_id', $shiftId)->get();
+    //     $paymentSales = Paymentsale::where('shift_id', $shiftId)->get();
+    //     $petticashes = Petticash::where('shift_id', $shiftId)->get();
+    //     $cashDiffers = Cashdiffer::where('shift_id', $shiftId)->get();
+
+    //     // Pass the data to the view
+    //     return view('pages.sales.manage_sales.manageSales', compact('shift', 'sales', 'paymentSales', 'petticashes', 'cashDiffers'));
+    // }
+
+    // public function manageSales($shiftId)
+    // {
+    //     $shift = Shift::findOrFail($shiftId);
+
+    //     // Retrieve records related to the shift
+    //     $sales = Sale::where('shift_id', $shiftId)->get();
+    //     $paymentSales = Paymentsale::where('shift_id', $shiftId)->get();
+    //     $petticashes = Petticash::where('shift_id', $shiftId)->get();
+    //     $cashDiffers = Cashdiffer::where('shift_id', $shiftId)->get();
+    //     $departments = Department::all(); // Retrieve all departments
+
+    //     // Pass the data to the view
+    //     return view('pages.sales.manage_sales.manageSales', compact('shift', 'sales', 'paymentSales', 'petticashes', 'cashDiffers', 'departments'));
+    // }
+
+    public function manageSales($shiftId)
+    {
+        $shift = Shift::findOrFail($shiftId);
+
+        // Retrieve records related to the shift
+        $sales = Sale::where('shift_id', $shiftId)->get();
+        $paymentSales = Paymentsale::where('shift_id', $shiftId)->get();
+        $petticashes = Petticash::where('shift_id', $shiftId)->get();
+        $cashDiffers = Cashdiffer::where('shift_id', $shiftId)->get();
+        $departments = Department::all(); // Retrieve all departments
+        $paymentMethods = Paymentmethod::all(); // Retrieve all payment methods
+        $pettyCashReasons = Pettycashreason::all(); // Retrieve all petty cash reasons
+
+        // Pass the data to the view
+        return view('pages.sales.manage_sales.manageSales', compact('shift', 'sales', 'paymentSales', 'petticashes', 'cashDiffers', 'departments', 'paymentMethods', 'pettyCashReasons'));
+    }
+
+
+
+
+
+    // public function sales_edit(Sale $sale)
+    // {
+    //     return response()->json($sale);
+    // }
+
+    // public function sales_update(Request $request, Sale $sale)
+    // {
+    //     // Validate the incoming request data
+    //     $validatedData = $request->validate([
+    //         'dept_id' => 'required|integer',
+    //         'amount' => 'required|numeric',
+    //     ]);
+
+    //     // Update the sale's information
+    //     $updated = $sale->update($validatedData);
+
+    //     // Check if the update operation was successful
+    //     if ($updated) {
+    //         // Redirect back with success message
+    //         return redirect()->route('shifts.manageSales')->with('success', 'Sale updated successfully!');
+    //     } else {
+    //         // Redirect back with error message
+    //         return redirect()->route('shifts.manageSales')->with('error', 'Failed to update sale!');
+    //     }
+    // }
+
+
+    public function sales_edit($id)
+    {
+        $sales = Sale::findOrFail($id);
+        return response()->json($sales);
+    }
+
+    // public function sales_update(Request $request, $id)
+    // {
+    //     $sale = Sale::findOrFail($id);
+    //     $shiftId = $sale->shift_id; // Get the shift ID from the sale
+
+    //     // Validate incoming request data
+    //     $request->validate([
+    //         'dept_id' => 'required|exists:departments,id',
+    //         'amount' => 'required|numeric|min:0',
+    //     ]);
+
+    //     // Update sale record
+    //     $sale->update([
+    //         'dept_id' => $request->input('dept_id'),
+    //         'amount' => $request->input('amount'),
+    //     ]);
+
+    //     // Redirect to the manage sales page with the shift ID
+    //     return redirect()->route('shifts.manageSales', ['shiftId' => $shiftId])->with('success', 'Sale updated successfully!');
+    // }
+
+    public function sales_update(Request $request, $id)
+    {
+        $sale = Sale::findOrFail($id);
+        $shiftId = $sale->shift_id; // Get the shift ID from the sale
+
+        // Validate incoming request data
+        $request->validate([
+            'dept_id' => 'required|exists:departments,id',
+            'amount' => 'required|numeric|min:0',
+        ]);
+
+        $newDeptId = $request->input('dept_id');
+        $newAmount = $request->input('amount');
+
+        // Check if a sale for the same department already exists in the same shift
+        $existingSale = Sale::where('shift_id', $shiftId)
+                            ->where('dept_id', $newDeptId)
+                            ->where('id', '!=', $id)
+                            ->first();
+
+        if ($existingSale) {
+            // Combine the amounts if an existing sale is found
+            $existingSale->amount += $newAmount;
+            $existingSale->save();
+
+            // Delete the original sale
+            $sale->delete();
+        } else {
+            // Update the sale record if no existing sale is found
+            $sale->update([
+                'dept_id' => $newDeptId,
+                'amount' => $newAmount,
+            ]);
+        }
+
+        // Redirect to the manage sales page with the shift ID
+        return redirect()->route('shifts.manageSales', ['shiftId' => $shiftId])->with('success', 'Sale updated successfully!');
+    }
+
+
+    public function sales_destroy($id)
+    {
+        $sale = Sale::findOrFail($id);
+        $sale->delete();
+        return redirect()->back()->with('success', 'Sale deleted successfully!');
+    } 
+
+
+
+    
+    // Edit Payment Sale
+    public function paymentSales_edit($paymentSaleId)
+    {
+        $paymentSale = Paymentsale::findOrFail($paymentSaleId);
+        return response()->json($paymentSale);
+    }
+
+    public function paymentSales_update(Request $request, $paymentSaleId)
+    {
+        $paymentSale = Paymentsale::findOrFail($paymentSaleId);
+
+        $request->validate([
+            'paymentmethod_id' => 'required|exists:paymentmethods,id',
+            'amount' => 'required|numeric|min:0',
+        ]);
+
+        $paymentSale->update($request->only('paymentmethod_id', 'amount'));
+
+        return redirect()->route('shifts.manageSales', ['shiftId' => $paymentSale->shift_id])
+            ->with('success', 'Payment sale updated successfully!');
+    }
+
+    public function petticash_edit($petticashId)
+    {
+        $petticash = Petticash::findOrFail($petticashId);
+        return response()->json($petticash);
+    }
+
+    public function petticash_update(Request $request, $petticashId)
+    {
+        $petticash = Petticash::findOrFail($petticashId);
+
+        $request->validate([
+            'petty_cash_reason_id' => 'required|exists:petty_cash_reasons,id',
+            'amount' => 'required|numeric|min:0',
+        ]);
+
+        $petticash->update($request->only('petty_cash_reason_id', 'amount'));
+
+        return redirect()->route('shifts.manageSales', ['shiftId' => $petticash->shift_id])
+            ->with('success', 'Petticash updated successfully!');
+    }
+
+    public function cashdiffers_edit($cashdifferId)
+    {
+        $cashdiffer = Cashdiffer::findOrFail($cashdifferId);
+        return response()->json($cashdiffer);
+    }
+
+    public function cashdiffers_update(Request $request, $cashdifferId)
+    {
+        $cashdiffer = Cashdiffer::findOrFail($cashdifferId);
+
+        $request->validate([
+            'cashdifference' => 'required|numeric',
+        ]);
+
+        $cashdiffer->update($request->only('cashdifference'));
+
+        return redirect()->route('shifts.manageSales', ['shiftId' => $cashdiffer->shift_id])
+            ->with('success', 'Cash difference updated successfully!');
+    }
+
+
+
+
+    public function paymentSales_destroy($id)
+    {
+        $paymentSale = Paymentsale::findOrFail($id);
+        $paymentSale->delete();
+        return redirect()->back()->with('success', 'Payment sale deleted successfully!');
+    }
+
+    public function petticash_destroy($id)
+    {
+        $petticash = Petticash::findOrFail($id);
+        $petticash->delete();
+        return redirect()->back()->with('success', 'Petticash deleted successfully!');
+    }
+
+    public function cashdiffers_destroy($id)
+    {
+        $cashdiffer = Cashdiffer::findOrFail($id);
+        $cashdiffer->delete();
+        return redirect()->back()->with('success', 'Cash difference deleted successfully!');
+    }
+
+
+
+
+
+
+    
+
+
+
 }

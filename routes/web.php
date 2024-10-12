@@ -157,7 +157,7 @@ Route::get('/shifts', [ShiftController::class, 'index'])->name('shifts.index');
 // Route::put('/shifts/{id}', [ShiftController::class, 'update'])->name('shifts.update');
 
 //delete
-Route::delete('/shifts/{id}', [ShiftController::class, 'destroy'])->name('shifts.destroy');
+//Route::delete('/shifts/{id}', [ShiftController::class, 'destroy'])->name('shifts.destroy');
 
 //search
 // web.php
@@ -568,3 +568,33 @@ Route::get('/shift-note/index', [ShiftNoteController::class, 'index'])->name('sh
 Route::post('/shift-note/store', [ShiftNoteController::class, 'store'])->name('shiftNote.store');
 
 Route::get('/shift-note/show', [ShiftNoteController::class, 'show'])->name('shiftNode.show');
+
+// MANAGE SHIFTS ===========================================================================
+Route::get('/manage-sales/all-shifts/', [ShiftController::class, 'show'])->name('shifts.show');
+Route::get('/sales/shiftEdit/{shiftId}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
+Route::put('/sales/shiftEdit/{shiftId}', [ShiftController::class, 'shift_update'])->name('shifts.update');
+Route::delete('/shifts/{id}', [ShiftController::class, 'destroy'])->name('shifts.destroy');
+
+
+// MANAGE SALE ==============================================================================
+Route::get('/shifts/{shiftId}/manage-sales', [ShiftController::class, 'manageSales'])->name('shifts.manageSales');
+
+//SALES --------------------------------------
+Route::get('/manage_sales/{saleId}/edit', [ShiftController::class, 'sales_edit'])->name('manage_sales.edit');
+Route::put('/manage_sales/{saleId}', [ShiftController::class, 'sales_update'])->name('manage_sales.update');
+Route::delete('/manage_sales/{id}', [ShiftController::class, 'sales_destroy'])->name('manage_sales.destroy');
+
+Route::get('/manage_paymentSales/{paymentSaleId}/edit', [ShiftController::class, 'paymentSales_edit'])->name('manage_paymentSales.edit');
+Route::put('/manage_paymentSales/{paymentSaleId}', [ShiftController::class, 'paymentSales_update'])->name('manage_paymentSales.update');
+Route::delete('/manage_paymentSales/{id}', [ShiftController::class, 'paymentSales_destroy'])->name('manage_paymentSales.destroy');
+
+Route::get('/manage_petticash/{petticashId}/edit', [ShiftController::class, 'petticash_edit'])->name('manage_petticash.edit');
+Route::put('/manage_petticash/{petticashId}', [ShiftController::class, 'petticash_update'])->name('manage_petticash.update');
+Route::delete('/manage_petticash/{id}', [ShiftController::class, 'petticash_destroy'])->name('manage_petticash.destroy');
+
+Route::get('/manage_cashdiffers/{cashdifferId}/edit', [ShiftController::class, 'cashdiffers_edit'])->name('manage_cashdiffers.edit');
+Route::put('/manage_cashdiffers/{cashdifferId}', [ShiftController::class, 'cashdiffers_update'])->name('manage_cashdiffers.update');
+Route::delete('/manage_cashdiffers/{id}', [ShiftController::class, 'cashdiffers_destroy'])->name('manage_cashdiffers.destroy');
+
+
+

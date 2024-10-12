@@ -3,7 +3,7 @@
     <div class="h-100">
         <div class="sidebar-logo">
             {{-- <a href="#">The eXlents Report</a> --}}
-            <a href="#">Accounting Report</a>
+            <a href="#">Management Report</a>
             
         </div>
         
@@ -12,7 +12,7 @@
                 Admin
             </li>
             <li class="sidebar-item">
-                <a href="#" class="sidebar-link text">
+                <a href="{{route('shifts.index')}}" class="sidebar-link text">
                     <i class="fa-solid fa-chart-line pe-2"></i>
                     Dashboard
                 </a>
@@ -35,12 +35,12 @@
                     Sales
                 </a>
                 <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item ms-3">
+                    {{-- <li class="sidebar-item ms-3">
                         <a href="{{route('sales.list')}}" class="sidebar-link collapsed text" >
                             <i class="fa-solid fa-sliders pe-2"></i>
                             Manage Sales 
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="sidebar-item ms-3">
                         <a href="{{route('paymentmethod.store')}}" class="sidebar-link collapsed text" >
                             <i class="fa-solid fa-sliders pe-2"></i>
@@ -68,6 +68,44 @@
                 </ul>
             </li>
             {{-- Sales End --}}
+
+            {{-- MANAGE SALES --}}
+
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed text" data-bs-target="#manage_sales" data-bs-toggle="collapse"
+                    aria-expanded="false"><i class="fa-solid fa-file-pen pe-2"></i>
+                    Manage Sales
+                </a>
+                <ul id="manage_sales" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item ms-3">
+                        <a href="{{route('shifts.show')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-sliders pe-2"></i>
+                            All Shifts 
+                        </a>
+                    </li>
+                    {{-- <li class="sidebar-item ms-3">
+                        <a href="{{route('sales.list')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-sliders pe-2"></i>
+                            Manage Sales 
+                        </a>
+                    </li> --}}
+                    {{-- <li class="sidebar-item ms-3">
+                        <a href="{{route('shiftstaff.search')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-clock-rotate-left pe-2"></i>
+                            ShiftEdit 
+                        </a>
+                    </li> --}}
+                    <li class="sidebar-item ms-3">
+                        <a href="{{route( 'search.shiftsStaff')}}" class="sidebar-link collapsed text" >
+                            <i class="fa-solid fa-clock-rotate-left pe-2"></i>
+                            Search shifts by Staffs
+                        </a>
+                    </li>                     
+                                                                   
+                </ul>
+            </li>
+
+            {{-- MANAGE SALES END --}}
             
             {{-- <li class="sidebar-item">
                 <a href="{{route('paymentmethod.store')}}" class="sidebar-link collapsed" >
@@ -118,7 +156,7 @@
                     <li class="sidebar-item ms-3">
                         <a href="{{route('otherincome.store')}}" class="sidebar-link collapsed text" >
                             <i class="fa-solid fa-sliders pe-2"></i>
-                            Income
+                            Income By Owner
                         </a>
                     </li>
                 </ul>
@@ -131,37 +169,37 @@
             <li class="sidebar-item">
                 <a href="#" class="sidebar-link collapsed text" data-bs-target="#ex_ca" data-bs-toggle="collapse"
                     aria-expanded="false"><i class="fa-solid fa-money-bill-transfer pe-2"></i>
-                    Expenses
+                    Payments
                 </a>
                 <ul id="ex_ca" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item ms-3">
                         <a href="{{route('expense_category.store')}}" class="sidebar-link collapsed text" >
                             <i class="fa-solid fa-sliders pe-2"></i>
-                            Expense Category
+                            Payments Category
                         </a>
                     </li>
                     <li class="sidebar-item ms-3">
                         <a href="{{route('expense_sub_category.store')}}" class="sidebar-link collapsed text" >
                             <i class="fa-solid fa-sliders pe-2"></i>
-                            Expense Sub Category
+                            Payments Sub Category
                         </a>
                     </li>                     
                     <li class="sidebar-item ms-3">
                         <a href="{{route('pettycashreason.store')}}" class="sidebar-link collapsed text" >
                             <i class="fa-solid fa-sliders pe-2"></i>
-                            Expense Reason 
+                            Payments Reason 
                         </a>
                     </li>
                     <li class="sidebar-item ms-3">
                         <a href="{{route('paymenttype.store')}}" class="sidebar-link collapsed text" >
                             <i class="fa-solid fa-sliders pe-2"></i>
-                            Payment type
+                            Payment Type
                         </a>
                     </li>
                     <li class="sidebar-item ms-3">
                         <a href="{{route('otherexpense.store')}}" class="sidebar-link collapsed text" >
                             <i class="fa-solid fa-sliders pe-2"></i>
-                            Other Expense
+                            Payments By Owner
                         </a>
                     </li> 
                 </ul>
@@ -203,48 +241,21 @@
                     User
                 </a>
                 <ul id="userList" class="sidebar-dropdown list-unstyled collapse">
-                    <li class="sidebar-item">
+                    {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link text">Login</a>
-                    </li>
-                    <li class="sidebar-item">
+                    </li> --}}
+                    <li class="sidebar-item ms-3">
                         <a href="{{route('registration.show')}}" class="sidebar-link text">Register</a>
                     </li>
-                    <li class="sidebar-item">
+                    {{-- <li class="sidebar-item">
                         <a href="#" class="sidebar-link text">Forgot Password</a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
 
             
             
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed text" data-bs-target="#edits" data-bs-toggle="collapse"
-                    aria-expanded="false"><i class="fa-solid fa-cart-shopping pe-2"></i>
-                    Edit
-                </a>
-                <ul id="edits" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item ms-3">
-                        <a href="{{route('sales.list')}}" class="sidebar-link collapsed text" >
-                            <i class="fa-solid fa-sliders pe-2"></i>
-                            Manage Sales 
-                        </a>
-                    </li>
-                    <li class="sidebar-item ms-3">
-                        <a href="{{route('shiftstaff.search')}}" class="sidebar-link collapsed text" >
-                            <i class="fa-solid fa-clock-rotate-left pe-2"></i>
-                            ShiftEdit 
-                        </a>
-                    </li>
-                    <li class="sidebar-item ms-3">
-                        <a href="{{route( 'search.shiftsStaff')}}" class="sidebar-link collapsed text" >
-                            <i class="fa-solid fa-clock-rotate-left pe-2"></i>
-                            Search shifts by Staffs
-                        </a>
-                    </li>
-                     
-                                                                   
-                </ul>
-            </li>
+            
             <hr>
             
             {{-- <li class="sidebar-header">
@@ -313,7 +324,7 @@
                     <li class="sidebar-item ms-3">
                         <a href="{{route('reports.cashMove')}}" class="sidebar-link text">
                             <i class="fa-regular fa-file pe-2"></i>
-                            Cash Movement Report  
+                            Cash Flow Statement
                         </a>
                     </li>
                     <li class="sidebar-item ms-3">

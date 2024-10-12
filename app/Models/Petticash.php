@@ -25,6 +25,4 @@ class Petticash extends Model
     {
         return $this->belongsTo(Shift::class,'shift_id');
     }
-
-
 }
