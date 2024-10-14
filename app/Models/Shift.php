@@ -16,6 +16,7 @@ class Shift extends Model
         'end_time',
         'start_date', 
         'end_date',
+        'totalAmount', 
     ];
 
     

@@ -110,6 +110,7 @@ public function storeShifts(Request $request)
                 'staff_id' => 'required|numeric',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
+                'totalAmount'=>'required',
                 'start_time' => 'required',
                 'end_time' => [
                     'required',
@@ -138,6 +139,7 @@ public function storeShifts(Request $request)
             $shift->end_date = $endDate; // Assign the parsed end date directly
             $shift->start_time = $request->input('start_time');
             $shift->end_time = $request->input('end_time');
+            $shift->totalAmount=$request->input('totalAmount');
             $shift->save();
 
             $this->currentShiftId = $shift->id;
@@ -178,6 +180,7 @@ public function update(Request $request, $id)
         'date' => 'required|date',
         'start_time' => 'required',
         'start_date' => 'required|date',
+        'totalAmount'=>'required',
         'end_date' => 'required|date|after_or_equal:start_date',
         'end_time' => [
             'required',
@@ -204,7 +207,7 @@ public function update(Request $request, $id)
     $shift->end_time = $request->input('end_time');
     $shift->start_date = $request->input('start_date');
     $shift->end_date = $request->input('end_date');
-
+    $shift->totalAmount=$request->input('totalAmount');
     // Save the updated shift
     $shift->save();
 
@@ -476,6 +479,7 @@ protected function storeShift(Request $request)
             'end_date' => 'required|date|after_or_equal:start_date',
             'start_time' => 'required',
             'end_time' => 'required' ,
+            'totalAmount'=>'required',
         ]);
         // Parse the dates
         $startDate = Carbon::parse($request->input('start_date'));
@@ -489,6 +493,7 @@ protected function storeShift(Request $request)
         $shift->end_date = $endDate; // Adjusted to use end_date
         $shift->start_time = $request->input('start_time');
         $shift->end_time = $request->input('end_time');
+        $shift->totalAmount=$request->input('totalAmount');
         $shift->save();
 
         // Return the ID of the newly created shift
@@ -706,6 +711,7 @@ protected function storeShift(Request $request)
             'shop_id' => 'required|numeric',
             'staff_id' => 'required|numeric',
             'start_date' => 'required|date',
+            'totalAmount'=>'required',
             'end_date' => 'required|date|after_or_equal:start_date',
             'start_time' => 'required',
             'end_time' => [
@@ -735,6 +741,7 @@ protected function storeShift(Request $request)
         $shift->end_date = $endDate; // Assign the parsed end date directly
         $shift->start_time = $request->input('start_time');
         $shift->end_time = $request->input('end_time');
+        $shift->totalAmount=$request->input('totalAmount');
         $shift->save();
 
         // Return success message or redirect

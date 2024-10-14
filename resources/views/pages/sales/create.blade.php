@@ -102,6 +102,7 @@
                                         <label for="end_time" class="form-label">End Time:</label>
                                         <input type="time" class="form-control" id="end_time" name="end_time" required>
                                     </div>
+                                    <input type="hidden" id="totalAmount" name="totalAmount" value="0">
                                 </form>
                             </div>
                         </div>
@@ -477,13 +478,13 @@
                 const staffName = this.getAttribute('data-staff-name');
 
                 // Set the action attribute of the form with proper string interpolation
-                editForm.setAttribute('action', `/shifts/${shiftId}`);
+                editForm.setAttribute('action', /shifts/${shiftId});
 
                 // Set staff name field value
                 editForm.querySelector('#staff_name').value = staffName;
 
                 // Fetch shift data for the selected shift
-                fetch(`/shifts/${shiftId}/edit`)
+                fetch(/shifts/${shiftId}/edit)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -635,6 +636,7 @@
 
                     // Submit form 1
                     $.ajax({
+                        
                         type: 'POST',
                         url: shiftSubmitUrl,
                         data: formData1,
@@ -841,6 +843,8 @@
                 totalAmount += amount;
             });
             $('#total-amount').text(totalAmount.toFixed(2));
+
+            $('#totalAmount').val(totalAmount.toFixed(2));
             calculateTotalAmountAfterSubtraction();
         }
 
