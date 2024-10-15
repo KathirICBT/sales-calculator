@@ -470,43 +470,43 @@
         document.addEventListener('DOMContentLoaded', function() {
         const editButtons = document.querySelectorAll('.edit-btn');
 
-        editButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const shiftId = this.getAttribute('data-id');
-                const editForm = document.getElementById('editShiftForm');
-                const staffName = this.getAttribute('data-staff-name');
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const shiftId = this.getAttribute('data-id');
+                    const editForm = document.getElementById('editShiftForm');
+                    const staffName = this.getAttribute('data-staff-name');
 
-                // Set the action attribute of the form with proper string interpolation
-                editForm.setAttribute('action', `/shifts/${shiftId}`);
+                    // Set the action attribute of the form with proper string interpolation
+                    editForm.setAttribute('action', `/shifts/${shiftId}`);
 
-                // Set staff name field value
-                editForm.querySelector('#staff_name').value = staffName;
+                    // Set staff name field value
+                    editForm.querySelector('#staff_name').value = staffName;
 
-                // Fetch shift data for the selected shift
-                fetch(`/shifts/${shiftId}/edit`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Populate form fields with shift details
-                        editForm.querySelector('#shop_id').value = data.shop_id;
-                        editForm.querySelector('#start_date').value = data.start_date;
-                        editForm.querySelector('#end_date').value = data.end_date;
-                        editForm.querySelector('#start_time').value = data.start_time;
-                        editForm.querySelector('#end_time').value = data.end_time;
+                    // Fetch shift data for the selected shift
+                    fetch(`/shifts/${shiftId}/edit`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Populate form fields with shift details
+                            editForm.querySelector('#shop_id').value = data.shop_id;
+                            editForm.querySelector('#start_date').value = data.start_date;
+                            editForm.querySelector('#end_date').value = data.end_date;
+                            editForm.querySelector('#start_time').value = data.start_time;
+                            editForm.querySelector('#end_time').value = data.end_time;
 
-                        // Show the modal
-                        $('#editShiftModal').modal('show');
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                            // Show the modal
+                            $('#editShiftModal').modal('show');
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                });
             });
         });
-    });
     </script>
 
 
@@ -516,28 +516,28 @@
         const shiftTable = document.getElementById('shiftTable');
         const tableRows = shiftTable.getElementsByTagName('tr');
 
-        searchShiftInput.addEventListener('input', function () {
-            const query = searchShiftInput.value.trim().toLowerCase();
-            for (let i = 1; i < tableRows.length; i++) {
-                const row = tableRows[i];
-                const startDateColumn = row.cells[0];
-                const endDateColumn = row.cells[1];
-                const startTimeColumn = row.cells[2];
-                const endTimeColumn = row.cells[3];
-                if (startDateColumn && endDateColumn && startTimeColumn && endTimeColumn) {
-                    const startDateText = startDateColumn.textContent.toLowerCase();
-                    const endDateText = endDateColumn.textContent.toLowerCase();
-                    const startTimeText = startTimeColumn.textContent.toLowerCase();
-                    const endTimeText = endTimeColumn.textContent.toLowerCase();
-                    if (startDateText.includes(query) || endDateText.includes(query) || startTimeText.includes(query) || endTimeText.includes(query)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
+            searchShiftInput.addEventListener('input', function () {
+                const query = searchShiftInput.value.trim().toLowerCase();
+                for (let i = 1; i < tableRows.length; i++) {
+                    const row = tableRows[i];
+                    const startDateColumn = row.cells[0];
+                    const endDateColumn = row.cells[1];
+                    const startTimeColumn = row.cells[2];
+                    const endTimeColumn = row.cells[3];
+                    if (startDateColumn && endDateColumn && startTimeColumn && endTimeColumn) {
+                        const startDateText = startDateColumn.textContent.toLowerCase();
+                        const endDateText = endDateColumn.textContent.toLowerCase();
+                        const startTimeText = startTimeColumn.textContent.toLowerCase();
+                        const endTimeText = endTimeColumn.textContent.toLowerCase();
+                        if (startDateText.includes(query) || endDateText.includes(query) || startTimeText.includes(query) || endTimeText.includes(query)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
                     }
                 }
-            }
+            });
         });
-    });
     </script>
 
 
