@@ -16,8 +16,9 @@ class Shift extends Model
         'end_time',
         'start_date', 
         'end_date',
+        'total_amount',
+        'cash_balance',
     ];
-
     
 
     public function staff()

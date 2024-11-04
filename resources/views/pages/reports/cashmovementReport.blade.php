@@ -2,14 +2,14 @@
 
 @section('content')
 <div class="container-fluid">
-    <x-content-header title="Cash Movement Details Report" />
+    <x-content-header title="Cash Flow Statement" />
     <x-alert-message />
 
     <div class="row">
         <div class="col-12">
             <div class="card border-0">
                 <div class="card-body">
-                    <h4 class="card-title">Cash Movement Details Report</h4>
+                    <h4 class="card-title">Cash Flow Statement</h4>
                     <form method="POST" action="{{ route('reports.generatecashMove') }}" class="row g-3">
                         @csrf
                         <div class="col-md-5 mt-3">

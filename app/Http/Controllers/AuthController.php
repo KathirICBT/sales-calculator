@@ -20,7 +20,7 @@ class AuthController extends Controller
         
         // If admin is already authenticated, redirect to the admin dashboard
         if(Auth::check()) {
-            return redirect()->route('dashboard');
+            return redirect()->route('shifts.index');
         }
         return view("auth.login");
     }
@@ -131,7 +131,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             // Authentication passed
             $user = Auth::user();
-            return redirect()->route("dashboard")->with('user', $user->username);
+            return redirect()->route("shifts.index")->with('user', $user->username);
         }
         
 
@@ -170,7 +170,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
             $request->session()->put('adminusername', $user->username); // Storing username in session
-            return redirect()->route("dashboard");
+            return redirect()->route("shifts.index");
         }
 
         // Authentication failed

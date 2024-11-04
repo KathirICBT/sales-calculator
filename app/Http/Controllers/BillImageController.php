@@ -13,7 +13,7 @@ class BillImageController extends Controller
         $staffs = Staff::all();
         $shops = Shop::all();
         $billImages = BillImage::all();
-        return view('pages.billImages.create', compact('staffs', 'shops','billImages'));
+        return view('pages.BillImages.create', compact('staffs', 'shops','billImages'));
     }
 
     public function store(Request $request)

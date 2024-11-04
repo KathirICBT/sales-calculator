@@ -66,49 +66,48 @@ class OtherExpenseController extends Controller
     // }
 
     public function store(Request $request)
-{
-    if ($request->isMethod('post')) {
-        $validatedData = $request->validate([
-            'shop_id' => 'required|exists:shops,id',
-            'date' => 'required|date',
-            'pettyCashReason_id.*' => 'required|exists:petty_cash_reasons,id',
-            'paymenttype_id.*' => 'required|exists:payment_types,id',
-            'amount.*' => 'required|numeric|min:0',
-        ]);
-        
-        foreach ($validatedData['pettyCashReason_id'] as $key => $reasonId) {
-            // Check if a similar OtherExpense already exists
-            $existingExpense = OtherExpense::where('shop_id', $validatedData['shop_id'])
-                ->where('expense_reason_id', $reasonId)
-                ->where('paymenttype_id', $validatedData['paymenttype_id'][$key])
-                ->first();
-
-            if ($existingExpense) {
-                // If exists, update the amount
-                $existingExpense->amount += $validatedData['amount'][$key];
-                $existingExpense->save();
-            } else {
-                // If not, create a new OtherExpense record
-                OtherExpense::create([
-                    'shop_id' => $validatedData['shop_id'],
-                    'date' => $validatedData['date'],
-                    'expense_reason_id' => $reasonId,
-                    'paymenttype_id' => $validatedData['paymenttype_id'][$key],
-                    'amount' => $validatedData['amount'][$key],
-                ]);
+    {
+        if ($request->isMethod('post')) {
+            $validatedData = $request->validate([
+                'shop_id' => 'required|exists:shops,id',
+                'date' => 'required|date',
+                'pettyCashReason_id.*' => 'required|exists:petty_cash_reasons,id',
+                'paymenttype_id.*' => 'required|exists:payment_types,id',
+                'amount.*' => 'required|numeric|min:0',
+            ]);
+            
+            foreach ($validatedData['pettyCashReason_id'] as $key => $reasonId) {
+                // Check if a similar OtherExpense already exists
+                $existingExpense = OtherExpense::where('shop_id', $validatedData['shop_id'])
+                    ->where('expense_reason_id', $reasonId)
+                    ->where('paymenttype_id', $validatedData['paymenttype_id'][$key])
+                    ->where('date', $validatedData['date'])
+                    ->first();
+                if ($existingExpense) {
+                    // If exists, update the amount
+                    $existingExpense->amount += $validatedData['amount'][$key];
+                    $existingExpense->save();
+                } else {
+                    // If not, create a new OtherExpense record
+                    OtherExpense::create([
+                        'shop_id' => $validatedData['shop_id'],
+                        'date' => $validatedData['date'],
+                        'expense_reason_id' => $reasonId,
+                        'paymenttype_id' => $validatedData['paymenttype_id'][$key],
+                        'amount' => $validatedData['amount'][$key],
+                    ]);
+                }
             }
+            return redirect()->back()->with('success', 'Other expenses added successfully.');
         }
-        
-        return redirect()->back()->with('success', 'Other expenses added successfully.');
-    }
 
-    $shops = Shop::all();
-    $pettyCashReasons = PettyCashReason::all();
-    $paymentTypes = PaymentType::all();
-    $otherExpenses = OtherExpense::all();
-    
-    return view('pages.expense.otherExpense.create',compact('pettyCashReasons', 'paymentTypes','shops','otherExpenses'));
-}
+        $shops = Shop::all();
+        $pettyCashReasons = PettyCashReason::all();
+        $paymentTypes = PaymentType::all();
+        $otherExpenses = OtherExpense::all();
+        
+        return view('pages.expense.otherExpense.create',compact('pettyCashReasons', 'paymentTypes','shops','otherExpenses'));
+    }
 
 
     /**

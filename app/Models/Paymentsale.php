@@ -23,6 +23,4 @@ class Paymentsale extends Model
     {
         return $this->belongsTo(Shift::class,'shift_id');
     }
-    
-
 }
