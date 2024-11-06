@@ -601,8 +601,16 @@ Route::delete('/manage_cashdiffers/{id}', [ShiftController::class, 'cashdiffers_
 
 Route::post('shift/{shiftId}/add-sale', [ShiftController::class, 'addSale'])->name('add.sale');
 Route::post('shift/{shiftId}/add-payment-sale', [ShiftController::class, 'addPaymentSale'])->name('add.paymentSale');
-Route::post('shift/{shiftId}/add-petticash', [ShiftController::class, 'addPetticash'])->name('add.petticash');
+// Route::post('shift/{shiftId}/add-petticash', [ShiftController::class, 'addPetticash'])->name('add.petticash');
 Route::post('shift/{shiftId}/add-cash-differ', [ShiftController::class, 'addCashDiffer'])->name('add.cashDiffer');
+
+
+Route::post('/shifts/{shiftId}/add-payment-method', [ShiftController::class, 'addPaymentMethod'])->name('add.payment.method');
+Route::post('/add-petticash/{shiftId}', [ShiftController::class, 'addPetticash'])->name('add.petticash');
+Route::post('/shifts/{shiftId}/add-cashdiffer', [ShiftController::class, 'addCashDiffer'])->name('add.cashdiffer');
+
+
+
 
 
 

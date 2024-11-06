@@ -132,90 +132,6 @@
                             </div>
                         </div>                        
 
-                        {{-- <div class="col-12 col-md-6 d-flex">
-                            <div class="card flex-fill border-0">
-                                <div class="card-body py-4">
-                                    <div class="row">
-                                        <!-- First Column: Staff and Shop Information -->
-                                        <div class="col-md-4">
-                                            <h4 class="mb-2">
-                                                Staff: {{ $shift->staff->staff_name }}
-                                            </h4>
-                                            <p class="mb-2">
-                                                Shop: {{ $shift->shop->name }}
-                                            </p>
-                                        </div>
-                                        
-                                        <!-- Second Column: Labels and Values for Shift ID, Total Amount, and Cash Balance -->
-                                        <div class="col-md-8">
-                                            <div class="row mb-2">
-                                                <div class="col-6 text-muted">Manage Sales for Shift:</div>
-                                                <div class="col-6">{{ $shift->id }}</div>
-                                            </div>
-                                            <div class="row mb-2">
-                                                <div class="col-6 text-muted">Total Amount:</div>
-                                                <div class="col-6">£{{ number_format($totalAmount, 2) }}</div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6 text-muted">Cash Balance:</div>
-                                                <div class="col-6">£{{ number_format($shift->cash_balance, 2) }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
-
-                        {{-- <div class="col-12 col-md-6 d-flex">
-                            <div class="card flex-fill border-0 shadow-sm">
-                                <div class="card-body py-4">
-                                    <div class="row">
-                                        <!-- First Column: Staff and Shop Information -->
-                                        <div class="col-md-4">
-                                            <h4 class="mb-2">
-                                                Staff: <span class="fw-bold">{{ $shift->staff->staff_name }}</span>
-                                            </h4>
-                                            <p class="mb-2">
-                                                Shop: <span class="fw-semibold">{{ $shift->shop->name }}</span>
-                                            </p>
-                                        </div>
-                                        
-                                        <!-- Second Column: Labels for Shift ID, Total Amount, and Cash Balance -->
-                                        <div class="col-md-4">
-                                            <div class="row mb-1" style="height: 40px;">
-                                                <div class="col-12 text-muted d-flex align-items-center">Manage Sales for Shift:</div>
-                                            </div>
-                                            <div class="row mb-1" style="height: 40px;">
-                                                <div class="col-12 text-muted d-flex align-items-center">Total Amount:</div>
-                                            </div>
-                                            <div class="row" style="height: 40px;">
-                                                <div class="col-12 text-muted d-flex align-items-center">Cash Balance:</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Third Column: Smaller Boxes for Values of Shift ID, Total Amount, and Cash Balance -->
-                                        <div class="col-md-4">
-                                            <div class="row mb-1" style="height: 40px;">
-                                                <div class="col-12 d-flex align-items-center">
-                                                    <span class="d-inline-block border p-1 rounded text-center w-100">{{ $shift->id }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-1" style="height: 40px;">
-                                                <div class="col-12 d-flex align-items-center">
-                                                    <span class="d-inline-block border p-1 rounded text-center w-100">£{{ number_format($totalAmount, 2) }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="row" style="height: 40px;">
-                                                <div class="col-12 d-flex align-items-center">
-                                                    <span class="d-inline-block border p-1 rounded text-center w-100">£{{ number_format($shift->cash_balance, 2) }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
-
                         <div class="col-12 col-md-6 d-flex">
                             <div class="card flex-fill border-0 shadow-sm">
                                 <div class="card-body py-4 mx-3">
@@ -254,12 +170,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        
-                        
-                        
-                        
+                        </div>                        
                     </div>
 
                     <!-- Forms -->
@@ -269,41 +180,7 @@
                                 <div class="card-body p-0 d-flex flex-fill">
                                     <div class="row g-0 w-100">
                                         <div class="col-12">
-                                            <div class="p-3 m-1">  
-                                                
-                                                <!-- Sales Table -->
-                                                {{-- <h4 class="n_h2_style rounded">Sales</h4>
-                                                <div class="input-group mt-3">
-                                                    <input type="text" class="form-control" placeholder="Search Sales..." id="searchInputSales">
-                                                    <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
-                                                </div>
-                                                <div style="height: 300px; overflow-y: auto;" class="mt-3 rounded-top">
-                                                    <table class="table" id="salesTable" data-modal-type="sales">
-                                                        <thead style="position: sticky; top: 0; background-color: #1a1d20; z-index: 1;">
-                                                            <tr>
-                                                                <th>Department</th>
-                                                                <th>Amount</th>
-                                                                <th scope="col" style="width: 30%">Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach($sales as $sale)
-                                                            <tr>
-                                                                <td>{{ $sale->department->dept_name }}</td>
-                                                                <td>{{ $sale->amount }}</td>
-                                                                <td>
-                                                                    <button class="btn btn-warning btn-sm rounded-pill edit-btn" style="width: 40%;" data-toggle="modal" data-target="#salesModal" data-id="{{ $sale->id }}"><i class="fa-regular fa-pen-to-square"></i></button>
-                                                                    <form method="post" style="display: inline;" action="{{ route('manage_sales.destroy', $sale->id) }}">
-                                                                        @csrf
-                                                                        @method('delete')
-                                                                        <button class="btn btn-danger btn-sm rounded-pill" style="width: 40%;" onclick="return confirm('Are you sure you want to delete this sale?')" type="submit"><i class="fa-solid fa-trash-can"></i></button>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div> --}}
+                                            <div class="p-3 m-1">                                                
 
                                                 {{-- NEW SALES TABLE --}}
                                                 <h4 class="n_h2_style rounded">Sales</h4>
@@ -346,36 +223,7 @@
                                                             @endforeach
                                                         </tbody>
                                                     </table>
-                                                </div>
-
-                                                {{-- ADD SALE FORM ========================================================================================== --}}                                                
-
-                                                <!-- Side Slider for Add Sale Form -->
-                                                {{-- <div id="addSaleSlider" class="side-slider">
-                                                    <a href="javascript:void(0)" class="closebtn" onclick="closeSideSlider()">&times;</a>
-                                                    <div class="side-slider-content">
-                                                        <h4>Add New Sale</h4>
-                                                        <hr>
-                                                        <form method="POST" action="{{ route('add.sale', $shift->id) }}">
-                                                            <form method="POST" action="">
-                                                            @csrf
-                                                            <div class="form-group">
-                                                                <label for="dept_id">Department</label>
-                                                                <select name="dept_id" class="form-select mt-2" required>
-                                                                    <option value="">Select a Department</option>
-                                                                    @foreach($departments as $department)
-                                                                    <option value="{{ $department->id }}">{{ $department->dept_name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="amount">Amount</label>
-                                                                <input type="number" name="amount" class="form-control mt-2" required>
-                                                            </div>
-                                                            <button type="submit" class="btn btn-primary mt-2">Add Sale</button>
-                                                        </form>
-                                                    </div>
-                                                </div> --}}
+                                                </div>                                                
 
                                                 <div id="addSaleSlider" class="side-slider">
                                                     <a href="javascript:void(0)" class="closebtn" onclick="closeSideSlider()">&times;</a>
@@ -424,7 +272,8 @@
                                                 
                                                 
                                                 <h4 class="n_h2_style rounded">Payment Methods</h4>
-                                                <button class="btn btn-success mb-3" onclick="">Add Payment Method</button>
+                                                {{-- <button class="btn btn-success mb-3" onclick="">Add Payment Method</button> --}}
+                                                <button class="btn btn-success mb-3" onclick="openPaymentMethodSlider()">Add Payment Method</button>
                                                 <div class="input-group mt-3">
                                                     <input type="text" class="form-control" placeholder="Search Payment Sales..." id="searchInputPaymentSales">
                                                     <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
@@ -458,6 +307,41 @@
                                                 </div>
 
 
+                                                {{-- PAYMENT METHOD SIDE BAR --}}
+
+                                                <!-- Sidebar for Adding Payment Method -->
+                                                <div id="addPaymentMethodSlider" class="side-slider">
+                                                    <a href="javascript:void(0)" class="closebtn" onclick="closePaymentMethodSlider()">&times;</a>
+                                                    <div class="side-slider-content">
+                                                        <h4 style="padding-left: 0;">Add New Payment Method</h4>
+                                                        <hr>
+                                                        <form method="POST" action="{{ route('add.payment.method', $shift->id) }}">
+                                                        {{-- <form method="POST" action=""> --}}
+                                                            @csrf
+                                                            <div class="form-group">
+                                                                <label for="payment_method_id">Payment Method</label>
+                                                                <select name="payment_method_id" class="form-select mt-2" required>
+                                                                    <option value="">Select a Payment Method</option>
+                                                                    @foreach($paymentMethods as $paymentMethod)
+                                                                        <option value="{{ $paymentMethod->id }}">{{ $paymentMethod->payment_method }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="amount">Amount</label>
+                                                                <input type="number" name="amount" class="form-control mt-2" required>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <button type="submit" class="btn btn-custom-green mt-2">Add Payment Method</button>
+                                                                <button type="button" class="btn btn-custom-red mt-2" onclick="closePaymentMethodSlider()">Cancel</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                {{-- PAYMENT METHOD SIDE BAR END --}}
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -477,6 +361,7 @@
                                                 
                                                 <!-- Petticash Table -->
                                                 <h4 class="n_h2_style rounded">Petticash</h4>
+                                                <button class="btn btn-success mb-3" onclick="openPetticashSlider()">Add Petticash</button>
                                                 <div class="input-group mt-3">
                                                     <input type="text" class="form-control" placeholder="Search Petticash..." id="searchInputPetticash">
                                                     <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
@@ -509,6 +394,36 @@
                                                     </table>
                                                 </div>
 
+                                                <!-- Sidebar for Adding Petticash -->
+                                                <div id="addPetticashSlider" class="side-slider">
+                                                    <a href="javascript:void(0)" class="closebtn" onclick="closePetticashSlider()">&times;</a>
+                                                    <div class="side-slider-content">
+                                                        <h4 style="padding-left: 0;">Add New Petticash</h4>
+                                                        <hr>
+                                                        <form method="POST" action="{{ route('add.petticash', $shift->id) }}">
+                                                        {{-- <form method="POST" action=""> --}}
+                                                            @csrf
+                                                            <div class="form-group">
+                                                                <label for="petty_cash_reason_id">Reason</label>
+                                                                <select name="petty_cash_reason_id" class="form-select mt-2" required>
+                                                                    <option value="">Select a Reason</option>
+                                                                    @foreach($pettyCashReasons as $reason)
+                                                                        <option value="{{ $reason->id }}">{{ $reason->reason }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="amount">Amount</label>
+                                                                <input type="number" name="amount" class="form-control mt-2" required>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <button type="submit" class="btn btn-custom-green mt-2">Add Petticash</button>
+                                                                <button type="button" class="btn btn-custom-red mt-2" onclick="closePetticashSlider()">Cancel</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
                                                 
                                             </div>
                                         </div>
@@ -526,6 +441,7 @@
                                                 
                                                 <!-- Cashdiffers Table -->
                                                 <h4 class="n_h2_style rounded">Cashdiffers</h4>
+                                                <button class="btn btn-success mb-3" onclick="openCashDifferSlider()">Add Cash Differ</button>
                                                 <div class="input-group mt-3">
                                                     <input type="text" class="form-control" placeholder="Search Cashdiffers..." id="searchInputCashdiffers">
                                                     <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
@@ -554,6 +470,26 @@
                                                             @endforeach
                                                         </tbody>
                                                     </table>
+                                                </div>
+
+                                                <!-- Add Cash Differ Slider -->
+                                                <div id="addCashDifferSlider" class="side-slider">
+                                                    <a href="javascript:void(0)" class="closebtn" onclick="closeCashDifferSlider()">&times;</a>
+                                                    <div class="side-slider-content">
+                                                        <h4 style="padding-left: 0;">Add Cash Difference</h4>
+                                                        <hr>
+                                                        <form method="POST" action="{{ route('add.cashdiffer', $shift->id) }}">
+                                                            @csrf
+                                                            <div class="form-group">
+                                                                <label for="cashdifference">Cash Difference</label>
+                                                                <input type="number" name="cashdifference" class="form-control mt-2" required>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <button type="submit" class="btn btn-custom-green mt-2">Add Cash Differ</button>
+                                                                <button type="button" class="btn btn-custom-red mt-2" onclick="closeCashDifferSlider()">Cancel</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
 
 
@@ -714,77 +650,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
-
-
-                {{-- <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const editButtons = document.querySelectorAll('.edit-btn');
-                
-                        editButtons.forEach(button => {
-                            button.addEventListener('click', function() {
-                                const saleId = this.getAttribute('data-id');
-                                const modalType = this.closest('table').dataset.modalType; // determine which table the button is in
-                
-                                let fetchUrl = '';
-                                let formId = '';
-                                let actionPath = '';
-                                switch (modalType) {
-                                    case 'sales':
-                                        fetchUrl = `/manage_sales/${saleId}/edit`;
-                                        formId = 'editSalesForm';
-                                        actionPath = `/manage_sales/${saleId}`;
-                                        break;
-                                    case 'paymentSales':
-                                        fetchUrl = `/manage_paymentSales/${saleId}/edit`;
-                                        formId = 'editPaymentSalesForm';
-                                        actionPath = `/manage_paymentSales/${saleId}`;
-                                        break;
-                                    case 'petticash':
-                                        fetchUrl = `/manage_petticash/${saleId}/edit`;
-                                        formId = 'editPetticashForm';
-                                        actionPath = `/manage_petticash/${saleId}`;
-                                        break;
-                                    case 'cashdiffers':
-                                        fetchUrl = `/manage_cashdiffers/${saleId}/edit`;
-                                        formId = 'editCashdiffersForm';
-                                        actionPath = `/manage_cashdiffers/${saleId}`;
-                                        break;
-                                }
-                
-                                const modal = document.getElementById(`${modalType}Modal`);
-                                const editForm = document.getElementById(formId);
-                
-                                // Set the form action path dynamically
-                                editForm.setAttribute('action', actionPath);
-                                editForm.querySelector('input[name="sale_id"]').value = saleId;
-                
-                                fetch(fetchUrl)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        Object.keys(data).forEach(key => {
-                                            if (editForm.querySelector(`[name="${key}"]`)) {
-                                                editForm.querySelector(`[name="${key}"]`).value = data[key];
-                                            }
-                                        });
-                
-                                        $(`#${modalType}Modal`).modal('show');
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                    });
-                            });
-                        });
-                
-                        // Add an event listener to the modal close event
-                        $('.modal').on('hidden.bs.modal', function (e) {
-                            // Ensure the page becomes active again
-                            $('body').addClass('modal-open');
-                            // Remove the modal backdrop
-                            $('.modal-backdrop').remove();
-                        });
-                    });
-                </script> --}}
+                </div>                
 
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
@@ -905,20 +771,7 @@
                             }
                         }
                     });
-                </script>
-
-                {{-- <script>
-                    function toggleForm(formId) {
-                        // Hide all forms
-                        document.getElementById('addSaleForm').style.display = 'none';
-                        document.getElementById('addPaymentForm').style.display = 'none';
-                        document.getElementById('addPetticashForm').style.display = 'none';
-                        document.getElementById('addCashDifferForm').style.display = 'none';
-
-                        // Show the selected form
-                        document.getElementById(formId).style.display = 'block';
-                    }
-                </script> --}}
+                </script>                
 
                 <script>
                     function openSideSlider() {
@@ -935,9 +788,37 @@
                         padding-left: 0; /* Remove left padding */
                     }
                 </style>
-                
-                
-                
+
+                <script>
+                    function openPaymentMethodSlider() {
+                        document.getElementById("addPaymentMethodSlider").style.width = "350px"; // Open the sidebar
+                    }
+
+                    function closePaymentMethodSlider() {
+                        document.getElementById("addPaymentMethodSlider").style.width = "0"; // Close the sidebar
+                    }
+                </script>
+
+                <script>
+                    function openPetticashSlider() {
+                        document.getElementById("addPetticashSlider").style.width = "350px";
+                    }
+
+                    function closePetticashSlider() {
+                        document.getElementById("addPetticashSlider").style.width = "0";
+                    }
+                </script>
+
+                <script>
+                    function openCashDifferSlider() {
+                        document.getElementById("addCashDifferSlider").style.width = "350px";
+                    }
+
+                    function closeCashDifferSlider() {
+                        document.getElementById("addCashDifferSlider").style.width = "0";
+                    }
+                </script>
+
 
 
 @endsection            
