@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Log;
 
 
 use Illuminate\Http\Request;
@@ -30,61 +31,6 @@ class ShiftController extends Controller
     }
 
     protected $currentShiftId;
-
-// public function storeShifts(Request $request)
-//     {       
-
-//         if ($request->isMethod('post')) {
-            
-//             $request->validate([
-//                 'shop_id' => 'required|numeric',
-//                 'staff_id' => 'required|numeric',
-//                 'start_date' => 'required|date',
-//                 'end_date' => 'required|date|after_or_equal:start_date',
-//                 'start_time' => 'required',
-//                 'end_time' => [
-//                     'required',
-//                     function ($attribute, $value, $fail) use ($request) {                    
-//                         $startDate = Carbon::parse($request->input('start_date'));
-//                         $endDate = Carbon::parse($request->input('end_date'));
-//                         $startTime = Carbon::parse($request->input('start_time'));
-//                         $endTime = Carbon::parse($value);    
-                        
-//                         if ($startDate->eq($endDate) && $endTime->lte($startTime)) {
-//                             $fail('The end time must be after the start time when the start and end dates are the same.');
-//                         }
-//                     },
-//                 ],
-//                 'total_amount' => 'required|numeric|min:0', // Add validation for total amount
-//             ]);
-
-//             // Parse the start and end dates
-//             $startDate = Carbon::parse($request->input('start_date'));
-//             $endDate = Carbon::parse($request->input('end_date'));
-
-//             // Create the Shift model instance with specific fields
-//             $shift = new Shift();
-//             $shift->shop_id = $request->input('shop_id');
-//             $shift->staff_id = $request->input('staff_id');
-//             $shift->start_date = $startDate; // Assign the parsed start date directly
-//             $shift->end_date = $endDate; // Assign the parsed end date directly
-//             $shift->start_time = $request->input('start_time');
-//             $shift->end_time = $request->input('end_time');
-//             $shift->total_amount = $request->input('total_amount'); // Store the total amount
-//             $shift->save();
-
-//             $this->currentShiftId = $shift->id;
-//             //return redirect()->route('shifts.index')->with('success', 'Shift added successfully!');
-//             return "Shift Saved Successfully!";
-//         }
-
-//     $shops = Shop::all();
-//     $staffs = Staff::all();
-//     $shifts = Shift::all();
-//     $departments = Department::all();
-//     $paymentMethods = Paymentmethod::all(); 
-//     return view('pages.sales.create', compact('shops', 'staffs','shifts','departments','paymentMethods'));
-// }
 
 // NEW WITH CASH BALANCE =======================================================================================
 public function storeShifts(Request $request)
@@ -477,23 +423,6 @@ protected function storeShift(Request $request)
         return redirect()->back()->with('success', 'Shift updated successfully!');
     }    
 
-    // public function manageSales($shiftId)
-    // {
-    //     $shift = Shift::findOrFail($shiftId);
-
-    //     // Retrieve records related to the shift
-    //     $sales = Sale::where('shift_id', $shiftId)->get();
-    //     $paymentSales = Paymentsale::where('shift_id', $shiftId)->get();
-    //     $petticashes = Petticash::where('shift_id', $shiftId)->get();
-    //     $cashDiffers = Cashdiffer::where('shift_id', $shiftId)->get();
-    //     $departments = Department::all(); // Retrieve all departments
-    //     $paymentMethods = Paymentmethod::all(); // Retrieve all payment methods
-    //     $pettyCashReasons = Pettycashreason::all(); // Retrieve all petty cash reasons
-
-    //     // Pass the data to the view
-    //     return view('pages.sales.manage_sales.manageSales', compact('shift', 'sales', 'paymentSales', 'petticashes', 'cashDiffers', 'departments', 'paymentMethods', 'pettyCashReasons'));
-    // }
-
     public function manageSales($shiftId)
     {
         $shift = Shift::findOrFail($shiftId);
@@ -521,45 +450,6 @@ protected function storeShift(Request $request)
         $sales = Sale::findOrFail($id);
         return response()->json($sales);
     }    
-
-    // public function sales_update(Request $request, $id)
-    // {
-    //     $sale = Sale::findOrFail($id);
-    //     $shiftId = $sale->shift_id; // Get the shift ID from the sale
-
-    //     // Validate incoming request data
-    //     $request->validate([
-    //         'dept_id' => 'required|exists:departments,id',
-    //         'amount' => 'required|numeric|min:0',
-    //     ]);
-
-    //     $newDeptId = $request->input('dept_id');
-    //     $newAmount = $request->input('amount');
-
-    //     // Check if a sale for the same department already exists in the same shift
-    //     $existingSale = Sale::where('shift_id', $shiftId)
-    //                         ->where('dept_id', $newDeptId)
-    //                         ->where('id', '!=', $id)
-    //                         ->first();
-
-    //     if ($existingSale) {
-    //         // Combine the amounts if an existing sale is found
-    //         $existingSale->amount += $newAmount;
-    //         $existingSale->save();
-
-    //         // Delete the original sale
-    //         $sale->delete();
-    //     } else {
-    //         // Update the sale record if no existing sale is found
-    //         $sale->update([
-    //             'dept_id' => $newDeptId,
-    //             'amount' => $newAmount,
-    //         ]);
-    //     }
-
-    //     // Redirect to the manage sales page with the shift ID
-    //     return redirect()->route('shifts.manageSales', ['shiftId' => $shiftId])->with('success', 'Sale updated successfully!');
-    // }
 
     //NEW UPDATE SALE ===========================================================================================================
 
@@ -651,22 +541,7 @@ protected function storeShift(Request $request)
         $paymentSale = Paymentsale::findOrFail($paymentSaleId);
         return response()->json($paymentSale);
     }
-
-    // public function paymentSales_update(Request $request, $paymentSaleId)
-    // {
-    //     $paymentSale = Paymentsale::findOrFail($paymentSaleId);
-
-    //     $request->validate([
-    //         'paymentmethod_id' => 'required|exists:paymentmethods,id',
-    //         'amount' => 'required|numeric|min:0',
-    //     ]);
-
-    //     $paymentSale->update($request->only('paymentmethod_id', 'amount'));
-
-    //     return redirect()->route('shifts.manageSales', ['shiftId' => $paymentSale->shift_id])
-    //         ->with('success', 'Payment sale updated successfully!');
-    // }
-
+    
     //NEW PAYMENT SALE FUNCITON ===========================================
 
     public function paymentSales_update(Request $request, $paymentSaleId)
@@ -718,22 +593,7 @@ protected function storeShift(Request $request)
     {
         $petticash = Petticash::findOrFail($petticashId);
         return response()->json($petticash);
-    }
-
-    // public function petticash_update(Request $request, $petticashId)
-    // {
-    //     $petticash = Petticash::findOrFail($petticashId);
-
-    //     $request->validate([
-    //         'petty_cash_reason_id' => 'required|exists:petty_cash_reasons,id',
-    //         'amount' => 'required|numeric|min:0',
-    //     ]);
-
-    //     $petticash->update($request->only('petty_cash_reason_id', 'amount'));
-
-    //     return redirect()->route('shifts.manageSales', ['shiftId' => $petticash->shift_id])
-    //         ->with('success', 'Petticash updated successfully!');
-    // }
+    }    
 
     // NEW PETTICASH EDIT ===================================================================
 
@@ -776,9 +636,6 @@ protected function storeShift(Request $request)
         }
     }
 
-
-
-
     //=======================================================================================
 
     public function cashdiffers_edit($cashdifferId)
@@ -819,15 +676,6 @@ protected function storeShift(Request $request)
             return redirect()->back()->with('error', 'Failed to update cash difference. Please try again.');
         }
     }
-
-
-
-    // public function paymentSales_destroy($id)
-    // {
-    //     $paymentSale = Paymentsale::findOrFail($id);
-    //     $paymentSale->delete();
-    //     return redirect()->back()->with('success', 'Payment sale deleted successfully!');
-    // }
 
     //NEW DELETE PAYMENT SALE ====================================================================
 
@@ -912,43 +760,6 @@ protected function storeShift(Request $request)
         }
     }
 
-
-
-    // ADD SHIFT FROM ADMING =============================================================================
-    // public function addSale(Request $request, $shiftId)
-    // {
-    //     // Validate the request data
-    //     $request->validate([
-    //         'dept_id' => 'required|exists:departments,id',
-    //         'amount' => 'required|numeric|min:0',
-    //     ]);
-
-    //     try {
-    //         // Retrieve the shift
-    //         $shift = Shift::findOrFail($shiftId);
-
-    //         // Create a new sale record
-    //         Sale::create([
-    //             'shift_id' => $shiftId,
-    //             'dept_id' => $request->input('dept_id'),
-    //             'amount' => $request->input('amount'),
-    //         ]);
-
-    //         // Update the total amount in the shift record
-    //         $shift->total_amount += $request->input('amount');
-    //         $shift->save();
-
-    //         // Redirect back with a success message
-    //         return redirect()->route('shifts.manageSales', ['shiftId' => $shiftId])
-    //                         ->with('success', 'Sale added successfully, and total amount updated!');
-    //     } catch (\Exception $e) {
-    //         // Log the error and return an error message
-    //         \Log::error('Error adding sale: ' . $e->getMessage());
-    //         return redirect()->back()->with('error', 'Failed to add sale. Please try again.');
-    //     }
-    // }
-
-
     public function addSale(Request $request, $shiftId)
     {
         // Validate the request data
@@ -982,9 +793,6 @@ protected function storeShift(Request $request)
             return redirect()->back()->with('error', 'Failed to add sale. Please try again.');
         }
     }
-
-
-
 
     public function addPaymentMethod(Request $request, $shiftId)
     {
@@ -1056,8 +864,6 @@ protected function storeShift(Request $request)
         }
     }
 
-
-
     public function addCashDiffer(Request $request, $shiftId)
     {
         // Validate the request data
@@ -1088,9 +894,5 @@ protected function storeShift(Request $request)
             return redirect()->back()->with('error', 'Failed to add cash difference. Please try again.');
         }
     }
-
-
-
-
 
 }
