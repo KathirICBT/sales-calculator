@@ -2474,45 +2474,48 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
 
 
         public function exportOtherIncome(Request $request)
-        {
-            $request->validate([
-                'from_date' => 'required|date',
-                'to_date' => 'required|date|after_or_equal:from_date',
-            ]);
+{
+    $request->validate([
+        'from_date' => 'required|date',
+        'to_date' => 'required|date|after_or_equal:from_date',
+    ]);
 
-            $fromDate = $request->input('from_date');
-            $toDate = $request->input('to_date');
+    $fromDate = $request->input('from_date');
+    $toDate = $request->input('to_date');
 
-            // Retrieve OtherIncome records
-            $otherIncomes = OtherIncome::with('otherIncomeDepartment.incomeCategory')
-                ->whereHas('otherIncomeDepartment.incomeCategory', function ($query) {
-                    $query->where('category', 'Additional Capital');
-                })
-                ->whereBetween('date', [$fromDate, $toDate])
-                ->get();
+    // Retrieve OtherIncome records filtered by date and payment type "Cash"
+    $otherIncomes = OtherIncome::with('otherIncomeDepartment', 'paymentType')
+        ->whereHas('paymentType', function ($query) {
+            $query->where('payment_type', 'Cash'); // Corrected column name
+        })
+        ->whereBetween('date', [$fromDate, $toDate])
+        ->get();
 
-            // Initialize an empty income report array
-            $incomeReport = [];
+    // Initialize an empty income report array grouped by date
+    $incomeReport = [];
 
-            // Process each OtherIncome record
-            foreach ($otherIncomes as $income) {
-                $department = $income->otherIncomeDepartment->name ?? 'N/A';
-                $category = $income->otherIncomeDepartment->incomeCategory->category ?? 'N/A';
-                $amount = $income->amount;
+    // Process each OtherIncome record
+    foreach ($otherIncomes as $income) {
+        $date = $income->date;
+        $department = $income->otherIncomeDepartment->name ?? 'N/A';
+        $amount = $income->amount;
 
-                // Ensure the category is valid and not empty
-                if (!empty($category)) {
-                    if (!isset($incomeReport[$category])) {
-                        $incomeReport[$category] = ['department' => $department, 'data' => 0];
-                    }
-
-                    // Accumulate the amount
-                    $incomeReport[$category]['data'] += $amount;
-                }
-            }
-
-            return $incomeReport;
+        if (!isset($incomeReport[$date])) {
+            $incomeReport[$date] = ['data' => 0, 'department' => []];
         }
+
+        // Add department and accumulate amounts for each date
+        $incomeReport[$date]['data'] += $amount;
+        $incomeReport[$date]['department'][] = [
+            'department_name' => $department,
+            'amount' => $amount,
+        ];
+    }
+
+    return $incomeReport;
+}
+
+        
 
         public function getCashBalanceByEndDate($fromDate, $toDate)
         {

@@ -54,9 +54,9 @@
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Cash In (₹)</th>
-                            <th>Cash Out (₹)</th>
-                            <th>Total Balance (₹)</th>
+                            <th>Cash In </th>
+                            <th>Cash Out </th>
+                            <th>Total Balance </th>
                         </tr>
                     </thead>
                     <tbody>
