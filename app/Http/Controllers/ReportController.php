@@ -2397,15 +2397,7 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
         $toDate = $request->input('to_date'); 
     
         // Retrieve OtherExpense records
-        $expenses = OtherExpense::with('expenseReason')
-            ->whereHas('expenseReason', function ($query) {
-                $query->where('supplier', 'Supplier');
-            })
-            ->whereHas('expenseReason', function ($query) {
-                $query->where('purchase_type', 'Expense');
-            })
-            ->whereBetween('date', [$fromDate, $toDate])
-            ->get();
+        
     
         // Retrieve Petticash records
         $pettyCash = Petticash::with('pettyCashReason')
@@ -2471,7 +2463,48 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
         }
 
 
-
+        public function cashOut(Request $request)
+        {
+            $request->validate([
+                'from_date' => 'required|date',
+                'to_date' => 'required|date|after_or_equal:from_date',
+            ]);
+        
+            $fromDate = $request->input('from_date');
+            $toDate = $request->input('to_date');
+        
+            // Retrieve OtherExpense records filtered by date and payment type "Cash"
+            $expenses = OtherExpense::with('expenseReason', 'paymentType')
+                ->whereHas('paymentType', function ($query) {
+                    $query->where('payment_type', 'Cash'); // Ensure correct column name
+                })
+                ->whereBetween('date', [$fromDate, $toDate])
+                ->get();
+        
+            // Initialize an empty expense report array grouped by date
+            $expenseReport = [];
+        
+            // Process each OtherExpense record
+            foreach ($expenses as $expense) {
+                $date = $expense->date;
+                $reason = $expense->expenseReason->name ?? 'N/A';
+                $amount = $expense->amount;
+        
+                if (!isset($expenseReport[$date])) {
+                    $expenseReport[$date] = ['data' => 0, 'reason' => []];
+                }
+        
+                // Accumulate the amount for each date
+                $expenseReport[$date]['data'] += $amount;
+                $expenseReport[$date]['reason'][] = [
+                    'reason_name' => $reason,
+                    'amount' => $amount,
+                ];
+            }
+        
+            return $expenseReport;
+        }
+        
 
         public function exportOtherIncome(Request $request)
 {
@@ -2549,87 +2582,86 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
        
 
         public function getFinancialSummary(Request $request)
-        {
-            // Validate the request
-            $request->validate([
-                'from_date' => 'required|date',
-                'to_date' => 'required|date|after_or_equal:from_date',
-            ]);
-        
-            $fromDate = $request->input('from_date');
-            $toDate = $request->input('to_date');
-        
-            // 1. Get Expense Data
-            $expenses = $this->Expense($request);
-        
-            // 2. Get Other Income Data
-            $otherIncomes = $this->exportOtherIncome($request);
-        
-            // 3. Get Cash Balances by End Date
-            
-            $cashBalances = $this->getCashBalanceByEndDate($fromDate, $toDate);
+{
+    // Validate the request
+    $request->validate([
+        'from_date' => 'required|date',
+        'to_date' => 'required|date|after_or_equal:from_date',
+    ]);
 
-        
-            // Initialize table data
-            $financialTable = [];
-            $runningTotal = 0;  // To keep track of the cumulative cash balance
-        
-            // Combine all dates (from other income, expenses, and cash balances)
-            $dates = collect(array_keys($cashBalances))
-                ->merge(array_keys($otherIncomes))
-                ->unique()
-                ->sort()
-                ->toArray();
-        
-            foreach ($dates as $date) {
-                // Process "In" for Other Income and Positive Cash Balance
-                if (isset($otherIncomes[$date])) {
-                    $financialTable[] = [
-                        'date' => $date,
-                        'type' => 'In',
-                        'amount' => $otherIncomes[$date]['data'],
-                        'total_cash' => $runningTotal += $otherIncomes[$date]['data'],
-                    ];
-                }
-                if (isset($cashBalances[$date]) && $cashBalances[$date] > 0) {
-                    $financialTable[] = [
-                        'date' => $date,
-                        'type' => 'In',
-                        'amount' => $cashBalances[$date],
-                        'total_cash' => $runningTotal += $cashBalances[$date],
-                    ];
-                }
-        
-                // Process "Out" for Expenses and Negative Cash Balance
-                foreach ($expenses as $subCategory => $expenseData) {
-                    foreach ($expenseData['data'] as $expenseDate => $amount) {
-                        if ($expenseDate === $date) {
-                            $financialTable[] = [
-                                'date' => $date,
-                                'type' => 'Out',
-                                'amount' => $amount,
-                                'total_cash' => $runningTotal -= $amount,
-                            ];
-                        }
-                    }
-                }
-                if (isset($cashBalances[$date]) && $cashBalances[$date] < 0) {
-                    $financialTable[] = [
-                        'date' => $date,
-                        'type' => 'Out',
-                        'amount' => abs($cashBalances[$date]),
-                        'total_cash' => $runningTotal -= abs($cashBalances[$date]),
-                    ];
-                }
-            }
-        
-            
-            return view('pages.reports.cashbalanceInOutReport', [
-                'financialTable' => $financialTable,
-                'from_date' => $fromDate,
-                'to_date' => $toDate
-            ]);
+    $fromDate = $request->input('from_date');
+    $toDate = $request->input('to_date');
+
+    // 1. Get Expense Data
+    $expenses = $this->cashOut($request); // Ensure this method returns the correct structure
+
+    // 2. Get Other Income Data
+    $otherIncomes = $this->exportOtherIncome($request);
+
+    // 3. Get Cash Balances by End Date
+    $cashBalances = $this->getCashBalanceByEndDate($fromDate, $toDate);
+
+    // Initialize table data
+    $financialTable = [];
+    $runningTotal = 0; // To keep track of the cumulative cash balance
+
+    // Combine all dates (from other income, expenses, and cash balances)
+    $dates = collect(array_keys($cashBalances))
+        ->merge(array_keys($otherIncomes))
+        ->merge(array_keys($expenses)) // Include expense dates
+        ->unique()
+        ->sort()
+        ->toArray();
+
+    foreach ($dates as $date) {
+        // Process "In" for Other Income and Positive Cash Balance
+        if (isset($otherIncomes[$date])) {
+            $financialTable[] = [
+                'date' => $date,
+                'type' => 'In',
+                'amount' => $otherIncomes[$date]['data'],
+                'total_cash' => $runningTotal += $otherIncomes[$date]['data'],
+            ];
         }
+        if (isset($cashBalances[$date]) && $cashBalances[$date] > 0) {
+            $financialTable[] = [
+                'date' => $date,
+                'type' => 'In',
+                'amount' => $cashBalances[$date],
+                'total_cash' => $runningTotal += $cashBalances[$date],
+            ];
+        }
+
+        // Process "Out" for Expenses
+        if (isset($expenses[$date])) {
+            foreach ($expenses[$date]['reason'] as $expense) {
+                $financialTable[] = [
+                    'date' => $date,
+                    'type' => 'Out',
+                    'amount' => $expense['amount'],
+                    'total_cash' => $runningTotal -= $expense['amount'],
+                ];
+            }
+        }
+
+        // Process Negative Cash Balances
+        if (isset($cashBalances[$date]) && $cashBalances[$date] < 0) {
+            $financialTable[] = [
+                'date' => $date,
+                'type' => 'Out',
+                'amount' => abs($cashBalances[$date]),
+                'total_cash' => $runningTotal -= abs($cashBalances[$date]),
+            ];
+        }
+    }
+
+    return view('pages.reports.cashbalanceInOutReport', [
+        'financialTable' => $financialTable,
+        'from_date' => $fromDate,
+        'to_date' => $toDate,
+    ]);
+}
+
         
         public function showFinancialSummary()
         {

@@ -89,7 +89,7 @@
                         @endforeach
 
                         <!-- Total Row -->
-                        <tr class="total-row">
+                        <tr class="total-row table-success">
                             <td>Total</td>
                             <td>{{ number_format($totalIn, 2) }}</td>
                             <td>{{ number_format($totalOut, 2) }}</td>
