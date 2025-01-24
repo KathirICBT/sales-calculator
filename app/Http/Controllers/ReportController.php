@@ -2469,4 +2469,170 @@ foreach ($shopCalculatedIncomeTotals as $shopId => $calculatedIncomeTotal) {
         }
             return $expenseReport;
         }
+
+
+
+
+        public function exportOtherIncome(Request $request)
+        {
+            $request->validate([
+                'from_date' => 'required|date',
+                'to_date' => 'required|date|after_or_equal:from_date',
+            ]);
+
+            $fromDate = $request->input('from_date');
+            $toDate = $request->input('to_date');
+
+            // Retrieve OtherIncome records
+            $otherIncomes = OtherIncome::with('otherIncomeDepartment.incomeCategory')
+                ->whereHas('otherIncomeDepartment.incomeCategory', function ($query) {
+                    $query->where('category', 'Additional Capital');
+                })
+                ->whereBetween('date', [$fromDate, $toDate])
+                ->get();
+
+            // Initialize an empty income report array
+            $incomeReport = [];
+
+            // Process each OtherIncome record
+            foreach ($otherIncomes as $income) {
+                $department = $income->otherIncomeDepartment->name ?? 'N/A';
+                $category = $income->otherIncomeDepartment->incomeCategory->category ?? 'N/A';
+                $amount = $income->amount;
+
+                // Ensure the category is valid and not empty
+                if (!empty($category)) {
+                    if (!isset($incomeReport[$category])) {
+                        $incomeReport[$category] = ['department' => $department, 'data' => 0];
+                    }
+
+                    // Accumulate the amount
+                    $incomeReport[$category]['data'] += $amount;
+                }
+            }
+
+            return $incomeReport;
+        }
+
+        public function getCashBalanceByEndDate($fromDate, $toDate)
+        {
+            // Validate dates
+            if (!$fromDate || !$toDate) {
+                throw new \InvalidArgumentException("Both fromDate and toDate are required.");
+            }
+
+            // Retrieve shifts within the specified date range using end_date
+            $shifts = Shift::whereBetween('end_date', [$fromDate, $toDate])->get();
+
+            // Initialize an array to hold the cash balance for each end_date
+            $cashBalances = [];
+
+            // Process each shift
+            foreach ($shifts as $shift) {
+                $endDate = $shift->end_date;
+                $cashBalance = $shift->cash_balance;
+
+                // Aggregate cash balance for each end_date
+                if (!isset($cashBalances[$endDate])) {
+                    $cashBalances[$endDate] = 0;
+                }
+
+                $cashBalances[$endDate] += $cashBalance;
+            }
+
+            return $cashBalances;
+        }
+
+       
+
+        public function getFinancialSummary(Request $request)
+        {
+            // Validate the request
+            $request->validate([
+                'from_date' => 'required|date',
+                'to_date' => 'required|date|after_or_equal:from_date',
+            ]);
+        
+            $fromDate = $request->input('from_date');
+            $toDate = $request->input('to_date');
+        
+            // 1. Get Expense Data
+            $expenses = $this->Expense($request);
+        
+            // 2. Get Other Income Data
+            $otherIncomes = $this->exportOtherIncome($request);
+        
+            // 3. Get Cash Balances by End Date
+            
+            $cashBalances = $this->getCashBalanceByEndDate($fromDate, $toDate);
+
+        
+            // Initialize table data
+            $financialTable = [];
+            $runningTotal = 0;  // To keep track of the cumulative cash balance
+        
+            // Combine all dates (from other income, expenses, and cash balances)
+            $dates = collect(array_keys($cashBalances))
+                ->merge(array_keys($otherIncomes))
+                ->unique()
+                ->sort()
+                ->toArray();
+        
+            foreach ($dates as $date) {
+                // Process "In" for Other Income and Positive Cash Balance
+                if (isset($otherIncomes[$date])) {
+                    $financialTable[] = [
+                        'date' => $date,
+                        'type' => 'In',
+                        'amount' => $otherIncomes[$date]['data'],
+                        'total_cash' => $runningTotal += $otherIncomes[$date]['data'],
+                    ];
+                }
+                if (isset($cashBalances[$date]) && $cashBalances[$date] > 0) {
+                    $financialTable[] = [
+                        'date' => $date,
+                        'type' => 'In',
+                        'amount' => $cashBalances[$date],
+                        'total_cash' => $runningTotal += $cashBalances[$date],
+                    ];
+                }
+        
+                // Process "Out" for Expenses and Negative Cash Balance
+                foreach ($expenses as $subCategory => $expenseData) {
+                    foreach ($expenseData['data'] as $expenseDate => $amount) {
+                        if ($expenseDate === $date) {
+                            $financialTable[] = [
+                                'date' => $date,
+                                'type' => 'Out',
+                                'amount' => $amount,
+                                'total_cash' => $runningTotal -= $amount,
+                            ];
+                        }
+                    }
+                }
+                if (isset($cashBalances[$date]) && $cashBalances[$date] < 0) {
+                    $financialTable[] = [
+                        'date' => $date,
+                        'type' => 'Out',
+                        'amount' => abs($cashBalances[$date]),
+                        'total_cash' => $runningTotal -= abs($cashBalances[$date]),
+                    ];
+                }
+            }
+        
+            
+            return view('pages.reports.cashbalanceInOutReport', [
+                'financialTable' => $financialTable,
+                'from_date' => $fromDate,
+                'to_date' => $toDate
+            ]);
+        }
+        
+        public function showFinancialSummary()
+        {
+            // Pass no unnecessary data like departments and shops.
+            return view('pages.reports.cashbalanceInOutReport');
+        }
+
+        
 }

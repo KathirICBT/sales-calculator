@@ -203,30 +203,7 @@
                         </a>
                     </li> 
                 </ul>
-            </li> 
-
-            {{-- Expense End --}}
-
-            {{-- <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
-                    aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
-                    Staff
-                </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                        <a href="{{route('staff.addstaff')}}" class="sidebar-link">Dashboard</a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">Login</a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">Register</a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">Forgot Password</a>
-                    </li>
-                </ul>
-            </li> --}}
+            </li>             
 
             <li class="sidebar-item">
                 <a href="{{route('staff.addstaff')}}" class="sidebar-link collapsed text" >
@@ -241,35 +218,15 @@
                     User
                 </a>
                 <ul id="userList" class="sidebar-dropdown list-unstyled collapse">
-                    {{-- <li class="sidebar-item">
-                        <a href="#" class="sidebar-link text">Login</a>
-                    </li> --}}
+                    
                     <li class="sidebar-item ms-3">
                         <a href="{{route('registration.show')}}" class="sidebar-link text">Register</a>
-                    </li>
-                    {{-- <li class="sidebar-item">
-                        <a href="#" class="sidebar-link text">Forgot Password</a>
-                    </li> --}}
+                    </li>                    
                 </ul>
             </li>
-
             
+            <hr>           
             
-            
-            <hr>
-            
-            {{-- <li class="sidebar-header">
-                Calculations
-            </li>
-            <li>
-                <a href="{{route('reports.form')}}" class="sidebar-link text">Cash Differ Report</a>
-            </li>
-            <li class="sidebar-item">
-                <a href="{{route('reports.payment')}}" class="sidebar-link text">Payment method Report</a>
-            </li>
-            <li class="sidebar-item">
-                <a href="{{route('reports.ownerexpense')}}" class="sidebar-link text">ownerexpenseReport</a>
-            </li> --}}
             <li class="sidebar-item">
                 <a href="#" class="sidebar-link collapsed text" data-bs-target="#multi" data-bs-toggle="collapse"
                     aria-expanded="false"><i class="fa-solid fa-file pe-2"></i>
@@ -333,18 +290,15 @@
                             Income And Expense Report 
                         </a>
                     </li>
-                    {{-- <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-target="#level-1"
-                            data-bs-toggle="collapse" aria-expanded="false">Level 1</a>
-                        <ul id="level-1" class="sidebar-dropdown list-unstyled collapse">
-                            <li class="sidebar-item">
-                                <a href="{{route('reports.form')}}" class="sidebar-link text">Cash Differ Report</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="{{route('reports.payment')}}" class="sidebar-link text">Payment method Report</a>
-                            </li>
-                        </ul>
-                    </li> --}}
+
+                    <li class="sidebar-item ms-3">
+                        <a href="{{route('reports.inOut')}}" class="sidebar-link text">
+                            <i class="fa-regular fa-file pe-2"></i>
+                            Cash In and Out
+                        </a>
+                    </li>
+                    
+                    
                 </ul>
             </li>
         </ul>

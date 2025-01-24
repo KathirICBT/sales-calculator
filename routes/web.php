@@ -610,7 +610,5 @@ Route::post('/add-petticash/{shiftId}', [ShiftController::class, 'addPetticash']
 Route::post('/shifts/{shiftId}/add-cashdiffer', [ShiftController::class, 'addCashDiffer'])->name('add.cashdiffer');
 
 
-
-
-
-
+Route::get('/reports/inOut', [ReportController::class, 'showFinancialSummary'])->name('reports.inOut');
+Route::post('/reports/inOut', [ReportController::class, 'getFinancialSummary'])->name('reports.generatecashbalanceReport');
