@@ -290,15 +290,24 @@
                             Income And Expense Report 
                         </a>
                     </li>
-
                     <li class="sidebar-item ms-3">
                         <a href="{{route('reports.inOut')}}" class="sidebar-link text">
                             <i class="fa-regular fa-file pe-2"></i>
-                            Cash In and Out
+                            Cash In Out Report
                         </a>
                     </li>
-                    
-                    
+                    {{-- <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#level-1"
+                            data-bs-toggle="collapse" aria-expanded="false">Level 1</a>
+                        <ul id="level-1" class="sidebar-dropdown list-unstyled collapse">
+                            <li class="sidebar-item">
+                                <a href="{{route('reports.form')}}" class="sidebar-link text">Cash Differ Report</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="{{route('reports.payment')}}" class="sidebar-link text">Payment method Report</a>
+                            </li>
+                        </ul>
+                    </li> --}}
                 </ul>
             </li>
         </ul>
