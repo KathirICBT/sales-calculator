@@ -2581,193 +2581,7 @@ public function getCashBalanceByEndDate($fromDate, $toDate)
 
        
 
-// public function getFinancialSummary(Request $request)
-// {
-//     // Validate the request
-//     $request->validate([
-//         'from_date' => 'required|date',
-//         'to_date' => 'required|date|after_or_equal:from_date',
-//     ]);
-
-//     $fromDate = $request->input('from_date');
-//     $toDate = $request->input('to_date');
-
-//     // 1. Get Expense Data
-//     $expenses = $this->cashOut($request); // Ensure this method returns the correct structure
-
-//     // 2. Get Other Income Data
-//     $otherIncomes = $this->exportOtherIncome($request);
-
-//     // 3. Get Cash Balances by End Date
-//     $cashBalances = $this->getCashBalanceByEndDate($fromDate, $toDate);
-
-//     // Initialize table data
-//     $financialTable = [];
-//     $runningTotal = 0; // To keep track of the cumulative cash balance
-
-//     // Combine all dates (from other income, expenses, and cash balances)
-//     $dates = collect(array_keys($cashBalances))
-//         ->merge(array_keys($otherIncomes))
-//         ->merge(array_keys($expenses)) // Include expense dates
-//         ->unique()
-//         ->sort()
-//         ->toArray();
-
-//     foreach ($dates as $date) {
-//         // Process "In" for Other Income and Positive Cash Balance
-//         if (isset($otherIncomes[$date])) {
-//             $financialTable[] = [
-//                 'date' => $date,
-//                 'type' => 'In',
-//                 'amount' => $otherIncomes[$date]['data'],
-//                 'total_cash' => $runningTotal += $otherIncomes[$date]['data'],
-//             ];
-//         }
-//         if (isset($cashBalances[$date]) && $cashBalances[$date] > 0) {
-//             $financialTable[] = [
-//                 'date' => $date,
-//                 'type' => 'In',
-//                 'amount' => $cashBalances[$date],
-//                 'total_cash' => $runningTotal += $cashBalances[$date],
-//             ];
-//         }
-
-//         // Process "Out" for Expenses
-//         if (isset($expenses[$date])) {
-//             foreach ($expenses[$date]['reason'] as $expense) {
-//                 $financialTable[] = [
-//                     'date' => $date,
-//                     'type' => 'Out',
-//                     'amount' => $expense['amount'],
-//                     'total_cash' => $runningTotal -= $expense['amount'],
-//                 ];
-//             }
-//         }
-
-//         // Process Negative Cash Balances
-//         if (isset($cashBalances[$date]) && $cashBalances[$date] < 0) {
-//             $financialTable[] = [
-//                 'date' => $date,
-//                 'type' => 'Out',
-//                 'amount' => abs($cashBalances[$date]),
-//                 'total_cash' => $runningTotal -= abs($cashBalances[$date]),
-//             ];
-//         }
-//     }
-
-//     return view('pages.reports.cashbalanceInOutReport', [
-//         'financialTable' => $financialTable,
-//         'from_date' => $fromDate,
-//         'to_date' => $toDate,
-//     ]);
-// }
-
-
-
-// public function getFinancialSummary(Request $request)
-// {
-//     // Validate the request
-//     $request->validate([
-//         'from_date' => 'required|date',
-//         'to_date' => 'required|date|after_or_equal:from_date',
-//     ]);
-
-//     $fromDate = $request->input('from_date');
-//     $toDate = $request->input('to_date');
-
-//     // Initialize the running total and totals
-//     $runningTotal = 0;
-//     $totalInAmount = 0;
-//     $totalOutAmount = 0;
-
-//     // Fetch data
-//     $expenses = OtherExpense::with(['expenseReason', 'paymentType', 'shop'])
-//         ->whereHas('paymentType', function ($query) {
-//             $query->where('payment_type', 'Cash');
-//         })
-//         ->whereBetween('date', [$fromDate, $toDate])
-//         ->get();
-
-//     $incomes = OtherIncome::with(['otherIncomeDepartment', 'paymentType', 'shop'])
-//         ->whereHas('paymentType', function ($query) {
-//             $query->where('payment_type', 'Cash');
-//         })
-//         ->whereBetween('date', [$fromDate, $toDate])
-//         ->get();
-
-//     $shifts = Shift::with('shop')
-//         ->whereBetween('end_date', [$fromDate, $toDate])
-//         ->get(['end_date', 'cash_balance', 'shop_id']);
-
-//     // Combine all data into one array
-//     $financialData = [];
-
-//     foreach ($expenses as $expense) {
-//         $financialData[] = [
-//             'date' => $expense->date,
-//             'description' => $expense->expenseReason->reason ?? 'Unspecified Reason',
-//             'shop_name' => $expense->shop->name ?? 'N/A', // Fetch shop name
-//             'in_amount' => 0,
-//             'out_amount' => $expense->amount,
-//         ];
-//     }
-
-//     foreach ($incomes as $income) {
-//         $financialData[] = [
-//             'date' => $income->date,
-//             'description' => $income->otherIncomeDepartment->income_name ?? 'Unspecified Income',
-//             'shop_name' => $income->shop->name ?? 'N/A', // Fetch shop name
-//             'in_amount' => $income->amount,
-//             'out_amount' => 0,
-//         ];
-//     }
-
-//     foreach ($shifts as $shift) {
-//         $financialData[] = [
-//             'date' => $shift->end_date,
-//             'description' => 'Shift Cash Balance',
-//             'shop_name' => $shift->shop->name ?? 'N/A', // Fetch shop name
-//             'in_amount' => $shift->cash_balance ?? 0,
-//             'out_amount' => 0,
-//         ];
-//     }
-
-//     // Sort data by date
-//     usort($financialData, function ($a, $b) {
-//         return strcmp($a['date'], $b['date']);
-//     });
-
-//     // Calculate the running total and build the final table
-//     $financialTable = [];
-//     foreach ($financialData as $data) {
-//         $runningTotal += $data['in_amount'];
-//         $runningTotal -= $data['out_amount'];
-
-//         $financialTable[] = [
-//             'date' => $data['date'],
-//             'description' => $data['description'],
-//             'shop_name' => $data['shop_name'],
-//             'in_amount' => $data['in_amount'],
-//             'out_amount' => $data['out_amount'],
-//             'total_cash' => $runningTotal, // Correctly calculate the running total
-//         ];
-
-//         // Accumulate totals
-//         $totalInAmount += $data['in_amount'];
-//         $totalOutAmount += $data['out_amount'];
-//     }
-
-//     // Return the view with the financial table and totals
-//     return view('pages.reports.cashbalanceInOutReport', [
-//         'financialTable' => $financialTable,
-//         'from_date' => $fromDate,
-//         'to_date' => $toDate,
-//         'totalInAmount' => $totalInAmount,
-//         'totalOutAmount' => $totalOutAmount,
-//         'finalTotalBalance' => $runningTotal, // The final running total
-//     ]);
-// }
-
+    // AKSHAYA ===========================================================================================================
 
     public function getFinancialSummary(Request $request)
     {
@@ -2779,13 +2593,23 @@ public function getCashBalanceByEndDate($fromDate, $toDate)
 
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
-
-        // Initialize the running total and totals
+        
         $runningTotal = 0;
         $totalInAmount = 0;
         $totalOutAmount = 0;
+        
+        $previousExpenses = OtherExpense::whereHas('paymentType', function ($query) {
+            $query->where('payment_type', 'Cash');
+        })->where('date', '<', $fromDate)->sum('amount');
 
-        // Fetch data
+        $previousIncomes = OtherIncome::whereHas('paymentType', function ($query) {
+            $query->where('payment_type', 'Cash');
+        })->where('date', '<', $fromDate)->sum('amount');
+
+        $previousShiftBalance = Shift::where('end_date', '<', $fromDate)->sum('cash_balance');
+
+        $previousRunningTotal = $previousIncomes + $previousShiftBalance - $previousExpenses;
+        
         $expenses = OtherExpense::with(['expenseReason', 'paymentType', 'shop'])
             ->whereHas('paymentType', function ($query) {
                 $query->where('payment_type', 'Cash');
@@ -2800,11 +2624,10 @@ public function getCashBalanceByEndDate($fromDate, $toDate)
             ->whereBetween('date', [$fromDate, $toDate])
             ->get();
 
-        $shifts = Shift::with(['shop', 'staff']) // Include staff relationship
+        $shifts = Shift::with(['shop', 'staff'])
             ->whereBetween('end_date', [$fromDate, $toDate])
-            ->get(['end_date', 'cash_balance', 'shop_id', 'staff_id']); // Include staff_id
-
-        // Combine all data into one array
+            ->get(['end_date', 'cash_balance', 'shop_id', 'staff_id']);
+        
         $financialData = [];
 
         foreach ($expenses as $expense) {
@@ -2812,7 +2635,7 @@ public function getCashBalanceByEndDate($fromDate, $toDate)
                 'date' => $expense->date,
                 'description' => $expense->expenseReason->reason ?? 'Unspecified Reason',
                 'shop_name' => $expense->shop->name ?? 'N/A',
-                'staff_name' => 'Shop Owner', // Default to "Shop Owner"
+                'staff_name' => 'Shop Owner',
                 'in_amount' => 0,
                 'out_amount' => $expense->amount,
             ];
@@ -2823,30 +2646,28 @@ public function getCashBalanceByEndDate($fromDate, $toDate)
                 'date' => $income->date,
                 'description' => $income->otherIncomeDepartment->income_name ?? 'Unspecified Income',
                 'shop_name' => $income->shop->name ?? 'N/A',
-                'staff_name' => 'Shop Owner', // Default to "Shop Owner"
+                'staff_name' => 'Shop Owner',
                 'in_amount' => $income->amount,
                 'out_amount' => 0,
             ];
         }
 
         foreach ($shifts as $shift) {
-            $staffName = $shift->staff->staff_name ?? 'Shop Owner'; // Fetch staff name or default to "Shop Owner"
+            $staffName = $shift->staff->staff_name ?? 'Shop Owner';
             $financialData[] = [
                 'date' => $shift->end_date,
                 'description' => 'Shift Cash Balance',
                 'shop_name' => $shift->shop->name ?? 'N/A',
-                'staff_name' => $staffName, // Display staff name for shifts
+                'staff_name' => $staffName,
                 'in_amount' => $shift->cash_balance ?? 0,
                 'out_amount' => 0,
             ];
         }
-
-        // Sort data by date
+        
         usort($financialData, function ($a, $b) {
             return strcmp($a['date'], $b['date']);
         });
-
-        // Calculate the running total and build the final table
+        
         $financialTable = [];
         foreach ($financialData as $data) {
             $runningTotal += $data['in_amount'];
@@ -2856,27 +2677,33 @@ public function getCashBalanceByEndDate($fromDate, $toDate)
                 'date' => $data['date'],
                 'description' => $data['description'],
                 'shop_name' => $data['shop_name'],
-                'staff_name' => $data['staff_name'], // Add staff name to the table
+                'staff_name' => $data['staff_name'],
                 'in_amount' => $data['in_amount'],
                 'out_amount' => $data['out_amount'],
-                'total_cash' => $runningTotal, // Correctly calculate the running total
+                'total_cash' => $runningTotal,
             ];
-
-            // Accumulate totals
+            
             $totalInAmount += $data['in_amount'];
             $totalOutAmount += $data['out_amount'];
         }
-
-        // Return the view with the financial table and totals
+        
+        $finalRunningTotalForDateRange = $runningTotal;
+        
+        $finalCombinedTotal = $previousRunningTotal + $finalRunningTotalForDateRange;
+        
         return view('pages.reports.cashbalanceInOutReport', [
             'financialTable' => $financialTable,
             'from_date' => $fromDate,
             'to_date' => $toDate,
+            'previousRunningTotal' => $previousRunningTotal,
+            'finalRunningTotalForDateRange' => $finalRunningTotalForDateRange,
+            'finalCombinedTotal' => $finalCombinedTotal,
             'totalInAmount' => $totalInAmount,
             'totalOutAmount' => $totalOutAmount,
-            'finalTotalBalance' => $runningTotal, // The final running total
         ]);
     }
+    
+
         
     public function showFinancialSummary()
     {
